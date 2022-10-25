@@ -39,16 +39,20 @@ $font: "Inconsolata", monospace;
       height: 100%;
       overflow-y: scroll;
       background-color: $fifthColor;
-      padding: 5%;
+      padding: 3%;
 
       .component {
         height: 100%;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap:2%;
     
 
         .doubleComponent {
           width: 100%;
-          height: 100%;
+          height: 60%;
           display: flex;
           gap: 4%;
 
@@ -59,6 +63,18 @@ $font: "Inconsolata", monospace;
           .right {
             width: 48%;
           }
+        }
+
+        .singleComponent{
+            height:30%;
+            width:100%;
+    
+        }
+
+        button{
+      
+            width:200px;
+            height:6%;
         }
       }
     }

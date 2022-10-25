@@ -19,14 +19,18 @@ function App() {
             <div className={style.component}>
               <div className={style.doubleComponent}>
                 <div className={style.left}>
-                  <LabelText text={"ciao"} textInfo={"bo"}></LabelText>
+                  <LabelText text={"ciao"} textInfo={"bo"} error={false}></LabelText>
                 </div>
                 <div className={style.right}>
-                  <LabelText text={"ciao"} textInfo={"bo"}></LabelText>
+                  <LabelText text={"ciao"} textInfo={"bo"} error={false}></LabelText>
                 </div>
               </div>
 
-              <div className={style.singleComponent}></div>
+              <div className={style.singleComponent}>
+              <LabelText text={"ciao"} textInfo={"bo"} error={false}></LabelText>
+              </div>
+
+              <button>click</button>
             </div>
           </main>
         </div>
