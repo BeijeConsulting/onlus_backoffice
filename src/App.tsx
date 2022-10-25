@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+
+//style
+import style from "./assets/styles/common.module.scss";
+
+import LabelText from "./components/functional/labelText/LabelText";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="style.App">
+      <div className={style.container}>
+        <header></header>
+
+        <div className={style.content}>
+          <nav></nav>
+
+          <main>
+            <div className={style.component}>
+              <div className={style.doubleComponent}>
+                <div className={style.left}>
+                  <LabelText text={"ciao"} textInfo={"bo"}></LabelText>
+                </div>
+                <div className={style.right}>
+                  <LabelText text={"ciao"} textInfo={"bo"}></LabelText>
+                </div>
+              </div>
+
+              <div className={style.singleComponent}></div>
+            </div>
+          </main>
+        </div>
+
+        <footer></footer>
+      </div>
     </div>
   );
 }
