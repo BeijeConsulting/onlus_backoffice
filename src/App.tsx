@@ -7,7 +7,7 @@ import { StyledEngineProvider } from '@mui/material';
 function App() {
   return (
     <StyledEngineProvider injectFirst>
-      <div className="App" style={{ minHeight: '100vh' }}>
+      <div className="App">
         <NavBar />
       </div>
     </StyledEngineProvider>
