@@ -1,38 +1,23 @@
-import { FC,useState } from "react";
+import React, { FC, useState } from "react";
 
 //style
 import style from "./labelTextStyle.module.scss";
 
 //mui
-import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box';
 
+//props
 interface labelTextProps {
-  text: string;
-  textInfo: string;
-  error: boolean;
+  children?:any;
 }
 
 const LabelText: FC<labelTextProps> = (props) => {
 
-    const [error,setError] = useState(false);
-
-    function validate(e:any){
-        if(e !== 4){
-            setError(true)
-        }
-    }
   return (
     <>
-      <div className={style.containerLabelText}>
-        <div className="labelTextInfo">
-            <h2>{props.text}</h2>
-        </div>
-        <TextField
-          id="outlined-error-helper-text"
-          helperText = {props.error ? "Inserire valore" : ""}
-          error={props.error} 
-        />
-      </div>
+      <Box className={style.containerLabelText}>
+        {props.children}
+      </Box>
     </>
   );
 };

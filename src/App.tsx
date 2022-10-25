@@ -1,43 +1,60 @@
-import React from "react";
-import logo from "./logo.svg";
-
 //style
 import style from "./assets/styles/common.module.scss";
 
+//mui
+import { StyledEngineProvider } from "@mui/material";
+import Box from '@mui/material/Box';
+
+//components
 import LabelText from "./components/functional/labelText/LabelText";
+import Title from "./components/functional/title/Title";
+import CustomTextField from "./components/functional/textField/CustomTextField";
 
 function App() {
+
   return (
-    <div className="style.App">
-      <div className={style.container}>
-        <header></header>
+    <StyledEngineProvider injectFirst>
+      <Box className="style.App">
+        <Box className={style.container}>
+          <header></header>
 
-        <div className={style.content}>
-          <nav></nav>
+          <Box className={style.content}>
+            <nav></nav>
 
-          <main>
-            <div className={style.component}>
-              <div className={style.doubleComponent}>
-                <div className={style.left}>
-                  <LabelText text={"ciao"} textInfo={"bo"} error={false}></LabelText>
-                </div>
-                <div className={style.right}>
-                  <LabelText text={"ciao"} textInfo={"bo"} error={false}></LabelText>
-                </div>
-              </div>
+            <main>
+              <Box className={style.component}>
+                <Box className={style.doubleComponent}>
+                  <Box className={style.left}>
+                    
+                    <LabelText>
+                      <Title
+                        text={"Nome sito"}
+                        textInfo={"Inserisci il nome del sito"}
+                      />
+                      <CustomTextField error={false}></CustomTextField>
+                      <CustomTextField error={false}></CustomTextField>
+                      <CustomTextField error={true}></CustomTextField>
+                      <CustomTextField error={false}></CustomTextField>
 
-              <div className={style.singleComponent}>
-              <LabelText text={"ciao"} textInfo={"bo"} error={false}></LabelText>
-              </div>
+                    </LabelText>
+                  </Box>
+                  <Box className={style.right}>
+                    
+                  </Box>
+                </Box>
 
-              <button>click</button>
-            </div>
-          </main>
-        </div>
+                <Box className={style.singleComponent}>
+                  
+                </Box>
 
-        <footer></footer>
-      </div>
-    </div>
+              </Box>
+            </main>
+          </Box>
+
+          <footer></footer>
+        </Box>
+      </Box>
+    </StyledEngineProvider>
   );
 }
 
