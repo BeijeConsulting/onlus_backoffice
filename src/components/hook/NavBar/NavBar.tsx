@@ -83,6 +83,10 @@ export default function NavBar() {
             <ListItemButton className={css.child}>
               <ListItemText primary="FAQ" />
             </ListItemButton>
+
+            <ListItemButton className={css.child}>
+              <ListItemText primary="Social" />
+            </ListItemButton>
           </List>
         </Collapse>
 
