@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 //Componenti MUI
-import AppBar from '@mui/material/AppBar';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -10,7 +9,7 @@ import ExpandLess from '@mui/icons-material/ArrowDropDown';
 import ExpandMore from '@mui/icons-material/ArrowDropUp';
 
 //Style
-import { container, divider, father, child } from './navBarStyle';
+import css from './navBar.module.scss';
 
 interface State {
     editor: boolean;
@@ -29,6 +28,7 @@ export default function NavBar() {
 
     const [state, setState] = useState<State>(initialState);
 
+    //Funzioni per aprire e chiudere i collapse
     const openEditor = (): void => {
         setState({ editor: !state.editor, articles: false, users: false });
     };
@@ -41,15 +41,19 @@ export default function NavBar() {
         setState({ users: !state.users, articles: false, editor: false });
     };
 
+    //Navigazione
+    const handleNavigate = () => (params: any): void => {
+        console.log(params)
+    }
+
     return (
         <>
-            <AppBar sx={{height: '120px'}}></AppBar>
             <List
-                sx={container}
+                className={css.container}
                 component="nav"
             >
                 <ListItemButton
-                    sx={[father, divider]}
+                    className={css.father}
                     onClick={openEditor}>
                     <ListItemText primary="EDITOR SITO" />
                     {state.editor ? <ExpandMore /> : <ExpandLess />}
@@ -57,75 +61,74 @@ export default function NavBar() {
 
                 <Collapse in={state.editor} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="Generale" />
                         </ListItemButton>
 
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="Home" />
                         </ListItemButton>
 
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="About" />
                         </ListItemButton>
 
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="Supportaci" />
                         </ListItemButton>
 
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="FAQ" />
                         </ListItemButton>
 
                     </List>
                 </Collapse>
 
-                <ListItemButton sx={[father, divider]}>
+                <ListItemButton className={css.father}>
                     <ListItemText primary="EVENTI" />
                 </ListItemButton>
 
-                <ListItemButton sx={[father, divider]} onClick={openArticles}>
+                <ListItemButton className={css.father} onClick={openArticles}>
                     <ListItemText primary="ARTICOLI" />
                     {state.articles ? <ExpandMore /> : <ExpandLess />}
                 </ListItemButton>
 
                 <Collapse in={state.articles} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="Gestisci articoli" />
                         </ListItemButton>
 
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="Gestisci categorie" />
                         </ListItemButton>
 
                     </List>
                 </Collapse>
 
-                <ListItemButton sx={[father, divider]} onClick={openUsers}>
+                <ListItemButton className={css.father} onClick={openUsers}>
                     <ListItemText primary="UTENTI" />
                     {state.users ? <ExpandMore /> : <ExpandLess />}
                 </ListItemButton>
 
                 <Collapse in={state.users} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="Collaboratori" />
                         </ListItemButton>
 
-                        <ListItemButton sx={[child, divider]}>
+                        <ListItemButton className={css.child}>
                             <ListItemText primary="Volontari" />
                         </ListItemButton>
 
                     </List>
                 </Collapse>
 
-                <ListItemButton sx={[father, divider]}>
+                <ListItemButton className={css.father}>
                     <ListItemText primary="DONAZIONI" />
                 </ListItemButton>
 
             </List>
-            <footer style={{height: '70px', border: 'solid black'}}></footer>
         </>
     )
 }

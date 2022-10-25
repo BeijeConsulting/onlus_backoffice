@@ -1,0 +1,18 @@
+.container {
+    height: 100%;
+    width: 100%;
+    min-height: 80vh;
+    max-width: 300px;
+    background-color: #262E36;
+    color: #FFF;
+    padding-top: 100px;
+    .father {
+        height: 90px;
+        border-bottom: solid 1px rgba(255, 255, 255, 0.4);
+    };
+    .child {
+        padding-left: 6;
+        height: 60px;
+        border-bottom: solid 1px rgba(255, 255, 255, 0.4);
+    };
+}
