@@ -52,9 +52,7 @@ export default function NavBar() {
                 className={css.container}
                 component="nav"
             >
-                <ListItemButton
-                    className={css.father}
-                    onClick={openEditor}>
+                <ListItemButton className={css.father} onClick={openEditor}>
                     <ListItemText primary="EDITOR SITO" />
                     {state.editor ? <ExpandMore /> : <ExpandLess />}
                 </ListItemButton>
