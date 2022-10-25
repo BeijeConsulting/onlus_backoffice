@@ -1,14 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import NavBar from './components/hook/NavBar/NavBar';
-import { StyledEngineProvider } from '@mui/material';
+import "./App.css";
+import NavBar from "./components/hook/NavBar/NavBar";
+import { StyledEngineProvider } from "@mui/material";
+import { Routes, Route } from "react-router-dom";
+
+//Pages
+import PAGES from "./router/pages";
+import General from "./pages/editor/general/General";
+import Home from "./pages/editor/home/Home";
 
 function App() {
   return (
     <StyledEngineProvider injectFirst>
       <div className="App">
-        <NavBar />
+        <Routes>
+          <Route path={PAGES.entryApp} element={<NavBar />}>
+            <Route path={PAGES.editHome} element={<Home />} />
+            <Route path={PAGES.editGeneral} element={<General />} />
+          </Route>
+        </Routes>
       </div>
     </StyledEngineProvider>
   );

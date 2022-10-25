@@ -1,132 +1,134 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 //Componenti MUI
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
-import ExpandLess from '@mui/icons-material/ArrowDropDown';
-import ExpandMore from '@mui/icons-material/ArrowDropUp';
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
+import ExpandLess from "@mui/icons-material/ArrowDropDown";
+import ExpandMore from "@mui/icons-material/ArrowDropUp";
+import { Outlet, useNavigate } from "react-router-dom";
+import PAGES from "../../../router/pages";
 
 //Style
-import css from './navBar.module.scss';
+import css from "./navBar.module.scss";
 
 interface State {
-    editor: boolean;
-    articles: boolean;
-    users: boolean;
+  editor: boolean;
+  articles: boolean;
+  users: boolean;
 }
 
 const initialState: State = {
-    editor: false,
-    articles: false,
-    users: false,
-}
+  editor: false,
+  articles: false,
+  users: false,
+};
 
 //NAVBAR
 export default function NavBar() {
+  const [state, setState] = useState<State>(initialState);
 
-    const [state, setState] = useState<State>(initialState);
+  const navigate = useNavigate();
 
-    //Funzioni per aprire e chiudere i collapse
-    const openEditor = (): void => {
-        setState({ editor: !state.editor, articles: false, users: false });
+  //Funzioni per aprire e chiudere i collapse
+  const openEditor = (): void => {
+    setState({ editor: !state.editor, articles: false, users: false });
+  };
+
+  const openArticles = (): void => {
+    setState({ articles: !state.articles, editor: false, users: false });
+  };
+
+  const openUsers = (): void => {
+    setState({ users: !state.users, articles: false, editor: false });
+  };
+
+  //Navigazione
+  const handleNavigate =
+    () =>
+    (params: any): void => {
+      console.log(params);
     };
 
-    const openArticles = (): void => {
-        setState({ articles: !state.articles, editor: false, users: false });
-    };
+  return (
+    <>
+      <List className={css.container} component="nav">
+        <ListItemButton className={css.father} onClick={openEditor}>
+          <ListItemText primary="EDITOR SITO" />
+          {state.editor ? <ExpandMore /> : <ExpandLess />}
+        </ListItemButton>
 
-    const openUsers = (): void => {
-        setState({ users: !state.users, articles: false, editor: false });
-    };
-
-    //Navigazione
-    const handleNavigate = () => (params: any): void => {
-        console.log(params)
-    }
-
-    return (
-        <>
-            <List
-                className={css.container}
-                component="nav"
+        <Collapse in={state.editor} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              className={css.child}
+              onClick={() => navigate(PAGES.editGeneral)}
             >
-                <ListItemButton className={css.father} onClick={openEditor}>
-                    <ListItemText primary="EDITOR SITO" />
-                    {state.editor ? <ExpandMore /> : <ExpandLess />}
-                </ListItemButton>
+              <ListItemText primary="Generale" />
+            </ListItemButton>
 
-                <Collapse in={state.editor} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="Generale" />
-                        </ListItemButton>
+            <ListItemButton className={css.child}>
+              <ListItemText primary="Home" />
+            </ListItemButton>
 
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="Home" />
-                        </ListItemButton>
+            <ListItemButton className={css.child}>
+              <ListItemText primary="About" />
+            </ListItemButton>
 
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="About" />
-                        </ListItemButton>
+            <ListItemButton className={css.child}>
+              <ListItemText primary="Supportaci" />
+            </ListItemButton>
 
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="Supportaci" />
-                        </ListItemButton>
+            <ListItemButton className={css.child}>
+              <ListItemText primary="FAQ" />
+            </ListItemButton>
+          </List>
+        </Collapse>
 
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="FAQ" />
-                        </ListItemButton>
+        <ListItemButton className={css.father}>
+          <ListItemText primary="EVENTI" />
+        </ListItemButton>
 
-                    </List>
-                </Collapse>
+        <ListItemButton className={css.father} onClick={openArticles}>
+          <ListItemText primary="ARTICOLI" />
+          {state.articles ? <ExpandMore /> : <ExpandLess />}
+        </ListItemButton>
 
-                <ListItemButton className={css.father}>
-                    <ListItemText primary="EVENTI" />
-                </ListItemButton>
+        <Collapse in={state.articles} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton className={css.child}>
+              <ListItemText primary="Gestisci articoli" />
+            </ListItemButton>
 
-                <ListItemButton className={css.father} onClick={openArticles}>
-                    <ListItemText primary="ARTICOLI" />
-                    {state.articles ? <ExpandMore /> : <ExpandLess />}
-                </ListItemButton>
+            <ListItemButton className={css.child}>
+              <ListItemText primary="Gestisci categorie" />
+            </ListItemButton>
+          </List>
+        </Collapse>
 
-                <Collapse in={state.articles} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="Gestisci articoli" />
-                        </ListItemButton>
+        <ListItemButton className={css.father} onClick={openUsers}>
+          <ListItemText primary="UTENTI" />
+          {state.users ? <ExpandMore /> : <ExpandLess />}
+        </ListItemButton>
 
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="Gestisci categorie" />
-                        </ListItemButton>
+        <Collapse in={state.users} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton className={css.child}>
+              <ListItemText primary="Collaboratori" />
+            </ListItemButton>
 
-                    </List>
-                </Collapse>
+            <ListItemButton className={css.child}>
+              <ListItemText primary="Volontari" />
+            </ListItemButton>
+          </List>
+        </Collapse>
 
-                <ListItemButton className={css.father} onClick={openUsers}>
-                    <ListItemText primary="UTENTI" />
-                    {state.users ? <ExpandMore /> : <ExpandLess />}
-                </ListItemButton>
-
-                <Collapse in={state.users} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding>
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="Collaboratori" />
-                        </ListItemButton>
-
-                        <ListItemButton className={css.child}>
-                            <ListItemText primary="Volontari" />
-                        </ListItemButton>
-
-                    </List>
-                </Collapse>
-
-                <ListItemButton className={css.father}>
-                    <ListItemText primary="DONAZIONI" />
-                </ListItemButton>
-
-            </List>
-        </>
-    )
+        <ListItemButton className={css.father}>
+          <ListItemText primary="DONAZIONI" />
+        </ListItemButton>
+      </List>
+      <Outlet />
+    </>
+  );
 }
