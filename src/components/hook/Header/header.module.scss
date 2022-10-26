@@ -31,7 +31,7 @@
         align-items: center;
         justify-content: center;
         width: 20%;
-
+      }
       .authSpan {
         width: fit-content;
       }
@@ -52,10 +52,10 @@
 }
 
 header {
-    width: 100%;
-    min-height: 13%;
-    background-color: $ternaryColor;
-    border-bottom: $secondaryColor 5px solid;
+  width: 100%;
+  min-height: 13%;
+  background-color: $ternaryColor;
+  border-bottom: $secondaryColor 5px solid;
 }
 
 @media screen and (max-width: 600px) {
@@ -64,16 +64,17 @@ header {
       font-size: 25px;
       margin-left: 5%;
     }
+  }
 }
 
-@media screen and (max-height: 550px){
-    .toolbar {
-        .logo {
-            width: 2%;
-        }
-
-        .title {
-            font-size: 25px;
-        }
+@media screen and (max-height: 550px) {
+  .toolbar {
+    .logo {
+      width: 2%;
     }
+
+    .title {
+      font-size: 25px;
+    }
+  }
 }
