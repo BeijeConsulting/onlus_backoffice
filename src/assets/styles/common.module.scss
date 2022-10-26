@@ -108,13 +108,13 @@ header {
 
 footer {
   width: 100%;
-  min-height: 10%;
+  height: 10%;
   background-color: $ternaryColor;
   border-top: $secondaryColor 5px solid;
 }
 
 @media screen and (max-width: 1500px) {
   footer {
-    min-height: 12%;
+    height: 12%;
   }
 }
