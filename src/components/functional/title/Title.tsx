@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 
 //icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { convertToObject } from "typescript";
 
 //props
 interface titleProps {
@@ -44,6 +45,10 @@ const Title: FC<titleProps> = (props) => {
     })
   };
 
+  const handleClick = ():void =>{
+    console.log("click")
+  }
+
   return (
     <Box className={style.labelTextRow}>
       <label className={style.labelText}>
@@ -54,6 +59,13 @@ const Title: FC<titleProps> = (props) => {
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
       > <InfoOutlinedIcon className={style.infoIcon} /></Box>
+
+
+      <Box
+        onClick={handleClick}
+      > <InfoOutlinedIcon className={style.infoIcon} /></Box>
+
+
 
       <Popover
         open={open}
