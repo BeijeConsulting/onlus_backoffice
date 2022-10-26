@@ -1,3 +1,6 @@
-.textField{
-    width:100% !important
+@import "../../../assets/styles/common.module.scss";
+
+.textField {
+  width: 100% !important;
+  background-color: $fourthColor !important;
 }

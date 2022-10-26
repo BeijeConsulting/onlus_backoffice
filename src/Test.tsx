@@ -10,6 +10,7 @@ import LabelText from "./components/functional/labelText/LabelText";
 import Title from "./components/functional/title/Title";
 import CustomTextField from "./components/functional/textField/CustomTextField";
 import ButtonAddFile from "./components/functional/buttonAddFile/ButtonAddFile";
+import CustomTextArea from "./components/functional/textArea/CustomTextArea";
 
 function Test() {
   const onSelectedFile = (value: string): void => {};
@@ -21,9 +22,17 @@ function Test() {
           <LabelText>
             <Title text={"Nome sito"} textInfo={"Inserisci il nome del sito"} />
             <CustomTextField error={false}></CustomTextField>
+            <CustomTextField
+              error={false}
+              minrow={4}
+              maxrow={20}
+              multiline={true}
+            ></CustomTextField>
             <CustomTextField error={false}></CustomTextField>
 
             <ButtonAddFile callback={onSelectedFile}></ButtonAddFile>
+
+            <CustomTextArea />
           </LabelText>
         </Box>
         <Box className={style.right}></Box>
