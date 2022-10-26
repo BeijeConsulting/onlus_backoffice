@@ -1,67 +1,66 @@
-@import '../../../assets/styles/common.module.scss';
+@import "../../../assets/styles/common.module.scss";
 
 .toolbar {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+
+  .logo {
+    width: 4%;
+  }
+
+  .title {
+    font-size: 50px;
+    margin-left: 15%;
+  }
+
+  .boxRight {
     display: flex;
-    justify-content: space-between;
-    flex-direction: row;
+    justify-content: center;
+    width: 20%;
 
-    .logo {
-        width: 4%;
-    }
+    .buttonDiv {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 10%;
+      cursor: pointer;
 
-    .title {
-        font-size: 50px;
-        margin-left: 15%
-    }
-
-    .boxRight {
+      .iconSpan {
         display: flex;
+        align-items: center;
         justify-content: center;
-        width: 20%;
+        align-content: space-between;
+      }
 
-        .buttonDiv {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-right: 10%;
-            cursor: pointer;
-
-            .iconSpan {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                align-content: space-between;
-            }
-
-            .authSpan {
-                width: fit-content;
-            }
-        }
-
-        .menu {
-            background-color: $primaryColor;
-        }
-
-        .langBtn {
-            cursor: pointer;
-        }
-
-        .langBtnSelected {
-            font-weight: bold;
-        }
+      .authSpan {
+        width: fit-content;
+      }
     }
 
+    .menu {
+      background-color: $primaryColor;
+    }
+
+    .langBtn {
+      cursor: pointer;
+    }
+
+    .langBtnSelected {
+      font-weight: bold;
+    }
+  }
 }
 
 @media screen and (max-width: 600px) {
-    .toolbar {
-        .title {
-            font-size: 25px;
-            margin-left: 5%;
-        }
-
-        .boxRight{
-            width: 30%;
-        }
+  .toolbar {
+    .title {
+      font-size: 25px;
+      margin-left: 5%;
     }
+
+    .boxRight {
+      width: 30%;
+    }
+  }
 }
