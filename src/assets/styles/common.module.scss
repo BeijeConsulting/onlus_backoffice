@@ -97,24 +97,3 @@ $font: "Inconsolata", monospace;
 
   }
 }
-
-
-header {
-  width: 100%;
-  //min-height: 13%;
-  background-color: $ternaryColor;
-  border-bottom: $secondaryColor 5px solid;
-}
-
-footer {
-  width: 100%;
-  height: 10%;
-  background-color: $ternaryColor;
-  border-top: $secondaryColor 5px solid;
-}
-
-@media screen and (max-width: 1500px) {
-  footer {
-    height: 12%;
-  }
-}
