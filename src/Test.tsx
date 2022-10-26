@@ -13,6 +13,10 @@ import ButtonAddFile from "./components/functional/buttonAddFile/ButtonAddFile";
 
 function Test() {
 
+  const onSelectedFile = (value:string) :void =>{
+    
+  }
+
   return (
     <StyledEngineProvider injectFirst>
       <Box className="style.App">
@@ -35,7 +39,8 @@ function Test() {
                       <CustomTextField error={false}></CustomTextField>
                       <CustomTextField error={false}></CustomTextField>
 
-                      <ButtonAddFile></ButtonAddFile>
+                      <ButtonAddFile
+                        callback={onSelectedFile}></ButtonAddFile>
 
                     </LabelText>
 
