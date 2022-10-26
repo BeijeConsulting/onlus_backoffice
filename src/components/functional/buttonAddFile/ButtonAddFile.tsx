@@ -4,44 +4,52 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 import style from "./buttonAddFile.module.scss";
 
 //mui
-import { Button, Box } from '@mui/material'
+import { Button, Box, Typography } from '@mui/material'
 //props
 interface buttonAddFileProps {
     children?: any;
+    callback:Function;
 }
 //state
 interface State {
-    selectedImage: string;
+    selectedImage: string | null;
+    file: string;
 }
 const initialState: State = {
-    selectedImage: ""
+    selectedImage: "",
+    file: ""
 }
 const ButtonAddFile: FC<buttonAddFileProps> = (props) => {
 
     const [state, setState] = useState<State>(initialState)
 
-    const onChangeInput = (e:ChangeEvent<HTMLInputElement>):void => {
+    const onChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
+
         setState({
             ...state,
-            selectedImage: e!.target!.files[0]!.name!
+            selectedImage: e.target!.files[0]!.name,
+            file: URL.createObjectURL(e.target.files[0])
         })
+
+        props.callback(URL.createObjectURL(e.target.files[0]))
     }
 
     return (
-        <Box>
-
+        <Box className={style.inputFileContainer}>
             <input
                 accept="image/*"
                 type="file"
-                id="select-image"
+                name="selectImage"
+                id="selectImage"
                 style={{ display: "none" }}
                 onChange={onChangeInput}
             />
-            <label htmlFor="select-image">
-                <Button variant="contained" color="primary" component="span">
-                    {state.selectedImage}
+            <label htmlFor="selectImage">
+                <Button variant="contained" sx={{ backgroundColor: "#e9e3e6", color: "black", textTransform: 'initial' }} component="span">
+                    Seleziona file
                 </Button>
             </label>
+            <Typography className={style.inputFileName}>{state.selectedImage}</Typography>
         </Box>
     )
 }
