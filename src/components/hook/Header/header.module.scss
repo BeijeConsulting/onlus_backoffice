@@ -1,6 +1,12 @@
 @import "../../../assets/styles/common.module.scss";
 
+:export {
+  primaryColor: $primaryColor;
+  fifthColor: $fifthColor;
+}
+
 .toolbar {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   flex-direction: row;
@@ -52,6 +58,8 @@
 }
 
 header {
+  display: flex;
+  align-content: center;
   width: 100%;
   min-height: 13%;
   background-color: $ternaryColor;

@@ -7,7 +7,6 @@ import CustomTextField from "../../components/functional/textField/CustomTextFie
 
 //style
 import style from "./login.module.scss";
-import commonStyle from "../../assets/styles/common.module.scss";
 //img stock
 import logo from "../../assets/media/logo.png";
 import { Link } from "react-router-dom";
@@ -18,7 +17,8 @@ TO DO
 - i18n
 - link password dimenticata
 - img da backend
-
+- placeholder input
+- controllo id pass
 */
 
 type User = {
@@ -28,12 +28,14 @@ type User = {
 
 const Login = (): JSX.Element => {
   function onLogin(e: BaseSyntheticEvent): void {
+    if (e.target.form[0].value === "" || e.target.form[2].value === "") {
+      return;
+    }
     let user: User = {
       id: e.target.form[0].value,
       password: e.target.form[2].value,
     };
     console.log(user);
-    console.log(e);
   }
   return (
     <div className={style.container}>
@@ -51,7 +53,7 @@ const Login = (): JSX.Element => {
               className={style.button}
               onClick={onLogin}
             >
-              Login
+              ACCEDI
             </Button>
           </LabelText>
         </form>
