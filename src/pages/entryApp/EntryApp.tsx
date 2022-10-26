@@ -15,7 +15,10 @@ function EntryApp() {
     <Box className={style.container}>
         <Header />
 
-        <NavBar />
+        <Box className={style.content}>
+            <NavBar />
+
+        </Box>
 
         <footer></footer>
     </Box>

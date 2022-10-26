@@ -47,9 +47,9 @@ function Header() {
             <Toolbar className={css.toolbar}>
                 <img src={logo} className={css.logo} />
 
-                <Typography variant="h4" component="div" className={css.title}>
+                <p className={css.title}>
                     Nome Onlus
-                </Typography>
+                </p>
 
                 <Box className={css.boxRight}>
 
