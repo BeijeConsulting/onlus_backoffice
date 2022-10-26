@@ -1,0 +1,53 @@
+@import '../../../assets/styles/common.module.scss';
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+
+    .logo{
+        width: 75px;
+    }
+
+    .title{
+        margin-left: 15%
+    }
+
+    .boxRight {
+        display: flex;
+        justify-content: center;
+        width: 20%;
+
+        .buttonDiv {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 10%;
+            cursor: pointer;
+
+            .iconSpan {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                align-content: space-between;
+            }
+
+            .authSpan {
+                width: fit-content;
+            }
+        }
+
+        .menu {
+            background-color: $primaryColor;
+        }
+
+        .langBtn {
+            cursor: pointer;
+        }
+
+        .langBtnSelected {
+            font-weight: bold;
+        }
+    }
+
+}
