@@ -6,28 +6,30 @@ import style from "./buttonGenericStyle.module.scss";
 //mui
 import { Button, Box, Typography } from "@mui/material";
 
-interface buttonGenericProps {
+interface buttonIconProps {
   callback: Function;
-  color: string;
   children: any;
 }
 
-const ButtonGeneric: FC<buttonGenericProps> = (props) => {
+const ButtonIcon: FC<buttonIconProps> = (props) => {
   const handleClick = (e: MouseEvent): void => {
     props.callback(e);
   };
   return (
-    <Button
-      variant="contained"
+    <Box
       onClick={handleClick}
       sx={{
-        backgroundColor: props.color,
-        textTransform: "initial",
-        width: 150,
+        backgroundColor: "#e9e3e6",
+        width: "30px",
+        height: "30px",
+        borderRadius: "50%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       {props.children}
-    </Button>
+    </Box>
   );
 };
-export default ButtonGeneric;
+export default ButtonIcon;

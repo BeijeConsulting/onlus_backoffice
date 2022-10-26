@@ -2,18 +2,29 @@
 import style from "./assets/styles/common.module.scss";
 
 //mui
-import { StyledEngineProvider } from "@mui/material";
 import Box from "@mui/material/Box";
+
+//icons
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import CreateIcon from "@mui/icons-material/Create";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import LockIcon from "@mui/icons-material/Lock";
 
 //components
 import LabelText from "./components/functional/labelText/LabelText";
 import Title from "./components/functional/title/Title";
 import CustomTextField from "./components/functional/textField/CustomTextField";
 import ButtonAddFile from "./components/functional/buttonAddFile/ButtonAddFile";
-import CustomTextArea from "./components/functional/textArea/CustomTextArea";
+import ButtonGeneric from "./components/functional/buttonGeneric/ButtonGeneric";
+import ButtonIcon from "./components/functional/buttonIcon/ButtonIcon";
+import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
 
 function Test() {
   const onSelectedFile = (value: string): void => {};
+
+  const log = (att: any) => {
+    console.log(att);
+  };
 
   return (
     <Box className={style.component}>
@@ -32,7 +43,20 @@ function Test() {
 
             <ButtonAddFile callback={onSelectedFile}></ButtonAddFile>
 
-            <CustomTextArea />
+            <ButtonGeneric color="red" callback={log}>
+              Salva modifiche
+            </ButtonGeneric>
+            <ButtonIcon callback={log}>
+              <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
+            </ButtonIcon>
+            <ButtonIcon callback={log}>
+              <CreateIcon sx={{ fontSize: "18px" }} />
+            </ButtonIcon>
+            <ButtonIcon callback={log}>
+              <RemoveRedEyeOutlinedIcon sx={{ fontSize: "18px" }} />
+            </ButtonIcon>
+            <LockIcon sx={{ fontSize: "18px" }} />
+            <CustomSwitch label="ciaoneSwitchProps" callback={log} />
           </LabelText>
         </Box>
         <Box className={style.right}></Box>
