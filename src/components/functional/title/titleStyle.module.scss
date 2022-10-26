@@ -1,0 +1,20 @@
+.labelTextRow{
+    display: flex;
+    gap: 2px
+}
+
+.labelText{
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.infoIcon{
+    font-size: 15px
+}
+
+.popover{
+    padding: 10px;
+    pointer-events: none;
+    max-width: 300px;
+    font-size: 15px;
+}
