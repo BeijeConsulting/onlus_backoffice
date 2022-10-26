@@ -1,0 +1,8 @@
+@import '../../assets/styles/common.module.scss';
+
+.footer {
+    width: 100%;
+    min-height: 7%;
+    background-color: $ternaryColor;
+    border-top: $secondaryColor 5px solid;
+}
