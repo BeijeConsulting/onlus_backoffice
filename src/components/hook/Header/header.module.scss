@@ -5,11 +5,11 @@
     justify-content: space-between;
     flex-direction: row;
 
-    .logo{
+    .logo {
         width: 4%;
     }
 
-    .title{
+    .title {
         font-size: 50px;
         margin-left: 15%
     }
@@ -51,4 +51,17 @@
         }
     }
 
+}
+
+@media screen and (max-width: 600px) {
+    .toolbar {
+        .title {
+            font-size: 25px;
+            margin-left: 5%;
+        }
+
+        .boxRight{
+            width: 30%;
+        }
+    }
 }
