@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import LabelText from "./components/functional/labelText/LabelText";
 import Title from "./components/functional/title/Title";
 import CustomTextField from "./components/functional/textField/CustomTextField";
+import ButtonAddFile from "./components/functional/buttonAddFile/ButtonAddFile";
 
 function Test() {
 
@@ -33,10 +34,13 @@ function Test() {
                       />
                       <CustomTextField error={false}></CustomTextField>
                       <CustomTextField error={false}></CustomTextField>
-                      <CustomTextField error={true}></CustomTextField>
-                      <CustomTextField error={false}></CustomTextField>
+
+                      <ButtonAddFile></ButtonAddFile>
 
                     </LabelText>
+
+
+
                   </Box>
                   <Box className={style.right}>
                     

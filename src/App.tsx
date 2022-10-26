@@ -1,4 +1,3 @@
-import "./App.css";
 import NavBar from "./components/hook/NavBar/NavBar";
 import { StyledEngineProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
@@ -25,6 +24,8 @@ import EditorCollaborators from "./pages/users/collaborators/EditorCollaborators
 import Volunteers from "./pages/users/volunteers/Volunteers";
 import EditVolunteers from "./pages/users/volunteers/EditVolunteers";
 import Donations from "./pages/donations/Donations";
+
+import Test from "./Test"
 
 function App() {
 
@@ -60,6 +61,8 @@ function App() {
             <Route path={PAGES.editorVolunteers} element={<EditVolunteers />} />
 
             <Route path={PAGES.donations} element={<Donations />} />
+
+            <Route path={"/test"} element={<Test />} />
 
           </Route>
         </Routes>

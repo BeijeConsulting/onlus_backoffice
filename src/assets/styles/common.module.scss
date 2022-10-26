@@ -16,12 +16,6 @@ $font: "Inconsolata", monospace;
   box-sizing: border-box;
 }
 
-// .App{
-//     width:1200px;
-//     height: 100vh;
-//     background-color: red;
-// }
-
 .container {
   margin: 0 auto;
   width: 100%;
@@ -65,9 +59,7 @@ $font: "Inconsolata", monospace;
         }
 
         .singleComponent{
-            height:30%;
             width:100%;
-    
         }
 
         button{
