@@ -11,6 +11,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
 //Style
+import common from "../../../assets/styles/common.module.scss";
 import css from "./navBar.module.scss";
 
 interface State {
@@ -51,7 +52,7 @@ export default function NavBar() {
 
     return (
         <>
-            <List className={css.container} component="nav">
+            <List className={common.nav} component="nav">
                 <ListItemButton className={css.father} onClick={openEditor}>
                     <ListItemText primary="EDITOR SITO" />
                     {state.editor ? <ExpandMore /> : <ExpandLess />}
