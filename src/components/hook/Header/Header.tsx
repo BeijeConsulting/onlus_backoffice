@@ -1,96 +1,119 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from "react";
 
 //Style
-import common from "../../../assets/styles/common.module.scss"
-import css from './header.module.scss'
+import css from "./header.module.scss";
 
 //Componenti MUI
-import { Box, AppBar, Toolbar, Typography, Button, Stack, Menu, MenuItem } from '@mui/material'
-import PersonIcon from '@mui/icons-material/Person';
+import {
+  Box,
+  Toolbar,
+  Stack,
+  Menu,
+  MenuItem,
+  MenuProps,
+  styled,
+} from "@mui/material";
+import PersonIcon from "@mui/icons-material/Person";
 
 //Assets
-import logo from '../../../assets/media/logo.png'
+import logo from "../../../assets/media/logo.png";
+import { useNavigate } from "react-router-dom";
 
-function Header() {
+//Routes
+import PAGES from "../../../router/pages";
 
-    const [langIta, setLangIta] = useState(true);
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+/*
+TO DO
+- i18n
+- logout
+- img backend
+- title backend
+- user backend
+ */
 
-    //Funzioni per aprire e chiudere il menù
-    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
+const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(() => ({
+  "& .MuiPaper-root": {
+    backgroundColor: css.primaryColor,
+    color: css.fifthColor,
+  },
+}));
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+const Header: FC = (): JSX.Element => {
+  const [langIta, setLangIta] = useState(true);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const goToPersonalArea = (): void => {
-        //naviga alla pagina personalArea
-    }
+  const navigate = useNavigate();
 
-    const logout = (): void => {
-        //esegue logout
-    }
+  //Funzioni per aprire e chiudere il menù
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    //Funzioni per cambiare la lingua
-    const changeLangIta = (): void => {
-        setLangIta(true)
-    }
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    const changeLangEng = (): void => {
-        setLangIta(false)
-    }
+  const goToPersonalArea = (): void => {
+    navigate(PAGES.personalArea);
+  };
 
-    return (
-        <header>
-            <Toolbar className={css.toolbar}>
-                <img src={logo} className={css.logo} />
+  const logout = (): void => {
+    //esegue logout
+  };
 
-                <p className={css.title}>
-                    Nome Onlus
-                </p>
+  //Funzioni per cambiare la lingua
+  const changeLangIta = (): void => {
+    setLangIta(true);
+  };
 
-                <Box className={css.boxRight}>
+  const changeLangEng = (): void => {
+    setLangIta(false);
+  };
 
-                    <div className={css.buttonDiv} onClick={handleMenu}>
-                        <span className={css.iconSpan}>
-                            <PersonIcon fontSize='large' />
-                            <p>Nome Utente</p>
-                        </span>
-                        <span className={css.authSpan}>
-                            admin
-                        </span>
-                    </div>
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                        className={css.menu}
-                    >
-                        <MenuItem onClick={goToPersonalArea}>Area personale</MenuItem>
-                        <MenuItem onClick={logout}>Logout</MenuItem>
-                    </Menu>
+  return (
+    <header>
+      <Toolbar className={css.toolbar}>
+        <img src={logo} alt={""} className={css.logo} />
 
-                    <Stack direction="row" spacing={1} alignItems="center">
-                        <p
-                            onClick={changeLangIta}
-                            className={`${langIta ? css.langBtnSelected : ''} ${css.langBtn}`}
-                        >
-                            IT
-                        </p>
-                        <p>●</p>
-                        <p
-                            onClick={changeLangEng}
-                            className={`${langIta ? '' : css.langBtnSelected} ${css.langBtn}`}
-                        >
-                            EN
-                        </p>
-                    </Stack>
-                </Box>
-            </Toolbar>
-        </header>
-    )
+        <p className={css.title}>Nome Onlus</p>
+
+        <Box className={css.boxRight}>
+          <div className={css.buttonDiv} onClick={handleMenu}>
+            <span className={css.iconSpan}>
+              <PersonIcon fontSize="large" />
+              <p>Nome Utente</p>
+            </span>
+            <span className={css.authSpan}>admin</span>
+          </div>
+
+          <StyledMenu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={goToPersonalArea}>Area personale</MenuItem>
+            <MenuItem onClick={logout}>Logout</MenuItem>
+          </StyledMenu>
+
+          <Stack direction="row" spacing={1} alignItems="center">
+            <p
+              onClick={changeLangIta}
+              className={`${langIta ? css.langBtnSelected : ""} ${css.langBtn}`}
+            >
+              IT
+            </p>
+            <p>●</p>
+            <p
+              onClick={changeLangEng}
+              className={`${langIta ? "" : css.langBtnSelected} ${css.langBtn}`}
+            >
+              EN
+            </p>
+          </Stack>
+        </Box>
+      </Toolbar>
+    </header>
+  );
 }
 
-export default Header
+export default Header;

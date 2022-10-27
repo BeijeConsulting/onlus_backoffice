@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 
 //Componenti MUI
 import List from "@mui/material/List";
@@ -13,6 +13,7 @@ import PAGES from "../../../router/pages";
 //Style
 import common from "../../../assets/styles/common.module.scss";
 import css from "./navBar.module.scss";
+import { Typography } from "@mui/material";
 
 interface State {
     editor: boolean;
@@ -27,7 +28,7 @@ const initialState: State = {
 };
 
 //NAVBAR
-export default function NavBar() {
+const NavBar: FC = (): JSX.Element => {
     const [state, setState] = useState<State>(initialState);
 
     const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function NavBar() {
         <>
             <List className={common.nav} component="nav">
                 <ListItemButton className={css.father} onClick={openEditor}>
-                    <ListItemText primary="EDITOR SITO" />
+                    <p className={css.text}>EDITOR SITO</p>
                     {state.editor ? <ExpandMore /> : <ExpandLess />}
                 </ListItemButton>
 
@@ -108,11 +109,11 @@ export default function NavBar() {
                     className={css.father}
                     onClick={handleNavigate(PAGES.events)}
                 >
-                    <ListItemText primary="EVENTI" />
+                    <p>EVENTI</p>
                 </ListItemButton>
 
                 <ListItemButton className={css.father} onClick={openArticles}>
-                    <ListItemText primary="ARTICOLI" />
+                    <p>ARTICOLI</p>
                     {state.articles ? <ExpandMore /> : <ExpandLess />}
                 </ListItemButton>
 
@@ -135,7 +136,7 @@ export default function NavBar() {
                 </Collapse>
 
                 <ListItemButton className={css.father} onClick={openUsers}>
-                    <ListItemText primary="UTENTI" />
+                    <p>UTENTI</p>
                     {state.users ? <ExpandMore /> : <ExpandLess />}
                 </ListItemButton>
 
@@ -161,10 +162,12 @@ export default function NavBar() {
                     className={css.father}
                     onClick={handleNavigate(PAGES.donations)}
                 >
-                    <ListItemText primary="DONAZIONI" />
+                    <p>DONAZIONI</p>
                 </ListItemButton>
             </List>
             <Outlet />
         </>
     );
 }
+
+export default NavBar;

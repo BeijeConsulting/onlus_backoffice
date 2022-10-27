@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 //Componenti
 import Header from '../../components/hook/Header/Header'
@@ -8,19 +8,21 @@ import NavBar from '../../components/hook/NavBar/NavBar'
 import Box from '@mui/material/Box'
 
 //Style
-import style from "../../assets/styles/common.module.scss";
+import common from "../../assets/styles/common.module.scss";
+import style from "./entryApp.module.scss";
 
-function EntryApp() {
+
+const EntryApp: FC = (): JSX.Element => {
   return (
-    <Box className={style.container}>
+    <Box className={common.container}>
         <Header />
 
-        <Box className={style.content}>
+        <Box className={common.content}>
             <NavBar />
 
         </Box>
 
-        <footer></footer>
+        <footer className={style.footer}></footer>
     </Box>
   )
 }
