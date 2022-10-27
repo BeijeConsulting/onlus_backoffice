@@ -61,10 +61,6 @@ $font: "Inconsolata", monospace;
           width: 100%;
         }
 
-        button {
-          width: 200px;
-          height: 6%;
-        }
       }
     }
 
@@ -87,16 +83,4 @@ $font: "Inconsolata", monospace;
   }
 }
 
-header {
-  width: 100%;
-  min-height: 13%;
-  background-color: $ternaryColor;
-  border-bottom: $secondaryColor 5px solid;
-}
 
-footer {
-  width: 100%;
-  min-height: 7%;
-  background-color: $ternaryColor;
-  border-top: $secondaryColor 5px solid;
-}

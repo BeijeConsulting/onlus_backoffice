@@ -18,6 +18,7 @@ import ButtonAddFile from "./components/functional/buttonAddFile/ButtonAddFile";
 import ButtonGeneric from "./components/functional/buttonGeneric/ButtonGeneric";
 import ButtonIcon from "./components/functional/buttonIcon/ButtonIcon";
 import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
+import CustomTable from "./components/functional/table/CustomTable";
 
 function Test() {
   const onSelectedFile = (value: string): void => {};
@@ -59,7 +60,9 @@ function Test() {
             <CustomSwitch label="ciaoneSwitchProps" callback={log} />
           </LabelText>
         </Box>
-        <Box className={style.right}></Box>
+        <Box className={style.right}>
+          <CustomTable />
+        </Box>
       </Box>
 
       <Box className={style.singleComponent}></Box>

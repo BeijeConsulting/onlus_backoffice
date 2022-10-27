@@ -45,9 +45,6 @@ const Title: FC<titleProps> = (props) => {
     })
   };
 
-  const handleClick = ():void =>{
-    console.log("click")
-  }
 
   return (
     <Box className={style.labelTextRow}>
@@ -58,11 +55,6 @@ const Title: FC<titleProps> = (props) => {
       <Box
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
-      > <InfoOutlinedIcon className={style.infoIcon} /></Box>
-
-
-      <Box
-        onClick={handleClick}
       > <InfoOutlinedIcon className={style.infoIcon} /></Box>
 
 
