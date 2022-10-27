@@ -1,12 +1,15 @@
-//mui
+import React, { FC, useState } from "react";
+
+//Componenti MUI
 import { Box, Button } from "@mui/material";
 
-//component function
+//Component function
 import LabelText from "../../components/functional/labelText/LabelText";
 import CustomTextField from "../../components/functional/textField/CustomTextField";
 
-//style
+//Style
 import style from "./login.module.scss";
+
 //img stock
 import logo from "../../assets/media/logo.png";
 import { Link } from "react-router-dom";
@@ -26,7 +29,7 @@ type User = {
   password: string;
 };
 
-const Login = (): JSX.Element => {
+const Login: FC = (): JSX.Element => {
   function onLogin(e: BaseSyntheticEvent): void {
     if (e.target.form[0].value === "" || e.target.form[2].value === "") {
       return;

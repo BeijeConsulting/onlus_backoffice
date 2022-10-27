@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 
 //Componenti MUI
 import List from "@mui/material/List";
@@ -28,7 +28,7 @@ const initialState: State = {
 };
 
 //NAVBAR
-export default function NavBar() {
+const NavBar: FC = (): JSX.Element => {
     const [state, setState] = useState<State>(initialState);
 
     const navigate = useNavigate();
@@ -169,3 +169,5 @@ export default function NavBar() {
         </>
     );
 }
+
+export default NavBar;

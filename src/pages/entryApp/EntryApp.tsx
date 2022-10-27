@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 
 //Componenti
 import Header from '../../components/hook/Header/Header'
@@ -12,7 +12,7 @@ import common from "../../assets/styles/common.module.scss";
 import style from "./entryApp.module.scss";
 
 
-function EntryApp() {
+const EntryApp: FC = (): JSX.Element => {
   return (
     <Box className={common.container}>
         <Header />

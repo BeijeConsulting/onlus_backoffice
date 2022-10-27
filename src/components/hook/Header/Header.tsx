@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
 //Style
 import css from "./header.module.scss";
@@ -18,7 +18,8 @@ import PersonIcon from "@mui/icons-material/Person";
 //Assets
 import logo from "../../../assets/media/logo.png";
 import { useNavigate } from "react-router-dom";
-//routes
+
+//Routes
 import PAGES from "../../../router/pages";
 
 /*
@@ -37,7 +38,7 @@ const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(() => ({
   },
 }));
 
-function Header() {
+const Header: FC = (): JSX.Element => {
   const [langIta, setLangIta] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
