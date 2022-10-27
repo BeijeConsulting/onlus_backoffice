@@ -19,13 +19,65 @@ import ButtonGeneric from "./components/functional/buttonGeneric/ButtonGeneric";
 import ButtonIcon from "./components/functional/buttonIcon/ButtonIcon";
 import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
 import CustomTable from "./components/functional/table/CustomTable";
+import { Anchor } from "@mui/icons-material";
+import articles from "./utils/mockup/articles";
 
 function Test() {
-  const onSelectedFile = (value: string): void => {};
+  const onSelectedFile = (value: string): void => { };
 
-  const log = (att: any) => {
+  const log = (att: any) => () => {
     console.log(att);
   };
+
+  //Colonne del DataGrid
+  const renderDetailsButton = (params: any) => {
+    return (
+      <>
+        <ButtonIcon callback={log(params)}>
+          <Anchor
+            sx={{ fontSize: "18px" }}
+          />
+        </ButtonIcon>
+        <ButtonIcon>
+          <Anchor sx={{ fontSize: "18px" }} />
+        </ButtonIcon>
+      </>
+    );
+  };
+
+  const columns = [
+    {
+      field: "title",
+      headerName: "Titolo",
+      flex: 1,
+    },
+    {
+      field: "author",
+      headerName: "Autore",
+      flex: 1,
+    },
+    {
+      field: "date",
+      headerName: "Data",
+      type: "date",
+      flex: 1,
+    },
+    {
+      field: "status",
+      headerName: "Stato",
+      flex: 1,
+    },
+    {
+      field: "icone",
+      headerName: "",
+      type: "number",
+      sortable: false,
+      flex: 1,
+      renderCell: renderDetailsButton,
+      // valueGetter: (params: any) =>
+      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+    },
+  ];
 
   return (
     <Box className={style.component}>
@@ -61,7 +113,10 @@ function Test() {
           </LabelText>
         </Box>
         <Box className={style.right}>
-          <CustomTable />
+          <CustomTable
+            columns={columns}
+            rows={articles}
+          />
         </Box>
       </Box>
 

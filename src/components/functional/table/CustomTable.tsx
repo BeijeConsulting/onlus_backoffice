@@ -1,95 +1,57 @@
-import { DataGrid, GridFilterInputMultipleValue } from "@mui/x-data-grid";
-import articles from "../../../utils/mockup/articles";
-import ButtonIcon from "../buttonIcon/ButtonIcon";
-import { Anchor } from "@mui/icons-material";
+import { FC } from "react";
+
+//Componenti MUI
+import { Box } from "@mui/system";
+import {
+  DataGrid,
+  GridColumns
+} from "@mui/x-data-grid";
+
+//Style
 import common from "../../../assets/styles/common.module.scss";
 
-const CustomTable = () => {
-  const renderDetailsButton = (params: any) => {
-    return (
-      <>
-        <ButtonIcon>
-          <Anchor
-            sx={{ fontSize: "18px" }}
-            onClick={() => {
-              console.log("ciao", params.api.getRow);
-            }}
-          />
-        </ButtonIcon>
-        <ButtonIcon>
-          <Anchor sx={{ fontSize: "18px" }} />
-        </ButtonIcon>
-      </>
-    );
-  };
+interface Props {
+  columns: GridColumns<object>,
+  rows: Array<object>,
+  pageSize?: number,
+}
 
-  const columns = [
-    {
-      field: "title",
-      headerName: "titolo",
-      flex: 1,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "author",
-      headerName: "autore",
-      flex: 1,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "date",
-      headerName: "data",
-      type: "date",
-      flex: 1,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "status",
-      headerName: "stato",
-      flex: 1,
-      headerClassName: "super-app-theme--header",
-    },
-    {
-      field: "icone",
-      headerName: "",
-      type: "number",
-      sortable: false,
-      headerClassName: "super-app-theme--header",
-      flex: 1,
-      renderCell: renderDetailsButton,
-      // valueGetter: (params: any) =>
-      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
-    },
-  ];
+const CustomTable: FC<Props> = (props) => {
 
   return (
-    <div style={{ height: 400, width: "100%" }}>
+    <Box sx={{ width: "100%" }}>
       <DataGrid
+        autoHeight
         getRowHeight={() => "auto"}
         sx={{
           "&.MuiDataGrid-root--densityCompact .MuiDataGrid-cell": {
             py: 1,
           },
           "&.MuiDataGrid-root--densityStandard .MuiDataGrid-cell": {
-            py: "15px",
+            py: "12px",
           },
           "&.MuiDataGrid-root--densityComfortable .MuiDataGrid-cell": {
             py: "22px",
           },
-          "& .super-app-theme--header": {
+          "& .MuiDataGrid-columnHeaders": {
             backgroundColor: common.ternaryColor,
-            fontWeight: "bolder",
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontWeight: 'bold',
+          },
+          '.MuiDataGrid-columnSeparator': {
+            display: 'none',
           },
         }}
         disableSelectionOnClick
-        getEstimatedRowHeight={() => 200}
+        //getEstimatedRowHeight={() => 200}
         disableColumnMenu
-        rows={articles}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        rows={props.rows}
+        columns={props.columns}
+        pageSize={!!props.pageSize ? props.pageSize : 5}
+      //rowsPerPageOptions={[5]}
       />
-    </div>
+    </Box>
   );
 };
 
