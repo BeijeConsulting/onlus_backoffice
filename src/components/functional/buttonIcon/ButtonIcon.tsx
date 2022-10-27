@@ -1,13 +1,13 @@
 import { FC, MouseEvent } from "react";
 
 //style
-import style from "./buttonGenericStyle.module.scss";
+import common from "./../../../assets/styles/common.module.scss";
 
 //mui
-import { Button, Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 interface buttonIconProps {
-  callback: Function;
+  callback?: Function;
   children: any;
 }
 
@@ -19,7 +19,7 @@ const ButtonIcon: FC<buttonIconProps> = (props) => {
     <Box
       onClick={handleClick}
       sx={{
-        backgroundColor: "#e9e3e6",
+        backgroundColor: common.fifthColor,
         width: "30px",
         height: "30px",
         borderRadius: "50%",

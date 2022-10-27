@@ -3,4 +3,11 @@
 .textField {
   width: 100% !important;
   background-color: $fourthColor !important;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+.textField::-webkit-scrollbar {
+  display: none;
 }

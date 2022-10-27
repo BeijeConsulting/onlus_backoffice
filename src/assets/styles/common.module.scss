@@ -5,10 +5,15 @@ $primaryColor: #262e36;
 $secondaryColor: #b12009;
 $ternaryColor: #a4b3ad;
 $fourthColor: #ffffff;
-$fifthColor: #e9e3e6;
+$fifthColor: #f2f4f3;
 
-//font
-$font: "Inconsolata", monospace;
+:export {
+  primaryColor: $primaryColor;
+  secondaryColor: $secondaryColor;
+  ternaryColor: $ternaryColor;
+  fourthColor: $fourthColor;
+  fifthColor: $fifthColor;
+}
 
 * {
   margin: 0;
@@ -16,11 +21,6 @@ $font: "Inconsolata", monospace;
   box-sizing: border-box;
 }
 
-// .App{
-//     width:1200px;
-//     height: 100vh;
-//     background-color: red;
-// }
 
 .container {
   margin: 0 auto;
@@ -66,27 +66,7 @@ $font: "Inconsolata", monospace;
         .singleComponent {
           width: 100%;
         }
-
       }
-    }
-
-    .nav {
-      width: 20%;
-      height: 100%;
-      background-color: $primaryColor;
-      color: $fifthColor;
-      overflow-y: scroll;
-      -ms-overflow-style: none;
-      /* for Internet Explorer, Edge */
-      scrollbar-width: none;
-      /* for Firefox */
-      overflow-y: scroll;
-    }
-
-    .nav::-webkit-scrollbar {
-      display: none; /* for Chrome, Safari, and Opera */
     }
   }
 }
-
-

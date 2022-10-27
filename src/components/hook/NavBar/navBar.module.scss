@@ -1,10 +1,27 @@
+@import "../../../assets/styles/common.module.scss";
+
+.nav {
+  width: 20%;
+  height: 100%;
+  background-color: $primaryColor;
+  color: $fifthColor;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow-y: scroll;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
 .father {
-    height: 80px;
-    border-bottom: solid 1px rgba(255, 255, 255, 0.4);
+  height: 80px;
+  border-bottom: solid 1px rgba(255, 255, 255, 0.4);
 }
 
 .child {
-    padding-left: 15%;
-    height: 50px;
-    border-bottom: solid 1px rgba(255, 255, 255, 0.4);
+  padding-left: 15%;
+  height: 50px;
+  border-bottom: solid 1px rgba(255, 255, 255, 0.4);
 }

@@ -13,6 +13,7 @@ const CustomSwitch: FC<SwitchProps> = (props) => {
   };
   return (
     <FormControlLabel
+      sx={{ width: 30 }}
       control={<Switch />}
       label={props.label}
       onChange={handleChange}

@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 
 //Style
 import css from "./header.module.scss";
+import common from "./../../../assets/styles/common.module.scss";
 
 //Componenti MUI
 import {
@@ -33,8 +34,8 @@ TO DO
 
 const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(() => ({
   "& .MuiPaper-root": {
-    backgroundColor: css.primaryColor,
-    color: css.fifthColor,
+    backgroundColor: common.primaryColor,
+    color: common.fifthColor,
   },
 }));
 
@@ -114,6 +115,6 @@ const Header: FC = (): JSX.Element => {
       </Toolbar>
     </header>
   );
-}
+};
 
 export default Header;

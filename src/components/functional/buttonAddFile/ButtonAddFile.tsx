@@ -2,6 +2,7 @@ import { ChangeEvent, FC, useEffect, useState } from "react";
 
 //style
 import style from "./buttonAddFile.module.scss";
+import common from "./../../../assets/styles/common.module.scss";
 
 //mui
 import { Button, Box, Typography } from "@mui/material";
@@ -30,6 +31,7 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props) => {
     });
 
     props.callback(URL.createObjectURL(e.target.files[0]));
+    console.log(URL.createObjectURL(e.target.files[0]));
   };
 
   return (
@@ -46,7 +48,7 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props) => {
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "#e9e3e6",
+            backgroundColor: common.fifthColor,
             color: "black",
             textTransform: "initial",
           }}

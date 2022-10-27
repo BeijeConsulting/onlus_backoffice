@@ -9,7 +9,6 @@ import Box from '@mui/material/Box';
 
 //icons
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { convertToObject } from "typescript";
 
 //props
 interface titleProps {

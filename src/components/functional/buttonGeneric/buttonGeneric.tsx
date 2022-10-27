@@ -1,10 +1,7 @@
 import { FC, MouseEvent } from "react";
 
-//style
-import style from "./buttonGenericStyle.module.scss";
-
 //mui
-import { Button, Box, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 
 interface buttonGenericProps {
   callback: Function;

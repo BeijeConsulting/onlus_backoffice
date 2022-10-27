@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 //Componenti MUI
 import { Box, Button } from "@mui/material";
@@ -20,34 +20,71 @@ TO DO
 - i18n
 - link password dimenticata
 - img da backend
-- placeholder input
-- controllo id pass
+- controllo utenti da backend
 */
+
+//interfaces
+interface State {
+  emailError: boolean;
+  passwordError: boolean;
+}
 
 type User = {
   id: string;
   password: string;
 };
 
+//initState
+const initState: State = {
+  emailError: false,
+  passwordError: false,
+};
 const Login: FC = (): JSX.Element => {
+  const [state, setState] = useState<State>(initState);
+
   function onLogin(e: BaseSyntheticEvent): void {
-    if (e.target.form[0].value === "" || e.target.form[2].value === "") {
-      return;
+    let eError = false;
+    let pError = false;
+    if (
+      e.target.form[0].value === "" ||
+      /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$/.test(e.target.form[0].value) ===
+        false
+    ) {
+      eError = true;
     }
+    if (e.target.form[2].value === "") {
+      pError = true;
+    }
+    setState({
+      ...state,
+      emailError: eError,
+      passwordError: pError,
+    });
     let user: User = {
       id: e.target.form[0].value,
       password: e.target.form[2].value,
     };
     console.log(user);
   }
+
   return (
     <div className={style.container}>
       <Box className={style.boxLogin}>
         <form className={style.form}>
           <LabelText>
             <img className={style.img} src={logo} alt="" />
-            <CustomTextField error={false}></CustomTextField>
-            <CustomTextField error={false}></CustomTextField>
+            <CustomTextField
+              errorMessage="email non valida"
+              type="email"
+              error={state.emailError}
+              placeholder="E-mail"
+            ></CustomTextField>
+            <CustomTextField
+              errorMessage="password errata"
+              type="password"
+              error={state.passwordError}
+              placeholder="Password"
+            ></CustomTextField>
             <Link className={style.link} to={"/login"}>
               Password Dimenticata?
             </Link>

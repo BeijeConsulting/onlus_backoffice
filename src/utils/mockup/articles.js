@@ -1,0 +1,173 @@
+const articles = [
+  {
+    id: 1,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "amare il prossimo",
+    status: "published",
+    cover: null,
+    categories: ["buongiorismo", "religione", "scemenze"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "i panda",
+    status: "published",
+    cover: null,
+    categories: ["animali", "protezione", "scemenze"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 3,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "riccardo",
+    status: "published",
+    cover: null,
+    categories: ["barba", "occhiali", "scemenze"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 4,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "luca",
+    status: "published",
+    cover: null,
+    categories: ["champagne", "pelato", "rasato"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "mattia",
+    status: "published",
+    cover: null,
+    categories: ["clacio", "cuffio", "sbagliato"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "alessandro",
+    status: "published",
+    cover: null,
+    categories: ["caschetto", "sbarbato", "pinacolada"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 7,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "milan",
+    status: "published",
+    cover: null,
+    categories: ["gatti", "sbarbato", "milano-torino"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 8,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "isole della pasqua",
+    status: "published",
+    cover: null,
+    categories: ["moai", "religione", "mare"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 9,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "steam",
+    status: "draft",
+    cover: null,
+    categories: ["giochi", "app", "scemenze"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+  {
+    id: 10,
+    name: "riccardo",
+    surname: "bottoli",
+    email: "aletia@milan.it",
+    date: Date.now(),
+    title: "svapo",
+    status: "published",
+    cover: null,
+    categories: ["nicotina", "fumo", "scemenze"],
+    content: [
+      {
+        text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est. Nam malesuada convallis ipsum, sed volutpat ante accumsan nec. Donec ultrices scelerisque posuere.",
+        media: null,
+      },
+    ],
+  },
+];
+export default articles;
