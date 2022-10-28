@@ -295,7 +295,7 @@ export const events = [
   {
     title: "Evento1",
     cover: null,
-    date: Date.now(),
+    date: new Date(),
     time: "10:00am",
     place: "Via Garibaldi 5, Milano",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est",
@@ -308,7 +308,7 @@ export const events = [
   {
     title: "Evento2",
     cover: null,
-    date: Date.now(),
+    date: new Date(),
     time: "11:00am",
     place: "Via Rossini 45, Seregno",
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras in sem vitae leo consequat convallis. Duis fermen",
@@ -321,7 +321,7 @@ export const events = [
   {
     title: "Evento3",
     cover: null,
-    date: Date.now(),
+    date: new Date(),
     time: "8:00pm",
     place: "Via Toffetti 31, Roma",
     description: "Lorem rbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget laoreet justo aliquet nec. Duis ut nunc posuere, tincidunt nulla sit amet, ultrices sapien. Quisque a pretium est",
@@ -396,7 +396,7 @@ export const articles = [
     name: "riccardo",
     surname: "bottoli",
     email: "aletia@milan.it",
-    date: Date.now(),
+    date: new Date(),
     title: "amare il prossimo",
     status: "published",
     cover: null,
@@ -413,7 +413,7 @@ export const articles = [
     name: "riccardo",
     surname: "bottoli",
     email: "aletia@milan.it",
-    date: Date.now(),
+    date: new Date(),
     title: "i panda",
     status: "published",
     cover: null,
@@ -430,7 +430,7 @@ export const articles = [
     name: "riccardo",
     surname: "bottoli",
     email: "aletia@milan.it",
-    date: Date.now(),
+    date: new Date(),
     title: "riccardo",
     status: "published",
     cover: null,
@@ -447,7 +447,7 @@ export const articles = [
     name: "riccardo",
     surname: "bottoli",
     email: "aletia@milan.it",
-    date: Date.now(),
+    date: new Date(),
     title: "luca",
     status: "published",
     cover: null,
@@ -464,7 +464,7 @@ export const articles = [
     name: "riccardo",
     surname: "bottoli",
     email: "aletia@milan.it",
-    date: Date.now(),
+    date: new Date(),
     title: "mattia",
     status: "published",
     cover: null,
@@ -481,26 +481,30 @@ export const articles = [
 //donazioni
 export const donations = [
   {
+    id: "0001",
     email: "isabella.bagnulo@beije.it",
-    date: Date.now(),
+    date: new Date(),
     amount: 10000,
     anonyme: false
   },
   {
+    id: "0002",
     email: "marco.ottaiano@beije.it",
-    date: Date.now(),
+    date: new Date(),
     amount: 25.50,
     anonyme: false
   },
   {
+    id: "0003",
     email: "anonimo1@beije.it",
-    date: Date.now(),
+    date: new Date(),
     amount: 3444,
     anonyme: true
   },
   {
+    id: "0004",
     email: "anonimo2@beije.it",
-    date: Date.now(),
+    date: new Date(),
     amount: 1.30,
     anonyme: true
   }

@@ -39,32 +39,35 @@ $fifthColor: #f2f4f3;
       width: 80%;
       height: 100%;
       overflow-y: scroll;
-      padding: 3%;
 
       .component {
-        height: 100%;
+        height: fit-content;
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         gap: 5%;
+        padding: 3%;
 
         .doubleComponent {
           width: 100%;
           display: flex;
-          gap: 4%;
+          gap: 2%;
 
-          .left {
-            width: 48%;
-          }
-
-          .right {
-            width: 48%;
+          .left, .right {
+            width: 49%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 20px;
           }
         }
 
         .singleComponent {
           width: 100%;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 20px;
         }
       }
     }

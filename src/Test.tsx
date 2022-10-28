@@ -20,7 +20,6 @@ import ButtonIcon from "./components/functional/buttonIcon/ButtonIcon";
 import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
 import CustomTable from "./components/functional/table/CustomTable";
 import { Anchor } from "@mui/icons-material";
-import articles from "./utils/mockup/articles";
 
 function Test() {
   const onSelectedFile = (value: string): void => { };
@@ -115,7 +114,7 @@ function Test() {
         <Box className={style.right}>
           <CustomTable
             columns={columns}
-            rows={articles}
+            rows={[]}
           />
         </Box>
       </Box>
