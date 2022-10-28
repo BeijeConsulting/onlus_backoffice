@@ -1,8 +1,8 @@
-import { Box } from "@mui/material";
-import { FC } from "react";
+import { Box, Typography, Modal } from "@mui/material";
+import { FC, useState, useEffect } from "react";
 
 //router dom
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 //PAGES
 import PAGES from "../../router/pages";
@@ -24,17 +24,42 @@ import ButtonIcon from "../../components/functional/buttonIcon/ButtonIcon";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CreateIcon from "@mui/icons-material/Create";
 
+//modal
+import DeleteModal from '../../components/functional/deleteModal/DeleteModal';
+
 interface eventsProps {}
 
-const Events: FC<eventsProps> = (props) => {
-  
-  const navigate = useNavigate();
-  
+interface state {
+  modalIsOpen: boolean;
+}
 
+
+const initialState: state = {
+  modalIsOpen: false,
+};
+
+
+const Events: FC<eventsProps> = (props) => {
+  const navigate = useNavigate();
+
+  const [state,setState] = useState(initialState);
+
+  function openDeleteModal(): void {
+      setState({
+        ...state,
+        modalIsOpen: !state.modalIsOpen,
+      });
+    }
+
+
+
+ 
   //functions
-  function goToEditor(): void{
-    navigate('/'+ PAGES.editorEvents);
+  function goToEditor(): void {
+    navigate(PAGES.editorEvents);
   }
+
+ 
 
   //Colonne del DataGrid
   const renderDetailsButton_1 = (params: any) => {
@@ -46,7 +71,7 @@ const Events: FC<eventsProps> = (props) => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={() => console.log("ciao")}>
+          <ButtonIcon callback={openDeleteModal}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
           <ButtonIcon callback={goToEditor}>
@@ -66,7 +91,7 @@ const Events: FC<eventsProps> = (props) => {
             gap: "5px",
           }}
         >
-          <ButtonIcon>
+          <ButtonIcon callback={openDeleteModal}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -142,10 +167,7 @@ const Events: FC<eventsProps> = (props) => {
               "Tabella dove vengono visualizzati i prossimi eventi in programma"
             }
           />
-          <ButtonGeneric
-            color={style.ternaryColor}
-            callback={goToEditor}
-          >
+          <ButtonGeneric color={style.ternaryColor} callback={goToEditor}>
             + Aggiungi evento
           </ButtonGeneric>
         </Box>
@@ -154,7 +176,6 @@ const Events: FC<eventsProps> = (props) => {
         <Box className={eventsStyle.tableContainer}>
           <CustomTable columns={columns_1} rows={events} />
         </Box>
-
 
         {/* sezione archivio eventi  */}
         <Box className={eventsStyle.archivesContainer}>
@@ -169,6 +190,14 @@ const Events: FC<eventsProps> = (props) => {
           </Box>
         </Box>
       </Box>
+
+      {/* modal */}
+      <DeleteModal 
+        open= {state.modalIsOpen}
+        closeCallback={openDeleteModal}
+        deleteCallback={openDeleteModal}
+      />
+
     </Box>
   );
 };

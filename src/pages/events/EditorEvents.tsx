@@ -23,11 +23,13 @@ import editorStyle from "./eventEditorStyle.module.scss";
 interface editorEventProps {}
 
 interface state {
-  selectedDate: any;
+  selectedDate: any,
+  buttonColor: string,
 }
 
 const initialState: state = {
   selectedDate: dayjs(),
+  buttonColor: style.ternaryColor,
 };
 
 
@@ -35,10 +37,10 @@ const initialState: state = {
 const EditorEvents: FC<editorEventProps> = (props: any) => {
   const [state, setState] = useState(initialState);
 
-  useEffect(()=>{
-    console.log(state.selectedDate.$d.getFullYear());
+  // useEffect(()=>{
+  //   console.log(state.selectedDate.$d);
     
-  },[state.selectedDate])
+  // },[state.selectedDate])
 
   return (
       <Box className={style.component}>
@@ -136,7 +138,7 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
             </Box>
             <Box className={editorStyle.buttonsContainer}>
               <ButtonGeneric
-                color={style.ternaryColor}
+                color={state.buttonColor}
                 callback={() => {
                   console.log("ciao");
                 }}
