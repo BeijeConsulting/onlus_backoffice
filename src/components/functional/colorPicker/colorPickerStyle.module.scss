@@ -1,0 +1,30 @@
+@import "../../../assets/styles/common.module.scss";
+
+.row {
+  display: flex;
+  flex-direction: row;
+
+  .whole {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    margin-left: 20px;
+
+    .color {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: 1px solid black;
+      margin-right: 10px;
+    }
+    .picker {
+      position: absolute;
+      left: 30px;
+      top: 30px;
+    }
+    p {
+      font-size: 12px;
+    }
+  }
+}
