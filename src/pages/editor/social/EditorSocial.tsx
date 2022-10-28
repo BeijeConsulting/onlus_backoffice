@@ -1,9 +1,126 @@
-import React from 'react'
+import { useLocation, useNavigate } from "react-router-dom";
+//mui
+import { Box } from "@mui/material";
+//function component
+import LabelText from "../../../components/functional/labelText/LabelText";
+import Title from "../../../components/functional/title/Title";
+//style
+import common from "../../../assets/styles/common.module.scss";
+import style from "./editorSocial-Style.module.scss";
+//route
+import PAGES from "../../../router/pages";
+import CustomTextField from "../../../components/functional/textField/CustomTextField";
+import CustomSwitch from "../../../components/functional/customSwitch/CustomSwitch";
+import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
+import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+
+type social = {
+  id?: number;
+  name: string;
+  icon?: any;
+  link: string;
+  footerOn: boolean;
+  homepageOn: boolean;
+};
 
 function EditorSocial() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleClick = (): void => {};
+  const deleteSocial = (): void => {
+    console.log("delete");
+    navigate(PAGES.editSocial);
+  };
+  console.log(location);
+
+  const editSocial = (e: any): void => {
+    let newSocial: social = {
+      id: location.state.data.id,
+      name: e.target.form[0].value,
+      icon: e.target.form[2].value,
+      link: e.target.form[3].value,
+      footerOn: e.target.form[5].checked,
+      homepageOn: e.target.form[6].checked,
+    };
+    console.log(newSocial);
+    navigate(PAGES.editSocial);
+  };
+
+  const createSocial = (e: any): void => {
+    let newSocial: social = {
+      name: e.target.form[0].value,
+      icon: e.target.form[2].value,
+      link: e.target.form[3].value,
+      footerOn: e.target.form[5].checked,
+      homepageOn: e.target.form[6].checked,
+    };
+    console.log(newSocial);
+
+    navigate(PAGES.editSocial);
+  };
+
   return (
-    <div>EditorSocial</div>
-  )
+    <form className={common.component}>
+      <Box className={`${common.doubleComponent} ${style.double}`}>
+        <Box className={common.left}>
+          <LabelText>
+            <Title text="Social" textInfo="inserisci il social" />
+            <CustomTextField
+              defaultValue={
+                !!location?.state?.data?.name ? location?.state?.data?.name : ""
+              }
+              placeholder="nome social"
+              error={false}
+            />
+            <Title text="Icona" textInfo="inserisci l'icona" />
+            <ButtonAddFile callback={handleClick} />
+          </LabelText>
+        </Box>
+        <Box className={common.right}>
+          <LabelText>
+            <Title text="Link" textInfo="inserisci link" />
+            <CustomTextField
+              defaultValue={
+                !!location?.state?.data?.link ? location?.state?.data?.link : ""
+              }
+              placeholder="link"
+              error={false}
+            />
+            <CustomSwitch
+              defaultChecked={
+                !!location?.state?.data?.footerOn
+                  ? location?.state?.data?.footerOn
+                  : false
+              }
+              callback={handleClick}
+              label={"Pubblicanelfooter"}
+            />
+            <CustomSwitch
+              defaultChecked={
+                !!location?.state?.data?.homepageOn
+                  ? location?.state?.data?.homepageOn
+                  : false
+              }
+              callback={handleClick}
+              label={"Pubblica nella home"}
+            />
+          </LabelText>
+        </Box>
+      </Box>
+      <Box className={style.buttons}>
+        <ButtonGeneric
+          callback={!!location?.state?.data?.id ? editSocial : createSocial}
+          color={common.ternaryColor}
+        >
+          Salva modifiche
+        </ButtonGeneric>
+        <ButtonGeneric callback={deleteSocial} color={common.secondaryColor}>
+          Elimina social
+        </ButtonGeneric>
+      </Box>
+    </form>
+  );
 }
 
-export default EditorSocial
+export default EditorSocial;
