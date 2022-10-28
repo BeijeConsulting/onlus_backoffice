@@ -6,4 +6,12 @@
 
 .saveBtn {
     margin-top: 1%;
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 2%;
+}
+
+.editorFaqBox{
+    display: flex;   
+    column-gap: 1%;
 }

@@ -10,8 +10,8 @@ import style from "./faq.module.scss";
 
 //MUI
 import { Box } from '@mui/system';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from "@mui/icons-material/Create";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 //Components
 import LabelText from '../../../components/functional/labelText/LabelText';
@@ -74,9 +74,15 @@ const Faq: FC = (): JSX.Element => {
     navigate('/' + PAGES.editorFaq)
   }
 
-  const log = (att: any) => () => {
-    console.log(att);
+  //Funzioni di modifica e cancella
+  const updateQna = (row: object) => () => {
+    console.log(row);
+    navigate('/' + PAGES.editorFaq, {state: { row }})
   };
+
+  const deleteQna = (row: object) => () => {
+    console.log(row);
+  }
 
 
   //Colonne del DataGrid
@@ -89,11 +95,11 @@ const Faq: FC = (): JSX.Element => {
         justifyContent: 'space-between',
         marginRight: '2%',
       }}>
-        <ButtonIcon callback={log(params)}>
-          <EditIcon sx={{ fontSize: "18px" }} />
+        <ButtonIcon callback={updateQna(params.row)}>
+          <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={log(params)}>
-          <DeleteIcon sx={{ fontSize: "18px" }} />
+        <ButtonIcon callback={deleteQna(params.row)}>
+          <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </Box>
     );
