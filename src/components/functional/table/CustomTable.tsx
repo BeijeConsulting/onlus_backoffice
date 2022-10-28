@@ -2,22 +2,18 @@ import { FC } from "react";
 
 //Componenti MUI
 import { Box } from "@mui/system";
-import {
-  DataGrid,
-  GridColumns
-} from "@mui/x-data-grid";
+import { DataGrid, GridColumns } from "@mui/x-data-grid";
 
 //Style
 import common from "../../../assets/styles/common.module.scss";
 
 interface Props {
-  columns: GridColumns<object>,
-  rows: Array<object>,
-  pageSize?: number,
+  columns: GridColumns<object>;
+  rows: Array<object>;
+  pageSize?: number;
 }
 
 const CustomTable: FC<Props> = (props) => {
-
   return (
     <Box sx={{ width: "100%" }}>
       <DataGrid
@@ -37,10 +33,18 @@ const CustomTable: FC<Props> = (props) => {
             backgroundColor: common.ternaryColor,
           },
           "& .MuiDataGrid-columnHeaderTitle": {
-            fontWeight: 'bold',
+            fontWeight: "bold",
           },
-          '.MuiDataGrid-columnSeparator': {
-            display: 'none',
+          ".MuiDataGrid-columnSeparator": {
+            display: "none",
+          },
+          "& .MuiDataGrid-virtualScrollerRenderZone": {
+            "& .MuiDataGrid-row": {
+              backgroundColor: "white",
+            },
+          },
+          "& .MuiDataGrid-footerContainer": {
+            backgroundColor: "white",
           },
         }}
         disableSelectionOnClick
@@ -49,7 +53,7 @@ const CustomTable: FC<Props> = (props) => {
         rows={props.rows}
         columns={props.columns}
         pageSize={!!props.pageSize ? props.pageSize : 5}
-      //rowsPerPageOptions={[5]}
+        //rowsPerPageOptions={[5]}
       />
     </Box>
   );

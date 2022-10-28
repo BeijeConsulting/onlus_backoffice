@@ -20,8 +20,7 @@ import ButtonIcon from "./components/functional/buttonIcon/ButtonIcon";
 import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
 import CustomTable from "./components/functional/table/CustomTable";
 import { Anchor } from "@mui/icons-material";
-import articles from "./utils/mockup/articles";
-
+import {articles} from './utils/mockup/data';
 function Test() {
   const onSelectedFile = (value: string): void => { };
 
