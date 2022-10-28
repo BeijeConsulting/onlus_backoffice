@@ -1,4 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
+
+//Navigazione
+import { useNavigate } from "react-router-dom";
+import PAGES from "../../../router/pages";
 
 //Style
 import common from "../../../assets/styles/common.module.scss";
@@ -6,7 +10,8 @@ import style from "./faq.module.scss";
 
 //MUI
 import { Box } from '@mui/system';
-import { Anchor } from '@mui/icons-material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 //Components
 import LabelText from '../../../components/functional/labelText/LabelText';
@@ -19,25 +24,78 @@ import ButtonIcon from '../../../components/functional/buttonIcon/ButtonIcon';
 //Data
 import { faq } from "../../../utils/mockup/data";
 
+interface State {
+  titleError: boolean;
+  textError: boolean;
+}
+
+const initState: State = {
+  titleError: false,
+  textError: false,
+};
+
 const Faq: FC = (): JSX.Element => {
+
+  const [state, setState] = useState<State>(initState);
+
+  const navigate = useNavigate();
+
+  //Funzione per salvare le modifiche della sezione info
+  const onSaveInfo = (e: any): void => {
+
+    let titleErr = false;
+    let textErr = false;
+
+    if (e.target.form[0].value === "") {
+      titleErr = true;
+    }
+
+    if (e.target.form[2].value === "") {
+      textErr = true;
+    }
+
+    setState({
+      titleError: titleErr,
+      textError: textErr,
+    })
+
+    if (!titleErr && !textErr) {
+      let info = {
+        title: e.target.form[0].value,
+        text: e.target.form[2].value,
+      };
+
+      console.log(info);
+    }
+  }
+
+  //Navigazione allo screen EditorFaq
+  const addQna = (): void => {
+    navigate('/' + PAGES.editorFaq)
+  }
 
   const log = (att: any) => () => {
     console.log(att);
   };
 
+
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
     return (
-      <>
+      <Box sx={{
+        width: '10%',
+        display: 'flex',
+        flexGrow: 'row wrap',
+        justifyContent: 'space-between',
+        marginRight: '2%',
+      }}>
         <ButtonIcon callback={log(params)}>
-          <Anchor
-            sx={{ fontSize: "18px" }}
-          />
+          <EditIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon>
-          <Anchor sx={{ fontSize: "18px" }} />
+        <ButtonIcon callback={log(params)}>
+          <DeleteIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-      </>
+      </Box>
     );
   };
 
@@ -59,28 +117,37 @@ const Faq: FC = (): JSX.Element => {
 
   return (
     <Box className={common.component}>
-      <Box className={common.singleComponent}>
-        <LabelText>
-          <Title text={"Info"} textInfo={"Sezione Info della pagina FAQ, clicca sul pulsante Salva modifiche per accettare i cambiamenti della pagina"} />
+      <Box className={common.singleComponent} sx={{
+        marginBottom: '1%',
+        textAlign: 'right',
+      }}>
+        <form>
+          <LabelText>
+            <Title text={"Info"} textInfo={"Sezione Info della pagina FAQ, clicca sul pulsante Salva modifiche per accettare i cambiamenti della pagina"} />
 
-          <CustomTextField
-            placeholder={'Titolo'}
-            error={false}
-          />
+            <CustomTextField
+              errorMessage="Inserisci un Titolo"
+              error={state.titleError}
+              placeholder={'Titolo'}
+            />
 
-          <CustomTextField
-            placeholder={'Inserisci testo'}
-            error={false}
-            minrow={4}
-            maxrow={20}
-            multiline={true}
-          />
-        </LabelText>
+            <CustomTextField
+              errorMessage="Inserisci del testo"
+              error={state.textError}
+              placeholder={'Inserisci testo'}
+              minrow={4}
+              maxrow={20}
+              multiline={true}
+            />
+          </LabelText>
+
+          <Box className={style.saveBtn}>
+            <ButtonGeneric color={common.ternaryColor} callback={onSaveInfo}>
+              Salva modifiche
+            </ButtonGeneric>
+          </Box>
+        </form>
       </Box>
-
-      <ButtonGeneric color={common.ternaryColor} callback={log}>
-        Salva modifiche
-      </ButtonGeneric>
 
       <Box className={common.singleComponent}>
         <Box className={style.faqRow}>
@@ -89,7 +156,7 @@ const Faq: FC = (): JSX.Element => {
             textInfo={"Domande presenti nella sezione FAQ della pagina, clicca sul pulsante +Aggiungi per aggiungere una nuova domanda e risposta, clicca sui bottoni modifica o cancella per cambiare la struttura dati"}
           />
 
-          <ButtonGeneric color={common.ternaryColor} callback={log}>
+          <ButtonGeneric color={common.ternaryColor} callback={addQna}>
             +Aggiungi
           </ButtonGeneric>
         </Box>
