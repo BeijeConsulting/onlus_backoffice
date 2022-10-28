@@ -71,19 +71,18 @@ const Faq: FC = (): JSX.Element => {
 
   //Navigazione allo screen EditorFaq
   const addQna = (): void => {
-    navigate('/' + PAGES.editorFaq)
+    navigate(PAGES.editorFaq)
   }
 
   //Funzioni di modifica e cancella
   const updateQna = (row: object) => () => {
     console.log(row);
-    navigate('/' + PAGES.editorFaq, {state: { row }})
+    navigate(PAGES.editorFaq, { state: { row } })
   };
 
   const deleteQna = (row: object) => () => {
     console.log(row);
   }
-
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -132,12 +131,14 @@ const Faq: FC = (): JSX.Element => {
             <Title text={"Info"} textInfo={"Sezione Info della pagina FAQ, clicca sul pulsante Salva modifiche per accettare i cambiamenti della pagina"} />
 
             <CustomTextField
+              defaultValue={!!faq.info.title ? faq.info.title : ''}
               errorMessage="Inserisci un Titolo"
               error={state.titleError}
               placeholder={'Titolo'}
             />
 
             <CustomTextField
+              defaultValue={!!faq.info.text ? faq.info.text : ''}
               errorMessage="Inserisci del testo"
               error={state.textError}
               placeholder={'Inserisci testo'}
@@ -174,7 +175,6 @@ const Faq: FC = (): JSX.Element => {
         />
       </Box>
     </Box>
-
   )
 }
 

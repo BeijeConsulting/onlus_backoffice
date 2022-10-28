@@ -35,7 +35,8 @@ const EditorFaq: FC = (): JSX.Element => {
   const [error, setError] = useState<State>(initState);
 
   const navigate = useNavigate();
-  const { state } = useLocation()
+  const location = useLocation()
+  console.log(location)
 
   //Funzione per salvare domanda e risposta
   const onSaveQna = (e: any): void => {
@@ -63,12 +64,13 @@ const EditorFaq: FC = (): JSX.Element => {
       };
 
       console.log(qna);
+      navigate(PAGES.editFaq)
     }
   }
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
-    navigate('/' + PAGES.editFaq)
+    navigate(PAGES.editFaq)
   }
 
   return (
@@ -80,12 +82,18 @@ const EditorFaq: FC = (): JSX.Element => {
 
             <Box className={style.editorFaqBox}>
               <CustomTextField
+                defaultValue={
+                  !!location?.state?.row?.question ? location?.state?.row?.question : ""
+                }
                 errorMessage="Inserisci una domanda"
                 error={error.answerError}
                 placeholder={'Domanda frequente'}
               />
 
               <CustomTextField
+                defaultValue={
+                  !!location?.state?.row?.answer ? location?.state?.row?.answer : ""
+                }
                 errorMessage="Inserisci una risposta"
                 error={error.questionError}
                 placeholder={'Inserisci una risposta...'}
