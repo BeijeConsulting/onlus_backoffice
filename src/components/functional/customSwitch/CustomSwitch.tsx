@@ -14,7 +14,7 @@ const CustomSwitch: FC<SwitchProps> = (props) => {
   };
   return (
     <FormControlLabel
-      sx={{ width: 30 }}
+      sx={{ width: "fit-content" }}
       control={
         <Switch
           defaultChecked={!!props.defaultChecked ? props.defaultChecked : false}

@@ -122,28 +122,55 @@ const General: FC = (): JSX.Element => {
           </LabelText>
         </Box>
       </Box>
-      <Box className={common.singleComponent}>
-        <Box className={common.right}>
-          <LabelText>
-            <CustomTextField
-              error={state.workTextError}
-              placeholder="inserisci il testo"
-            />
-            <CustomTextField
-              error={state.workTextError}
-              placeholder="inserisci il testo"
-            />
-          </LabelText>
-        </Box>
-        <Box className={common.left}></Box>
+      <Box className={common.doubleComponent}>
         <LabelText>
           <Title
             text="Banner in evidenza"
             textInfo="Qua va personalizzato il banner in evidenza delle call to action, i color vngono presi dalla palette che si può trovare più in alto della pagina"
           />
-          <Box className={common.left}></Box>
+          <Box className={common.row}>
+            <Box className={common.rowLeft}>
+              <CustomTextField
+                error={state.workTextError}
+                placeholder="inserisci il titolo"
+              />
+              <CustomTextField
+                error={state.workTextError}
+                minrow={5}
+                maxrow={5}
+                multiline={true}
+                placeholder="inserisci il sottotitolo"
+              />
+            </Box>
+            <Box className={common.rowRight}>
+              <Box
+                className={`${common.row} `}
+                style={{ justifyContent: "space-between" }}
+              >
+                <Box style={{ width: "47%" }}>
+                  <CustomTextField
+                    error={state.workTextError}
+                    placeholder="Inserisci call to action bottone primario"
+                  />
+                </Box>
+                <Box style={{ width: "47%" }}>
+                  <CustomTextField
+                    error={state.workTextError}
+                    placeholder="Inserisci call to action bottone secondario"
+                  />
+                </Box>
+              </Box>
+              <CustomTextField
+                error={state.workTextError}
+                placeholder="link alla pagina"
+              />
+            </Box>
+          </Box>
         </LabelText>
       </Box>
+      <ButtonGeneric callback={log} color="#a4b3ad">
+        Salva Modifiche
+      </ButtonGeneric>
     </Box>
   );
 };
