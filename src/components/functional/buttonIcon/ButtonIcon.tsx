@@ -26,6 +26,10 @@ const ButtonIcon: FC<buttonIconProps> = (props) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        '&:hover': {
+          backgroundColor: common.ternaryColor,
+          cursor: 'pointer',
+        },
       }}
     >
       {props.children}

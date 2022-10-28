@@ -5,6 +5,7 @@ import { Switch, FormControlLabel } from "@mui/material";
 interface SwitchProps {
   label: string;
   callback: Function;
+  defaultChecked?: boolean;
 }
 
 const CustomSwitch: FC<SwitchProps> = (props) => {
@@ -14,7 +15,11 @@ const CustomSwitch: FC<SwitchProps> = (props) => {
   return (
     <FormControlLabel
       sx={{ width: 30 }}
-      control={<Switch />}
+      control={
+        <Switch
+          defaultChecked={!!props.defaultChecked ? props.defaultChecked : false}
+        />
+      }
       label={props.label}
       onChange={handleChange}
     />
