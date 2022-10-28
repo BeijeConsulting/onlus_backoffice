@@ -33,7 +33,7 @@ const Events: FC<eventsProps> = (props) => {
 
   //functions
   function goToEditor(): void{
-    navigate(PAGES.editorEvents);
+    navigate('/'+ PAGES.editorEvents);
   }
 
   //Colonne del DataGrid
@@ -144,9 +144,7 @@ const Events: FC<eventsProps> = (props) => {
           />
           <ButtonGeneric
             color={style.ternaryColor}
-            callback={()=>{
-              console.log('ciao')
-            }}
+            callback={goToEditor}
           >
             + Aggiungi evento
           </ButtonGeneric>
