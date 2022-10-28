@@ -22,7 +22,7 @@ import CustomTable from "./components/functional/table/CustomTable";
 import { Anchor } from "@mui/icons-material";
 import {articles} from './utils/mockup/data';
 function Test() {
-  const onSelectedFile = (value: string): void => { };
+  const onSelectedFile = (value: string): void => {};
 
   const log = (att: any) => () => {
     console.log(att);
@@ -33,9 +33,7 @@ function Test() {
     return (
       <>
         <ButtonIcon callback={log(params)}>
-          <Anchor
-            sx={{ fontSize: "18px" }}
-          />
+          <Anchor sx={{ fontSize: "18px" }} />
         </ButtonIcon>
         <ButtonIcon>
           <Anchor sx={{ fontSize: "18px" }} />
@@ -112,10 +110,7 @@ function Test() {
           </LabelText>
         </Box>
         <Box className={style.right}>
-          <CustomTable
-            columns={columns}
-            rows={articles}
-          />
+          <CustomTable columns={columns} rows={articles} />
         </Box>
       </Box>
 

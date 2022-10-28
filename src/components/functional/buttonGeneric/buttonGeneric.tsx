@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from "react";
+import { BaseSyntheticEvent, FC, MouseEvent } from "react";
 
 //mui
 import { Button } from "@mui/material";
@@ -10,7 +10,7 @@ interface buttonGenericProps {
 }
 
 const ButtonGeneric: FC<buttonGenericProps> = (props) => {
-  const handleClick = (e: MouseEvent): void => {
+  const handleClick = (e: BaseSyntheticEvent): void => {
     props.callback(e);
   };
   return (

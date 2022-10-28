@@ -15,6 +15,7 @@ interface textFieldProps {
   maxrow?: number;
   multiline?: boolean;
   errorMessage?: string;
+  defaultValue?: string;
 }
 
 const CustomTextField: FC<textFieldProps> = (props) => {
@@ -26,6 +27,7 @@ const CustomTextField: FC<textFieldProps> = (props) => {
       multiline={props.multiline ? props.multiline : false}
       className={style.textField}
       size="small"
+      defaultValue={!!props.defaultValue ? props.defaultValue : ""}
       error={props.error}
       helperText={
         props.error

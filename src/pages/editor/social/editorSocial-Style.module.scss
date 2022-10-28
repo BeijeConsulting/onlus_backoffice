@@ -1,0 +1,10 @@
+@import "../../../assets//styles/common.module.scss";
+
+.double {
+  background-color: $fourthColor;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+}
