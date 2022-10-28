@@ -42,6 +42,14 @@ const CustomTable: FC<Props> = (props) => {
           '.MuiDataGrid-columnSeparator': {
             display: 'none',
           },
+          "& .MuiDataGrid-virtualScrollerRenderZone": {
+            "& .MuiDataGrid-row": {
+              backgroundColor: 'white'
+            },
+          },
+          "& .MuiDataGrid-footerContainer": {
+            backgroundColor: 'white'
+          }
         }}
         disableSelectionOnClick
         //getEstimatedRowHeight={() => 200}
