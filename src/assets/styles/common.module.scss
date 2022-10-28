@@ -21,7 +21,6 @@ $fifthColor: #f2f4f3;
   box-sizing: border-box;
 }
 
-
 .container {
   margin: 0 auto;
   width: 100%;
@@ -53,8 +52,10 @@ $fifthColor: #f2f4f3;
           width: 100%;
           display: flex;
           gap: 2%;
+          margin-bottom: 20px;
 
-          .left, .right {
+          .left,
+          .right {
             width: 49%;
             display: flex;
             flex-direction: column;

@@ -75,6 +75,8 @@ const General: FC = (): JSX.Element => {
               textInfo="Qua vanno inseriti i colori del tuo sito visibile ai clienti, attenzione a mettere un buon contrasto tra lo sfondo e il testo"
             />
             <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" />
+            <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" />
+            <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" />
           </LabelText>
         </Box>
         <Box className={common.right}>
@@ -120,8 +122,28 @@ const General: FC = (): JSX.Element => {
           </LabelText>
         </Box>
       </Box>
-
-      <Box className={common.singleComponent}></Box>
+      <Box className={common.singleComponent}>
+        <Box className={common.right}>
+          <LabelText>
+            <CustomTextField
+              error={state.workTextError}
+              placeholder="inserisci il testo"
+            />
+            <CustomTextField
+              error={state.workTextError}
+              placeholder="inserisci il testo"
+            />
+          </LabelText>
+        </Box>
+        <Box className={common.left}></Box>
+        <LabelText>
+          <Title
+            text="Banner in evidenza"
+            textInfo="Qua va personalizzato il banner in evidenza delle call to action, i color vngono presi dalla palette che si può trovare più in alto della pagina"
+          />
+          <Box className={common.left}></Box>
+        </LabelText>
+      </Box>
     </Box>
   );
 };

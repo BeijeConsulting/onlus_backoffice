@@ -13,16 +13,8 @@ import { ColorResult, SketchPicker } from "@hello-pangea/color-picker";
 interface State {
   bgToggleOne: boolean;
   txtToggleOne: boolean;
-  bgToggleTwo: boolean;
-  txtToggleTwo: boolean;
-  bgToggleThree: boolean;
-  txtToggleThree: boolean;
   bgColorOne: string;
   txtColorOne: string;
-  bgColorTwo: string;
-  txtColorTwo: string;
-  bgColorThree: string;
-  txtColorThree: string;
 }
 
 interface colorPickerProp {
@@ -34,16 +26,8 @@ interface colorPickerProp {
 const initState: State = {
   bgToggleOne: false,
   txtToggleOne: false,
-  bgToggleTwo: false,
-  txtToggleTwo: false,
-  bgToggleThree: false,
-  txtToggleThree: false,
   bgColorOne: "#262e36",
   txtColorOne: "#ffffff",
-  bgColorTwo: "#b12009",
-  txtColorTwo: "#000000",
-  bgColorThree: "#cfc36f",
-  txtColorThree: "#000000",
 };
 
 const ColorPicker: FC<colorPickerProp> = (props) => {
