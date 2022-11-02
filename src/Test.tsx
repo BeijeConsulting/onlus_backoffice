@@ -21,10 +21,33 @@ import ButtonIcon from "./components/functional/buttonIcon/ButtonIcon";
 import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
 import CustomTable from "./components/functional/table/CustomTable";
 import CustomModal from "./components/functional/customModal/CustomModal";
+import CustomSelect from "./components/functional/customSelect/CustomSelect";
 import { Anchor } from "@mui/icons-material";
-import {articles} from './utils/mockup/data';
+import { articles } from './utils/mockup/data';
+
+//Item del CustomSelect
+type Item = {
+  name: string,
+  value: string,
+}
+
+const items: Array<Item> = [
+  {
+    name: 'Owner',
+    value: 'owner'
+  },
+  {
+    name: 'Admin',
+    value: 'admin'
+  },
+  {
+    name: 'Blogger',
+    value: 'blogger'
+  },
+]
+
 function Test() {
-  const onSelectedFile = (value: string): void => {};
+  const onSelectedFile = (value: string): void => { };
 
   const log = (att: any) => () => {
     console.log(att);
@@ -109,6 +132,10 @@ function Test() {
             </ButtonIcon>
             <LockIcon sx={{ fontSize: "18px" }} />
             <CustomSwitch label="ciaoneSwitchProps" callback={log} />
+            <CustomSelect
+              label={'Lingua'}
+              items={items}
+            />
           </LabelText>
         </Box>
         <Box className={style.right}>
@@ -117,10 +144,10 @@ function Test() {
       </Box>
 
       <Box className={style.singleComponent}>
-        <CustomSnackbar message={"Lorem iargeagwfgweff fwerg4tWREFdbgtergfe tegrwferetgrwefsdvfe getrwfesrweqrfadsvefadc"} severity={"error"}/>
-        <CustomModal 
-          title={"Dettagli transazione"}  
-          content={["aaaaaaaaaaa","Bbbbbbbbbbbbbbbbbbbbbbbbb","ccccccccccccc"]}
+        <CustomSnackbar message={"Lorem iargeagwfgweff fwerg4tWREFdbgtergfe tegrwferetgrwefsdvfe getrwfesrweqrfadsvefadc"} severity={"error"} />
+        <CustomModal
+          title={"Dettagli transazione"}
+          content={["aaaaaaaaaaa", "Bbbbbbbbbbbbbbbbbbbbbbbbb", "ccccccccccccc"]}
         />
       </Box>
     </Box>

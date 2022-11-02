@@ -1,4 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
+
+//Navigazione
+import { useNavigate } from "react-router-dom";
+import PAGES from "../../../router/pages";
 
 //Data
 import { users } from "../../../utils/mockup/data";
@@ -15,12 +19,49 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import Title from '../../../components/functional/title/Title';
 import CustomTable from '../../../components/functional/table/CustomTable';
 import ButtonIcon from '../../../components/functional/buttonIcon/ButtonIcon';
+import DeleteModal from '../../../components/functional/deleteModal/DeleteModal';
+
+interface State {
+  modalIsOpen: boolean;
+}
+
+const initialState: State = {
+  modalIsOpen: false,
+};
 
 const Volunteers: FC = (): JSX.Element => {
 
-  const log = (att: any) => () => {
-    console.log(att);
+  const [state, setState] = useState<State>(initialState);
+
+  const navigate = useNavigate();
+
+  //Modal
+  const openDeleteModal = (row: object) => (): void => {
+
+    console.log(row);
+
+    setState({
+      ...state,
+      modalIsOpen: !state.modalIsOpen,
+    });
+  }
+
+  const closeDeleteModal = (): void => {
+    setState({
+      ...state,
+      modalIsOpen: !state.modalIsOpen,
+    });
+  }
+
+  //Funzioni di modifica e cancella
+  const updateGuest = (row: object) => (): void => {
+    console.log(row);
+    navigate(PAGES.editorVolunteers, { state: { row } })
   };
+
+  const deleteGuest = (row: object) => (): void => {
+    console.log(row);
+  }
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -32,10 +73,10 @@ const Volunteers: FC = (): JSX.Element => {
         justifyContent: 'space-between',
         marginRight: '2%',
       }}>
-        <ButtonIcon callback={log(params)}>
+        <ButtonIcon callback={updateGuest(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon>
+        <ButtonIcon callback={openDeleteModal(params.row)}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </Box>
@@ -78,6 +119,12 @@ const Volunteers: FC = (): JSX.Element => {
           pageSize={10}
         />
       </Box>
+
+      <DeleteModal
+        open={state.modalIsOpen}
+        closeCallback={closeDeleteModal}
+        deleteCallback={closeDeleteModal /*API delete*/}
+      />
     </Box>
   )
 }
