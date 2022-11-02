@@ -19,7 +19,7 @@ import { Box } from "@mui/material";
 import LabelText from "../../components/functional/labelText/LabelText";
 import Title from "../../components/functional/title/Title";
 import { donations } from "../../utils/mockup/data"
-import TableDonations from "../../components/functional/tableDonations/TableDonations";
+import TableDonations from "../../components/functional/tableDonations/TableDonations"
 
 //state
 interface State {

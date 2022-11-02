@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 
 //Navigazione
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
 //Data
@@ -20,6 +20,8 @@ import Title from '../../../components/functional/title/Title';
 import CustomTable from '../../../components/functional/table/CustomTable';
 import ButtonIcon from '../../../components/functional/buttonIcon/ButtonIcon';
 import DeleteModal from '../../../components/functional/deleteModal/DeleteModal';
+import LabelText from '../../../components/functional/labelText/LabelText'
+import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
 
 interface State {
   modalIsOpen: boolean;
@@ -34,6 +36,7 @@ const Volunteers: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   //Modal
   const openDeleteModal = (row: object) => (): void => {
@@ -55,7 +58,6 @@ const Volunteers: FC = (): JSX.Element => {
 
   //Funzioni di modifica e cancella
   const updateGuest = (row: object) => (): void => {
-    console.log(row);
     navigate(PAGES.editorVolunteers, { state: { row } })
   };
 
@@ -66,20 +68,14 @@ const Volunteers: FC = (): JSX.Element => {
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
     return (
-      <Box sx={{
-        width: '10%',
-        display: 'flex',
-        flexGrow: 'row wrap',
-        justifyContent: 'space-between',
-        marginRight: '2%',
-      }}>
+      <>
         <ButtonIcon callback={updateGuest(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
         <ButtonIcon callback={openDeleteModal(params.row)}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-      </Box>
+      </>
     );
   };
 
@@ -109,22 +105,33 @@ const Volunteers: FC = (): JSX.Element => {
   return (
     <Box className={common.component}>
       <Box className={common.singleComponent}>
-        <Title
-          text={"Volontari"}
-          textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"} />
+        <LabelText>
+          {/*titolo*/}
+          <Title
+            text={"Volontari"}
+            textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
+          />
 
-        <CustomTable
-          columns={columns}
-          rows={users}
-          pageSize={10}
+          {/*tabella*/}
+          <CustomTable
+            columns={columns}
+            rows={users}
+            pageSize={5}
+          />
+        </LabelText>
+
+        <DeleteModal
+          open={state.modalIsOpen}
+          closeCallback={closeDeleteModal}
+          deleteCallback={closeDeleteModal /*API delete*/}
         />
       </Box>
-
-      <DeleteModal
-        open={state.modalIsOpen}
-        closeCallback={closeDeleteModal}
-        deleteCallback={closeDeleteModal /*API delete*/}
-      />
+      {
+        location?.state?.open && 
+        <Box className={common.singleComponent}>
+          <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+        </Box>
+      }
     </Box>
   )
 }

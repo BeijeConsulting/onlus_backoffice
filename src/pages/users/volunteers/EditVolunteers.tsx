@@ -62,7 +62,7 @@ interface State {
 }
 
 const initState: State = {
-  error: [false, false, false, false, false, false, false],
+  error: [false, false, false, false, false, false, false, false],
 };
 
 const EditVolunteers: FC = (): JSX.Element => {
@@ -75,17 +75,36 @@ const EditVolunteers: FC = (): JSX.Element => {
   useEffect(() => {
     setState({
       ...state,
-      error: [false, false, false, false, false, false, false]
+      error: [false, false, false, false, false, false, false, false]
     })
   }, [])
 
   //Funzione per salvare domanda e risposta
   const onSaveGuest = (e: any): void => {
 
-    let tmp: Array<boolean> = state.error
+    let tmp: Array<boolean> = [false, false, false, false, false, false, false, false]
 
-    if (e.target.form[12].value === e.target.form[14].value) {
+    //controllo che tutti i campi siano pieni
+    let errors: boolean = false
+    for (let i = 0; i < 14; i += 2) {
+      if (e.target.form[i].value.length === 0) {
+        tmp[i / 2] = true
+        if (!errors)
+          errors = true
+      }
+    }
 
+    if (e.target.form[12].value !== e.target.form[14].value) {
+      errors = true
+      tmp[7] = true
+    }
+
+    if (/^[a-zA-Z0-9.]+@[a-zA-Z0-9]+.[A-Za-z]+$/.test(e.target.form[8].value) === false){
+      errors = true
+      tmp[4] = true
+    }
+
+    if (!errors) {
       let guest = {
         name: e.target.form[0].value,
         surname: e.target.form[2].value,
@@ -96,19 +115,15 @@ const EditVolunteers: FC = (): JSX.Element => {
         password: e.target.form[12].value,
         confirmPassword: e.target.form[14].value,
       };
-
-      console.log(guest);
-      navigate(PAGES.usersVolunteers)
-
-    } else {
-
-      tmp[6] = true
-
-      setState({
-        ...state,
-        error: tmp,
-      })
+      
+      navigate(PAGES.usersVolunteers, {state: {open:true}})
     }
+
+
+    setState({
+      ...state,
+      error: tmp,
+    })
   }
 
   //Funzione per cancellare l'operazione
@@ -133,7 +148,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                     !!location?.state?.row?.name ? location?.state?.row?.name : ""
                   }
                   errorMessage="Inserisci un nome"
-                  error={false}
+                  error={state.error[0]}
                   placeholder={'Nome'}
                 />
 
@@ -142,7 +157,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                     !!location?.state?.row?.surname ? location?.state?.row?.surname : ""
                   }
                   errorMessage="Inserisci un cognome"
-                  error={false}
+                  error={state.error[1]}
                   placeholder={'Cognome'}
                 />
               </Box>
@@ -172,7 +187,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                     !!location?.state?.row?.email ? location?.state?.row?.email : ""
                   }
                   errorMessage="Inserisci una email"
-                  error={false}
+                  error={state.error[4]}
                   placeholder={'Email'}
                 />
 
@@ -181,7 +196,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                     !!location?.state?.row?.phone ? location?.state?.row?.phone : ""
                   }
                   errorMessage="Inserisci un numero di telefono"
-                  error={false}
+                  error={state.error[5]}
                   placeholder={'Telefono'}
                 />
               </Box>
@@ -192,7 +207,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                     !!location?.state?.row?.password ? location?.state?.row?.password : ""
                   }
                   errorMessage="Inserisci una password"
-                  error={false}
+                  error={state.error[6]}
                   placeholder={'Password'}
                   type={'password'}
                 />
@@ -202,7 +217,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                     !!location?.state?.row?.password ? location?.state?.row?.password : ""
                   }
                   errorMessage="Inserisci una password uguale"
-                  error={state.error[6]}
+                  error={state.error[7]}
                   placeholder={'Conferma password'}
                   type={'password'}
                 />
