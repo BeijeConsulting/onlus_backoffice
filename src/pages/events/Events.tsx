@@ -51,8 +51,6 @@ const Events: FC<eventsProps> = (props) => {
       });
     }
 
-
-
  
   //functions
   function goToEditor(): void {

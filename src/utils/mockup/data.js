@@ -357,56 +357,69 @@ export const events = [
 //categories
 export const categories = [
   {
+    id:1,
     name: "buongiorismo",
-    articlesId: [1],
+    relatedArticles: 2,
   },
   {
+    id:2,
     name: "religione",
-    articlesId: [1],
+    relatedArticles: 1,
   },
   {
+    id:3,
     name: "scemenze",
-    articlesId: [1, 2, 3],
+    relatedArticles: 6
   },
   {
+    id:4,
     name: "animali",
-    articlesId: [2],
+    relatedArticles: 10
   },
   {
+    id:5,
     name: "protezione",
-    articlesId: [2],
+    relatedArticles: 5
   },
   {
+    id:6,
     name: "barba",
-    articlesId: [3],
+    relatedArticles: 9
   },
   {
+    id:7,
     name: "occhiali",
-    articlesId: [3],
+    relatedArticles: 21
   },
   {
+    id:8,
     name: "champagne",
-    articlesId: [4],
+    relatedArticles: 7
   },
   {
+    id:9,
     name: "pelato",
-    articlesId: [4],
+    relatedArticles: 3
   },
   {
+    id:10,
     name: "rasato",
-    articlesId: [4],
+    relatedArticles: 1
   },
   {
+    id:11,
     name: "calcio",
-    articlesId: [5],
+    relatedArticles: 12
   },
   {
+    id:12,
     name: "ciuffo",
-    articlesId: [5],
+    relatedArticles: 4
   },
   {
+    id:13,
     name: "sbagliato",
-    articlesId: [5],
+    relatedArticles: 6
   },
 ];
 
