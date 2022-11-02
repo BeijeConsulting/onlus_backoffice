@@ -47,6 +47,8 @@ const Categories: FC = (props) => {
   const navigate = useNavigate();
 
   const [state, setState] = useState<State>(initialState);
+  const textError = `- Il campo non può essere vuoto 
+  - Categoria già esistente`
 
   //functions
   function addCategory(): void {}
@@ -58,21 +60,33 @@ const Categories: FC = (props) => {
     });
   }
 
-  function setAddModal(e: BaseSyntheticEvent): void {
-    const inputText = e.target.form[0].value;
-    const isEmpty: boolean = checkEmptyText(inputText);
+  function checkUniqueCategory(par: string): boolean{
+    let flag = false;
+    categories.forEach((el,index) => {
+      if(el.name === par){
+        flag = true;
+      }
+      
+    })
+    return flag;
+  }
 
-    if(!isEmpty){
+  function setAddModal(e: BaseSyntheticEvent): void {
+    const inputText = e.target.form[0].value.toLowerCase();
+    const isEmpty: boolean = checkEmptyText(inputText);
+    const isUnique = checkUniqueCategory(inputText);
+
+    if(!isEmpty && !isUnique){
 
       setState({
       ...state,
       addModal: !state.addModal,
     });
     }else{
-      setState({
-        ...state,
-        inputError: true
-      })
+       setState({
+         ...state,
+         inputError: true
+       })
     }
     
   }
@@ -139,6 +153,7 @@ const Categories: FC = (props) => {
               <CustomTextField
                 placeholder={"Inserisci categoria"}
                 error={state.inputError}
+                errorMessage={textError}
               />
               <ButtonGeneric color={style.ternaryColor} callback={setAddModal}>
                 + Aggiungi
