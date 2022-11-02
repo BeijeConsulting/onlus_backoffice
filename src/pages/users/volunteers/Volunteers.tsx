@@ -86,12 +86,12 @@ const Volunteers: FC = (): JSX.Element => {
   const columns = [
     {
       field: "name",
-      headerName: "Nome",
+      headerName: "NOME",
       flex: 1,
     },
     {
       field: "surname",
-      headerName: "Cognome",
+      headerName: "COGNOME",
       flex: 1,
     },
     {
