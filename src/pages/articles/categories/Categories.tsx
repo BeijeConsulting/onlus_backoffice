@@ -40,15 +40,15 @@ interface State {
 const initialState: State = {
   modalIsOpen: false,
   addModal: false,
-  inputError: false
+  inputError: false,
 };
 
 const Categories: FC = (props) => {
   const navigate = useNavigate();
 
   const [state, setState] = useState<State>(initialState);
-  const textError = `- Il campo non può essere vuoto 
-  - Categoria già esistente`
+  const textError = `Il campo non può essere vuoto\n
+  Categoria già esistente`;
 
   //functions
   function addCategory(): void {}
@@ -60,14 +60,13 @@ const Categories: FC = (props) => {
     });
   }
 
-  function checkUniqueCategory(par: string): boolean{
+  function checkUniqueCategory(par: string): boolean {
     let flag = false;
-    categories.forEach((el,index) => {
-      if(el.name === par){
+    categories.forEach((el, index) => {
+      if (el.name === par) {
         flag = true;
       }
-      
-    })
+    });
     return flag;
   }
 
@@ -76,19 +75,17 @@ const Categories: FC = (props) => {
     const isEmpty: boolean = checkEmptyText(inputText);
     const isUnique = checkUniqueCategory(inputText);
 
-    if(!isEmpty && !isUnique){
-
+    if (!isEmpty && !isUnique) {
       setState({
-      ...state,
-      addModal: !state.addModal,
-    });
-    }else{
-       setState({
-         ...state,
-         inputError: true
-       })
+        ...state,
+        addModal: !state.addModal,
+      });
+    } else {
+      setState({
+        ...state,
+        inputError: true,
+      });
     }
-    
   }
 
   function validateInput(input: string): void {}

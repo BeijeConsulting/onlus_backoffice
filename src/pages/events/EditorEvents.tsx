@@ -23,142 +23,132 @@ import editorStyle from "./eventEditorStyle.module.scss";
 interface editorEventProps {}
 
 interface state {
-  selectedDate: any,
-  buttonColor: string,
+  selectedDate: any;
 }
 
 const initialState: state = {
   selectedDate: dayjs(),
-  buttonColor: style.ternaryColor,
 };
-
-
 
 const EditorEvents: FC<editorEventProps> = (props: any) => {
   const [state, setState] = useState(initialState);
 
   // useEffect(()=>{
   //   console.log(state.selectedDate.$d);
-    
+
   // },[state.selectedDate])
 
   return (
-      <Box className={style.component}>
-        <Box className={style.doubleComponent}>
-          <Box className={style.left}>
-            <Box className={editorStyle.leftContainer}>
-              {/* <LabelText>
+    <Box className={style.component}>
+      <Box className={style.doubleComponent}>
+        <Box className={style.left}>
+          {/* <LabelText>
                 <Title
                     text={"Titolo"}
                     textInfo={"Inserisci il titolo dell'evento"}
                   />
                   {state.selectedDate}
               </LabelText> */}
-              <LabelText>
-                <Title
-                  text={"Titolo"}
-                  textInfo={"Inserisci il titolo dell'evento"}
-                />
-                <CustomTextField placeholder={"Titolo"} error={false} />
-              </LabelText>
+          <LabelText>
+            <Title
+              text={"Titolo"}
+              textInfo={"Inserisci il titolo dell'evento"}
+            />
+            <CustomTextField placeholder={"Titolo"} error={false} />
+          </LabelText>
 
-              <LabelText>
-                <Title
-                  text={"Data e ora"}
-                  textInfo={"Inserisci la data e l'ora dell'evento"}
-                />
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DateTimePicker
-                    renderInput={(props) => (
-                      <TextField size="small" {...props} />
-                    )}
-                    label="Seleziona"
-                    value={state.selectedDate}
-                    onChange={(newValue) => {
-                      setState({
-                        ...state,
-                        selectedDate: newValue,
-                      });
-                    }}
-                  />
-                </LocalizationProvider>
-              </LabelText>
-
-              <LabelText>
-                <Title
-                  text={"Descrizione"}
-                  textInfo={"Inserisci una descrizione esplicativa dell'evento"}
-                />
-                <CustomTextField
-                  placeholder={"Inserisci testo"}
-                  error={false}
-                  multiline={true}
-                  minrow={6}
-                />
-              </LabelText>
-            </Box>
-          </Box>
-          <Box className={style.right}>
-            <Box className={editorStyle.leftContainer}>
-              <LabelText>
-                <Title
-                  text={"Copertina"}
-                  textInfo={"Inserisci una foto di copertina per l'evento"}
-                />
-                <ButtonAddFile
-                  callback={() => {
-                    console.log("ciao");
-                  }}
-                />
-              </LabelText>
-
-              <LabelText>
-                <Title
-                  text={"Luogo"}
-                  textInfo={"Inserisci il luogo in cui si svolgerà l'evento"}
-                />
-                <CustomTextField
-                  placeholder={"Inserisci indirizzo"}
-                  error={false}
-                />
-              </LabelText>
-
-              <LabelText>
-                <Title
-                  text={"Requisiti"}
-                  textInfo={"Specifica i requisiti per partecipare all'evento"}
-                />
-                <CustomTextField
-                  placeholder={"Inserisci testo"}
-                  error={false}
-                  multiline={true}
-                  minrow={6}
-                />
-              </LabelText>
-            </Box>
-            <Box className={editorStyle.buttonsContainer}>
-              <ButtonGeneric
-                color={state.buttonColor}
-                callback={() => {
-                  console.log("ciao");
+          <LabelText>
+            <Title
+              text={"Data e ora"}
+              textInfo={"Inserisci la data e l'ora dell'evento"}
+            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                renderInput={(props) => <TextField size="small" {...props} />}
+                label="Seleziona"
+                value={state.selectedDate}
+                onChange={(newValue) => {
+                  setState({
+                    ...state,
+                    selectedDate: newValue,
+                  });
                 }}
-              >
-                Salva modifiche
-              </ButtonGeneric>
+              />
+            </LocalizationProvider>
+          </LabelText>
 
-              <ButtonGeneric
-                color={style.secondaryColor}
-                callback={() => {
-                  console.log("ciao");
-                }}
-              >
-                Elimina evento
-              </ButtonGeneric>
-            </Box>
+          <LabelText>
+            <Title
+              text={"Descrizione"}
+              textInfo={"Inserisci una descrizione esplicativa dell'evento"}
+            />
+            <CustomTextField
+              placeholder={"Inserisci testo"}
+              error={false}
+              multiline={true}
+              minrow={6}
+            />
+          </LabelText>
+        </Box>
+        <Box className={style.right}>
+          <LabelText>
+            <Title
+              text={"Copertina"}
+              textInfo={"Inserisci una foto di copertina per l'evento"}
+            />
+            <ButtonAddFile
+              callback={() => {
+                console.log("ciao");
+              }}
+            />
+          </LabelText>
+
+          <LabelText>
+            <Title
+              text={"Luogo"}
+              textInfo={"Inserisci il luogo in cui si svolgerà l'evento"}
+            />
+            <CustomTextField
+              placeholder={"Inserisci indirizzo"}
+              error={false}
+            />
+          </LabelText>
+
+          <LabelText>
+            <Title
+              text={"Requisiti"}
+              textInfo={"Specifica i requisiti per partecipare all'evento"}
+            />
+            <CustomTextField
+              placeholder={"Inserisci testo"}
+              error={false}
+              multiline={true}
+              minrow={6}
+            />
+          </LabelText>
+
+          <Box className={editorStyle.buttonsContainer}>
+            <ButtonGeneric
+              color={style.ternaryColor}
+              callback={() => {
+                console.log("ciao");
+              }}
+            >
+              Salva modifiche
+            </ButtonGeneric>
+
+            <ButtonGeneric
+              color={style.secondaryColor}
+              callback={() => {
+                console.log("ciao");
+              }}
+            >
+              Elimina evento
+            </ButtonGeneric>
           </Box>
         </Box>
       </Box>
-
+    </Box>
   );
 };
 
