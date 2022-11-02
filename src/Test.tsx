@@ -20,7 +20,6 @@ import CustomSnackbar from "./components/functional/customSnackbar/CustomSnackba
 import ButtonIcon from "./components/functional/buttonIcon/ButtonIcon";
 import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
 import CustomTable from "./components/functional/table/CustomTable";
-import CustomModal from "./components/functional/customModal/CustomModal";
 import { Anchor } from "@mui/icons-material";
 import {articles} from './utils/mockup/data';
 function Test() {
@@ -118,10 +117,6 @@ function Test() {
 
       <Box className={style.singleComponent}>
         <CustomSnackbar message={"Lorem iargeagwfgweff fwerg4tWREFdbgtergfe tegrwferetgrwefsdvfe getrwfesrweqrfadsvefadc"} severity={"error"}/>
-        <CustomModal 
-          title={"Dettagli transazione"}  
-          content={["aaaaaaaaaaa","Bbbbbbbbbbbbbbbbbbbbbbbbb","ccccccccccccc"]}
-        />
       </Box>
     </Box>
   );

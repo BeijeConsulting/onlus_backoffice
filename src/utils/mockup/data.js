@@ -528,5 +528,5 @@ export const donations = [
     date: new Date(),
     amount: 1.3,
     anonyme: true,
-  },
+  }
 ];
