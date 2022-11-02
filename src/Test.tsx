@@ -22,8 +22,7 @@ import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
 import CustomTable from "./components/functional/table/CustomTable";
 import CustomModal from "./components/functional/customModal/CustomModal";
 import { Anchor } from "@mui/icons-material";
-import { articles } from "./utils/mockup/data";
-
+import {articles} from './utils/mockup/data';
 function Test() {
   const onSelectedFile = (value: string): void => {};
 
