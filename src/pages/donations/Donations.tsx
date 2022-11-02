@@ -94,14 +94,6 @@ const Donations: FC = () => {
             columns={columns}
             rows={donations}
           />
-
-          {/*salva modifiche*/}
-          <ButtonGeneric
-            color="#a4b3ad"
-            callback={save}
-          >
-            Salva modifiche
-          </ButtonGeneric>
         </LabelText>
       </Box>
     </Box>

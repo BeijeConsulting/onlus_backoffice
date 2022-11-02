@@ -16,12 +16,13 @@ import Title from "./components/functional/title/Title";
 import CustomTextField from "./components/functional/textField/CustomTextField";
 import ButtonAddFile from "./components/functional/buttonAddFile/ButtonAddFile";
 import ButtonGeneric from "./components/functional/buttonGeneric/ButtonGeneric";
+import CustomSnackbar from "./components/functional/customSnackbar/CustomSnackbar";
 import ButtonIcon from "./components/functional/buttonIcon/ButtonIcon";
 import CustomSwitch from "./components/functional/customSwitch/CustomSwitch";
 import CustomTable from "./components/functional/table/CustomTable";
+import CustomModal from "./components/functional/customModal/CustomModal";
 import { Anchor } from "@mui/icons-material";
-import { articles } from "./utils/mockup/data";
-
+import {articles} from './utils/mockup/data';
 function Test() {
   const onSelectedFile = (value: string): void => {};
 
@@ -115,7 +116,13 @@ function Test() {
         </Box>
       </Box>
 
-      <Box className={style.singleComponent}></Box>
+      <Box className={style.singleComponent}>
+        <CustomSnackbar message={"Lorem iargeagwfgweff fwerg4tWREFdbgtergfe tegrwferetgrwefsdvfe getrwfesrweqrfadsvefadc"} severity={"error"}/>
+        <CustomModal 
+          title={"Dettagli transazione"}  
+          content={["aaaaaaaaaaa","Bbbbbbbbbbbbbbbbbbbbbbbbb","ccccccccccccc"]}
+        />
+      </Box>
     </Box>
   );
 }
