@@ -18,11 +18,13 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 interface State {
   addLeft: any;
   addRight: Array<any>;
+  buttonColor: string;
 }
 //init state
 const initialState: State = {
   addLeft: [],
-  addRight: []
+  addRight: [],
+  buttonColor: style.ternaryColor
 }
 
 let key:number = 0
@@ -128,7 +130,7 @@ const SupportUs: FC = () => {
           />
           {/*salva modifiche*/}
           <ButtonGeneric 
-            color="#a4b3ad" 
+            color={state.buttonColor}
             callback={save}
           >
               Salva modifiche
