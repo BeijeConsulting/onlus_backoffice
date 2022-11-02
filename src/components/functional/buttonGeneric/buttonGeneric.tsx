@@ -1,5 +1,8 @@
 import { BaseSyntheticEvent, FC, MouseEvent } from "react";
 
+//style
+import style from '../../../assets/styles/common.module.scss';
+
 //mui
 import { Button } from "@mui/material";
 
@@ -20,7 +23,12 @@ const ButtonGeneric: FC<buttonGenericProps> = (props) => {
       sx={{
         backgroundColor: props.color,
         textTransform: "initial",
-        width: 150,
+        display:'flex',
+        justifyContent: 'center',
+        alignItems:'center',
+        "&:hover": {
+          backgroundColor: props.color
+        }
       }}
     >
       {props.children}

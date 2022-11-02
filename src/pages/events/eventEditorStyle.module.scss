@@ -1,0 +1,17 @@
+.leftContainer{
+    width:100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px
+}
+
+.buttonsContainer{
+    width:100%;
+    height: auto;
+    display:flex;
+    gap:10px;
+    justify-content: flex-end;
+    margin-bottom: 40px;
+    margin-top: 40px;
+}

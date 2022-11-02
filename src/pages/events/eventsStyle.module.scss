@@ -1,0 +1,17 @@
+@import '../../assets/styles/common.module.scss';
+
+.titleFlex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tableContainer{
+    margin-top: 40px;
+    height: auto;
+}
+
+.archivesContainer{
+    margin-top: 30px;
+    height: auto;
+}

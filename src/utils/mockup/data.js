@@ -314,6 +314,7 @@ export const users = [
 //eventi
 export const events = [
   {
+    id:1,
     title: "Evento1",
     cover: null,
     date: new Date(),
@@ -326,6 +327,7 @@ export const events = [
       "s fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget lao",
   },
   {
+    id:2,
     title: "Evento2",
     cover: null,
     date: new Date(),
@@ -338,6 +340,7 @@ export const events = [
       "Ffermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipito",
   },
   {
+    id:3,
     title: "Evento3",
     cover: null,
     date: new Date(),
