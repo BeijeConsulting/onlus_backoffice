@@ -15,49 +15,45 @@ import eventsStyle from "./eventsStyle.module.scss";
 import Title from "../../components/functional/title/Title";
 import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGeneric";
 import CustomTable from "../../components/functional/table/CustomTable";
+import ButtonIcon from "../../components/functional/buttonIcon/ButtonIcon";
 
 //mockup data
 import { events } from "../../utils/mockup/data";
-import ButtonIcon from "../../components/functional/buttonIcon/ButtonIcon";
 
 //icons
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CreateIcon from "@mui/icons-material/Create";
 
 //modal
-import DeleteModal from '../../components/functional/deleteModal/DeleteModal';
+import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
 
 interface eventsProps {}
 
-interface state {
+interface State {
   modalIsOpen: boolean;
 }
 
-
-const initialState: state = {
+const initialState: State = {
   modalIsOpen: false,
 };
-
 
 const Events: FC<eventsProps> = (props) => {
   const navigate = useNavigate();
 
-  const [state,setState] = useState(initialState);
+  const [state, setState] = useState<State>(initialState);
 
   function openDeleteModal(): void {
-      setState({
-        ...state,
-        modalIsOpen: !state.modalIsOpen,
-      });
-    }
+    setState({
+      ...state,
+      modalIsOpen: !state.modalIsOpen,
+    });
+  }
 
  
   //functions
   function goToEditor(): void {
     navigate(PAGES.editorEvents);
   }
-
- 
 
   //Colonne del DataGrid
   const renderDetailsButton_1 = (params: any) => {
@@ -190,12 +186,11 @@ const Events: FC<eventsProps> = (props) => {
       </Box>
 
       {/* modal */}
-      <DeleteModal 
-        open= {state.modalIsOpen}
+      <DeleteModal
+        open={state.modalIsOpen}
         closeCallback={openDeleteModal}
         deleteCallback={openDeleteModal}
       />
-
     </Box>
   );
 };
