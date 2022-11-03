@@ -1,9 +1,141 @@
-import React from 'react'
+import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+//components
+import LabelText from "../../../components/functional/labelText/LabelText";
+import Title from "../../../components/functional/title/Title";
+import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
+import CustomTextField from "../../../components/functional/textField/CustomTextField";
+
+//styles
+import style from "./editorBlogStyle.module.scss";
+import common from "../../../assets/styles/common.module.scss";
+
+//Mui
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Checkbox,
+} from "@mui/material";
+
+//data
+import { categories } from "../../../utils/mockup/data";
 
 function EditorBlog() {
+  const [checked, setChecked] = useState([1]);
+
+  const handleToggle = (value: number) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
+  const log = (e: any): void => {
+    console.log(e);
+  };
   return (
-    <div>EditorBlog</div>
-  )
+    <form>
+      <Box className={common.component}>
+        <Box className={common.doubleComponent}>
+          <Box className={common.left}>
+            <LabelText>
+              <Title
+                text={"Titolo"}
+                textInfo={"Inserisci il titolo dell'articolo"}
+              />
+              <CustomTextField placeholder={"Titolo"} error={false} />
+            </LabelText>
+
+            <LabelText>
+              <Title text={"Contenuto"} textInfo={"Scrivi il tuo articolo"} />
+              <CustomTextField
+                placeholder={"Inserisci testo"}
+                error={false}
+                multiline={true}
+                minrow={15}
+                maxrow={25}
+              />
+              <ButtonAddFile callback={log} />
+            </LabelText>
+          </Box>
+          <Box className={common.right}>
+            <LabelText>
+              <Title
+                text={"Copertina"}
+                textInfo={"Inserisci una foto di copertina per l'evento"}
+              />
+              <ButtonAddFile callback={log} />
+            </LabelText>
+
+            <LabelText>
+              <Title
+                text={"Categorie"}
+                textInfo={"Specifica le categorie da attribuire all'articolo"}
+              />
+              <List
+                dense
+                sx={{
+                  width: "100%",
+                }}
+              >
+                {categories.map((element) => {
+                  const labelId = `checkbox-list-secondary-label-${element}`;
+                  return (
+                    <ListItem
+                      key={element.id}
+                      secondaryAction={
+                        <Checkbox
+                          edge="end"
+                          onChange={handleToggle(element.id)}
+                          checked={checked.indexOf(element.id) !== -1}
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      }
+                      disablePadding
+                    >
+                      <ListItemButton>
+                        <ListItemText id={labelId} primary={element.name} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                })}
+              </List>
+            </LabelText>
+
+            <Box className={common.row}>
+              <ButtonGeneric
+                color={common.buttonColor}
+                callback={() => {
+                  console.log("ciao");
+                }}
+              >
+                Salva modifiche
+              </ButtonGeneric>
+
+              <ButtonGeneric
+                color={common.secondaryColor}
+                callback={() => {
+                  console.log("ciao");
+                }}
+              >
+                Elimina evento
+              </ButtonGeneric>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+    </form>
+  );
 }
 
-export default EditorBlog
+export default EditorBlog;

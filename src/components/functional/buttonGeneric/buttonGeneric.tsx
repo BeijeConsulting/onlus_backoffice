@@ -20,7 +20,12 @@ const ButtonGeneric: FC<buttonGenericProps> = (props) => {
       sx={{
         backgroundColor: props.color,
         textTransform: "initial",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent:"center",
+        alignItems: "center",
         width: 150,
+        height: 40,
         '&:hover': {
           cursor: 'pointer',
         },

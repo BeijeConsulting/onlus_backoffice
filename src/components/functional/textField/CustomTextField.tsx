@@ -16,9 +16,11 @@ interface textFieldProps {
   multiline?: boolean;
   errorMessage?: string;
   defaultValue?: string;
+
 }
 
 const CustomTextField: FC<textFieldProps> = (props) => {
+
   return (
     <TextField
       type={props.type ? props.type : "default"}
@@ -37,6 +39,11 @@ const CustomTextField: FC<textFieldProps> = (props) => {
           : ""
       }
       placeholder={props.placeholder}
+      sx={{
+        "& .css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root": {
+          backgroundColor: "white"
+        }
+      }}
     />
   );
 };

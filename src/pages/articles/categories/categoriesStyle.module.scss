@@ -1,0 +1,39 @@
+.titleFlex {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.tableContainer {
+  margin-top: 40px;
+  height: auto;
+}
+
+.inputButtonContainer {
+  display: flex;
+  width: 350px;
+  gap: 10px;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background-color: white;
+  border: 2px solid #000;
+  border-radius: 20px;
+  box-shadow: 24;
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .modalButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+}
