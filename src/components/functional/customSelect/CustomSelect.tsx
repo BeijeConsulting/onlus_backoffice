@@ -4,12 +4,14 @@ import { FC, useState } from "react";
 import style from "./customSelect.module.scss";
 
 //mui
-import { Select, MenuItem, SelectChangeEvent, InputLabel, FormControl } from "@mui/material";
+import { Select, MenuItem, SelectChangeEvent, InputLabel, FormControl, FormHelperText } from "@mui/material";
 
 interface selectProps {
     label: string;
     defaultValue?: string;
     disabled?: boolean;
+    error?: boolean;
+    errorMessage?: string;
     items: Array<Item>;
 }
 
@@ -28,7 +30,7 @@ const CustomSelect: FC<selectProps> = (props) => {
     };
 
     return (
-        <FormControl fullWidth disabled={props.disabled}>
+        <FormControl fullWidth disabled={props.disabled} error={props.error}>
             <InputLabel id="demo-simple-select-label" className={style.label}>{props.label}</InputLabel>
             <Select
                 className={style.select}
@@ -44,6 +46,12 @@ const CustomSelect: FC<selectProps> = (props) => {
                     )
                 }
             </Select>
+            <FormHelperText>
+                {
+                    props.error &&
+                    props.errorMessage
+                }
+            </FormHelperText>
         </FormControl>
     );
 }
