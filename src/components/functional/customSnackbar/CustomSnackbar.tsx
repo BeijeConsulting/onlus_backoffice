@@ -43,10 +43,13 @@ const CustomSnackbar: FC<snackbarProps> = (props) => {
 
     //chiudo la snackbar
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        props.callback();
+
         if (reason === 'clickaway'){
             return;
         }
+
+        props.callback()
+
         setState({
             open: false
         })

@@ -150,9 +150,7 @@ const Collaborators: FC = (): JSX.Element => {
       </Box>
       {
         location?.state?.open &&
-        <Box className={common.singleComponent}>
-          <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
-        </Box>
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
       }
     </Box>
   )
