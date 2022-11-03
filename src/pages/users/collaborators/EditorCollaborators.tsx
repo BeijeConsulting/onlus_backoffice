@@ -79,7 +79,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
     })
   }, [])
 
-  //Funzione per salvare domanda e risposta
+  //Funzione per salvare i dati dell'admin
   const onSaveAdmin = (e: any): void => {
 
     let tmp: Array<boolean> = [false, false, false, false, false, false, false, false]
@@ -99,7 +99,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
       tmp[7] = true
     }
 
-    if (/^[a-zA-Z0-9.]+@[a-zA-Z0-9]+.[A-Za-z]+$/.test(e.target.form[8].value) === false){
+    if (/^[a-zA-Z0-9.]+@[a-zA-Z0-9]+.[A-Za-z]+$/.test(e.target.form[8].value) === false) {
       errors = true
       tmp[4] = true
     }
@@ -115,8 +115,8 @@ const EditorCollaborators: FC = (): JSX.Element => {
         password: e.target.form[12].value,
         confirmPassword: e.target.form[14].value,
       };
-      
-      navigate(PAGES.usersCollaborators, {state: {open: true}})
+
+      navigate(PAGES.usersCollaborators, { state: { open: true } })
     }
 
     setState({
@@ -137,7 +137,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
           <LabelText>
             <Title
               text={"Dati dell'utente"}
-              textInfo={"Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Elimina utente per cancellare i dati dell'utente dal sistema"}
+              textInfo={"Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Annulla modifiche per cancellare l'operazione"}
             />
 
             <Box className={style.textFields}>
@@ -168,6 +168,8 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   defaultValue={
                     !!location?.state?.row?.language ? location?.state?.row?.language : ""
                   }
+                  error={state.error[2]}
+                  errorMessage="Inserisci una lingua"
                 />
 
                 <CustomSelect
@@ -176,6 +178,8 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   defaultValue={
                     !!location?.state?.row?.role ? location?.state?.row?.role : ""
                   }
+                  error={state.error[3]}
+                  errorMessage="Inserisci un ruolo"
                 />
               </Box>
 
@@ -224,13 +228,21 @@ const EditorCollaborators: FC = (): JSX.Element => {
           </LabelText>
 
           <Box className={style.saveBtn}>
-            <ButtonGeneric color={common.ternaryColor} callback={onSaveAdmin}>
-              Salva modifiche
-            </ButtonGeneric>
+            {
+              location?.state?.showAdd ?
+                <ButtonGeneric color={common.ternaryColor} callback={onSaveAdmin}>
+                  Aggiungi
+                </ButtonGeneric>
+                :
+                <ButtonGeneric color={common.ternaryColor} callback={onSaveAdmin}>
+                  Salva modifiche
+                </ButtonGeneric>
 
+            }
             <ButtonGeneric color={common.secondaryColor} callback={onCancel}>
               Annulla modifiche
             </ButtonGeneric>
+
           </Box>
         </form>
       </Box>

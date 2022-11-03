@@ -68,7 +68,7 @@ const Collaborators: FC = (): JSX.Element => {
   }
 
   const addAdmin = (): void => {
-    navigate(PAGES.editorCollaborators)
+    navigate(PAGES.editorCollaborators, { state: {showAdd: true} })
   }
 
   //Colonne del DataGrid
@@ -126,11 +126,11 @@ const Collaborators: FC = (): JSX.Element => {
           <Box className={style.titleRow}>
             <Title
               text={"Collaboratori"}
-              textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
+              textInfo={"Collaboratori registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
             />
 
             <ButtonGeneric color={common.ternaryColor} callback={addAdmin}>
-              +Aggiungi Collaboratore
+              +Aggiungi
             </ButtonGeneric>
           </Box>
 
