@@ -58,17 +58,17 @@ function Social() {
   const columns = [
     {
       field: "name",
-      headerName: "Social",
+      headerName: "SOCIAL",
       flex: 1,
     },
     {
       field: "icon",
-      headerName: "Icona",
+      headerName: "ICONA",
       flex: 1,
     },
     {
       field: "link",
-      headerName: "Link",
+      headerName: "LINK",
       type: "date",
       flex: 1,
     },

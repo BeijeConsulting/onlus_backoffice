@@ -107,7 +107,7 @@ const Faq: FC = (): JSX.Element => {
   const columns = [
     {
       field: "question",
-      headerName: "Domanda",
+      headerName: "DOMANDA",
       flex: 1,
     },
     {

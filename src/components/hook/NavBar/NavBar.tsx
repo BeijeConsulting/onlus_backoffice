@@ -76,7 +76,7 @@ const NavBar: FC = (): JSX.Element => {
   return (
     <List className={css.nav} component="nav">
       <ListItemButton className={css.father} onClick={openEditor}>
-        <p className={css.text}>EDITOR SITO</p>
+        <Typography className={css.text}>EDITOR SITO</Typography>
         {state.editor ? <ExpandMore /> : <ExpandLess />}
       </ListItemButton>
 
@@ -130,11 +130,11 @@ const NavBar: FC = (): JSX.Element => {
         className={css.father}
         onClick={handleNavigate(PAGES.events)}
       >
-        <p>EVENTI</p>
+        <Typography sx={checkSelectedPage(PAGES.events)}>EVENTI</Typography>
       </ListItemButton>
 
       <ListItemButton className={css.father} onClick={openArticles}>
-        <p>ARTICOLI</p>
+        <Typography>ARTICOLI</Typography>
         {state.articles ? <ExpandMore /> : <ExpandLess />}
       </ListItemButton>
 
@@ -157,7 +157,7 @@ const NavBar: FC = (): JSX.Element => {
       </Collapse>
 
       <ListItemButton className={css.father} onClick={openUsers}>
-        <p>UTENTI</p>
+        <Typography>UTENTI</Typography>
         {state.users ? <ExpandMore /> : <ExpandLess />}
       </ListItemButton>
 
@@ -183,7 +183,7 @@ const NavBar: FC = (): JSX.Element => {
         className={css.father}
         onClick={handleNavigate(PAGES.donations)}
       >
-        <p>DONAZIONI</p>
+        <Typography sx={checkSelectedPage(PAGES.donations)}>DONAZIONI</Typography>
       </ListItemButton>
     </List>
   );

@@ -65,11 +65,11 @@ const Events: FC<eventsProps> = (props) => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={openDeleteModal}>
-            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
-          </ButtonIcon>
           <ButtonIcon callback={goToEditor}>
             <CreateIcon sx={{ fontSize: "18px" }} />
+          </ButtonIcon>
+          <ButtonIcon callback={openDeleteModal}>
+            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
       </>

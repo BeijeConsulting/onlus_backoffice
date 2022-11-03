@@ -40,21 +40,13 @@ const lang: Array<Item> = [
 
 const roles: Array<Item> = [
   {
-    name: 'Owner',
-    value: 'owner'
-  },
-  {
     name: 'Admin',
     value: 'admin'
   },
   {
     name: 'Blogger',
     value: 'blogger'
-  },
-  {
-    name: 'User',
-    value: 'user'
-  },
+  }
 ]
 
 interface State {
