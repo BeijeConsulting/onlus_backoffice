@@ -9,6 +9,7 @@ import { users } from "../../../utils/mockup/data";
 
 //Style
 import common from "../../../assets/styles/common.module.scss";
+import style from "./collaborators.module.scss";
 
 //MUI
 import Box from "@mui/material/Box";
@@ -22,6 +23,7 @@ import ButtonIcon from '../../../components/functional/buttonIcon/ButtonIcon';
 import DeleteModal from '../../../components/functional/deleteModal/DeleteModal';
 import LabelText from '../../../components/functional/labelText/LabelText'
 import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
+import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGeneric';
 
 interface State {
   modalIsOpen: boolean;
@@ -63,6 +65,10 @@ const Collaborators: FC = (): JSX.Element => {
 
   const deleteAdmin = (row: object) => (): void => {
     console.log(row);
+  }
+
+  const addAdmin = (): void => {
+    navigate(PAGES.editorCollaborators)
   }
 
   //Colonne del DataGrid
@@ -117,10 +123,16 @@ const Collaborators: FC = (): JSX.Element => {
       <Box className={common.singleComponent}>
         <LabelText>
           {/*titolo*/}
-          <Title
-            text={"Collaboratori"}
-            textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
-          />
+          <Box className={style.titleRow}>
+            <Title
+              text={"Collaboratori"}
+              textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
+            />
+
+            <ButtonGeneric color={common.ternaryColor} callback={addAdmin}>
+              +Aggiungi Collaboratore
+            </ButtonGeneric>
+          </Box>
 
           {/*tabella*/}
           <CustomTable
@@ -137,7 +149,7 @@ const Collaborators: FC = (): JSX.Element => {
         />
       </Box>
       {
-        location?.state?.open && 
+        location?.state?.open &&
         <Box className={common.singleComponent}>
           <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
         </Box>
