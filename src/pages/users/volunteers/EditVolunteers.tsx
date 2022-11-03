@@ -116,7 +116,7 @@ const EditVolunteers: FC = (): JSX.Element => {
         confirmPassword: e.target.form[14].value,
       };
       
-      navigate(PAGES.usersVolunteers, {state: {open:true}})
+      navigate(PAGES.usersVolunteers, {state: {open: true}})
     }
 
 

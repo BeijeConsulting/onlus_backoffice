@@ -11,13 +11,17 @@ import Title from "../../../components/functional/title/Title";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import CustomTable from "../../../components/functional/table/CustomTable";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
+import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
+
 //icon
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CreateIcon from "@mui/icons-material/Create";
+
 //data
 import { social } from "../../../utils/mockup/data";
-import { useNavigate } from "react-router-dom";
-//route
+
+//navigation
+import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
 /*
@@ -27,7 +31,9 @@ TO DO
 
 function Social() {
   //const [state, useState] = useState();
+
   const navigate = useNavigate();
+  const location = useLocation();
 
   const edit = (att: any) => (): void => {
     console.log("edit", att);
@@ -91,12 +97,16 @@ function Social() {
           <Box className={style.TitleButton}>
             <Title text="Social" textInfo="inserisci i social" />
             <ButtonGeneric color={common.ternaryColor} callback={addSocial}>
-              <p className={style.button}>+ Aggiungi Social</p>
+              <p className={style.button}>+Aggiungi</p>
             </ButtonGeneric>
           </Box>
           <CustomTable columns={columns} rows={social} />
         </LabelText>
       </Box>
+      {
+        location?.state?.open && 
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+      }
     </Box>
   );
 }

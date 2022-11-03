@@ -128,7 +128,7 @@ const Volunteers: FC = (): JSX.Element => {
       </Box>
       {
         location?.state?.open && 
-          <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
       }
     </Box>
   )

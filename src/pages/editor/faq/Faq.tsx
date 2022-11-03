@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 
 //Navigazione
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
 //Style
@@ -20,6 +20,7 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import CustomTable from "../../../components/functional/table/CustomTable";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
+import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
 
 //Data
 import { faq } from "../../../utils/mockup/data";
@@ -27,22 +28,27 @@ import { faq } from "../../../utils/mockup/data";
 interface State {
   titleError: boolean;
   textError: boolean;
+  open: boolean;
 }
 
 const initState: State = {
   titleError: false,
   textError: false,
+  open: false,
 };
 
 const Faq: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   //Funzione per salvare le modifiche della sezione info
   const onSaveInfo = (e: any): void => {
+
     let titleErr = false;
     let textErr = false;
+    let show = false;
 
     if (e.target.form[0].value === "") {
       titleErr = true;
@@ -52,11 +58,6 @@ const Faq: FC = (): JSX.Element => {
       textErr = true;
     }
 
-    setState({
-      titleError: titleErr,
-      textError: textErr,
-    });
-
     if (!titleErr && !textErr) {
       let info = {
         title: e.target.form[0].value,
@@ -64,7 +65,15 @@ const Faq: FC = (): JSX.Element => {
       };
 
       console.log(info);
+      show = true;
     }
+
+    setState({
+      ...state,
+      open: show,
+      titleError: titleErr,
+      textError: textErr,
+    });
   };
 
   //Navigazione allo screen EditorFaq
@@ -182,6 +191,15 @@ const Faq: FC = (): JSX.Element => {
           <CustomTable columns={columns} rows={faq.qna} pageSize={3} />
         </LabelText>
       </Box>
+      {
+        location?.state?.open &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+      }
+
+      {
+        state.open &&
+        <CustomSnackbar message={"Modifiche ad info salvate con successo"} severity={"success"} />
+      }
     </Box>
   );
 };

@@ -44,7 +44,7 @@ function EditorSocial() {
       homepageOn: e.target.form[6].checked,
     };
     console.log(newSocial);
-    navigate(PAGES.editSocial);
+    navigate(PAGES.editSocial, {state: {open: true}});
   };
 
   const createSocial = (e: any): void => {
@@ -57,7 +57,7 @@ function EditorSocial() {
     };
     console.log(newSocial);
 
-    navigate(PAGES.editSocial);
+    navigate(PAGES.editSocial, {state: {open: true}});
   };
 
   return (
