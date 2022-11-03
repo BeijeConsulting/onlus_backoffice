@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import userDuck from "../../../redux/ducks/userDuck";
 //mui
 import { Box } from "@mui/material";
 //style
@@ -9,6 +11,7 @@ import Title from "../../../components/functional/title/Title";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+import { useSelector } from "react-redux/es/exports";
 //data
 import { home } from "../../../utils/mockup/data";
 
@@ -28,6 +31,8 @@ type home = {
 export default function Home() {
   function handleClick(e: any): void {}
 
+  const stampa: any = useSelector((state: any) => state.userDuck.user);
+
   function editHome(e: any): void {
     let newHome: home = {
       hero: {
@@ -41,7 +46,7 @@ export default function Home() {
         text: e.target.form[9].value,
       },
     };
-    console.log(newHome);
+    console.log(stampa);
   }
   return (
     <form className={common.component}>

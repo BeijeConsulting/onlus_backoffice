@@ -1,5 +1,7 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/ducks/userDuck";
 
 //Mui
 import { Box } from "@mui/material";
@@ -15,6 +17,8 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ColorPicker from "../../../components/functional/colorPicker/ColorPicker";
+import { users } from "../../../utils/mockup/data";
+import { AnyAction } from "@reduxjs/toolkit";
 
 //interface
 interface State {
@@ -41,6 +45,13 @@ const initState: State = {
 
 const General: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
+
+  const sendUser = users[0];
+
+  const dispatch: any = useDispatch();
+  useEffect(() => {
+    dispatch(setUser({ user: sendUser }));
+  }, []);
 
   const handleImage = (): void => {};
 
