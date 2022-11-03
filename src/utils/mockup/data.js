@@ -222,7 +222,6 @@ export const users = [
     phone: "3349603886",
     password: "Password.1",
     language: "it",
-    publishedArticles: 5,
     disableDate: null,
   },
   {
@@ -234,7 +233,6 @@ export const users = [
     phone: "4483750228",
     password: "Password.1",
     language: "en",
-    publishedArticles: 7,
     disableDate: null,
   },
   {
@@ -246,7 +244,6 @@ export const users = [
     phone: "3395740227",
     password: "Password.1",
     language: "it",
-    publishedArticles: 2,
     disableDate: null,
   },
   {
@@ -258,7 +255,6 @@ export const users = [
     phone: "4493058115",
     password: "Password.1",
     language: "en",
-    publishedArticles: 8,
     disableDate: null,
   },
   {
@@ -270,7 +266,6 @@ export const users = [
     phone: "3380592775",
     password: "Password.1",
     language: "it",
-    publishedArticles: 7,
     disableDate: null,
   },
   {
@@ -282,7 +277,6 @@ export const users = [
     phone: "3395810448",
     password: "Password.1",
     language: "en",
-    publishedArticles: null,
     disableDate: null,
   },
   {
@@ -294,7 +288,6 @@ export const users = [
     phone: "4720592857",
     password: "Password.1",
     language: "it",
-    publishedArticles: null,
     disableDate: null,
   },
   {
@@ -306,7 +299,6 @@ export const users = [
     phone: "3850385011",
     password: "Password.1",
     language: "en",
-    publishedArticles: null,
     disableDate: new Date(),
   },
 ];
