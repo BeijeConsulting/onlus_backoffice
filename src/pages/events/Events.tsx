@@ -2,7 +2,7 @@ import { Box, Typography, Modal } from "@mui/material";
 import { FC, useState, useEffect } from "react";
 
 //router dom
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 //PAGES
 import PAGES from "../../router/pages";
@@ -26,21 +26,32 @@ import CreateIcon from "@mui/icons-material/Create";
 
 //modal
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
+import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 
 interface eventsProps {}
 
 interface State {
   modalIsOpen: boolean;
+  snackIsOpen: boolean
 }
 
 const initialState: State = {
   modalIsOpen: false,
+  snackIsOpen: false
 };
 
 const Events: FC<eventsProps> = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [state, setState] = useState<State>(initialState);
+
+  useEffect(()=>{
+    setState({
+      ...state,
+      snackIsOpen: location?.state?.openSnack
+    })
+  },[])
 
   function openDeleteModal(): void {
     setState({
@@ -191,6 +202,16 @@ const Events: FC<eventsProps> = (props) => {
         closeCallback={openDeleteModal}
         deleteCallback={openDeleteModal}
       />
+
+      {/* snackbar */}
+      {
+        state.snackIsOpen && 
+        <CustomSnackbar 
+          message={"Il salvataggio è andato "}
+          severity={"success"}
+        />
+      }
+
     </Box>
   );
 };

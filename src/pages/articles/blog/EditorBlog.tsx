@@ -7,6 +7,7 @@ import Title from "../../../components/functional/title/Title";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //styles
 import style from "./editorBlogStyle.module.scss";
@@ -22,11 +23,20 @@ import {
   Checkbox,
 } from "@mui/material";
 
+//pages
+import PAGES from "../../../router/pages";
+
 //data
 import { categories } from "../../../utils/mockup/data";
 
-function EditorBlog() {
+
+
+
+const EditorBlog: FC = () => {
   const [checked, setChecked] = useState([1]);
+  const [state,setState] = useState();
+
+  const navigate = useNavigate();
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -43,6 +53,15 @@ function EditorBlog() {
   const log = (e: any): void => {
     console.log(e);
   };
+
+  function saveData(): void{
+    navigate(PAGES.articlesBlog,{
+      state: {
+        openSnack: true
+      }
+    });
+  }
+
   return (
     <form>
       <Box className={common.component}>
@@ -112,12 +131,10 @@ function EditorBlog() {
               </List>
             </LabelText>
 
-            <Box className={common.row}>
+            <Box className={style.row}>
               <ButtonGeneric
                 color={common.buttonColor}
-                callback={() => {
-                  console.log("ciao");
-                }}
+                callback={saveData}
               >
                 Salva modifiche
               </ButtonGeneric>
@@ -133,6 +150,7 @@ function EditorBlog() {
             </Box>
           </Box>
         </Box>
+      
       </Box>
     </form>
   );

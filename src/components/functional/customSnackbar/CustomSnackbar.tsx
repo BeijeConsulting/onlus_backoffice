@@ -12,6 +12,7 @@ import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 interface snackbarProps {
     message: string;
     severity: AlertColor;
+    callback?: Function;
 }
 //state
 interface State {
@@ -42,6 +43,7 @@ const CustomSnackbar: FC<snackbarProps> = (props) => {
 
     //chiudo la snackbar
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+        props.callback();
         if (reason === 'clickaway'){
             return;
         }

@@ -45,7 +45,11 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
 
   //salvo le modifiche
   const save = (): void => {
-    navigate(PAGES.events)
+    navigate(PAGES.events,{
+      state: {
+        openSnack: true
+      }
+    })
   }
 
   return (
