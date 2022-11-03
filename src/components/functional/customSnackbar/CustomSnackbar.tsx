@@ -47,7 +47,7 @@ const CustomSnackbar: FC<snackbarProps> = (props) => {
         if (reason === 'clickaway'){
             return;
         }
-
+        
         props.callback()
 
         setState({

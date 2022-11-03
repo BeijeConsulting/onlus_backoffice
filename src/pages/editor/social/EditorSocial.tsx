@@ -1,3 +1,5 @@
+import React, { FC, useEffect, useState } from 'react'
+
 import { useLocation, useNavigate } from "react-router-dom";
 //mui
 import { Box } from "@mui/material";
@@ -23,7 +25,7 @@ type social = {
   homepageOn: boolean;
 };
 
-function EditorSocial() {
+const EditorSocial: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
 

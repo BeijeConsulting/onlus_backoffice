@@ -50,6 +50,13 @@ const Blog: FC = () => {
     })
   },[])
 
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
 
   const handleModal = (): void => {
     setState({
@@ -143,6 +150,7 @@ const Blog: FC = () => {
         <CustomSnackbar 
           message={"Il salvataggio è andato "}
           severity={"success"}
+          callback={handleClose}
         />
       }
 

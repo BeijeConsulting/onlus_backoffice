@@ -53,6 +53,14 @@ const Events: FC<eventsProps> = (props) => {
     })
   },[])
 
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
+
   function openDeleteModal(): void {
     setState({
       ...state,
@@ -208,7 +216,7 @@ const Events: FC<eventsProps> = (props) => {
         state.snackIsOpen && 
         <CustomSnackbar 
           message={"Il salvataggio è andato "}
-          severity={"success"}
+          severity={"success"} callback={handleClose}
         />
       }
 
