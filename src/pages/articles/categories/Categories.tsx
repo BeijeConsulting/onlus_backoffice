@@ -4,9 +4,6 @@ import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 //router dom
 import { useNavigate } from "react-router-dom";
 
-//PAGES
-import PAGES from "../../../router/pages";
-
 //style
 import style from "../../../assets/styles/common.module.scss";
 import categoriesStyle from "./categoriesStyle.module.scss";
@@ -16,6 +13,7 @@ import Title from "../../../components/functional/title/Title";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import CustomTable from "../../../components/functional/table/CustomTable";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //mockup data
 import { categories } from "../../../utils/mockup/data";
@@ -31,64 +29,89 @@ import DeleteModal from "../../../components/functional/deleteModal/DeleteModal"
 //custom hook
 import checkEmptyText from "../../../customHooks/useEmptyText";
 
+//state
 interface State {
   modalIsOpen: boolean;
   addModal: boolean;
   inputError: boolean;
+  open: boolean;
+  textError:string;
 }
-
 const initialState: State = {
   modalIsOpen: false,
   addModal: false,
   inputError: false,
+  open: false,
+  textError:""
 };
 
 const Categories: FC = (props) => {
-  const navigate = useNavigate();
 
   const [state, setState] = useState<State>(initialState);
-  const textError = `Il campo non può essere vuoto\n
-  Categoria già esistente`;
 
-  //functions
-  function addCategory(): void {}
-
-  function openDeleteModal(): void {
+  //mostro/nascondo il modale per eliminare una categoria
+  const showDeleteModal = (): void =>{
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
     });
   }
 
-  function checkUniqueCategory(par: string): boolean {
-    let flag = false;
-    categories.forEach((el, index) => {
+  //elimino la categoria
+  const deleteCategory = (): void => {
+    setState({
+      ...state,
+      open:true,
+      modalIsOpen: !state.modalIsOpen
+    })
+  }
+
+  //controllo se la categoria da inserire non è già presente fra le mie
+  const checkUniqueCategory = (par: string): boolean => {
+    let flag = true;
+    categories.forEach((el) => {
       if (el.name === par) {
-        flag = true;
+        flag = false;
       }
     });
     return flag;
   }
 
-  function setAddModal(e: BaseSyntheticEvent): void {
-    const inputText = e.target.form[0].value.toLowerCase();
+  //mostro il modal per aggiungere la categoria
+  const setAddModal = (e: BaseSyntheticEvent): void => {
+    const inputText: string = e.target.form[0].value.toLowerCase();
     const isEmpty: boolean = checkEmptyText(inputText);
-    const isUnique = checkUniqueCategory(inputText);
+    const isUnique: boolean = checkUniqueCategory(inputText);
+    let textE: string = ""
+    let inputE: boolean = false 
+    let addModal: boolean = true
 
-    if (!isEmpty && !isUnique) {
-      setState({
-        ...state,
-        addModal: !state.addModal,
-      });
-    } else {
-      setState({
-        ...state,
-        inputError: true,
-      });
+    if(isEmpty){
+      textE = "Inserisci una categoria"
+      inputE = true
+      addModal = false
     }
+    if(!isUnique){
+      textE = "Categoria già esistente"
+      inputE = true
+      addModal = false
+    }
+    
+    setState({
+      ...state,
+      textError: textE,
+      addModal: addModal,
+      inputError: inputE
+    })
   }
 
-  function validateInput(input: string): void {}
+  //mostro/nascondo il modal per l'aggiunta della categoria
+  const showAddModal = ():void => {
+    setState({
+      ...state,
+      addModal: !state.addModal
+    })
+  }
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -100,11 +123,11 @@ const Categories: FC = (props) => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={openDeleteModal}>
-            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
-          </ButtonIcon>
-          <ButtonIcon callback={() => console.log("ciao")}>
+          <ButtonIcon callback={() => console.log("C'è da aggiungere il modale")}>
             <CreateIcon sx={{ fontSize: "18px" }} />
+          </ButtonIcon>
+          <ButtonIcon callback={showDeleteModal}>
+            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
       </>
@@ -128,9 +151,7 @@ const Categories: FC = (props) => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton,
-      // valueGetter: (params: any) =>
-      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+      renderCell: renderDetailsButton
     },
   ];
 
@@ -150,7 +171,7 @@ const Categories: FC = (props) => {
               <CustomTextField
                 placeholder={"Inserisci categoria"}
                 error={state.inputError}
-                errorMessage={textError}
+                errorMessage={state.textError}
               />
               <ButtonGeneric color={style.ternaryColor} callback={setAddModal}>
                 + Aggiungi
@@ -168,8 +189,8 @@ const Categories: FC = (props) => {
       {/* modale per la conferma eliminazione */}
       <DeleteModal
         open={state.modalIsOpen}
-        closeCallback={openDeleteModal}
-        deleteCallback={openDeleteModal}
+        closeCallback={showDeleteModal}
+        deleteCallback={deleteCategory}
       />
 
       {/* modale per la conferma aggiunta categoria */}
@@ -186,12 +207,16 @@ const Categories: FC = (props) => {
             <ButtonGeneric color={"green"} callback={setAddModal}>
               Aggiungi
             </ButtonGeneric>
-            <ButtonGeneric color={style.ternaryColor} callback={setAddModal}>
+            <ButtonGeneric color={style.ternaryColor} callback={showAddModal}>
               Annulla
             </ButtonGeneric>
           </Box>
         </Box>
       </Modal>
+      {
+        state?.open &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+      }
     </Box>
   );
 };
