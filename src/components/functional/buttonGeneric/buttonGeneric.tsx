@@ -27,7 +27,6 @@ const ButtonGeneric: FC<buttonGenericProps> = (props) => {
         width: 150,
         height: 40,
         '&:hover': {
-          backgroundColor: props.color,
           cursor: 'pointer',
         },
       }}
