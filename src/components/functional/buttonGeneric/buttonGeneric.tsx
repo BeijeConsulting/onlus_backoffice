@@ -24,10 +24,12 @@ const ButtonGeneric: FC<buttonGenericProps> = (props) => {
         flexDirection: "row",
         justifyContent:"center",
         alignItems: "center",
-        width: 150,
+        width: 170,
         height: 40,
         '&:hover': {
           cursor: 'pointer',
+          opacity: 0.7,
+          backgroundColor: props.color
         },
       }}
     >
