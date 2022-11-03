@@ -1,5 +1,4 @@
 import { FC, useState } from "react";
-import CustomLink from "../../../components/functional/link/CustomLink";
 
 //style
 import style from "../../../assets/styles/common.module.scss";
@@ -13,21 +12,23 @@ import Title from "../../../components/functional/title/Title";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+import CustomLink from "../../../components/functional/link/CustomLink";
+import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar';
 
 //state
 interface State {
   addLeft: any;
   addRight: Array<any>;
-  buttonColor: string;
+  open: boolean;
 }
 //init state
 const initialState: State = {
   addLeft: [],
   addRight: [],
-  buttonColor: style.ternaryColor
+  open: false
 }
 
-let key:number = 0
+let key: number = 0
 
 const About: FC = () => {
 
@@ -73,7 +74,10 @@ const About: FC = () => {
 
   //salvo le modifiche
   const save = (): void => {
-
+    setState({
+      ...state,
+      open: true
+    })
   }
 
   return (
@@ -125,14 +129,18 @@ const About: FC = () => {
             callback={addSlot}
           />
           {/*salva modifiche*/}
-          <ButtonGeneric 
-            color={state.buttonColor}
+          <ButtonGeneric
+            color={"rgb(25, 118, 210)"}
             callback={save}
           >
-              Salva modifiche
+            Salva modifiche
           </ButtonGeneric>
         </Box>
       </Box>
+      {
+        state?.open &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+      }
     </Box>
   )
 }

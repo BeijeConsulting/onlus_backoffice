@@ -38,7 +38,7 @@ const DeleteModal: FC<modalProps> = (props) => {
         <Box className={deleteStyle.modalButtons}>
           <ButtonGeneric
             color={style.secondaryColor}
-            callback={closeModal}
+            callback={deleteElement}
           >
             Elimina
           </ButtonGeneric>
