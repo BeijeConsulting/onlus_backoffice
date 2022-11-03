@@ -52,8 +52,8 @@ const roles: Array<Item> = [
     value: 'blogger'
   },
   {
-    name: 'Guest',
-    value: 'guest'
+    name: 'User',
+    value: 'user'
   },
 ]
 
