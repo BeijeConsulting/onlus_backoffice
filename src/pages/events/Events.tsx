@@ -66,6 +66,13 @@ const Events: FC<eventsProps> = (props) => {
     navigate(PAGES.editorEvents);
   }
 
+  function handleClose(): void{
+    setState({
+      ...state,
+      snackIsOpen: false
+    })
+  }
+
   //Colonne del DataGrid
   const renderDetailsButton_1 = (params: any) => {
     return (
@@ -209,6 +216,7 @@ const Events: FC<eventsProps> = (props) => {
         <CustomSnackbar 
           message={"Il salvataggio è andato "}
           severity={"success"}
+          callback={handleClose}
         />
       }
 

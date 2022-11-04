@@ -112,7 +112,7 @@ const initState: State = {
       {
         state.snackIsOpen && 
         <CustomSnackbar 
-          message={"Il salvataggio è andato"}
+          message={"Modifiche avvenute con successo"}
           severity={"success"}
           callback={closeSnack}
         />
