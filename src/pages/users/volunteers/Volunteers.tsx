@@ -9,6 +9,7 @@ import { users } from "../../../utils/mockup/data";
 
 //Style
 import common from "../../../assets/styles/common.module.scss";
+import style from "./volunteers.module.scss";
 
 //MUI
 import Box from "@mui/material/Box";
@@ -22,17 +23,20 @@ import ButtonIcon from '../../../components/functional/buttonIcon/ButtonIcon';
 import DeleteModal from '../../../components/functional/deleteModal/DeleteModal';
 import LabelText from '../../../components/functional/labelText/LabelText'
 import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
+import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGeneric';
 
 interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
-  snackDeleteIsOpen: boolean
+  snackDeleteIsOpen: boolean;
+  snackAdd: boolean
 }
 
 const initialState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
-  snackDeleteIsOpen: false
+  snackDeleteIsOpen: false,
+  snackAdd: false
 };
 
 const Volunteers: FC = (): JSX.Element => {
@@ -61,8 +65,6 @@ const Volunteers: FC = (): JSX.Element => {
   //Modal
   const openDeleteModal = (row: object) => (): void => {
 
-    console.log(row);
-
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
@@ -73,7 +75,7 @@ const Volunteers: FC = (): JSX.Element => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
-    
+      snackDeleteIsOpen: true
     });
   }
 
@@ -88,6 +90,10 @@ const Volunteers: FC = (): JSX.Element => {
       snackDeleteIsOpen: true,
       modalIsOpen: !state.modalIsOpen,
     })
+  }
+
+  const addVolunteer = (): void => {
+    navigate(PAGES.editorVolunteers, { state: {showAdd: true} })
   }
 
   //Colonne del DataGrid
@@ -132,10 +138,16 @@ const Volunteers: FC = (): JSX.Element => {
       <Box className={common.singleComponent}>
         <LabelText>
           {/*titolo*/}
+          <Box className={style.titleRow}>
           <Title
             text={"Volontari"}
             textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
           />
+
+            <ButtonGeneric color={common.ternaryColor} callback={addVolunteer}>
+              + Aggiungi
+            </ButtonGeneric>
+          </Box>
 
           {/*tabella*/}
           <CustomTable
@@ -152,12 +164,16 @@ const Volunteers: FC = (): JSX.Element => {
         />
       </Box>
       {
-        state.snackIsOpen && 
+        state.snackIsOpen &&
         <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
       }
       {
         state.snackDeleteIsOpen &&
         <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
+      }
+      {
+       location?.state?.openAdd &&
+        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
       }
     </Box>
   )
