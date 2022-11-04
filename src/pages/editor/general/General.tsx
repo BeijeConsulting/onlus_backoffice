@@ -1,7 +1,4 @@
 import { FC, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../../redux/ducks/userDuck";
 
 //Mui
 import { Box } from "@mui/material";
@@ -17,10 +14,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ColorPicker from "../../../components/functional/colorPicker/ColorPicker";
-import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
-
-//Data
-import { users } from "../../../utils/mockup/data";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //interface
 interface State {
@@ -50,34 +44,25 @@ const initState: State = {
 const General: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
 
-  const sendUser = users[0];
-
-  const dispatch: any = useDispatch();
-
-  useEffect(() => {
-    dispatch(setUser({ user: sendUser }));
-  }, []);
-
-  const handleImage = (): void => { };
+  const handleImage = (): void => {};
 
   const onSaveGeneral = () => {
-
     setState({
       ...state,
       open: true,
-    })
+    });
   };
 
   const handleClose = () => {
     setState({
       ...state,
       open: false,
-    })
-  }
+    });
+  };
 
   const log = (params: any) => {
-    console.log(params)
-  }
+    console.log(params);
+  };
 
   return (
     <form>
@@ -203,10 +188,13 @@ const General: FC = (): JSX.Element => {
         <ButtonGeneric callback={onSaveGeneral} color={common.saveButtonColor}>
           Salva Modifiche
         </ButtonGeneric>
-        {
-          state.open &&
-          <CustomSnackbar message={"Modifiche ad info salvate con successo"} severity={"success"} callback={handleClose}/>
-        }
+        {state.open && (
+          <CustomSnackbar
+            message={"Modifiche ad info salvate con successo"}
+            severity={"success"}
+            callback={handleClose}
+          />
+        )}
       </Box>
     </form>
   );

@@ -20,7 +20,7 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import CustomTable from "../../../components/functional/table/CustomTable";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
-import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
 
 //Data
@@ -39,7 +39,7 @@ const initState: State = {
   textError: false,
   modalIsOpen: false,
   snackIsOpen: false,
-  snackDeleteIsOpen: false
+  snackDeleteIsOpen: false,
 };
 
 const Faq: FC = (): JSX.Element => {
@@ -53,13 +53,12 @@ const Faq: FC = (): JSX.Element => {
     setState({
       ...state,
       snackIsOpen: false,
-      snackDeleteIsOpen: false
-    })
-  }
+      snackDeleteIsOpen: false,
+    });
+  };
 
   //Funzione per salvare le modifiche della sezione info
   const onSaveInfo = (e: any): void => {
-
     let titleErr = false;
     let textErr = false;
     let show = false;
@@ -102,41 +101,33 @@ const Faq: FC = (): JSX.Element => {
   };
 
   //elimino faq
-  const deleteQna = ():void => {
+  const deleteQna = (): void => {
     setState({
       ...state,
-      snackDeleteIsOpen:true,
-      modalIsOpen: false
-    })
+      snackDeleteIsOpen: true,
+      modalIsOpen: false,
+    });
   };
 
   //mostro/nascondo modal di eliminazione della faq
   const showDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen
-    })
-  }
+      modalIsOpen: !state.modalIsOpen,
+    });
+  };
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
     return (
-      <Box
-        sx={{
-          width: "10%",
-          display: "flex",
-          flexGrow: "row wrap",
-          justifyContent: "space-between",
-          marginRight: "2%",
-        }}
-      >
+      <>
         <ButtonIcon callback={updateQna(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
         <ButtonIcon callback={showDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-      </Box>
+      </>
     );
   };
 
@@ -226,19 +217,28 @@ const Faq: FC = (): JSX.Element => {
         deleteCallback={deleteQna}
       />
 
-      {
-        location?.state?.open &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
-      }
+      {location?.state?.open && (
+        <CustomSnackbar
+          message={"Modifiche avvenute con successo"}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
 
-      {
-        state.snackIsOpen &&
-        <CustomSnackbar message={"Modifiche ad info salvate con successo"} severity={"success"} callback={handleClose}/>
-      }
-      {
-        state.snackDeleteIsOpen &&
-        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose}/>
-      }
+      {state.snackIsOpen && (
+        <CustomSnackbar
+          message={"Modifiche ad info salvate con successo"}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={"Eliminazione avvenuta con successo"}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
     </Box>
   );
 };
