@@ -1,6 +1,11 @@
 import NavBar from "./components/hook/NavBar/NavBar";
 import { StyledEngineProvider } from "@mui/material";
 import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "./redux/ducks/userDuck";
+import { users } from "./utils/mockup/data";
+import { useSelector } from "react-redux/es/exports";
+import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 
 //Pages
 import PAGES from "./router/pages";
@@ -26,45 +31,68 @@ import Volunteers from "./pages/users/volunteers/Volunteers";
 import EditVolunteers from "./pages/users/volunteers/EditVolunteers";
 import Donations from "./pages/donations/Donations";
 
-import Test from "./Test"
+import Test from "./Test";
+import { useEffect } from "react";
 
 function App() {
+  //redux and auth
+  //const dispatch: Dispatch<AnyAction> = useDispatch(); ==> non funziona ):
+
+  const dispatch: any = useDispatch();
+  const sendUser = users[0];
+
+  useEffect(() => {
+    dispatch(setUser({ user: sendUser }));
+  }, []);
+
+  let user = useSelector((state: any) => state.userDuck.user);
 
   return (
     <StyledEngineProvider injectFirst>
       <div className="App">
         <Routes>
           <Route path={PAGES.login} element={<Login />} />
-
           <Route path={PAGES.entryApp} element={<EntryApp />}>
-
             <Route path={PAGES.personalArea} element={<PersonalArea />} />
+            {!!user?.role?.includes("admin") && user?.role?.includes("admin") && (
+              <>
+                <Route path={PAGES.editGeneral} element={<General />} />
+                <Route path={PAGES.editHome} element={<Home />} />
+                <Route path={PAGES.editAbout} element={<About />} />
+                <Route path={PAGES.editSupportUs} element={<SupportUs />} />
+                <Route path={PAGES.editFaq} element={<Faq />} />
+                <Route path={PAGES.editorFaq} element={<EditorFaq />} />
+                <Route path={PAGES.editSocial} element={<Social />} />
+                <Route path={PAGES.editorSocial} element={<EditorSocial />} />
 
-            <Route path={PAGES.editGeneral} element={<General />} />
-            <Route path={PAGES.editHome} element={<Home />} />
-            <Route path={PAGES.editAbout} element={<About />} />
-            <Route path={PAGES.editSupportUs} element={<SupportUs />} />
-            <Route path={PAGES.editFaq} element={<Faq />} />
-            <Route path={PAGES.editorFaq} element={<EditorFaq />} />
-            <Route path={PAGES.editSocial} element={<Social />} />
-            <Route path={PAGES.editorSocial} element={<EditorSocial />} />
-
-            <Route path={PAGES.events} element={<Events />} />
-            <Route path={PAGES.editorEvents} element={<EditorEvents />} />
+                <Route path={PAGES.events} element={<Events />} />
+                <Route path={PAGES.editorEvents} element={<EditorEvents />} />
+              </>
+            )}
 
             <Route path={PAGES.articlesBlog} element={<Blog />} />
             <Route path={PAGES.editorBlog} element={<EditorBlog />} />
             <Route path={PAGES.articlesCategories} element={<Categories />} />
 
-            <Route path={PAGES.usersCollaborators} element={<Collaborators />} />
-            <Route path={PAGES.editorCollaborators} element={<EditorCollaborators />} />
-            <Route path={PAGES.usersVolunteers} element={<Volunteers />} />
-            <Route path={PAGES.editorVolunteers} element={<EditVolunteers />} />
+            {!!user?.role?.includes("admin") && user?.role?.includes("admin") && (
+              <>
+                <Route
+                  path={PAGES.usersCollaborators}
+                  element={<Collaborators />}
+                />
+                <Route
+                  path={PAGES.editorCollaborators}
+                  element={<EditorCollaborators />}
+                />
+                <Route path={PAGES.usersVolunteers} element={<Volunteers />} />
+                <Route
+                  path={PAGES.editorVolunteers}
+                  element={<EditVolunteers />}
+                />
 
-            <Route path={PAGES.donations} element={<Donations />} />
-
-            <Route path={"/test"} element={<Test />} />
-
+                <Route path={PAGES.donations} element={<Donations />} />
+              </>
+            )}
           </Route>
         </Routes>
       </div>

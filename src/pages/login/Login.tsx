@@ -1,4 +1,6 @@
 import { FC, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import PAGES from "../../router/pages";
 
 //Componenti MUI
 import { Box, Button } from "@mui/material";
@@ -42,6 +44,8 @@ const initState: State = {
 const Login: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
 
+  const navigate = useNavigate();
+
   function onLogin(e: BaseSyntheticEvent): void {
     let eError = false;
     let pError = false;
@@ -64,6 +68,7 @@ const Login: FC = (): JSX.Element => {
       id: e.target.form[0].value,
       password: e.target.form[2].value,
     };
+    navigate(PAGES.personalArea);
     console.log(user);
   }
 

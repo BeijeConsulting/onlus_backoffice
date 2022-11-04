@@ -202,7 +202,7 @@ export const personalArea = {
   id: 1,
   name: "Luca",
   surname: "Bottoli",
-  role: "owner",
+  role: ["owner", "admin", "blogger"],
   email: "luca.bottoli@beije.it",
   phone: "3349603886",
   password: "Password.1",
@@ -217,7 +217,7 @@ export const users = [
     id: 1,
     name: "Luca",
     surname: "Bottoli",
-    role: "owner",
+    role: ["blogger"],
     email: "luca.bottoli@beije.it",
     phone: "3349603886",
     password: "Password.1",
@@ -228,7 +228,7 @@ export const users = [
     id: 2,
     name: "Riccardo",
     surname: "Perrone",
-    role: "admin",
+    role: ["admin", "blogger"],
     email: "riccardo.perrone@beije.it",
     phone: "4483750228",
     password: "Password.1",
@@ -239,7 +239,7 @@ export const users = [
     id: 3,
     name: "Alessandro",
     surname: "Dragone",
-    role: "admin",
+    role: ["admin", "blogger"],
     email: "alessandro.dragone@beije.it",
     phone: "3395740227",
     password: "Password.1",
@@ -250,7 +250,7 @@ export const users = [
     id: 4,
     name: "Milan",
     surname: "Stojkovic",
-    role: "blogger",
+    role: ["blogger"],
     email: "milan.stojkovic@beije.it",
     phone: "4493058115",
     password: "Password.1",
@@ -261,7 +261,7 @@ export const users = [
     id: 5,
     name: "Mattia",
     surname: "Laurenzana",
-    role: "blogger",
+    role: ["blogger"],
     email: "mattia.laurenzana@beije.it",
     phone: "3380592775",
     password: "Password.1",
@@ -306,7 +306,7 @@ export const users = [
 //eventi
 export const events = [
   {
-    id:1,
+    id: 1,
     title: "Evento1",
     cover: null,
     date: new Date(),
@@ -319,7 +319,7 @@ export const events = [
       "s fermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipit. Morbi scelerisque tincidunt velit, bibendum dignissim velit sagittis ut. Suspendisse semper tincidunt odio, eget lao",
   },
   {
-    id:2,
+    id: 2,
     title: "Evento2",
     cover: null,
     date: new Date(),
@@ -332,7 +332,7 @@ export const events = [
       "Ffermentum euismod dui, sollicitudin rutrum purus. Proin posuere commodo mollis. Nam finibus pretium risus. Quisque vel maximus risus. Donec ultrices leo id aliquam hendrerit. Proin gravida dui id nulla venenatis suscipito",
   },
   {
-    id:3,
+    id: 3,
     title: "Evento3",
     cover: null,
     date: new Date(),
@@ -349,69 +349,69 @@ export const events = [
 //categories
 export const categories = [
   {
-    id:1,
+    id: 1,
     name: "buongiorismo",
     relatedArticles: 2,
   },
   {
-    id:2,
+    id: 2,
     name: "religione",
     relatedArticles: 1,
   },
   {
-    id:3,
+    id: 3,
     name: "scemenze",
-    relatedArticles: 6
+    relatedArticles: 6,
   },
   {
-    id:4,
+    id: 4,
     name: "animali",
-    relatedArticles: 10
+    relatedArticles: 10,
   },
   {
-    id:5,
+    id: 5,
     name: "protezione",
-    relatedArticles: 5
+    relatedArticles: 5,
   },
   {
-    id:6,
+    id: 6,
     name: "barba",
-    relatedArticles: 9
+    relatedArticles: 9,
   },
   {
-    id:7,
+    id: 7,
     name: "occhiali",
-    relatedArticles: 21
+    relatedArticles: 21,
   },
   {
-    id:8,
+    id: 8,
     name: "champagne",
-    relatedArticles: 7
+    relatedArticles: 7,
   },
   {
-    id:9,
+    id: 9,
     name: "pelato",
-    relatedArticles: 3
+    relatedArticles: 3,
   },
   {
-    id:10,
+    id: 10,
     name: "rasato",
-    relatedArticles: 1
+    relatedArticles: 1,
   },
   {
-    id:11,
+    id: 11,
     name: "calcio",
-    relatedArticles: 12
+    relatedArticles: 12,
   },
   {
-    id:12,
+    id: 12,
     name: "ciuffo",
-    relatedArticles: 4
+    relatedArticles: 4,
   },
   {
-    id:13,
+    id: 13,
     name: "sbagliato",
-    relatedArticles: 6
+    relatedArticles: 6,
   },
 ];
 
@@ -533,5 +533,5 @@ export const donations = [
     date: new Date(),
     amount: 1.3,
     anonyme: true,
-  }
+  },
 ];
