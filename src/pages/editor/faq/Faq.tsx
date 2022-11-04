@@ -28,13 +28,13 @@ import { faq } from "../../../utils/mockup/data";
 interface State {
   titleError: boolean;
   textError: boolean;
-  open: boolean;
+  snackIsOpen: boolean;
 }
 
 const initState: State = {
   titleError: false,
   textError: false,
-  open: false,
+  snackIsOpen: false,
 };
 
 const Faq: FC = (): JSX.Element => {
@@ -42,6 +42,14 @@ const Faq: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
 
   //Funzione per salvare le modifiche della sezione info
   const onSaveInfo = (e: any): void => {
@@ -70,7 +78,7 @@ const Faq: FC = (): JSX.Element => {
 
     setState({
       ...state,
-      open: show,
+      snackIsOpen: show,
       titleError: titleErr,
       textError: textErr,
     });
@@ -193,12 +201,12 @@ const Faq: FC = (): JSX.Element => {
       </Box>
       {
         location?.state?.open &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
       }
 
       {
-        state.open &&
-        <CustomSnackbar message={"Modifiche ad info salvate con successo"} severity={"success"} />
+        state.snackIsOpen &&
+        <CustomSnackbar message={"Modifiche ad info salvate con successo"} severity={"success"} callback={handleClose}/>
       }
     </Box>
   );

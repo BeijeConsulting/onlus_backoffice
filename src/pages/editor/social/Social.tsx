@@ -1,3 +1,5 @@
+import React, { FC, useEffect, useState } from 'react'
+
 //mui
 import { Box } from "@mui/material";
 
@@ -29,11 +31,28 @@ TO DO
 - i18n
 */
 
-function Social() {
-  //const [state, useState] = useState();
+interface State {
+  snackIsOpen: boolean;
+}
+
+const initialState: State = {
+  snackIsOpen: false,
+};
+
+const Social: FC = (): JSX.Element => {
+  
+  const [state, setState] = useState<State>(initialState);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
 
   const edit = (att: any) => (): void => {
     console.log("edit", att);
@@ -105,7 +124,7 @@ function Social() {
       </Box>
       {
         location?.state?.open && 
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
       }
     </Box>
   );

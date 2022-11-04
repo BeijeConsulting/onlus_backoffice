@@ -128,7 +128,7 @@ const EditVolunteers: FC = (): JSX.Element => {
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
-    navigate(PAGES.usersVolunteers)
+    navigate(PAGES.usersVolunteers, {state: {open: false}})
   }
 
   return (

@@ -19,13 +19,13 @@ import CustomSnackbar from '../../../components/functional/customSnackbar/Custom
 interface State {
   addLeft: any;
   addRight: Array<any>;
-  open: boolean;
+  snackIsOpen: boolean;
 }
 //init state
 const initialState: State = {
   addLeft: [],
   addRight: [],
-  open: false
+  snackIsOpen: false
 }
 
 let key: number = 0
@@ -33,6 +33,14 @@ let key: number = 0
 const About: FC = () => {
 
   const [state, setState] = useState<State>(initialState)
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
 
   //ritorno l'elemento con il contenuto
   const getContent = (): any => {
@@ -76,7 +84,7 @@ const About: FC = () => {
   const save = (): void => {
     setState({
       ...state,
-      open: true
+      snackIsOpen: true
     })
   }
 
@@ -138,8 +146,8 @@ const About: FC = () => {
         </Box>
       </Box>
       {
-        state?.open &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+        state?.snackIsOpen &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
       }
     </Box>
   )
