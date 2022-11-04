@@ -1,5 +1,4 @@
 import { FC, useState } from "react";
-import CustomLink from "../../../components/functional/link/CustomLink";
 
 //style
 import style from "../../../assets/styles/common.module.scss";
@@ -13,25 +12,35 @@ import Title from "../../../components/functional/title/Title";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+import CustomLink from "../../../components/functional/link/CustomLink";
+import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar';
 
 //state
 interface State {
   addLeft: any;
   addRight: Array<any>;
-  buttonColor: string;
+  snackIsOpen: boolean;
 }
 //init state
 const initialState: State = {
   addLeft: [],
   addRight: [],
-  buttonColor: style.ternaryColor
+  snackIsOpen: false
 }
 
-let key:number = 0
+let key: number = 0
 
 const About: FC = () => {
 
   const [state, setState] = useState<State>(initialState)
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
 
   //ritorno l'elemento con il contenuto
   const getContent = (): any => {
@@ -73,7 +82,10 @@ const About: FC = () => {
 
   //salvo le modifiche
   const save = (): void => {
-
+    setState({
+      ...state,
+      snackIsOpen: true
+    })
   }
 
   return (
@@ -125,14 +137,19 @@ const About: FC = () => {
             callback={addSlot}
           />
           {/*salva modifiche*/}
-          <ButtonGeneric 
-            color={state.buttonColor}
+          <ButtonGeneric
+            color={"rgb(25, 118, 210)"}
             callback={save}
           >
-              Salva modifiche
+            Salva modifiche
           </ButtonGeneric>
         </Box>
       </Box>
+      {
+        //snackbar
+        state?.snackIsOpen &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
+      }
     </Box>
   )
 }

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import userDuck from "../../../redux/ducks/userDuck";
 //mui
 import { Box } from "@mui/material";
@@ -12,6 +12,7 @@ import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAd
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import { useSelector } from "react-redux/es/exports";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 //data
 import { home } from "../../../utils/mockup/data";
 
@@ -28,12 +29,27 @@ type home = {
   };
 };
 
-export default function Home() {
+interface State{
+  snackIsOpen: boolean
+}
+
+const initState: State = {
+  snackIsOpen: false
+};
+ const Home: FC = () => {
+
+  const [state,setState] = useState<State>(initState)
   function handleClick(e: any): void {}
+ 
 
   const stampa: any = useSelector((state: any) => state.userDuck.user);
 
   function editHome(e: any): void {
+    setState({
+      ...state,
+      snackIsOpen: true
+    })
+
     let newHome: home = {
       hero: {
         img: e.target.form[0].value,
@@ -48,6 +64,14 @@ export default function Home() {
     };
     console.log(stampa);
   }
+
+  function closeSnack(): void{
+    setState({
+      ...state,
+      snackIsOpen: false
+    })
+  }
+
   return (
     <form className={common.component}>
       <Box className={common.doubleComponent}>
@@ -80,9 +104,22 @@ export default function Home() {
           </LabelText>
         </Box>
       </Box>
-      <ButtonGeneric callback={editHome} color={common.ternaryColor}>
+      <ButtonGeneric callback={editHome} color={common.saveButtonColor}>
         Salva modifiche
       </ButtonGeneric>
+
+      {/* snackbar */}
+      {
+        state.snackIsOpen && 
+        <CustomSnackbar 
+          message={"Modifiche avvenute con successo"}
+          severity={"success"}
+          callback={closeSnack}
+        />
+      }
+
     </form>
   );
 }
+
+export default Home;

@@ -7,6 +7,7 @@ import Title from "../../../components/functional/title/Title";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //styles
 import style from "./editorBlogStyle.module.scss";
@@ -22,11 +23,20 @@ import {
   Checkbox,
 } from "@mui/material";
 
+//pages
+import PAGES from "../../../router/pages";
+
 //data
 import { categories } from "../../../utils/mockup/data";
 
-function EditorBlog() {
+
+
+
+const EditorBlog: FC = () => {
   const [checked, setChecked] = useState([1]);
+  const [state,setState] = useState();
+
+  const navigate = useNavigate();
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -40,9 +50,21 @@ function EditorBlog() {
 
     setChecked(newChecked);
   };
+  
   const log = (e: any): void => {
     console.log(e);
   };
+
+  //salvo
+  const save = (): void => {
+    navigate(PAGES.articlesBlog,{state:{open:true}})
+  }
+
+  //torno alla pagina articoli
+  const goBack = (): void => {
+    navigate(PAGES.articlesBlog)
+  }
+
   return (
     <form>
       <Box className={common.component}>
@@ -112,27 +134,24 @@ function EditorBlog() {
               </List>
             </LabelText>
 
-            <Box className={common.row}>
+            <Box className={style.row}>
               <ButtonGeneric
                 color={common.buttonColor}
-                callback={() => {
-                  console.log("ciao");
-                }}
+                callback={save}
               >
                 Salva modifiche
               </ButtonGeneric>
 
               <ButtonGeneric
                 color={common.secondaryColor}
-                callback={() => {
-                  console.log("ciao");
-                }}
+                callback={goBack}
               >
-                Elimina evento
+                Annulla modifiche
               </ButtonGeneric>
             </Box>
           </Box>
         </Box>
+      
       </Box>
     </form>
   );

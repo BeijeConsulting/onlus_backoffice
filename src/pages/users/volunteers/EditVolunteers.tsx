@@ -116,7 +116,7 @@ const EditVolunteers: FC = (): JSX.Element => {
         confirmPassword: e.target.form[14].value,
       };
       
-      navigate(PAGES.usersVolunteers, {state: {open:true}})
+      navigate(PAGES.usersVolunteers, {state: {open: true}})
     }
 
 
@@ -128,7 +128,7 @@ const EditVolunteers: FC = (): JSX.Element => {
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
-    navigate(PAGES.usersVolunteers)
+    navigate(PAGES.usersVolunteers, {state: {open: false}})
   }
 
   return (

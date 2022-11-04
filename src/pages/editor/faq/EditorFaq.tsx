@@ -17,9 +17,6 @@ import Title from '../../../components/functional/title/Title';
 import CustomTextField from '../../../components/functional/textField/CustomTextField';
 import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGeneric';
 
-//Data
-import { faq } from "../../../utils/mockup/data";
-
 interface State {
   answerError: boolean;
   questionError: boolean;
@@ -64,7 +61,7 @@ const EditorFaq: FC = (): JSX.Element => {
       };
 
       console.log(qna);
-      navigate(PAGES.editFaq)
+      navigate(PAGES.editFaq, {state: {open:true}})
     }
   }
 
@@ -104,8 +101,8 @@ const EditorFaq: FC = (): JSX.Element => {
             </Box>
           </LabelText>
 
-          <Box className={style.saveBtn}>
-            <ButtonGeneric color={common.ternaryColor} callback={onSaveQna}>
+          <Box className={style.buttonsContainer}>
+            <ButtonGeneric color={common.saveButtonColor} callback={onSaveQna}>
               Salva modifiche
             </ButtonGeneric>
 

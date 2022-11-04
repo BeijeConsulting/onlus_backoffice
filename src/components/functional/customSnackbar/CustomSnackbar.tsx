@@ -1,10 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 
-//style
-
-
 //mui
-import Box from "@mui/material/Box";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 
@@ -12,6 +8,7 @@ import MuiAlert, { AlertColor, AlertProps } from '@mui/material/Alert';
 interface snackbarProps {
     message: string;
     severity: AlertColor;
+    callback?: Function;
 }
 //state
 interface State {
@@ -21,6 +18,7 @@ const initialState: State = {
     open: false
 }
 
+//alert
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     props,
     ref,
@@ -32,6 +30,7 @@ const CustomSnackbar: FC<snackbarProps> = (props) => {
 
     const [state, setState] = useState<State>(initialState)
 
+    //component did mount
     useEffect(() => {
       setState({
         ...state,
@@ -42,9 +41,13 @@ const CustomSnackbar: FC<snackbarProps> = (props) => {
 
     //chiudo la snackbar
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+
         if (reason === 'clickaway'){
             return;
         }
+        
+        props.callback()
+
         setState({
             open: false
         })

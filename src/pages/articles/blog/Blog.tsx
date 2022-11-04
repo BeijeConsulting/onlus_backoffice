@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { FC, useState, useEffect } from "react";
 
 //navigation
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //components
 import Title from "../../../components/functional/title/Title";
@@ -10,6 +10,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import CustomTable from "../../../components/functional/table/CustomTable";
 import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //mockup data
 import { articles } from "../../../utils/mockup/data";
@@ -25,41 +26,48 @@ import PAGES from "../../../router/pages";
 import common from "../../../assets/styles/common.module.scss";
 import style from "./blogStyle.module.scss";
 
-//interfaces
 interface State {
+  snackIsOpen: boolean;
+  snackDeleteIsOpen: boolean;
   modalIsOpen: boolean;
   loading: boolean;
 }
-
-const initState: State = {
-  modalIsOpen: false,
-  loading: true,
+const initialState: State = {
+  snackIsOpen: false,
+  snackDeleteIsOpen: false,
+  modalIsOpen: false
 };
 
 const Blog: FC = () => {
   const navigate = useNavigate();
+  const [state, setState] = useState<State>(initialState);
 
-  const [state, setState] = useState<State>(initState);
+  const location = useLocation();
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async (): Promise<void> => {
-    await new Promise((r) => {
-      setTimeout(r, 1000);
-    });
+  //Snackbar
+  const handleClose = () => {
     setState({
       ...state,
-      loading: !state.loading,
-    });
-  };
+      snackIsOpen: false,
+      snackDeleteIsOpen: false
+    })
+  }
 
-  const handleModal = (): void => {
+  //mostro/nascondo modal di eliminazione dell'evento
+  const showDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen,
-    });
+      modalIsOpen: !state.modalIsOpen
+    })
+  }
+
+  //elimina articolo
+  const deleteArticle = (): void => {
+    setState({
+      ...state,
+      snackDeleteIsOpen: true,
+      modalIsOpen: false
+    })
   };
 
   const goToEditor = (): void => {
@@ -74,11 +82,11 @@ const Blog: FC = () => {
           gap: "5px",
         }}
       >
-        <ButtonIcon callback={handleModal}>
-          <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
-        </ButtonIcon>
         <ButtonIcon callback={goToEditor}>
           <CreateIcon sx={{ fontSize: "18px" }} />
+        </ButtonIcon>
+        <ButtonIcon callback={showDeleteModal}>
+          <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </Box>
     );
@@ -119,33 +127,39 @@ const Blog: FC = () => {
 
   return (
     <Box className={common.component}>
-      {state.loading === true ? (
-        <Box>loading</Box>
-      ) : (
-        <>
-          <Box className={common.singleComponent}>
-            <Box className={`${common.row} ${style.justify}`}>
-              <Title
-                text={"Archivio Blog"}
-                textInfo={
-                  "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
-                }
-              />
-              <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
-                + Nuovo Articolo
-              </ButtonGeneric>
-            </Box>
-            <Box className={style.tableContainer}>
-              <CustomTable columns={columns} rows={articles} pageSize={8} />
-            </Box>
-          </Box>
-          <DeleteModal
-            open={state.modalIsOpen}
-            closeCallback={handleModal}
-            deleteCallback={handleModal}
+      <Box className={common.singleComponent}>
+        <Box className={`${common.row} ${style.justify}`}>
+          <Title
+            text={"Archivio Blog"}
+            textInfo={
+              "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
+            }
           />
-        </>
-      )}
+          <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
+            + Aggiungi Articolo
+          </ButtonGeneric>
+        </Box>
+        <Box className={style.tableContainer}>
+          <CustomTable columns={columns} rows={articles} pageSize={8} />
+        </Box>
+      </Box>
+      {/* delete modal */}
+     <DeleteModal
+        open={state.modalIsOpen}
+        closeCallback={showDeleteModal}
+        deleteCallback={deleteArticle}
+      />
+
+      {/* snackbar */}
+      {
+        location?.state?.open &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
+      }
+
     </Box>
   );
 };

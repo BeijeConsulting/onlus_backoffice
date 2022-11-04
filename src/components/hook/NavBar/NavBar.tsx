@@ -11,10 +11,14 @@ import ListItemText from "@mui/material/ListItemText";
 import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ArrowDropDown";
 import ExpandMore from "@mui/icons-material/ArrowDropUp";
+import { useNavigate } from "react-router-dom";
+import PAGES from "../../../router/pages";
 
 //Style
 import common from "../../../assets/styles/common.module.scss";
 import css from "./navBar.module.scss";
+import { Typography } from "@mui/material";
+import { fontWeight } from "@mui/system";
 
 interface State {
   editor: boolean;
@@ -81,6 +85,10 @@ const NavBar: FC = (): JSX.Element => {
 
   return (
     <List className={css.nav} component="nav">
+      <ListItemButton className={css.father} onClick={openEditor}>
+        <Typography className={css.text}>EDITOR SITO</Typography>
+        {state.editor ? <ExpandMore /> : <ExpandLess />}
+      </ListItemButton>
       {user?.role?.includes(roles.admin) && (
         <>
           <ListItemButton className={css.father} onClick={openEditor}>
@@ -167,7 +175,7 @@ const NavBar: FC = (): JSX.Element => {
       )}
 
       <ListItemButton className={css.father} onClick={openArticles}>
-        <p>ARTICOLI</p>
+        <Typography>ARTICOLI</Typography>
         {state.articles ? <ExpandMore /> : <ExpandLess />}
       </ListItemButton>
 
@@ -235,7 +243,7 @@ const NavBar: FC = (): JSX.Element => {
         className={css.father}
         onClick={handleNavigate(PAGES.donations)}
       >
-        <p>DONAZIONI</p>
+        <Typography sx={checkSelectedPage(PAGES.donations)}>DONAZIONI</Typography>
       </ListItemButton>
     </List>
   );

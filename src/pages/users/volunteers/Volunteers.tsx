@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -25,10 +25,12 @@ import CustomSnackbar from '../../../components/functional/customSnackbar/Custom
 
 interface State {
   modalIsOpen: boolean;
+  snackIsOpen: boolean;
 }
 
 const initialState: State = {
   modalIsOpen: false,
+  snackIsOpen: false,
 };
 
 const Volunteers: FC = (): JSX.Element => {
@@ -37,6 +39,21 @@ const Volunteers: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    setState({
+      ...state,
+      snackIsOpen: location?.state?.open,
+    });
+  }, [])
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
 
   //Modal
   const openDeleteModal = (row: object) => (): void => {
@@ -127,10 +144,8 @@ const Volunteers: FC = (): JSX.Element => {
         />
       </Box>
       {
-        location?.state?.open && 
-        <Box className={common.singleComponent}>
-          <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
-        </Box>
+        state.snackIsOpen && 
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
       }
     </Box>
   )

@@ -2,7 +2,7 @@ import { Box, Typography, Modal } from "@mui/material";
 import { FC, useState, useEffect } from "react";
 
 //router dom
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 //PAGES
 import PAGES from "../../router/pages";
@@ -26,34 +26,59 @@ import CreateIcon from "@mui/icons-material/Create";
 
 //modal
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
+import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 
 interface eventsProps {}
 
 interface State {
+  snackIsOpen: boolean;
+  snackDeleteIsOpen: boolean;
   modalIsOpen: boolean;
 }
 
 const initialState: State = {
-  modalIsOpen: false,
+  snackIsOpen: false,
+  snackDeleteIsOpen: false,
+  modalIsOpen: false
 };
 
 const Events: FC<eventsProps> = (props) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [state, setState] = useState<State>(initialState);
 
-  function openDeleteModal(): void {
+   //Snackbar
+   const handleClose = () => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen,
-    });
+      snackIsOpen: false,
+      snackDeleteIsOpen: false
+    })
   }
 
+   //mostro/nascondo modal di eliminazione dell'evento
+   const showDeleteModal = (): void => {
+    setState({
+      ...state,
+      modalIsOpen: !state.modalIsOpen
+    })
+  }
+
+  //elimina evento
+  const deleteEvent = (): void => {
+    setState({
+      ...state,
+      snackDeleteIsOpen: true,
+      modalIsOpen: false
+    })
+  };
  
   //functions
   function goToEditor(): void {
     navigate(PAGES.editorEvents);
   }
+
 
   //Colonne del DataGrid
   const renderDetailsButton_1 = (params: any) => {
@@ -65,11 +90,11 @@ const Events: FC<eventsProps> = (props) => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={openDeleteModal}>
-            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
-          </ButtonIcon>
           <ButtonIcon callback={goToEditor}>
             <CreateIcon sx={{ fontSize: "18px" }} />
+          </ButtonIcon>
+          <ButtonIcon callback={showDeleteModal}>
+            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
       </>
@@ -85,7 +110,7 @@ const Events: FC<eventsProps> = (props) => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={openDeleteModal}>
+          <ButtonIcon callback={showDeleteModal}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -185,12 +210,23 @@ const Events: FC<eventsProps> = (props) => {
         </Box>
       </Box>
 
-      {/* modal */}
-      <DeleteModal
+     {/* delete modal */}
+     <DeleteModal
         open={state.modalIsOpen}
-        closeCallback={openDeleteModal}
-        deleteCallback={openDeleteModal}
+        closeCallback={showDeleteModal}
+        deleteCallback={deleteEvent}
       />
+
+      {/* snackbar */}
+      {
+        location?.state?.open &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
+      }
+
     </Box>
   );
 };

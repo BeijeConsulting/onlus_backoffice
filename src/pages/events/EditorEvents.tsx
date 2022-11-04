@@ -1,4 +1,6 @@
-import { useState, useEffect, FC } from "react";
+import { useState, FC } from "react";
+import { useNavigate } from "react-router-dom";
+import PAGES from "../../router/pages";
 
 //MUI
 import { Box, TextField } from "@mui/material";
@@ -20,7 +22,8 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import style from "../../assets/styles/common.module.scss";
 import editorStyle from "./eventEditorStyle.module.scss";
 
-interface editorEventProps {}
+interface editorEventProps {
+}
 
 interface state {
   selectedDate: any;
@@ -33,122 +36,122 @@ const initialState: state = {
 const EditorEvents: FC<editorEventProps> = (props: any) => {
   const [state, setState] = useState(initialState);
 
-  // useEffect(()=>{
-  //   console.log(state.selectedDate.$d);
+  const navigate = useNavigate();
 
-  // },[state.selectedDate])
+  //torno alla pagina eventi
+  const goBack = (): void => {
+    navigate(PAGES.events)
+  }
+
+  //salvo le modifiche
+  const save = (): void => {
+    navigate(PAGES.events,{state:{open:true}})
+  }
 
   return (
-    <Box className={style.component}>
-      <Box className={style.doubleComponent}>
-        <Box className={style.left}>
-          {/* <LabelText>
-                <Title
-                    text={"Titolo"}
-                    textInfo={"Inserisci il titolo dell'evento"}
-                  />
-                  {state.selectedDate}
-              </LabelText> */}
-          <LabelText>
-            <Title
-              text={"Titolo"}
-              textInfo={"Inserisci il titolo dell'evento"}
-            />
-            <CustomTextField placeholder={"Titolo"} error={false} />
-          </LabelText>
+    <form>
+      <Box className={style.component}>
+        <Box className={style.doubleComponent}>
 
-          <LabelText>
-            <Title
-              text={"Data e ora"}
-              textInfo={"Inserisci la data e l'ora dell'evento"}
-            />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateTimePicker
-                renderInput={(props) => <TextField size="small" {...props} />}
-                label="Seleziona"
-                value={state.selectedDate}
-                onChange={(newValue) => {
-                  setState({
-                    ...state,
-                    selectedDate: newValue,
-                  });
-                }}
+
+          <Box className={style.left}>
+            <LabelText>
+              <Title
+                text={"Titolo"}
+                textInfo={"Inserisci il titolo dell'evento"}
               />
-            </LocalizationProvider>
-          </LabelText>
+              <CustomTextField placeholder={"Titolo"} error={false} />
+            </LabelText>
 
-          <LabelText>
-            <Title
-              text={"Descrizione"}
-              textInfo={"Inserisci una descrizione esplicativa dell'evento"}
-            />
-            <CustomTextField
-              placeholder={"Inserisci testo"}
-              error={false}
-              multiline={true}
-              minrow={6}
-            />
-          </LabelText>
-        </Box>
-        <Box className={style.right}>
-          <LabelText>
-            <Title
-              text={"Copertina"}
-              textInfo={"Inserisci una foto di copertina per l'evento"}
-            />
-            <ButtonAddFile
-              callback={() => {
-                console.log("ciao");
-              }}
-            />
-          </LabelText>
+            <LabelText>
+              <Title
+                text={"Data e ora"}
+                textInfo={"Inserisci la data e l'ora dell'evento"}
+              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DateTimePicker
+                  renderInput={(props) => <TextField size="small" {...props} />}
+                  label="Seleziona"
+                  value={state.selectedDate}
+                  onChange={(newValue) => {
+                    setState({
+                      ...state,
+                      selectedDate: newValue,
+                    });
+                  }}
+                />
+              </LocalizationProvider>
+            </LabelText>
 
-          <LabelText>
-            <Title
-              text={"Luogo"}
-              textInfo={"Inserisci il luogo in cui si svolgerà l'evento"}
-            />
-            <CustomTextField
-              placeholder={"Inserisci indirizzo"}
-              error={false}
-            />
-          </LabelText>
-
-          <LabelText>
-            <Title
-              text={"Requisiti"}
-              textInfo={"Specifica i requisiti per partecipare all'evento"}
-            />
-            <CustomTextField
-              placeholder={"Inserisci testo"}
-              error={false}
-              multiline={true}
-              minrow={6}
-            />
-          </LabelText>
-
-          <Box className={editorStyle.buttonsContainer}>
-            <ButtonGeneric
-              color={style.ternaryColor}
-              callback={() => {
-                console.log("ciao");
-              }}
-            >
-              Salva modifiche
-            </ButtonGeneric>
-
-            <ButtonGeneric
-              color={style.secondaryColor}
-              callback={() => {
-                console.log("ciao");
-              }}
-            >
-              Elimina evento
-            </ButtonGeneric>
+            <LabelText>
+              <Title
+                text={"Descrizione"}
+                textInfo={"Inserisci una descrizione esplicativa dell'evento"}
+              />
+              <CustomTextField
+                placeholder={"Inserisci testo"}
+                error={false}
+                multiline={true}
+                minrow={6}
+              />
+            </LabelText>
           </Box>
+          <Box className={style.right}>
+            <LabelText>
+              <Title
+                text={"Copertina"}
+                textInfo={"Inserisci una foto di copertina per l'evento"}
+              />
+              <ButtonAddFile
+                callback={() => { console.log('ciao') }}
+              />
+            </LabelText>
+
+            <LabelText>
+              <Title
+                text={"Luogo"}
+                textInfo={"Inserisci il luogo in cui si svolgerà l'evento"}
+              />
+              <CustomTextField
+                placeholder={"Inserisci indirizzo"}
+                error={false}
+              />
+            </LabelText>
+
+            <LabelText>
+              <Title
+                text={"Requisiti"}
+                textInfo={"Specifica i requisiti per partecipare all'evento"}
+              />
+              <CustomTextField
+                placeholder={"Inserisci testo"}
+                error={false}
+                multiline={true}
+                minrow={6}
+              />
+            </LabelText>
+
+            <Box className={editorStyle.buttonsContainer}>
+              <ButtonGeneric
+                color={style.saveButtonColor}
+                callback={save}
+              >
+                Salva modifiche
+              </ButtonGeneric>
+
+              <ButtonGeneric
+                color={style.secondaryColor}
+                callback={goBack}
+              >
+                Annulla modifiche
+              </ButtonGeneric>
+            </Box>
+          </Box>
+
+
         </Box>
-      </Box>
-    </Box>
+      </Box >
+    </form>
   );
 };
 

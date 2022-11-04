@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -27,10 +27,12 @@ import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGe
 
 interface State {
   modalIsOpen: boolean;
+  snackIsOpen: boolean;
 }
 
 const initialState: State = {
   modalIsOpen: false,
+  snackIsOpen: false,
 };
 
 const Collaborators: FC = (): JSX.Element => {
@@ -39,6 +41,21 @@ const Collaborators: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    setState({
+      ...state,
+      snackIsOpen: location?.state?.open,
+    });
+  }, [])
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
 
   //Modal
   const openDeleteModal = (row: object) => (): void => {
@@ -149,10 +166,8 @@ const Collaborators: FC = (): JSX.Element => {
         />
       </Box>
       {
-        location?.state?.open &&
-        <Box className={common.singleComponent}>
-          <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
-        </Box>
+        state.snackIsOpen &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
       }
     </Box>
   )

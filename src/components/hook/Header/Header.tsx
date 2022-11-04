@@ -56,6 +56,7 @@ const Header: FC = (): JSX.Element => {
 
   const goToPersonalArea = (): void => {
     navigate(PAGES.personalArea);
+    handleClose()
   };
 
   const logout = (): void => {

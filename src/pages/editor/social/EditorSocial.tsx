@@ -1,3 +1,5 @@
+import React, { FC, useEffect, useState } from 'react'
+
 import { useLocation, useNavigate } from "react-router-dom";
 //mui
 import { Box } from "@mui/material";
@@ -23,11 +25,12 @@ type social = {
   homepageOn: boolean;
 };
 
-function EditorSocial() {
+const EditorSocial: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleClick = (): void => {};
+
   const deleteSocial = (): void => {
     console.log("delete");
     navigate(PAGES.editSocial);
@@ -44,7 +47,7 @@ function EditorSocial() {
       homepageOn: e.target.form[6].checked,
     };
     console.log(newSocial);
-    navigate(PAGES.editSocial);
+    navigate(PAGES.editSocial, {state: {open: true}});
   };
 
   const createSocial = (e: any): void => {
@@ -57,7 +60,7 @@ function EditorSocial() {
     };
     console.log(newSocial);
 
-    navigate(PAGES.editSocial);
+    navigate(PAGES.editSocial, {state: {open: true}});
   };
 
   return (
@@ -112,15 +115,16 @@ function EditorSocial() {
           </Box>
         </LabelText>
       </Box>
-      <Box className={style.buttons}>
+
+      <Box className={style.buttonsContainer}>
         <ButtonGeneric
           callback={!!location?.state?.data?.id ? editSocial : createSocial}
-          color={common.ternaryColor}
+          color={common.saveButtonColor}
         >
           Salva modifiche
         </ButtonGeneric>
         <ButtonGeneric callback={deleteSocial} color={common.secondaryColor}>
-          Elimina social
+          Annulla modifiche
         </ButtonGeneric>
       </Box>
     </form>
