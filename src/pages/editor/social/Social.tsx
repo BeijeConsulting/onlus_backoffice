@@ -14,6 +14,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import CustomTable from "../../../components/functional/table/CustomTable";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
 import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
+import DeleteModal from '../../../components/functional/deleteModal/DeleteModal';
 
 //icon
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -33,14 +34,17 @@ TO DO
 
 interface State {
   snackIsOpen: boolean;
+  snackDeleteIsOpen: boolean;
+  modalIsOpen: boolean;
 }
-
 const initialState: State = {
   snackIsOpen: false,
+  snackDeleteIsOpen: false,
+  modalIsOpen: false
 };
 
 const Social: FC = (): JSX.Element => {
-  
+
   const [state, setState] = useState<State>(initialState);
 
   const navigate = useNavigate();
@@ -51,6 +55,7 @@ const Social: FC = (): JSX.Element => {
     setState({
       ...state,
       snackIsOpen: false,
+      snackDeleteIsOpen: false
     })
   }
 
@@ -59,13 +64,25 @@ const Social: FC = (): JSX.Element => {
     navigate(PAGES.editorSocial, { state: { data: att.row } });
   };
 
-  const deleteRow = (att: any) => (): void => {
-    console.log("delete", att);
+  const deleteRow = (): void => {
+    setState({
+      ...state,
+      snackDeleteIsOpen: true,
+      modalIsOpen: false
+    })
   };
 
   const addSocial = (): void => {
     navigate(PAGES.editorSocial);
   };
+
+  //mostro/nascondo modal di eliminazione della faq
+  const showDeleteModal = (): void => {
+    setState({
+      ...state,
+      modalIsOpen: !state.modalIsOpen
+    })
+  }
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -74,7 +91,7 @@ const Social: FC = (): JSX.Element => {
         <ButtonIcon callback={edit(params)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={deleteRow(params)}>
+        <ButtonIcon callback={showDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
@@ -122,9 +139,19 @@ const Social: FC = (): JSX.Element => {
           <CustomTable columns={columns} rows={social} />
         </LabelText>
       </Box>
+      {/* delete modal */}
+      <DeleteModal
+        open={state.modalIsOpen}
+        closeCallback={showDeleteModal}
+        deleteCallback={deleteRow}
+      />
       {
-        location?.state?.open && 
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
+        location?.state?.open &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
       }
     </Box>
   );

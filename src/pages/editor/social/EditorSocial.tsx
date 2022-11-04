@@ -30,6 +30,7 @@ const EditorSocial: FC = (): JSX.Element => {
   const location = useLocation();
 
   const handleClick = (): void => {};
+
   const deleteSocial = (): void => {
     console.log("delete");
     navigate(PAGES.editSocial);
@@ -114,15 +115,16 @@ const EditorSocial: FC = (): JSX.Element => {
           </Box>
         </LabelText>
       </Box>
-      <Box className={style.buttons}>
+
+      <Box className={style.buttonsContainer}>
         <ButtonGeneric
           callback={!!location?.state?.data?.id ? editSocial : createSocial}
-          color={common.ternaryColor}
+          color={common.saveButtonColor}
         >
           Salva modifiche
         </ButtonGeneric>
         <ButtonGeneric callback={deleteSocial} color={common.secondaryColor}>
-          Elimina social
+          Annulla modifiche
         </ButtonGeneric>
       </Box>
     </form>

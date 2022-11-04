@@ -200,7 +200,7 @@ const General: FC = (): JSX.Element => {
             </Box>
           </LabelText>
         </Box>
-        <ButtonGeneric callback={onSaveGeneral} color="#a4b3ad">
+        <ButtonGeneric callback={onSaveGeneral} color={common.saveButtonColor}>
           Salva Modifiche
         </ButtonGeneric>
         {

@@ -9,10 +9,19 @@
     margin-bottom: 40px;
     display: flex;
     justify-content: flex-end;
-    column-gap: 2%;
+    column-gap: 10px;
 }
 
 .editorFaqBox{
     display: flex;   
     column-gap: 1%;
 }
+
+.buttonsContainer{
+    width:100%;
+    height: auto;
+    display:flex;
+    gap:10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }

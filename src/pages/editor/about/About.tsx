@@ -146,6 +146,7 @@ const About: FC = () => {
         </Box>
       </Box>
       {
+        //snackbar
         state?.snackIsOpen &&
         <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
       }

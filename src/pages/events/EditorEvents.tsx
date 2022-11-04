@@ -45,11 +45,7 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
 
   //salvo le modifiche
   const save = (): void => {
-    navigate(PAGES.events,{
-      state: {
-        openSnack: true
-      }
-    })
+    navigate(PAGES.events,{state:{open:true}})
   }
 
   return (
@@ -137,7 +133,7 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
 
             <Box className={editorStyle.buttonsContainer}>
               <ButtonGeneric
-                color={style.ternaryColor}
+                color={style.saveButtonColor}
                 callback={save}
               >
                 Salva modifiche
@@ -147,7 +143,7 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
                 color={style.secondaryColor}
                 callback={goBack}
               >
-                Elimina evento
+                Annulla modifiche
               </ButtonGeneric>
             </Box>
           </Box>

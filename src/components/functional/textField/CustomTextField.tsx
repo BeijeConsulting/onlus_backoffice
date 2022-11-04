@@ -16,13 +16,14 @@ interface textFieldProps {
   multiline?: boolean;
   errorMessage?: string;
   defaultValue?: string;
-
+  refCustom?: any;
 }
 
 const CustomTextField: FC<textFieldProps> = (props) => {
 
   return (
     <TextField
+      inputRef={props.refCustom ? props.refCustom: null}
       type={props.type ? props.type : "default"}
       minRows={props.multiline ? props.minrow : 1}
       maxRows={props.multiline ? props.maxrow : 1}

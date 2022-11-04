@@ -21,6 +21,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import CustomTable from "../../../components/functional/table/CustomTable";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
 import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
+import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
 
 //Data
 import { faq } from "../../../utils/mockup/data";
@@ -29,12 +30,16 @@ interface State {
   titleError: boolean;
   textError: boolean;
   snackIsOpen: boolean;
+  modalIsOpen: boolean;
+  snackDeleteIsOpen: boolean;
 }
 
 const initState: State = {
   titleError: false,
   textError: false,
+  modalIsOpen: false,
   snackIsOpen: false,
+  snackDeleteIsOpen: false
 };
 
 const Faq: FC = (): JSX.Element => {
@@ -48,6 +53,7 @@ const Faq: FC = (): JSX.Element => {
     setState({
       ...state,
       snackIsOpen: false,
+      snackDeleteIsOpen: false
     })
   }
 
@@ -95,9 +101,22 @@ const Faq: FC = (): JSX.Element => {
     navigate(PAGES.editorFaq, { state: { row } });
   };
 
-  const deleteQna = (row: object) => () => {
-    console.log(row);
+  //elimino faq
+  const deleteQna = ():void => {
+    setState({
+      ...state,
+      snackDeleteIsOpen:true,
+      modalIsOpen: false
+    })
   };
+
+  //mostro/nascondo modal di eliminazione della faq
+  const showDeleteModal = (): void => {
+    setState({
+      ...state,
+      modalIsOpen: !state.modalIsOpen
+    })
+  }
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -114,7 +133,7 @@ const Faq: FC = (): JSX.Element => {
         <ButtonIcon callback={updateQna(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={deleteQna(params.row)}>
+        <ButtonIcon callback={showDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </Box>
@@ -174,7 +193,7 @@ const Faq: FC = (): JSX.Element => {
           </LabelText>
 
           <Box className={style.saveBtn}>
-            <ButtonGeneric color={common.ternaryColor} callback={onSaveInfo}>
+            <ButtonGeneric color={common.saveButtonColor} callback={onSaveInfo}>
               Salva modifiche
             </ButtonGeneric>
           </Box>
@@ -192,13 +211,21 @@ const Faq: FC = (): JSX.Element => {
             />
 
             <ButtonGeneric color={common.ternaryColor} callback={addQna}>
-              +Aggiungi
+              + Aggiungi
             </ButtonGeneric>
           </Box>
 
           <CustomTable columns={columns} rows={faq.qna} pageSize={3} />
         </LabelText>
       </Box>
+
+      {/* delete modal */}
+      <DeleteModal
+        open={state.modalIsOpen}
+        closeCallback={showDeleteModal}
+        deleteCallback={deleteQna}
+      />
+
       {
         location?.state?.open &&
         <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
@@ -207,6 +234,10 @@ const Faq: FC = (): JSX.Element => {
       {
         state.snackIsOpen &&
         <CustomSnackbar message={"Modifiche ad info salvate con successo"} severity={"success"} callback={handleClose}/>
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose}/>
       }
     </Box>
   );

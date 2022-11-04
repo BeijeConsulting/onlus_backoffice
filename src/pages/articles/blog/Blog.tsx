@@ -26,43 +26,47 @@ import PAGES from "../../../router/pages";
 import common from "../../../assets/styles/common.module.scss";
 import style from "./blogStyle.module.scss";
 
-//interfaces
 interface State {
+  snackIsOpen: boolean;
+  snackDeleteIsOpen: boolean;
   modalIsOpen: boolean;
-  snackIsOpen: boolean
 }
-
-const initState: State = {
-  modalIsOpen: false,
-  snackIsOpen: false
+const initialState: State = {
+  snackIsOpen: false,
+  snackDeleteIsOpen: false,
+  modalIsOpen: false
 };
 
 const Blog: FC = () => {
   const navigate = useNavigate();
-  const [state, setState] = useState<State>(initState);
+  const [state, setState] = useState<State>(initialState);
 
   const location = useLocation();
-  
-  useEffect(()=>{
-    setState({
-      ...state,
-      snackIsOpen: location?.state?.openSnack
-    })
-  },[])
 
   //Snackbar
   const handleClose = () => {
     setState({
       ...state,
       snackIsOpen: false,
+      snackDeleteIsOpen: false
     })
   }
 
-  const handleModal = (): void => {
+  //mostro/nascondo modal di eliminazione dell'evento
+  const showDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen,
-    });
+      modalIsOpen: !state.modalIsOpen
+    })
+  }
+
+  //elimina articolo
+  const deleteArticle = (): void => {
+    setState({
+      ...state,
+      snackDeleteIsOpen: true,
+      modalIsOpen: false
+    })
   };
 
   const goToEditor = (): void => {
@@ -80,7 +84,7 @@ const Blog: FC = () => {
         <ButtonIcon callback={goToEditor}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={handleModal}>
+        <ButtonIcon callback={showDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </Box>
@@ -131,27 +135,28 @@ const Blog: FC = () => {
             }
           />
           <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
-            + Nuovo Articolo
+            + Aggiungi Articolo
           </ButtonGeneric>
         </Box>
         <Box className={style.tableContainer}>
           <CustomTable columns={columns} rows={articles} pageSize={8} />
         </Box>
       </Box>
-      <DeleteModal
+      {/* delete modal */}
+     <DeleteModal
         open={state.modalIsOpen}
-        closeCallback={handleModal}
-        deleteCallback={handleModal}
+        closeCallback={showDeleteModal}
+        deleteCallback={deleteArticle}
       />
 
       {/* snackbar */}
       {
-        state.snackIsOpen && 
-        <CustomSnackbar 
-          message={"Il salvataggio è andato "}
-          severity={"success"}
-          callback={handleClose}
-        />
+        location?.state?.open &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
       }
 
     </Box>

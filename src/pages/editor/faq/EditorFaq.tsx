@@ -101,8 +101,8 @@ const EditorFaq: FC = (): JSX.Element => {
             </Box>
           </LabelText>
 
-          <Box className={style.saveBtn}>
-            <ButtonGeneric color={common.ternaryColor} callback={onSaveQna}>
+          <Box className={style.buttonsContainer}>
+            <ButtonGeneric color={common.saveButtonColor} callback={onSaveQna}>
               Salva modifiche
             </ButtonGeneric>
 

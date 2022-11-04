@@ -31,13 +31,15 @@ import CustomSnackbar from "../../components/functional/customSnackbar/CustomSna
 interface eventsProps {}
 
 interface State {
+  snackIsOpen: boolean;
+  snackDeleteIsOpen: boolean;
   modalIsOpen: boolean;
-  snackIsOpen: boolean
 }
 
 const initialState: State = {
-  modalIsOpen: false,
-  snackIsOpen: false
+  snackIsOpen: false,
+  snackDeleteIsOpen: false,
+  modalIsOpen: false
 };
 
 const Events: FC<eventsProps> = (props) => {
@@ -46,28 +48,31 @@ const Events: FC<eventsProps> = (props) => {
 
   const [state, setState] = useState<State>(initialState);
 
-  //Snackbar
-  const handleClose = () => {
+   //Snackbar
+   const handleClose = () => {
     setState({
       ...state,
       snackIsOpen: false,
+      snackDeleteIsOpen: false
     })
   }
 
-  useEffect(()=>{
+   //mostro/nascondo modal di eliminazione dell'evento
+   const showDeleteModal = (): void => {
     setState({
       ...state,
-      snackIsOpen: location?.state?.openSnack
+      modalIsOpen: !state.modalIsOpen
     })
-  },[])
-
-  function openDeleteModal(): void {
-    setState({
-      ...state,
-      modalIsOpen: !state.modalIsOpen,
-    });
   }
 
+  //elimina evento
+  const deleteEvent = (): void => {
+    setState({
+      ...state,
+      snackDeleteIsOpen: true,
+      modalIsOpen: false
+    })
+  };
  
   //functions
   function goToEditor(): void {
@@ -88,7 +93,7 @@ const Events: FC<eventsProps> = (props) => {
           <ButtonIcon callback={goToEditor}>
             <CreateIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
-          <ButtonIcon callback={openDeleteModal}>
+          <ButtonIcon callback={showDeleteModal}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -105,7 +110,7 @@ const Events: FC<eventsProps> = (props) => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={openDeleteModal}>
+          <ButtonIcon callback={showDeleteModal}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -205,21 +210,21 @@ const Events: FC<eventsProps> = (props) => {
         </Box>
       </Box>
 
-      {/* modal */}
-      <DeleteModal
+     {/* delete modal */}
+     <DeleteModal
         open={state.modalIsOpen}
-        closeCallback={openDeleteModal}
-        deleteCallback={openDeleteModal}
+        closeCallback={showDeleteModal}
+        deleteCallback={deleteEvent}
       />
 
       {/* snackbar */}
       {
-        state.snackIsOpen && 
-        <CustomSnackbar 
-          message={"Il salvataggio è andato "}
-          severity={"success"} 
-          callback={handleClose}
-        />
+        location?.state?.open &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
       }
 
     </Box>

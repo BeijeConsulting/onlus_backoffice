@@ -50,16 +50,19 @@ const EditorBlog: FC = () => {
 
     setChecked(newChecked);
   };
+  
   const log = (e: any): void => {
     console.log(e);
   };
 
-  function saveData(): void{
-    navigate(PAGES.articlesBlog,{
-      state: {
-        openSnack: true
-      }
-    });
+  //salvo
+  const save = (): void => {
+    navigate(PAGES.articlesBlog,{state:{open:true}})
+  }
+
+  //torno alla pagina articoli
+  const goBack = (): void => {
+    navigate(PAGES.articlesBlog)
   }
 
   return (
@@ -134,18 +137,16 @@ const EditorBlog: FC = () => {
             <Box className={style.row}>
               <ButtonGeneric
                 color={common.buttonColor}
-                callback={saveData}
+                callback={save}
               >
                 Salva modifiche
               </ButtonGeneric>
 
               <ButtonGeneric
                 color={common.secondaryColor}
-                callback={() => {
-                  console.log("ciao");
-                }}
+                callback={goBack}
               >
-                Elimina evento
+                Annulla modifiche
               </ButtonGeneric>
             </Box>
           </Box>

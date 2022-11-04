@@ -104,7 +104,7 @@ const initState: State = {
           </LabelText>
         </Box>
       </Box>
-      <ButtonGeneric callback={editHome} color={common.ternaryColor}>
+      <ButtonGeneric callback={editHome} color={common.saveButtonColor}>
         Salva modifiche
       </ButtonGeneric>
 
