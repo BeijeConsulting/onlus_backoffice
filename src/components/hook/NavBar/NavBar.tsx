@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux/es/exports";
 import PAGES from "../../../router/pages";
+import roles from "../../../utils/roles";
 
 //Componenti MUI
 import List from "@mui/material/List";
@@ -80,7 +81,7 @@ const NavBar: FC = (): JSX.Element => {
 
   return (
     <List className={css.nav} component="nav">
-      {user?.role?.includes("admin") && (
+      {user?.role?.includes(roles.admin) && (
         <>
           <ListItemButton className={css.father} onClick={openEditor}>
             <p className={css.text}>EDITOR SITO</p>
@@ -196,7 +197,7 @@ const NavBar: FC = (): JSX.Element => {
         </List>
       </Collapse>
 
-      {user?.role?.includes("admin") && (
+      {user?.role?.includes(roles.admin) && (
         <>
           <ListItemButton className={css.father} onClick={openUsers}>
             <p>UTENTI</p>

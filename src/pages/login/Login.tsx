@@ -73,7 +73,7 @@ const Login: FC = (): JSX.Element => {
   }
 
   return (
-    <div className={style.container}>
+    <Box className={style.container}>
       <Box className={style.boxLogin}>
         <form className={style.form}>
           <LabelText>
@@ -103,7 +103,7 @@ const Login: FC = (): JSX.Element => {
           </LabelText>
         </form>
       </Box>
-    </div>
+    </Box>
   );
 };
 
