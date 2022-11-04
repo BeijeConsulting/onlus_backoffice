@@ -28,16 +28,32 @@ import style from "./blogStyle.module.scss";
 //interfaces
 interface State {
   modalIsOpen: boolean;
+  loading: boolean;
 }
 
 const initState: State = {
   modalIsOpen: false,
+  loading: true,
 };
 
 const Blog: FC = () => {
   const navigate = useNavigate();
 
   const [state, setState] = useState<State>(initState);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async (): Promise<void> => {
+    await new Promise((r) => {
+      setTimeout(r, 1000);
+    });
+    setState({
+      ...state,
+      loading: !state.loading,
+    });
+  };
 
   const handleModal = (): void => {
     setState({
@@ -103,27 +119,33 @@ const Blog: FC = () => {
 
   return (
     <Box className={common.component}>
-      <Box className={common.singleComponent}>
-        <Box className={`${common.row} ${style.justify}`}>
-          <Title
-            text={"Archivio Blog"}
-            textInfo={
-              "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
-            }
+      {state.loading === true ? (
+        <Box>loading</Box>
+      ) : (
+        <>
+          <Box className={common.singleComponent}>
+            <Box className={`${common.row} ${style.justify}`}>
+              <Title
+                text={"Archivio Blog"}
+                textInfo={
+                  "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
+                }
+              />
+              <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
+                + Nuovo Articolo
+              </ButtonGeneric>
+            </Box>
+            <Box className={style.tableContainer}>
+              <CustomTable columns={columns} rows={articles} pageSize={8} />
+            </Box>
+          </Box>
+          <DeleteModal
+            open={state.modalIsOpen}
+            closeCallback={handleModal}
+            deleteCallback={handleModal}
           />
-          <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
-            + Nuovo Articolo
-          </ButtonGeneric>
-        </Box>
-        <Box className={style.tableContainer}>
-          <CustomTable columns={columns} rows={articles} pageSize={8} />
-        </Box>
-      </Box>
-      <DeleteModal
-        open={state.modalIsOpen}
-        closeCallback={handleModal}
-        deleteCallback={handleModal}
-      />
+        </>
+      )}
     </Box>
   );
 };
