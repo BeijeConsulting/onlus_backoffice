@@ -46,6 +46,14 @@ const Events: FC<eventsProps> = (props) => {
 
   const [state, setState] = useState<State>(initialState);
 
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
+
   useEffect(()=>{
     setState({
       ...state,
