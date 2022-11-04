@@ -35,7 +35,8 @@ interface State {
 const initialState: State = {
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  modalIsOpen: false
+  modalIsOpen: false,
+  loading: true,
 };
 
 const Blog: FC = () => {
@@ -49,25 +50,25 @@ const Blog: FC = () => {
     setState({
       ...state,
       snackIsOpen: false,
-      snackDeleteIsOpen: false
-    })
-  }
+      snackDeleteIsOpen: false,
+    });
+  };
 
   //mostro/nascondo modal di eliminazione dell'evento
   const showDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen
-    })
-  }
+      modalIsOpen: !state.modalIsOpen,
+    });
+  };
 
   //elimina articolo
   const deleteArticle = (): void => {
     setState({
       ...state,
       snackDeleteIsOpen: true,
-      modalIsOpen: false
-    })
+      modalIsOpen: false,
+    });
   };
 
   const goToEditor = (): void => {
@@ -144,22 +145,27 @@ const Blog: FC = () => {
         </Box>
       </Box>
       {/* delete modal */}
-     <DeleteModal
+      <DeleteModal
         open={state.modalIsOpen}
         closeCallback={showDeleteModal}
         deleteCallback={deleteArticle}
       />
 
       {/* snackbar */}
-      {
-        location?.state?.open &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
-      }
-      {
-        state.snackDeleteIsOpen &&
-        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
-      }
-
+      {location?.state?.open && (
+        <CustomSnackbar
+          message={"Modifiche avvenute con successo"}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={"Eliminazione avvenuta con successo"}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
     </Box>
   );
 };

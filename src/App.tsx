@@ -40,7 +40,7 @@ function App() {
   //const dispatch: Dispatch<AnyAction> = useDispatch(); ==> non funziona ):
 
   const dispatch: any = useDispatch();
-  const sendUser = users[0];
+  const sendUser = users[1];
 
   useEffect(() => {
     dispatch(setUser({ user: sendUser }));

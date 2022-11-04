@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+import { useSelector } from "react-redux";
 
 //Style
 import css from "./header.module.scss";
@@ -45,6 +46,8 @@ const Header: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
 
+  const user: any = useSelector((state: any) => state.userDuck.user);
+
   //Funzioni per aprire e chiudere il menù
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -56,7 +59,7 @@ const Header: FC = (): JSX.Element => {
 
   const goToPersonalArea = (): void => {
     navigate(PAGES.personalArea);
-    handleClose()
+    handleClose();
   };
 
   const logout = (): void => {
@@ -85,7 +88,7 @@ const Header: FC = (): JSX.Element => {
               <PersonIcon fontSize="large" />
               <p>Nome Utente</p>
             </span>
-            <span className={css.authSpan}>admin</span>
+            <span className={css.authSpan}>{!!user.role && user?.role[0]}</span>
           </div>
 
           <StyledMenu

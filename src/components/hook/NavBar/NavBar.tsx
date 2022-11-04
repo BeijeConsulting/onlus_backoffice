@@ -1,24 +1,24 @@
 import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux/es/exports";
+import { useSelector } from "react-redux";
 import PAGES from "../../../router/pages";
 import roles from "../../../utils/roles";
 
 //Componenti MUI
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Collapse from "@mui/material/Collapse";
+import {
+  Typography,
+  Collapse,
+  ListItemText,
+  ListItemButton,
+  List,
+} from "@mui/material";
+
+//icons
 import ExpandLess from "@mui/icons-material/ArrowDropDown";
 import ExpandMore from "@mui/icons-material/ArrowDropUp";
-import { useNavigate } from "react-router-dom";
-import PAGES from "../../../router/pages";
 
 //Style
-import common from "../../../assets/styles/common.module.scss";
 import css from "./navBar.module.scss";
-import { Typography } from "@mui/material";
-import { fontWeight } from "@mui/system";
 
 interface State {
   editor: boolean;
@@ -36,7 +36,6 @@ const initialState: State = {
 const NavBar: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
 
-  //redux and auth
   const user: any = useSelector((state: any) => state.userDuck.user);
 
   const navigate = useNavigate();
@@ -85,14 +84,10 @@ const NavBar: FC = (): JSX.Element => {
 
   return (
     <List className={css.nav} component="nav">
-      <ListItemButton className={css.father} onClick={openEditor}>
-        <Typography className={css.text}>EDITOR SITO</Typography>
-        {state.editor ? <ExpandMore /> : <ExpandLess />}
-      </ListItemButton>
       {user?.role?.includes(roles.admin) && (
         <>
           <ListItemButton className={css.father} onClick={openEditor}>
-            <p className={css.text}>EDITOR SITO</p>
+            <Typography className={css.text}>EDITOR SITO</Typography>
             {state.editor ? <ExpandMore /> : <ExpandLess />}
           </ListItemButton>
 
@@ -165,11 +160,12 @@ const NavBar: FC = (): JSX.Element => {
               </ListItemButton>
             </List>
           </Collapse>
+
           <ListItemButton
             className={css.father}
             onClick={handleNavigate(PAGES.events)}
           >
-            <p>EVENTI</p>
+            <Typography sx={checkSelectedPage(PAGES.events)}>EVENTI</Typography>
           </ListItemButton>
         </>
       )}
@@ -204,11 +200,10 @@ const NavBar: FC = (): JSX.Element => {
           </ListItemButton>
         </List>
       </Collapse>
-
       {user?.role?.includes(roles.admin) && (
         <>
           <ListItemButton className={css.father} onClick={openUsers}>
-            <p>UTENTI</p>
+            <Typography>UTENTI</Typography>
             {state.users ? <ExpandMore /> : <ExpandLess />}
           </ListItemButton>
 
@@ -237,14 +232,17 @@ const NavBar: FC = (): JSX.Element => {
               </ListItemButton>
             </List>
           </Collapse>
+
+          <ListItemButton
+            className={css.father}
+            onClick={handleNavigate(PAGES.donations)}
+          >
+            <Typography sx={checkSelectedPage(PAGES.donations)}>
+              DONAZIONI
+            </Typography>
+          </ListItemButton>
         </>
       )}
-      <ListItemButton
-        className={css.father}
-        onClick={handleNavigate(PAGES.donations)}
-      >
-        <Typography sx={checkSelectedPage(PAGES.donations)}>DONAZIONI</Typography>
-      </ListItemButton>
     </List>
   );
 };
