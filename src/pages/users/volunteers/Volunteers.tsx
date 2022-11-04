@@ -26,11 +26,13 @@ import CustomSnackbar from '../../../components/functional/customSnackbar/Custom
 interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
+  snackDeleteIsOpen: boolean
 }
 
 const initialState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
+  snackDeleteIsOpen: false
 };
 
 const Volunteers: FC = (): JSX.Element => {
@@ -52,6 +54,7 @@ const Volunteers: FC = (): JSX.Element => {
     setState({
       ...state,
       snackIsOpen: false,
+      snackDeleteIsOpen: false
     })
   }
 
@@ -70,6 +73,7 @@ const Volunteers: FC = (): JSX.Element => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
+    
     });
   }
 
@@ -78,8 +82,12 @@ const Volunteers: FC = (): JSX.Element => {
     navigate(PAGES.editorVolunteers, { state: { row } })
   };
 
-  const deleteGuest = (row: object) => (): void => {
-    console.log(row);
+  const deleteVolunteer = (): void =>{
+    setState({
+      ...state,
+      snackDeleteIsOpen: true,
+      modalIsOpen: !state.modalIsOpen,
+    })
   }
 
   //Colonne del DataGrid
@@ -140,12 +148,16 @@ const Volunteers: FC = (): JSX.Element => {
         <DeleteModal
           open={state.modalIsOpen}
           closeCallback={closeDeleteModal}
-          deleteCallback={closeDeleteModal /*API delete*/}
+          deleteCallback={deleteVolunteer /*API delete*/}
         />
       </Box>
       {
         state.snackIsOpen && 
         <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
       }
     </Box>
   )

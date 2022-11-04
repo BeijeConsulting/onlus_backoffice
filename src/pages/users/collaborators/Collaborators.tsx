@@ -28,11 +28,16 @@ import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGe
 interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
+  snackDeleteIsOpen: boolean;
+  snackAdd: boolean
+
 }
 
 const initialState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
+  snackDeleteIsOpen: false,
+  snackAdd: false
 };
 
 const Collaborators: FC = (): JSX.Element => {
@@ -54,6 +59,7 @@ const Collaborators: FC = (): JSX.Element => {
     setState({
       ...state,
       snackIsOpen: false,
+      snackDeleteIsOpen: false
     })
   }
 
@@ -72,6 +78,7 @@ const Collaborators: FC = (): JSX.Element => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
+      snackDeleteIsOpen: true
     });
   }
 
@@ -168,6 +175,14 @@ const Collaborators: FC = (): JSX.Element => {
       {
         state.snackIsOpen &&
         <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
+      }
+      {
+       location?.state?.openAdd &&
+        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
       }
     </Box>
   )

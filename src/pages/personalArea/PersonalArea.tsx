@@ -43,10 +43,6 @@ const lang: Array<Item> = [
 
 const roles: Array<Item> = [
   {
-    name: 'Owner',
-    value: 'owner'
-  },
-  {
     name: 'Admin',
     value: 'admin'
   },
@@ -58,12 +54,12 @@ const roles: Array<Item> = [
 
 interface State {
   error: Array<boolean>;
-  openSnack: boolean;
+  snackIsOpen: boolean;
 }
 
 const initState: State = {
   error: [false, false, false, false, false, false, false, false],
-  openSnack: false,
+  snackIsOpen: false,
 };
 
 const PersonalArea: FC = (): JSX.Element => {
@@ -79,6 +75,14 @@ const PersonalArea: FC = (): JSX.Element => {
       error: [false, false, false, false, false, false, false, false]
     })
   }, [])
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackIsOpen: false,
+    })
+  }
 
   //Funzione per salvare i dati
   const onSave = (e: any): void => {
@@ -125,7 +129,7 @@ const PersonalArea: FC = (): JSX.Element => {
     setState({
       ...state,
       error: tmp,
-      openSnack: open,
+      snackIsOpen: open,
     })
   }
 
@@ -227,16 +231,16 @@ const PersonalArea: FC = (): JSX.Element => {
           </LabelText>
 
           <Box className={style.saveBtn}>
-            <ButtonGeneric color={common.ternaryColor} callback={onSave}>
+            <ButtonGeneric color={common.saveButtonColor} callback={onSave}>
               Salva modifiche
             </ButtonGeneric>
           </Box>
         </form>
       </Box>
       {
-        state.openSnack &&
+        state.snackIsOpen &&
         <Box className={common.singleComponent}>
-          <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} />
+          <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
         </Box>
       }
     </Box>

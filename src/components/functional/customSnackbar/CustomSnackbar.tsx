@@ -54,7 +54,7 @@ const CustomSnackbar: FC<snackbarProps> = (props) => {
     }
 
     return (
-        <Snackbar open={state.open} autoHideDuration={5000} onClose={handleClose}>
+        <Snackbar open={state.open} autoHideDuration={3000} onClose={handleClose}>
             <Alert onClose={handleClose} severity={props.severity} sx={{ width: '100%' }}>
                 {props.message}
             </Alert>

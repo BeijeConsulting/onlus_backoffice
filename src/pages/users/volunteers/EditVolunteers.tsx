@@ -226,7 +226,7 @@ const EditVolunteers: FC = (): JSX.Element => {
           </LabelText>
 
           <Box className={style.saveBtn}>
-            <ButtonGeneric color={common.ternaryColor} callback={onSaveGuest}>
+            <ButtonGeneric color={common.saveButtonColor} callback={onSaveGuest}>
               Salva modifiche
             </ButtonGeneric>
 

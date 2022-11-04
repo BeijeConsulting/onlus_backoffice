@@ -226,6 +226,7 @@ const Events: FC<eventsProps> = (props) => {
         state.snackDeleteIsOpen &&
         <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
       }
+      
 
     </Box>
   );
