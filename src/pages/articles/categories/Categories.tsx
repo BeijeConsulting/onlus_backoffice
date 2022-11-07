@@ -255,8 +255,8 @@ const Categories: FC = (props) => {
             <Box className={categoriesStyle.inputButtonContainer}>
               <CustomTextField
                 placeholder={"Inserisci categoria"}
-                error={state.inputError}
-                errorMessage={state.textError}
+                error={state?.inputError}
+                errorMessage={state?.textError}
                 refCustom={ref}
               />
               <ButtonGeneric color={style.ternaryColor} callback={showModalCategory}>
@@ -266,7 +266,7 @@ const Categories: FC = (props) => {
 
             {/* modale per la conferma aggiunta categoria */}
             <Modal
-              open={state.addModal}
+              open={state?.addModal}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
@@ -295,24 +295,24 @@ const Categories: FC = (props) => {
 
       {/* modale per la conferma eliminazione */}
       <DeleteModal
-        open={state.modalIsOpen}
+        open={state?.modalIsOpen}
         closeCallback={showDeleteModal}
         deleteCallback={deleteCategory}
       />
 
       {/* modale per la modifica della categoria */}
       <Modal
-        open={state.modalUpdateIsOpen}
+        open={state?.modalUpdateIsOpen}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <form>
           <Box className={categoriesStyle.modal}>
             <CustomTextField
-              defaultValue={state.updateName}
+              defaultValue={state?.updateName}
               placeholder={"Inserisci categoria"}
-              errorMessage={state.updateErrorMesssage}
-              error={state.updateError}
+              errorMessage={state?.updateErrorMesssage}
+              error={state?.updateError}
             />
             <Box className={categoriesStyle.modalButtons}>
               <ButtonGeneric color={"green"} callback={updateCategory}>
