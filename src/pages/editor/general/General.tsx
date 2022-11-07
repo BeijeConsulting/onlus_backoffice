@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { BaseSyntheticEvent, FC, useEffect, useState } from "react";
 
 //Mui
 import { Box } from "@mui/material";
@@ -15,6 +15,11 @@ import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAd
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ColorPicker from "../../../components/functional/colorPicker/ColorPicker";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+
+//api
+import {getApiGeneral, putApiGeneral} from "../../../services/api/general/generalApi";
+import useFetchData from "../../../customHooks/useFetchData";
+
 
 //interface
 interface State {
@@ -43,10 +48,33 @@ const initState: State = {
 
 const General: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
+  const data = useFetchData(getApiGeneral);
+  
 
   const handleImage = (): void => {};
 
-  const onSaveGeneral = () => {
+  // useEffect(()=>{
+    
+    
+  // },[])
+
+  async function updateData(e: BaseSyntheticEvent): Promise<void>{
+    const form = e.target.form;
+    console.log(e);
+    
+    const newData = {
+      websiteName : form[0].value,
+      logo : form[2].value,
+
+    }
+    console.log(newData);
+    
+    const update = putApiGeneral();
+    
+  }
+
+  const onSaveGeneral = (e: BaseSyntheticEvent) => {
+    updateData(e);
     setState({
       ...state,
       open: true,
@@ -63,6 +91,11 @@ const General: FC = (): JSX.Element => {
   const log = (params: any) => {
     console.log(params);
   };
+
+  // async function fetchData(): Promise<void>{
+  //    const data = await getApiGeneral();
+  //    console.log(data);
+  // }
 
   return (
     <form>

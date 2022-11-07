@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 
 export async function responseApi(response) {
   return {
-    data: response?.data,
+    data: response?.data?.data,
     status: response?.status,
   };
 }

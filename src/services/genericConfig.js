@@ -1,6 +1,6 @@
 const CONFIG = {
-    BASEURL : "localhost:1337/api/",
-    TIMEOUT : 2000
+    BASEURL : "http://localhost:1337/api",
+    TIMEOUT : 5000
 }
 
 export default CONFIG;

@@ -120,7 +120,7 @@ const SupportUs: FC = () => {
           </LabelText>
           {/*contenuto*/}
           {
-            state.addLeft.map((element: any) => {
+            state?.addLeft.map((element: any) => {
               return element
             })
           }
@@ -131,7 +131,7 @@ const SupportUs: FC = () => {
           {getContent()}
           {getContent()}
           {
-            state.addRight.map((element: any) => {
+            state?.addRight.map((element: any) => {
               return element
             })
           }
