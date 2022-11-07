@@ -17,9 +17,11 @@ import ColorPicker from "../../../components/functional/colorPicker/ColorPicker"
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //api
-import {getApiGeneral, putApiGeneral} from "../../../services/api/general/generalApi";
+import {
+  getApiGeneral,
+  putApiGeneral,
+} from "../../../services/api/general/generalApi";
 import useFetchData from "../../../customHooks/useFetchData";
-
 
 //interface
 interface State {
@@ -49,28 +51,44 @@ const initState: State = {
 const General: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
   const data = useFetchData(getApiGeneral);
-  
 
   const handleImage = (): void => {};
 
   // useEffect(()=>{
-    
-    
+
   // },[])
 
-  async function updateData(e: BaseSyntheticEvent): Promise<void>{
+  function setPrimary(color: any): void {}
+
+  async function updateData(e: BaseSyntheticEvent): Promise<void> {
     const form = e.target.form;
     console.log(e);
-    
-    const newData = {
-      websiteName : form[0].value,
-      logo : form[2].value,
 
-    }
-    console.log(newData);
-    
-    const update = putApiGeneral();
-    
+    const newData = {
+      data: {
+        websiteName: form[0].value,
+        logo: URL.createObjectURL(form[2].files[0]),
+      },
+      // palette: [
+      //   {
+      //     name: "primary",
+      //     bgColor: "#262E36",
+      //     textColor: "#fff"
+      //   },
+      //   {
+      //     name: "secondary",
+      //     bgColor: "#B12009",
+      //     textColor: "#000"
+      //   },
+      //   {
+      //     name: "tertiary",
+      //     bgColor: "#CFC36F",
+      //     textColor: "#000"
+      //   }
+      // ],
+    };
+
+    putApiGeneral(newData);
   }
 
   const onSaveGeneral = (e: BaseSyntheticEvent) => {

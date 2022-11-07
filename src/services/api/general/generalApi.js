@@ -7,6 +7,6 @@ export async function getApiGeneral(){
 }
 
 export async function putApiGeneral(obj){
-    return await putApi(APIROUTES.GENERAL,obj)
+    return await putApi(`${APIROUTES.GENERAL}/?id=1`,obj)
 }
  
