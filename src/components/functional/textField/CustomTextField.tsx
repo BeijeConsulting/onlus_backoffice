@@ -17,12 +17,14 @@ interface textFieldProps {
   errorMessage?: string;
   defaultValue?: string;
   refCustom?: any;
+  disabled?:any;
 }
 
 const CustomTextField: FC<textFieldProps> = (props) => {
 
   return (
     <TextField
+      disabled={props.disabled ? props.disabled: false}
       inputRef={props.refCustom ? props.refCustom: null}
       type={props.type ? props.type : "default"}
       minRows={props.multiline ? props.minrow : 1}

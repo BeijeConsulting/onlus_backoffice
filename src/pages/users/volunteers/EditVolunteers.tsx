@@ -4,9 +4,6 @@ import React, { FC, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
-//Data
-import { users } from "../../../utils/mockup/data";
-
 //Style
 import common from "../../../assets/styles/common.module.scss";
 import style from "./volunteers.module.scss";
@@ -35,25 +32,6 @@ const lang: Array<Item> = [
   {
     name: 'Inglese',
     value: 'en'
-  },
-]
-
-const roles: Array<Item> = [
-  {
-    name: 'Owner',
-    value: 'owner'
-  },
-  {
-    name: 'Admin',
-    value: 'admin'
-  },
-  {
-    name: 'Blogger',
-    value: 'blogger'
-  },
-  {
-    name: 'User',
-    value: 'user'
   },
 ]
 
@@ -116,9 +94,12 @@ const EditVolunteers: FC = (): JSX.Element => {
         confirmPassword: e.target.form[14].value,
       };
       
-      navigate(PAGES.usersVolunteers, {state: {open: true}})
+      if(location?.state?.showAdd){
+        navigate(PAGES.usersVolunteers, { state: { openAdd: true } });
+      }else{
+        navigate(PAGES.usersVolunteers, { state: { open: true } });
+      } 
     }
-
 
     setState({
       ...state,
@@ -128,7 +109,7 @@ const EditVolunteers: FC = (): JSX.Element => {
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
-    navigate(PAGES.usersVolunteers, {state: {open: false}})
+    navigate(PAGES.usersVolunteers)
   }
 
   return (
@@ -171,12 +152,9 @@ const EditVolunteers: FC = (): JSX.Element => {
                   }
                 />
 
-                <CustomSelect
-                  label={'Ruolo'}
-                  items={roles}
-                  defaultValue={
-                    !!location?.state?.row?.role ? location?.state?.row?.role : ""
-                  }
+                <CustomTextField
+                  defaultValue={"User"}
+                  error={false}
                   disabled={true}
                 />
               </Box>
@@ -226,13 +204,37 @@ const EditVolunteers: FC = (): JSX.Element => {
           </LabelText>
 
           <Box className={style.saveBtn}>
-            <ButtonGeneric color={common.saveButtonColor} callback={onSaveGuest}>
-              Salva modifiche
-            </ButtonGeneric>
-
-            <ButtonGeneric color={common.secondaryColor} callback={onCancel}>
-              Annulla modifiche
-            </ButtonGeneric>
+            {location?.state?.showAdd ? (
+              <>
+                <ButtonGeneric
+                  color={common.ternaryColor}
+                  callback={onSaveGuest}
+                >
+                  Aggiungi
+                </ButtonGeneric>
+                <ButtonGeneric
+                  color={common.secondaryColor}
+                  callback={onCancel}
+                >
+                  Annulla
+                </ButtonGeneric>
+              </>
+            ) : (
+              <>
+              <ButtonGeneric
+                color={common.saveButtonColor}
+                callback={onSaveGuest}
+              >
+                Salva modifiche
+              </ButtonGeneric>
+              <ButtonGeneric
+                color={common.secondaryColor}
+                callback={onCancel}
+              >
+                Annulla modifiche
+              </ButtonGeneric>
+            </>
+            )}
           </Box>
         </form>
       </Box>

@@ -30,7 +30,6 @@ interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean
-
 }
 
 const initialState: State = {
@@ -66,8 +65,6 @@ const Collaborators: FC = (): JSX.Element => {
   //Modal
   const openDeleteModal = (row: object) => (): void => {
 
-    console.log(row);
-
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
@@ -86,10 +83,6 @@ const Collaborators: FC = (): JSX.Element => {
   const updateAdmin = (row: object) => (): void => {
     navigate(PAGES.editorCollaborators, { state: { row } })
   };
-
-  const deleteAdmin = (row: object) => (): void => {
-    console.log(row);
-  }
 
   const addAdmin = (): void => {
     navigate(PAGES.editorCollaborators, { state: {showAdd: true} })
@@ -154,7 +147,7 @@ const Collaborators: FC = (): JSX.Element => {
             />
 
             <ButtonGeneric color={common.ternaryColor} callback={addAdmin}>
-              +Aggiungi
+              + Aggiungi
             </ButtonGeneric>
           </Box>
 

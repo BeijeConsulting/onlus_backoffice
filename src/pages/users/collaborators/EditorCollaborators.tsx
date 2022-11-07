@@ -4,9 +4,6 @@ import React, { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
-//Data
-import { users } from "../../../utils/mockup/data";
-
 //Style
 import common from "../../../assets/styles/common.module.scss";
 import style from "./collaborators.module.scss";
@@ -121,9 +118,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
         navigate(PAGES.usersCollaborators, { state: { openAdd: true } });
       }else{
         navigate(PAGES.usersCollaborators, { state: { open: true } });
-      }
-
-      
+      } 
     }
 
     setState({
