@@ -48,6 +48,10 @@ const Events: FC<eventsProps> = (props) => {
 
   const [state, setState] = useState<State>(initialState);
 
+  useEffect(()=>{
+    console.log('mounted')
+  },[])
+
    //Snackbar
    const handleClose = () => {
     setState({

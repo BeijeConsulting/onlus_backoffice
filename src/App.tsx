@@ -35,6 +35,10 @@ import NotFound from "./pages/notFound/NotFound";
 //Mui
 import { StyledEngineProvider } from "@mui/material";
 
+//**TO DO**//
+// -aggiungere loader
+// -aggiungere fallback se il server non risponde in maniera corretta
+
 function App() {
   //redux and auth
   //const dispatch: Dispatch<AnyAction> = useDispatch(); ==> non funziona ):
@@ -51,52 +55,50 @@ function App() {
   return (
     <StyledEngineProvider injectFirst>
       <div className="App">
-        <Routes>
-          <Route path={PAGES.login} element={<Login />} />
-          <Route path={PAGES.entryApp} element={<EntryApp />}>
-            <Route path={PAGES.personalArea} element={<PersonalArea />} />
-            {!!user?.role && user?.role?.includes(roles.admin) && (
-              <>
-                <Route path={PAGES.editGeneral} element={<General />} />
-                <Route path={PAGES.editHome} element={<Home />} />
-                <Route path={PAGES.editAbout} element={<About />} />
-                <Route path={PAGES.editSupportUs} element={<SupportUs />} />
-                <Route path={PAGES.editFaq} element={<Faq />} />
-                <Route path={PAGES.editorFaq} element={<EditorFaq />} />
-                <Route path={PAGES.editSocial} element={<Social />} />
-                <Route path={PAGES.editorSocial} element={<EditorSocial />} />
+        {!!user?.role && (
+          <Routes>
+            <Route path={PAGES.login} element={<Login />} />
+            <Route path={PAGES.entryApp} element={<EntryApp />}>
+              <Route path={PAGES.personalArea} element={<PersonalArea />} />
+              {user?.role?.includes(roles.admin) && (
+                <>
+                  <Route path={PAGES.editGeneral} element={<General />} />
+                  <Route path={PAGES.editHome} element={<Home />} />
+                  <Route path={PAGES.editAbout} element={<About />} />
+                  <Route path={PAGES.editSupportUs} element={<SupportUs />} />
+                  <Route path={PAGES.editFaq} element={<Faq />} />
+                  <Route path={PAGES.editorFaq} element={<EditorFaq />} />
+                  <Route path={PAGES.editSocial} element={<Social />} />
+                  <Route path={PAGES.editorSocial} element={<EditorSocial />} />
+                  <Route path={PAGES.events} element={<Events />} />
+                  <Route path={PAGES.editorEvents} element={<EditorEvents />} />
+                  <Route
+                    path={PAGES.usersCollaborators}
+                    element={<Collaborators />}
+                  />
+                  <Route
+                    path={PAGES.editorCollaborators}
+                    element={<EditorCollaborators />}
+                  />
+                  <Route
+                    path={PAGES.usersVolunteers}
+                    element={<Volunteers />}
+                  />
+                  <Route
+                    path={PAGES.editorVolunteers}
+                    element={<EditVolunteers />}
+                  />
 
-                <Route path={PAGES.events} element={<Events />} />
-                <Route path={PAGES.editorEvents} element={<EditorEvents />} />
-              </>
-            )}
-
-            <Route path={PAGES.articlesBlog} element={<Blog />} />
-            <Route path={PAGES.editorBlog} element={<EditorBlog />} />
-            <Route path={PAGES.articlesCategories} element={<Categories />} />
-
-            {!!user?.role && user?.role?.includes(roles.admin) && (
-              <>
-                <Route
-                  path={PAGES.usersCollaborators}
-                  element={<Collaborators />}
-                />
-                <Route
-                  path={PAGES.editorCollaborators}
-                  element={<EditorCollaborators />}
-                />
-                <Route path={PAGES.usersVolunteers} element={<Volunteers />} />
-                <Route
-                  path={PAGES.editorVolunteers}
-                  element={<EditVolunteers />}
-                />
-
-                <Route path={PAGES.donations} element={<Donations />} />
-              </>
-            )}
-          </Route>
-          <Route path={"*"} element={<NotFound />} />
-        </Routes>
+                  <Route path={PAGES.donations} element={<Donations />} />
+                </>
+              )}
+              <Route path={PAGES.articlesBlog} element={<Blog />} />
+              <Route path={PAGES.editorBlog} element={<EditorBlog />} />
+              <Route path={PAGES.articlesCategories} element={<Categories />} />
+            </Route>
+            <Route path={"*"} element={<NotFound />} />
+          </Routes>
+        )}
       </div>
     </StyledEngineProvider>
   );
