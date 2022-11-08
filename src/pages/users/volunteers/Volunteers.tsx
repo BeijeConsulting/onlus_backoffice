@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -144,7 +144,7 @@ const Volunteers: FC = (): JSX.Element => {
             textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
           />
 
-            <ButtonGeneric color={common.ternaryColor} callback={addVolunteer}>
+            <ButtonGeneric color={"green"} callback={addVolunteer}>
               + Aggiungi
             </ButtonGeneric>
           </Box>

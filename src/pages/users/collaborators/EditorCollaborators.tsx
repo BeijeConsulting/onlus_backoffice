@@ -251,7 +251,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
             {location?.state?.showAdd ? (
               <>
                 <ButtonGeneric
-                  color={common.ternaryColor}
+                  color={"green"}
                   callback={onSaveAdmin}
                 >
                   Aggiungi

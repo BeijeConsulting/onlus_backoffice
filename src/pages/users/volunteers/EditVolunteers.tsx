@@ -207,7 +207,7 @@ const EditVolunteers: FC = (): JSX.Element => {
             {location?.state?.showAdd ? (
               <>
                 <ButtonGeneric
-                  color={common.ternaryColor}
+                  color={"green"}
                   callback={onSaveGuest}
                 >
                   Aggiungi

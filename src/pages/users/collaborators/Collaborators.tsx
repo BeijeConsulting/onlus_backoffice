@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import { FC, useState, useEffect } from 'react'
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -146,7 +146,7 @@ const Collaborators: FC = (): JSX.Element => {
               textInfo={"Collaboratori registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
             />
 
-            <ButtonGeneric color={common.ternaryColor} callback={addAdmin}>
+            <ButtonGeneric color={"green"} callback={addAdmin}>
               + Aggiungi
             </ButtonGeneric>
           </Box>
