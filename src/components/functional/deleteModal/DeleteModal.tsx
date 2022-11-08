@@ -15,7 +15,7 @@ interface modalProps{
   deleteCallback: Function
 }
   
-const DeleteModal: FC<modalProps> = (props) => {
+const DeleteModal: FC<modalProps> = (props):JSX.Element => {
 
   function closeModal(): void {
     props.closeCallback();

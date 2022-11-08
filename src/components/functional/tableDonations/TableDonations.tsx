@@ -31,7 +31,7 @@ const initialState: State = {
     open: []
 }
 
-const TableDonations: FC<TableDonationsProps> = (props) => {
+const TableDonations: FC<TableDonationsProps> = (props):JSX.Element => {
 
     const [state, setState] = useState<State>(initialState)
 

@@ -26,26 +26,25 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const CustomSnackbar: FC<snackbarProps> = (props) => {
+const CustomSnackbar: FC<snackbarProps> = (props): JSX.Element => {
 
     const [state, setState] = useState<State>(initialState)
 
     //component did mount
     useEffect(() => {
-      setState({
-        ...state,
-        open:true
-      })
-    },[])
-    
+        setState({
+            ...state,
+            open: true
+        })
+    }, [])
 
     //chiudo la snackbar
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
 
-        if (reason === 'clickaway'){
+        if (reason === 'clickaway') {
             return;
         }
-        
+
         props.callback()
 
         setState({

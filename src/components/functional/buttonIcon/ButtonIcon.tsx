@@ -12,13 +12,12 @@ interface buttonIconProps {
   children: any;
 }
 
-const ButtonIcon: FC<buttonIconProps> = (props) => {
+const ButtonIcon: FC<buttonIconProps> = (props):JSX.Element => {
   const handleClick = (e: MouseEvent): void => {
     props.callback(e);
   };
   return (
     <Box
-      className={buttonIconsStyle.container}
       onClick={handleClick}
       sx={{
         backgroundColor: common.fifthColor,

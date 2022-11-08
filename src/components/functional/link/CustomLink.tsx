@@ -9,7 +9,7 @@ interface LinkProps {
     callback: Function;
 }
 
-const CustomLink: FC<LinkProps> = (props) => {
+const CustomLink: FC<LinkProps> = (props): JSX.Element => {
 
     const handleClick = ():void => {
         props.callback()

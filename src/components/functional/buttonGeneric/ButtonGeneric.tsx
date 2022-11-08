@@ -9,7 +9,7 @@ interface buttonGenericProps {
   children: any;
 }
 
-const ButtonGeneric: FC<buttonGenericProps> = (props) => {
+const ButtonGeneric: FC<buttonGenericProps> = (props):JSX.Element => {
   const handleClick = (e: BaseSyntheticEvent): void => {
     props.callback(e);
   };
