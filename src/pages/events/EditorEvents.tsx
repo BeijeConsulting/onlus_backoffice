@@ -13,7 +13,7 @@ import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGener
 import ButtonAddFile from "../../components/functional/buttonAddFile/ButtonAddFile";
 
 //date picker
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -21,9 +21,6 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 //style
 import style from "../../assets/styles/common.module.scss";
 import editorStyle from "./eventEditorStyle.module.scss";
-
-interface editorEventProps {
-}
 
 interface state {
   selectedDate: any;
@@ -33,7 +30,7 @@ const initialState: state = {
   selectedDate: dayjs(),
 };
 
-const EditorEvents: FC<editorEventProps> = (props: any) => {
+const EditorEvents: FC = () => {
   const [state, setState] = useState(initialState);
 
   const navigate = useNavigate();

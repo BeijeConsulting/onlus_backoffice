@@ -1,8 +1,8 @@
-import { Box, Typography, Modal } from "@mui/material";
-import { FC, useState, useEffect } from "react";
-
-//router dom
+import { FC, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
+//mui
+import { Box } from "@mui/material";
 
 //PAGES
 import PAGES from "../../router/pages";
@@ -17,7 +17,7 @@ import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGener
 import CustomTable from "../../components/functional/table/CustomTable";
 import ButtonIcon from "../../components/functional/buttonIcon/ButtonIcon";
 
-//mockup data
+//data
 import { events } from "../../utils/mockup/data";
 
 //icons
@@ -27,8 +27,7 @@ import CreateIcon from "@mui/icons-material/Create";
 //modal
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
 import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
-
-interface eventsProps {}
+import LabelText from "../../components/functional/labelText/LabelText";
 
 interface State {
   snackIsOpen: boolean;
@@ -42,18 +41,14 @@ const initialState: State = {
   modalIsOpen: false
 };
 
-const Events: FC<eventsProps> = (props) => {
+const Events: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [state, setState] = useState<State>(initialState);
 
-  useEffect(()=>{
-    console.log('mounted')
-  },[])
-
-   //Snackbar
-   const handleClose = () => {
+  //Snackbar
+  const handleClose = () => {
     setState({
       ...state,
       snackIsOpen: false,
@@ -61,8 +56,8 @@ const Events: FC<eventsProps> = (props) => {
     })
   }
 
-   //mostro/nascondo modal di eliminazione dell'evento
-   const showDeleteModal = (): void => {
+  //mostro/nascondo modal di eliminazione dell'evento
+  const showDeleteModal = (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen
@@ -77,15 +72,14 @@ const Events: FC<eventsProps> = (props) => {
       modalIsOpen: false
     })
   };
- 
+
   //functions
   function goToEditor(): void {
     navigate(PAGES.editorEvents);
   }
 
-
   //Colonne del DataGrid
-  const renderDetailsButton_1 = (params: any) => {
+  const renderDetailsButton_1 = () => {
     return (
       <>
         <Box
@@ -105,7 +99,7 @@ const Events: FC<eventsProps> = (props) => {
     );
   };
 
-  const renderDetailsButton_2 = (params: any) => {
+  const renderDetailsButton_2 = () => {
     return (
       <>
         <Box
@@ -183,39 +177,41 @@ const Events: FC<eventsProps> = (props) => {
   return (
     <Box className={style.component}>
       <Box className={style.singleComponent}>
-        <Box className={eventsStyle.titleFlex}>
-          <Title
-            text={"Eventi in programma"}
-            textInfo={
-              "Tabella dove vengono visualizzati i prossimi eventi in programma"
-            }
-          />
-          <ButtonGeneric color={style.ternaryColor} callback={goToEditor}>
-            + Aggiungi evento
-          </ButtonGeneric>
-        </Box>
+        <LabelText>
+          <Box sx={{display: "flex", justifyContent: "space-between"}}>
+            <Title
+              text={"Eventi in programma"}
+              textInfo={
+                "Tabella dove vengono visualizzati i prossimi eventi in programma"
+              }
+            />
+            <ButtonGeneric color={"green"} callback={goToEditor}>
+              + Aggiungi
+            </ButtonGeneric>
+          </Box>
 
-        {/* sezione eventi in programma*/}
-        <Box className={eventsStyle.tableContainer}>
+          {/* sezione eventi in programma*/}
           <CustomTable columns={columns_1} rows={events} />
-        </Box>
+        </LabelText>
 
         {/* sezione archivio eventi  */}
-        <Box className={eventsStyle.archivesContainer}>
-          <Title
-            text={"Archivio eventi"}
-            textInfo={
-              "Tabella dove viene visualizzato l'archivio di tutti gli eventi passati"
-            }
-          />
-          <Box className={eventsStyle.tableContainer}>
+        <Box sx={{ marginTop: "20px" }}>
+          <LabelText>
+            <Title
+              text={"Archivio eventi"}
+              textInfo={
+                "Tabella dove viene visualizzato l'archivio di tutti gli eventi passati"
+              }
+            />
+
             <CustomTable columns={columns_2} rows={events} />
-          </Box>
+          </LabelText>
         </Box>
       </Box>
 
-     {/* delete modal */}
-     <DeleteModal
+
+      {/* delete modal */}
+      <DeleteModal
         open={state.modalIsOpen}
         closeCallback={showDeleteModal}
         deleteCallback={deleteEvent}
@@ -230,9 +226,9 @@ const Events: FC<eventsProps> = (props) => {
         state.snackDeleteIsOpen &&
         <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
       }
-      
 
-    </Box>
+
+    </Box >
   );
 };
 

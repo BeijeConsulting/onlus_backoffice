@@ -1,14 +1,17 @@
-import React, { FC, useEffect, useState } from 'react'
-
+import { FC } from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
+
 //mui
 import { Box } from "@mui/material";
+
 //function component
 import LabelText from "../../../components/functional/labelText/LabelText";
 import Title from "../../../components/functional/title/Title";
+
 //style
 import common from "../../../assets/styles/common.module.scss";
 import style from "./editorSocial-Style.module.scss";
+
 //route
 import PAGES from "../../../router/pages";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
@@ -35,7 +38,6 @@ const EditorSocial: FC = (): JSX.Element => {
     console.log("delete");
     navigate(PAGES.editSocial);
   };
-  console.log(location);
 
   const editSocial = (e: any): void => {
     let newSocial: social = {
