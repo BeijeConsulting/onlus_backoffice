@@ -9,13 +9,14 @@ import PAGES from "../../router/pages";
 
 //style
 import style from "../../assets/styles/common.module.scss";
-import eventsStyle from "./eventsStyle.module.scss";
 
 //components
 import Title from "../../components/functional/title/Title";
 import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGeneric";
 import CustomTable from "../../components/functional/table/CustomTable";
+import LabelText from "../../components/functional/labelText/LabelText";
 import ButtonIcon from "../../components/functional/buttonIcon/ButtonIcon";
+import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 
 //data
 import { events } from "../../utils/mockup/data";
@@ -26,8 +27,6 @@ import CreateIcon from "@mui/icons-material/Create";
 
 //modal
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
-import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
-import LabelText from "../../components/functional/labelText/LabelText";
 
 interface State {
   snackIsOpen: boolean;

@@ -42,7 +42,7 @@ const DeleteModal: FC<modalProps> = (props) => {
           >
             Elimina
           </ButtonGeneric>
-          <ButtonGeneric color={style.ternaryColor} callback={closeModal}>
+          <ButtonGeneric color={style.saveButtonColor} callback={closeModal}>
             Annulla
           </ButtonGeneric>
         </Box>

@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 
 //navigation
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,8 +11,9 @@ import CustomTable from "../../../components/functional/table/CustomTable";
 import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+import LabelText from "../../../components/functional/labelText/LabelText";
 
-//mockup data
+//data
 import { articles } from "../../../utils/mockup/data";
 
 //icons
@@ -24,8 +25,8 @@ import PAGES from "../../../router/pages";
 
 //style
 import common from "../../../assets/styles/common.module.scss";
-import style from "./blogStyle.module.scss";
 
+//interface
 interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
@@ -127,46 +128,51 @@ const Blog: FC = () => {
   ];
 
   return (
-    <Box className={common.component}>
-      <Box className={common.singleComponent}>
-        <Box className={`${common.row} ${style.justify}`}>
-          <Title
-            text={"Archivio Blog"}
-            textInfo={
-              "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
-            }
-          />
-          <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
-            + Aggiungi Articolo
-          </ButtonGeneric>
-        </Box>
-        <Box className={style.tableContainer}>
-          <CustomTable columns={columns} rows={articles} pageSize={8} />
-        </Box>
-      </Box>
-      {/* delete modal */}
-      <DeleteModal
-        open={state.modalIsOpen}
-        closeCallback={showDeleteModal}
-        deleteCallback={deleteArticle}
-      />
+    <>
+      <Box className={common.component}>
+        <Box className={common.singleComponent}>
+          <LabelText>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Title
+                text={"Archivio Blog"}
+                textInfo={
+                  "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
+                }
+              />
+              <ButtonGeneric color={"green"} callback={goToEditor}>
+                + Aggiungi
+              </ButtonGeneric>
+            </Box>
 
-      {/* snackbar */}
-      {location?.state?.open && (
-        <CustomSnackbar
-          message={"Modifiche avvenute con successo"}
-          severity={"success"}
-          callback={handleClose}
+            {/* sezione eventi in programma*/}
+            <CustomTable columns={columns} rows={articles} />
+          </LabelText>
+        </Box>
+
+        {/* delete modal */}
+        <DeleteModal
+          open={state.modalIsOpen}
+          closeCallback={showDeleteModal}
+          deleteCallback={deleteArticle}
         />
-      )}
-      {state.snackDeleteIsOpen && (
-        <CustomSnackbar
-          message={"Eliminazione avvenuta con successo"}
-          severity={"info"}
-          callback={handleClose}
-        />
-      )}
-    </Box>
+
+        {/* snackbar */}
+        {location?.state?.open && (
+          <CustomSnackbar
+            message={"Modifiche avvenute con successo"}
+            severity={"success"}
+            callback={handleClose}
+          />
+        )}
+        {state.snackDeleteIsOpen && (
+          <CustomSnackbar
+            message={"Eliminazione avvenuta con successo"}
+            severity={"info"}
+            callback={handleClose}
+          />
+        )}
+      </Box>
+    </>
   );
 };
 
