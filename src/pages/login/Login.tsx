@@ -1,5 +1,6 @@
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import PAGES from "../../router/pages";
 
 //Componenti MUI
@@ -16,6 +17,8 @@ import style from "./login.module.scss";
 import logo from "../../assets/media/logo.png";
 import { Link } from "react-router-dom";
 import { BaseSyntheticEvent } from "react";
+//api
+import { getApiLogin } from "../../services/api/login/loginApi";
 
 /*
 TO DO
@@ -45,8 +48,9 @@ const Login: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
 
   const navigate = useNavigate();
+  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
-  function onLogin(e: BaseSyntheticEvent): void {
+  async function onLogin(e: BaseSyntheticEvent): Promise<void> {
     let eError = false;
     let pError = false;
     if (
@@ -68,8 +72,14 @@ const Login: FC = (): JSX.Element => {
       id: e.target.form[0].value,
       password: e.target.form[2].value,
     };
+
+    //get
+    let user1 = await getApiLogin();
+
+    //setcookie
+    setCookie("user", user1);
+
     navigate(PAGES.personalArea);
-    console.log(user);
   }
 
   return (
