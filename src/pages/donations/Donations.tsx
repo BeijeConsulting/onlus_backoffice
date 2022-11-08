@@ -38,7 +38,7 @@ const Donations: FC = () => {
   //calcolo il totale delle donazioni
   const getTotal = (): string => {
     let total: number = 0
-    donations.map((element) => {
+    donations.map((element:number) => {
       total += element.amount
     })
     return total.toString() + "€"

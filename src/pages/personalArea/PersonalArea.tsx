@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 
 //Navigazione
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 //Style
 import common from "../../assets/styles/common.module.scss";
@@ -66,7 +66,6 @@ const PersonalArea: FC = (): JSX.Element => {
 
   const [state, setState] = useState<State>(initState);
 
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
