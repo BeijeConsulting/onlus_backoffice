@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 //Navigazione
 import { useNavigate, useLocation } from "react-router-dom";
@@ -26,6 +26,7 @@ import DeleteModal from "../../../components/functional/deleteModal/DeleteModal"
 //Data
 import { faq } from "../../../utils/mockup/data";
 
+//interface
 interface State {
   titleError: boolean;
   textError: boolean;
@@ -201,7 +202,7 @@ const Faq: FC = (): JSX.Element => {
               }
             />
 
-            <ButtonGeneric color={common.ternaryColor} callback={addQna}>
+            <ButtonGeneric color={"green"} callback={addQna}>
               + Aggiungi
             </ButtonGeneric>
           </Box>

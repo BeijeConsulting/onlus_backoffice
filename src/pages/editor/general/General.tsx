@@ -4,7 +4,6 @@ import { BaseSyntheticEvent, FC, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 
 //styles
-import style from "./generalStyle.module.scss";
 import common from "../../../assets/styles/common.module.scss";
 
 //components
@@ -22,8 +21,7 @@ import {
   putApiGeneral,
 } from "../../../services/api/general/generalApi";
 
-//interface\
-
+//interface
 type error = {
   nameSite: boolean;
   workText: boolean;
@@ -34,6 +32,7 @@ type error = {
   contactVat: boolean;
   contactCF: boolean;
 };
+
 interface State {
   ready: boolean;
   error: error;
@@ -80,8 +79,6 @@ const General: FC = (): JSX.Element => {
     componentReady();
   }, []);
   const handleImage = (): void => {};
-
-  function setPrimary(color: any): void {}
 
   async function updateData(e: BaseSyntheticEvent): Promise<void> {
     console.log(state.websiteName);
@@ -153,11 +150,6 @@ const General: FC = (): JSX.Element => {
   const log = (params: any) => {
     console.log(params);
   };
-
-  // async function fetchData(): Promise<void>{
-  //    const data = await getApiGeneral();
-  //    console.log(data);
-  // }
 
   return (
     <form>
