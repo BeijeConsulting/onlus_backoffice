@@ -17,36 +17,6 @@ import ButtonIcon from '../buttonIcon/ButtonIcon';
 //icon
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number,
-    price: number,
-) {
-    return {
-        name,
-        calories,
-        fat,
-        carbs,
-        protein,
-        price,
-        history: [
-            {
-                date: '2020-01-05',
-                customerId: '11091700',
-                amount: 3,
-            },
-            {
-                date: '2020-01-02',
-                customerId: 'Anonymous',
-                amount: 1,
-            },
-        ],
-    };
-}
-
 //props
 interface TableDonationsProps {
     rows: any;
@@ -152,63 +122,6 @@ const TableDonations: FC<TableDonationsProps> = (props) => {
                     )
                 })
             }
-            {/*
-        
-            <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-                <TableCell component="th" scope="row">
-                    {/*row.name
-                </TableCell>
-                <TableCell>{props.row.id}</TableCell>
-                <TableCell>{props.row.amount}</TableCell>
-                <TableCell>{props.row.date}</TableCell>
-                <TableCell>
-                    
-                        <ButtonIcon
-                            aria-label="expand row"
-                            callback={() => setState({ open: !state.open })}
-                        >
-                            <RemoveRedEyeOutlinedIcon />
-                        </ButtonIcon>
-    
-                </TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={state.open} timeout="auto" unmountOnExit>
-                        <Box sx={{ margin: 1 }}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                Transazione
-                            </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>ID</TableCell>
-                                        <TableCell>EMAIL</TableCell>
-                                        <TableCell>VALORE</TableCell>
-                                        <TableCell >DATA</TableCell>
-                                        <TableCell>ANONIMA</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    row.history.map((historyRow: any) => (
-                                            <TableRow key={historyRow.date}>
-                                                <TableCell component="th" scope="row">
-                                                    {historyRow.date}
-                                                </TableCell>
-                                                <TableCell>{historyRow.customerId}</TableCell>
-                                                <TableCell align="right">{historyRow.amount}</TableCell>
-                                                <TableCell align="right">
-                                                    {Math.round(historyRow.amount * row.price * 100) / 100}
-                                                </TableCell>
-                                            </TableRow>
-                                        ))
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-                                    */}
         </TableBody>
     );
 }

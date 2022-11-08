@@ -110,7 +110,7 @@ const PersonalArea: FC = (): JSX.Element => {
     }
 
     if (!errors) {
-      let guest = {
+      /*let guest = {
         name: e.target.form[0].value,
         surname: e.target.form[2].value,
         lang: e.target.form[4].value,
@@ -119,7 +119,7 @@ const PersonalArea: FC = (): JSX.Element => {
         phone: e.target.form[10].value,
         password: e.target.form[12].value,
         confirmPassword: e.target.form[14].value,
-      };
+      };*/
 
       //API
       open = true

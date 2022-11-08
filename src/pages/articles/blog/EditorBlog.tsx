@@ -29,9 +29,6 @@ import PAGES from "../../../router/pages";
 //data
 import { categories } from "../../../utils/mockup/data";
 
-
-
-
 const EditorBlog: FC = () => {
   const [checked, setChecked] = useState([1]);
   const [state,setState] = useState();

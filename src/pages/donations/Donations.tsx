@@ -34,10 +34,11 @@ const Donations: FC = () => {
 
   const [state, setState] = useState<State>(initialState)
 
-  //calcolo il totale delle donazioni
+  //calcolo il totale delle donazioni (usare chiamata API)
   const getTotal = (): string => {
     let total: number = 0
-    donations.map((element) => {
+    donations.forEach((element) => {
+      console.log(element)
       total += element.amount
     })
     return total.toString() + "€"

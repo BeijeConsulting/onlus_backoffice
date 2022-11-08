@@ -1,7 +1,4 @@
-import { BaseSyntheticEvent, FC, MouseEvent } from "react";
-
-//Style
-import common from "../../../assets/styles/common.module.scss"
+import { BaseSyntheticEvent, FC } from "react";
 
 //mui
 import { Button } from "@mui/material";

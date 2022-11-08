@@ -63,7 +63,7 @@ const Collaborators: FC = (): JSX.Element => {
   }
 
   //Modal
-  const openDeleteModal = (row: object) => (): void => {
+  const openDeleteModal = (): void => {
 
     setState({
       ...state,
@@ -95,7 +95,7 @@ const Collaborators: FC = (): JSX.Element => {
         <ButtonIcon callback={updateAdmin(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal(params.row)}>
+        <ButtonIcon callback={openDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>

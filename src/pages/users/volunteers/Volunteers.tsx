@@ -63,7 +63,7 @@ const Volunteers: FC = (): JSX.Element => {
   }
 
   //Modal
-  const openDeleteModal = (row: object) => (): void => {
+  const openDeleteModal = (): void => {
 
     setState({
       ...state,
@@ -103,7 +103,7 @@ const Volunteers: FC = (): JSX.Element => {
         <ButtonIcon callback={updateGuest(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal(params.row)}>
+        <ButtonIcon callback={openDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
