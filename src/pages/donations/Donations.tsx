@@ -8,7 +8,6 @@ import Table from '@mui/material/Table';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -38,7 +37,7 @@ const Donations: FC = () => {
   //calcolo il totale delle donazioni
   const getTotal = (): string => {
     let total: number = 0
-    donations.map((element:number) => {
+    donations.map((element) => {
       total += element.amount
     })
     return total.toString() + "€"
