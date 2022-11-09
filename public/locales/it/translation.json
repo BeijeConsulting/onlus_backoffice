@@ -115,6 +115,7 @@
     }
   },
   "articles": {
+    "addButton" : "Aggiungi articolo",
     "title": "Archivio blog",
     "info": "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli",
     "table": {
