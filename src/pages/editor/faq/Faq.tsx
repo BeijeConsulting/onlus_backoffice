@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 //Navigazione
 import { useNavigate, useLocation } from "react-router-dom";
@@ -28,6 +28,7 @@ import { faq } from "../../../utils/mockup/data";
 //translation
 import { useTranslation } from "react-i18next";
 
+//interface
 interface State {
   titleError: boolean;
   textError: boolean;

@@ -11,6 +11,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import CustomTable from "../../../components/functional/table/CustomTable";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+import LabelText from "../../../components/functional/labelText/LabelText";
 
 //mockup data
 import { categories } from "../../../utils/mockup/data";
@@ -21,7 +22,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import CreateIcon from "@mui/icons-material/Create";
 
 //custom hook
-import checkEmptyText from "../../../customHooks/useEmptyText";
+import checkEmptyText from "../../../utils/checkEmptyText";
 
 //modal
 import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
@@ -244,53 +245,78 @@ const Categories: FC = (props) => {
   return (
     <Box className={style.component}>
       <Box className={style.singleComponent}>
-        <Box className={categoriesStyle.titleFlex}>
-          <Title text={t("Categories.title")} textInfo={t("Categories.info")} />
+        <LabelText>
+          <Box className={categoriesStyle.titleFlex}>
+            <Title
+              text={t("Categories.title")}
+              textInfo={t("Categories.info")}
+            />
 
-          <form>
-            <Box className={categoriesStyle.inputButtonContainer}>
-              <CustomTextField
-                placeholder={t("Categories.placeholder")}
-                error={state?.inputError}
-                errorMessage={state?.textError}
-                refCustom={ref}
-              />
-              <ButtonGeneric
-                color={style.ternaryColor}
-                callback={showModalCategory}
-              >
-                + {t("addButton")}
-              </ButtonGeneric>
-            </Box>
-
-            {/* modale per la conferma aggiunta categoria */}
-            <Modal
-              open={state?.addModal}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box className={categoriesStyle.modal}>
-                <Typography>{t("addModal.text")}</Typography>
-                <Box className={categoriesStyle.modalButtons}>
-                  <ButtonGeneric color={"green"} callback={addCategory}>
-                    {t("addModal.addButton")}
-                  </ButtonGeneric>
-                  <ButtonGeneric
-                    color={style.ternaryColor}
-                    callback={hideAddModal}
-                  >
-                    {t("addModal.DiscardChangesButton")}
-                  </ButtonGeneric>
-                </Box>
+            <form>
+              <Box className={categoriesStyle.inputButtonContainer}>
+                <CustomTextField
+                  placeholder={t("Categories.placeholder")}
+                  error={state?.inputError}
+                  errorMessage={state?.textError}
+                  refCustom={ref}
+                />
+                <ButtonGeneric
+                  color={style.ternaryColor}
+                  callback={showModalCategory}
+                >
+                  + {t("addButton")}
+                </ButtonGeneric>
               </Box>
-            </Modal>
-          </form>
-        </Box>
 
-        {/* sezione eventi in programma*/}
-        <Box className={categoriesStyle.tableContainer}>
+              {/* modale per la conferma aggiunta categoria */}
+              <Modal
+                open={state?.addModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={categoriesStyle.modal}>
+                  <Typography>{t("addModal.text")}</Typography>
+                  <Box className={categoriesStyle.modalButtons}>
+                    <ButtonGeneric color={"green"} callback={addCategory}>
+                      {t("addModal.addButton")}
+                    </ButtonGeneric>
+                    <ButtonGeneric
+                      color={style.ternaryColor}
+                      callback={hideAddModal}
+                    >
+                      {t("addModal.DiscardChangesButton")}
+                    </ButtonGeneric>
+                  </Box>
+                </Box>
+              </Modal>
+
+              {/* modale per la conferma aggiunta categoria */}
+              <Modal
+                open={state?.addModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box className={categoriesStyle.modal}>
+                  <Typography>
+                    Sei sicuro di voler aggiungere il seguente elemento?
+                  </Typography>
+                  <Box className={categoriesStyle.modalButtons}>
+                    <ButtonGeneric color={"green"} callback={addCategory}>
+                      Aggiungi
+                    </ButtonGeneric>
+                    <ButtonGeneric
+                      color={style.saveButtonColor}
+                      callback={hideAddModal}
+                    >
+                      Annulla
+                    </ButtonGeneric>
+                  </Box>
+                </Box>
+              </Modal>
+            </form>
+          </Box>
           <CustomTable columns={columns} rows={categories} />
-        </Box>
+        </LabelText>
       </Box>
 
       {/* modale per la conferma eliminazione */}

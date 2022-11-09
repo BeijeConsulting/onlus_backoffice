@@ -11,7 +11,7 @@ interface labelTextProps {
   children?: any;
 }
 
-const LabelText: FC<labelTextProps> = (props) => {
+const LabelText: FC<labelTextProps> = (props):JSX.Element => {
   return (
     <>
       <Box className={style.containerLabelText}>{props.children}</Box>

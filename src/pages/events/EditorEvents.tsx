@@ -13,7 +13,7 @@ import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGener
 import ButtonAddFile from "../../components/functional/buttonAddFile/ButtonAddFile";
 
 //date picker
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -24,8 +24,6 @@ import editorStyle from "./eventEditorStyle.module.scss";
 //translation
 import { useTranslation } from "react-i18next";
 
-interface editorEventProps {}
-
 interface state {
   selectedDate: any;
 }
@@ -34,7 +32,7 @@ const initialState: state = {
   selectedDate: dayjs(),
 };
 
-const EditorEvents: FC<editorEventProps> = (props: any) => {
+const EditorEvents: FC = () => {
   const [state, setState] = useState(initialState);
   const { t } = useTranslation();
 

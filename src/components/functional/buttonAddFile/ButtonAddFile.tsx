@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 
 //style
 import style from "./buttonAddFile.module.scss";
@@ -6,6 +6,7 @@ import common from "./../../../assets/styles/common.module.scss";
 
 //mui
 import { Button, Box, Typography } from "@mui/material";
+
 //props
 interface buttonAddFileProps {
   children?: any;
@@ -20,7 +21,7 @@ const initialState: State = {
   selectedImage: "",
   file: "",
 };
-const ButtonAddFile: FC<buttonAddFileProps> = (props) => {
+const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
   const [state, setState] = useState<State>(initialState);
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -31,7 +32,6 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props) => {
     });
 
     props.callback(URL.createObjectURL(e.target.files[0]));
-    console.log(URL.createObjectURL(e.target.files[0]));
   };
 
   return (

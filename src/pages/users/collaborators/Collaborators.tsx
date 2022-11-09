@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import { FC, useState, useEffect } from 'react'
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -67,7 +67,7 @@ const Collaborators: FC = (): JSX.Element => {
   }
 
   //Modal
-  const openDeleteModal = (row: object) => (): void => {
+  const openDeleteModal = (): void => {
 
     setState({
       ...state,
@@ -100,7 +100,7 @@ const Collaborators: FC = (): JSX.Element => {
         <ButtonIcon callback={updateAdmin(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal(params.row)}>
+        <ButtonIcon callback={openDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
@@ -151,7 +151,7 @@ const Collaborators: FC = (): JSX.Element => {
               textInfo={t("Collaborators.info")}
             />
 
-            <ButtonGeneric color={common.ternaryColor} callback={addAdmin}>
+            <ButtonGeneric color={"green"} callback={addAdmin}>
               + {t("addButton")}
             </ButtonGeneric>
           </Box>

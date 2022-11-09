@@ -8,7 +8,7 @@ interface SwitchProps {
   defaultChecked?: boolean;
 }
 
-const CustomSwitch: FC<SwitchProps> = (props) => {
+const CustomSwitch: FC<SwitchProps> = (props):JSX.Element => {
   const handleChange = (event: BaseSyntheticEvent): void => {
     props.callback(event.target.checked);
   };

@@ -1,4 +1,4 @@
-import { FC,useState } from "react";
+import { FC } from "react";
 
 import {Modal,Box,Typography} from "@mui/material";
 
@@ -18,7 +18,7 @@ interface modalProps{
   deleteCallback: Function
 }
   
-const DeleteModal: FC<modalProps> = (props) => {
+const DeleteModal: FC<modalProps> = (props):JSX.Element => {
 
   const { t, i18n } = useTranslation();
 

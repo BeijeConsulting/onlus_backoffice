@@ -68,16 +68,16 @@ const Login: FC = (): JSX.Element => {
       emailError: eError,
       passwordError: pError,
     });
-    let user: User = {
+    /*let user: User = {
       id: e.target.form[0].value,
       password: e.target.form[2].value,
-    };
+    };*/
 
     //get
-    let user1 = await getApiLogin();
+    let tempUser = await getApiLogin();
 
     //setcookie
-    setCookie("user", user1);
+    setCookie("user", tempUser);
 
     navigate(PAGES.personalArea);
   }

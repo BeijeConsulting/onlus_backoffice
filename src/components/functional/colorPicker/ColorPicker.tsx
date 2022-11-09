@@ -32,7 +32,7 @@ const initState: State = {
   txtColorOne: "#ffffff",
 };
 
-const ColorPicker: FC<colorPickerProp> = (props) => {
+const ColorPicker: FC<colorPickerProp> = (props): JSX.Element => {
   const [state, setState] = useState<State>(initState);
 
   const openColorPicker = (e: BaseSyntheticEvent): void => {

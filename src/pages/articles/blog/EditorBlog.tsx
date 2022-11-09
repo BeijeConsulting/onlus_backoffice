@@ -7,7 +7,7 @@ import Title from "../../../components/functional/title/Title";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
-import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+//import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //styles
 import style from "./editorBlogStyle.module.scss";

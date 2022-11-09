@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { FC, useState, useEffect } from "react";
+import { FC, useState } from "react";
 
 //navigation
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,8 +11,9 @@ import CustomTable from "../../../components/functional/table/CustomTable";
 import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+import LabelText from "../../../components/functional/labelText/LabelText";
 
-//mockup data
+//data
 import { articles } from "../../../utils/mockup/data";
 
 //icons
@@ -24,10 +25,10 @@ import PAGES from "../../../router/pages";
 
 //style
 import common from "../../../assets/styles/common.module.scss";
-import style from "./blogStyle.module.scss";
 //translation
 import { useTranslation } from "react-i18next";
 
+//interface
 interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
@@ -132,13 +133,13 @@ const Blog: FC = () => {
   return (
     <Box className={common.component}>
       <Box className={common.singleComponent}>
-        <Box className={`${common.row} ${style.justify}`}>
+        <Box className={`${common.row}`}>
           <Title text={t("articles.title")} textInfo={t("articles.info")} />
           <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
             + {t("articles.addButton")}
           </ButtonGeneric>
         </Box>
-        <Box className={style.tableContainer}>
+        <Box>
           <CustomTable columns={columns} rows={articles} pageSize={8} />
         </Box>
       </Box>
@@ -164,7 +165,7 @@ const Blog: FC = () => {
           callback={handleClose}
         />
       )}
-    </Box>
+      </Box>
   );
 };
 

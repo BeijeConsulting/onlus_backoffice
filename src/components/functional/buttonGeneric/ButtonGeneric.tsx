@@ -1,7 +1,4 @@
-import { BaseSyntheticEvent, FC, MouseEvent } from "react";
-
-//Style
-import common from "../../../assets/styles/common.module.scss"
+import { BaseSyntheticEvent, FC } from "react";
 
 //mui
 import { Button } from "@mui/material";
@@ -12,7 +9,7 @@ interface buttonGenericProps {
   children: any;
 }
 
-const ButtonGeneric: FC<buttonGenericProps> = (props) => {
+const ButtonGeneric: FC<buttonGenericProps> = (props):JSX.Element => {
   const handleClick = (e: BaseSyntheticEvent): void => {
     props.callback(e);
   };

@@ -7,53 +7,53 @@ import style from "./customSelect.module.scss";
 import { Select, MenuItem, SelectChangeEvent, InputLabel, FormControl, FormHelperText } from "@mui/material";
 
 interface selectProps {
-    label: string;
-    defaultValue?: string;
-    disabled?: boolean;
-    error?: boolean;
-    errorMessage?: string;
-    items: Array<Item>;
+  label: string;
+  defaultValue?: string;
+  disabled?: boolean;
+  error?: boolean;
+  errorMessage?: string;
+  items: Array<Item>;
 }
 
 type Item = {
-    name: string,
-    value: string,
+  name: string,
+  value: string,
 }
 
-const CustomSelect: FC<selectProps> = (props) => {
+const CustomSelect: FC<selectProps> = (props): JSX.Element => {
 
-    const [value, setValue] = useState(!!props.defaultValue ? props.defaultValue : '');
+  const [value, setValue] = useState(!!props.defaultValue ? props.defaultValue : '');
 
-    const handleChange = (event: SelectChangeEvent) => {
-        console.log(event.target.value)
-        setValue(event.target.value as string);
-    };
+  const handleChange = (event: SelectChangeEvent) => {
+    console.log(event.target.value)
+    setValue(event.target.value as string);
+  };
 
-    return (
-        <FormControl fullWidth disabled={props.disabled} error={props.error}>
-            <InputLabel id="demo-simple-select-label" className={style.label}>{props.label}</InputLabel>
-            <Select
-                className={style.select}
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={value}
-                label={props.label}
-                onChange={handleChange}
-            >
-                {
-                    props.items.map((item, key) =>
-                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
-                    )
-                }
-            </Select>
-            <FormHelperText>
-                {
-                    props.error &&
-                    props.errorMessage
-                }
-            </FormHelperText>
-        </FormControl>
-    );
+  return (
+    <FormControl fullWidth disabled={props.disabled} error={props.error}>
+      <InputLabel id="demo-simple-select-label" className={style.label}>{props.label}</InputLabel>
+      <Select
+        className={style.select}
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={value}
+        label={props.label}
+        onChange={handleChange}
+      >
+        {
+          props.items.map((item, key) =>
+            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+          )
+        }
+      </Select>
+      <FormHelperText>
+        {
+          props.error &&
+          props.errorMessage
+        }
+      </FormHelperText>
+    </FormControl>
+  );
 }
 
 export default CustomSelect;

@@ -1,11 +1,10 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 //mui
 import { Box } from "@mui/material";
 
 //style
 import common from "../../../assets/styles/common.module.scss";
-import style from "./social-Style.module.scss";
 
 //function components
 import LabelText from "../../../components/functional/labelText/LabelText";
@@ -128,10 +127,10 @@ const Social: FC = (): JSX.Element => {
     <Box className={common.component}>
       <Box className={common.doubleComponent}>
         <LabelText>
-          <Box className={style.TitleButton}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Title text={t("social.title")} textInfo={t("social.info")} />
             <ButtonGeneric color={common.ternaryColor} callback={addSocial}>
-              <p className={style.button}>+{t("addButton")}</p>
+              +{t("addButton")}
             </ButtonGeneric>
           </Box>
           <CustomTable columns={columns} rows={social} />

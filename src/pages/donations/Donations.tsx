@@ -4,15 +4,14 @@ import { FC, useState } from "react";
 import style from "../../assets/styles/common.module.scss";
 
 //mui
-import Table from "@mui/material/Table";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
-import TablePagination from "@mui/material/TablePagination";
+import Table from '@mui/material/Table';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
 import { Box } from "@mui/material";
 
 //components
@@ -37,14 +36,15 @@ const Donations: FC = () => {
   const [state, setState] = useState<State>(initialState);
   const { t } = useTranslation();
 
-  //calcolo il totale delle donazioni
+  //calcolo il totale delle donazioni (usare chiamata API)
   const getTotal = (): string => {
-    let total: number = 0;
-    donations.map((element) => {
-      total += element.amount;
-    });
-    return total.toString() + "€";
-  };
+    let total: number = 0
+    donations.forEach((element) => {
+      console.log(element)
+      total += element.amount
+    })
+    return total.toString() + "€"
+  }
 
   //cambia il numero di pagina
   const handleChangePage = (event: unknown, newPage: number) => {

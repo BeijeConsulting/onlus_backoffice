@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -67,7 +67,7 @@ const Volunteers: FC = (): JSX.Element => {
   }
 
   //Modal
-  const openDeleteModal = (row: object) => (): void => {
+  const openDeleteModal = (): void => {
 
     setState({
       ...state,
@@ -107,7 +107,7 @@ const Volunteers: FC = (): JSX.Element => {
         <ButtonIcon callback={updateGuest(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal(params.row)}>
+        <ButtonIcon callback={openDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
@@ -148,7 +148,7 @@ const Volunteers: FC = (): JSX.Element => {
             textInfo={t("volunteers.info")}
           />
 
-            <ButtonGeneric color={common.ternaryColor} callback={addVolunteer}>
+            <ButtonGeneric color={"green"} callback={addVolunteer}>
               + {t("addButton")}
             </ButtonGeneric>
           </Box>

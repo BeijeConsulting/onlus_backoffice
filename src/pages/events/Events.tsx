@@ -1,23 +1,24 @@
-import { Box, Typography, Modal } from "@mui/material";
-import { FC, useState, useEffect } from "react";
-
-//router dom
+import { FC, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
+//mui
+import { Box } from "@mui/material";
 
 //PAGES
 import PAGES from "../../router/pages";
 
 //style
 import style from "../../assets/styles/common.module.scss";
-import eventsStyle from "./eventsStyle.module.scss";
 
 //components
 import Title from "../../components/functional/title/Title";
 import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGeneric";
 import CustomTable from "../../components/functional/table/CustomTable";
+import LabelText from "../../components/functional/labelText/LabelText";
 import ButtonIcon from "../../components/functional/buttonIcon/ButtonIcon";
+import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 
-//mockup data
+//data
 import { events } from "../../utils/mockup/data";
 
 //icons
@@ -26,7 +27,6 @@ import CreateIcon from "@mui/icons-material/Create";
 
 //modal
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
-import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 //translation
 import { useTranslation } from "react-i18next";
 
@@ -44,16 +44,12 @@ const initialState: State = {
   modalIsOpen: false,
 };
 
-const Events: FC<eventsProps> = (props) => {
+const Events: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
 
   const [state, setState] = useState<State>(initialState);
-
-  useEffect(() => {
-    console.log("mounted");
-  }, []);
 
   //Snackbar
   const handleClose = () => {
@@ -87,7 +83,7 @@ const Events: FC<eventsProps> = (props) => {
   }
 
   //Colonne del DataGrid
-  const renderDetailsButton_1 = (params: any) => {
+  const renderDetailsButton_1 = () => {
     return (
       <>
         <Box
@@ -107,7 +103,7 @@ const Events: FC<eventsProps> = (props) => {
     );
   };
 
-  const renderDetailsButton_2 = (params: any) => {
+  const renderDetailsButton_2 = () => {
     return (
       <>
         <Box
@@ -185,31 +181,32 @@ const Events: FC<eventsProps> = (props) => {
   return (
     <Box className={style.component}>
       <Box className={style.singleComponent}>
-        <Box className={eventsStyle.titleFlex}>
+        <Box  sx={{display: "flex", justifyContent: "space-between"}}>
           <Title
             text={t("Events.NewEvents.title")}
             textInfo={t("Events.NewEvents.info")}
           />
-          <ButtonGeneric color={style.ternaryColor} callback={goToEditor}>
+          <ButtonGeneric color={"green"} callback={goToEditor}>
             + {t("Events.addButton")}
           </ButtonGeneric>
         </Box>
+        <LabelText>
 
-        {/* sezione eventi in programma*/}
-        <Box className={eventsStyle.tableContainer}>
+          {/* sezione eventi in programma*/}
           <CustomTable columns={columns_1} rows={events} />
-        </Box>
+        </LabelText>
 
         {/* sezione archivio eventi  */}
-        <Box className={eventsStyle.archivesContainer}>
-          <Title
-            text={t("Events.OldEvents.title")}
-            textInfo={t("Events.OldEvents.info")}
-          />
-          <Box className={eventsStyle.tableContainer}>
-            <CustomTable columns={columns_2} rows={events} />
+        <LabelText>
+          <Box sx={{marginTop : "20px"}}>
+            <Title
+              text={t("Events.OldEvents.title")}
+              textInfo={t("Events.OldEvents.info")}
+            />
+              <CustomTable columns={columns_2} rows={events} />
           </Box>
-        </Box>
+        </LabelText>
+        
       </Box>
 
       {/* delete modal */}

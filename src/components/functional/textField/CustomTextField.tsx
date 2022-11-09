@@ -20,7 +20,7 @@ interface textFieldProps {
   disabled?:any;
 }
 
-const CustomTextField: FC<textFieldProps> = (props) => {
+const CustomTextField: FC<textFieldProps> = (props): JSX.Element => {
 
   return (
     <TextField

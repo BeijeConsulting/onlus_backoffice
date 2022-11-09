@@ -13,7 +13,7 @@ interface Props {
   pageSize?: number;
 }
 
-const CustomTable: FC<Props> = (props) => {
+const CustomTable: FC<Props> = (props): JSX.Element=> {
   return (
     <Box sx={{ width: "100%" }}>
       <DataGrid
@@ -49,7 +49,6 @@ const CustomTable: FC<Props> = (props) => {
       
         }}
         disableSelectionOnClick
-        //getEstimatedRowHeight={() => 200}
         disableColumnMenu
         rows={props.rows}
         columns={props.columns}

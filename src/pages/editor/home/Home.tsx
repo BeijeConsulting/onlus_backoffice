@@ -1,11 +1,12 @@
-import { FC, useEffect, useState } from "react";
-import userDuck from "../../../redux/ducks/userDuck";
+import { FC, useState } from "react";
+
 //mui
 import { Box } from "@mui/material";
+
 //style
 import common from "../../../assets/styles/common.module.scss";
-import style from "./home-Style.module.scss";
-//function component
+
+//components
 import LabelText from "../../../components/functional/labelText/LabelText";
 import Title from "../../../components/functional/title/Title";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
@@ -13,11 +14,13 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import { useSelector } from "react-redux/es/exports";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+
 //data
 import { home } from "../../../utils/mockup/data";
 //translation
 import { useTranslation } from "react-i18next";
 
+//interface
 type home = {
   hero: {
     img: any;
@@ -51,18 +54,6 @@ const Home: FC = () => {
       snackIsOpen: true,
     });
 
-    let newHome: home = {
-      hero: {
-        img: e.target.form[0].value,
-        title: e.target.form[1].value,
-        text: e.target.form[3].value,
-      },
-      results: {
-        title: e.target.form[6].value,
-        img: e.target.form[8].value,
-        text: e.target.form[9].value,
-      },
-    };
     console.log(stampa);
   }
 
