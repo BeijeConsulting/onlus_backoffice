@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from "react";
 
 //mui
 import { Box } from "@mui/material";
@@ -13,8 +13,8 @@ import Title from "../../../components/functional/title/Title";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import CustomTable from "../../../components/functional/table/CustomTable";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
-import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
-import DeleteModal from '../../../components/functional/deleteModal/DeleteModal';
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
 
 //icon
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -26,11 +26,8 @@ import { social } from "../../../utils/mockup/data";
 //navigation
 import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../../router/pages";
-
-/*
-TO DO
-- i18n
-*/
+//translation
+import { useTranslation } from "react-i18next";
 
 interface State {
   snackIsOpen: boolean;
@@ -40,12 +37,13 @@ interface State {
 const initialState: State = {
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  modalIsOpen: false
+  modalIsOpen: false,
 };
 
 const Social: FC = (): JSX.Element => {
-
   const [state, setState] = useState<State>(initialState);
+
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -55,9 +53,9 @@ const Social: FC = (): JSX.Element => {
     setState({
       ...state,
       snackIsOpen: false,
-      snackDeleteIsOpen: false
-    })
-  }
+      snackDeleteIsOpen: false,
+    });
+  };
 
   const edit = (att: any) => (): void => {
     console.log("edit", att);
@@ -68,8 +66,8 @@ const Social: FC = (): JSX.Element => {
     setState({
       ...state,
       snackDeleteIsOpen: true,
-      modalIsOpen: false
-    })
+      modalIsOpen: false,
+    });
   };
 
   const addSocial = (): void => {
@@ -80,9 +78,9 @@ const Social: FC = (): JSX.Element => {
   const showDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen
-    })
-  }
+      modalIsOpen: !state.modalIsOpen,
+    });
+  };
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -100,17 +98,17 @@ const Social: FC = (): JSX.Element => {
   const columns = [
     {
       field: "name",
-      headerName: "SOCIAL",
+      headerName: t("social.table.headerTable1"),
       flex: 1,
     },
     {
       field: "icon",
-      headerName: "ICONA",
+      headerName: t("social.table.headerTable2"),
       flex: 1,
     },
     {
       field: "link",
-      headerName: "LINK",
+      headerName: t("social.table.headerTable3"),
       type: "date",
       flex: 1,
     },
@@ -131,9 +129,9 @@ const Social: FC = (): JSX.Element => {
       <Box className={common.doubleComponent}>
         <LabelText>
           <Box className={style.TitleButton}>
-            <Title text="Social" textInfo="inserisci i social" />
+            <Title text={t("social.title")} textInfo={t("social.info")} />
             <ButtonGeneric color={common.ternaryColor} callback={addSocial}>
-              <p className={style.button}>+Aggiungi</p>
+              <p className={style.button}>+{t("addButton")}</p>
             </ButtonGeneric>
           </Box>
           <CustomTable columns={columns} rows={social} />
@@ -145,16 +143,22 @@ const Social: FC = (): JSX.Element => {
         closeCallback={showDeleteModal}
         deleteCallback={deleteRow}
       />
-      {
-        location?.state?.open &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
-      }
-      {
-        state.snackDeleteIsOpen &&
-        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
-      }
+      {location?.state?.open && (
+        <CustomSnackbar
+          message={t("changesSnack")}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={t("deleteSnack")}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
     </Box>
   );
-}
+};
 
 export default Social;

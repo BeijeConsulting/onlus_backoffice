@@ -19,6 +19,10 @@
     "addButton": "Add",
     "DiscardChenagesButton": "Cancel"
   },
+  "modificationModal": {
+    "modificationButton": "Add",
+    "DiscardChangesButton": "Cancel"
+  },
   "link": "Add another slot",
   "general": {
     "nameSite": {
@@ -168,6 +172,9 @@
     "info": "Data of the logged in user, click on the Save changes button to complete the update operation",
     "placeholderName": "Name",
     "placeholderLanguage": "Language",
+    "ita": "Italian",
+    "eng": "English",
+    "placeholderRole": "Role",
     "placeholderEmail": "Email",
     "placeholderPassword": "Password",
     "placeholderSurname": "Surname",
@@ -218,7 +225,8 @@
       "title": "Faq",
       "info": "Questions in the FAQ section of the page, click on the + Add button to add a new question and answer, click on the edit or cancel buttons to change the data structure",
       "question": "QUESTION"
-    }
+    },
+    "infoSnack": "Changes to info saved successfully"
   },
   "FaqEditor": {
     "title": "Faq",
@@ -251,7 +259,7 @@
       "title": "Cover",
       "info": "Insert a cover photo for the event"
     },
-    "At your place": {
+    "Date": {
       "title": "Date and time",
       "date": "Select",
       "info": "Insert the date and time of the event"
@@ -273,6 +281,8 @@
     }
   },
   "Categories": {
+    "errorEmpty": "Enter a category",
+    "errorExist": "Category already exists",
     "table": {
       "categories": "CATEGORIES",
       "blog": "RELATED ARTICLES"
@@ -313,6 +323,7 @@
     },
     "amountDonation": "TOTAL DONATIONS",
     "subTable": {
+      "title": "Transaction",
       "id": "ID",
       "email": "EMAIL",
       "value": "VALUE",

@@ -5,19 +5,23 @@
   },
   "saveButton": "Salva modifiche",
   "addButton": "Aggiungi",
-  "cancelButton" : "Annulla modifiche",
-  "changesSnack" : "Modifiche avvenute con successo",
-  "deleteSnack" : "Eliminazione avvenuta con successo",
-  "addSnack" : "Inserimento avvenuto con successo",
-  "deleteModal" : {
-    "text" : "Sei sicuro di voler eliminare il seguente elemento?",
-    "deleteButton" : "Elimina",
-    "DiscardChenagesButton" : "Annulla"
+  "cancelButton": "Annulla modifiche",
+  "changesSnack": "Modifiche avvenute con successo",
+  "deleteSnack": "Eliminazione avvenuta con successo",
+  "addSnack": "Inserimento avvenuto con successo",
+  "deleteModal": {
+    "text": "Sei sicuro di voler eliminare il seguente elemento?",
+    "deleteButton": "Elimina",
+    "DiscardChenagesButton": "Annulla"
   },
-  "addModal" : {
-    "text" : "Sei sicuro di voler aggiungere il seguente elemento?",
-    "addButton" : "Aggiungi",
-    "DiscardChenagesButton" : "Annulla"
+  "addModal": {
+    "text": "Sei sicuro di voler aggiungere il seguente elemento?",
+    "addButton": "Aggiungi",
+    "DiscardChenagesButton": "Annulla"
+  },
+  "modificationModal": {
+    "modificationButton": "Aggiungi",
+    "DiscardChangesButton": "Annulla"
   },
   "link": "Aggiungi un altro slot",
   "general": {
@@ -100,80 +104,83 @@
         "info": "Inserisci il nome del social",
         "placeholderSocial": "Nome social"
       },
-      "iconSection" : {
+      "iconSection": {
         "title": "Icona",
         "info": "Inserisci l'icona"
       },
-      "linkSection" : {
+      "linkSection": {
         "title": "Link",
         "info": "Inserisci il link al social",
-        "placeholderLink" : "link"
+        "placeholderLink": "link"
       },
-      "toggleFooter" : "Pubblica nel footer",
-      "toggleHome" : "Pubblica nella home"
-    } 
-  },
-  "articles" : {
-    "title" : "Archivio blog",
-    "info" : "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli",
-    "table" : {
-        "headerTable1" : "TITOLO",
-        "headerTable2" : "AUTORE",
-        "headerTable3" : "DATA",
-        "headerTable4" : "STATO"
-    },
-    "editorBlog" : {
-        "titleSection" : {
-            "title": "Titolo",
-            "info": "Inserisci il titolo dell'articolo",
-            "placeholderTitle" : "Titolo"
-        },
-        "contentSection" : {
-            "title": "Contenuto",
-            "info": "Scrivi il tuo articolo",
-            "placeholderContent" : "Inserisci testo"
-        },
-        "coverSection" : {
-            "title": "Copertina",
-            "info": "Inserisci una foto di copertina per l'evento"
-        },
-        "categoriesSection" : {
-            "title": "Categorie",
-            "info": "Specificare le categorie da attribuire all'articolo"
-        }
-    },
-    "volunteers" : {
-        "title" : "Volontari",
-        "info" : "Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema",
-        "table" : {
-            "headerTable1" : "NOME",
-            "headerTable2" : "COGNOME"
-        },
-        "editorVolunteers" : {
-            "title" : "Dati dell'utente",
-            "info" : "Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Elimina utente per cancellare i dati dell'utente dal sistema",
-            "placeholderName" : "Nome",
-            "placeholderLanguage" : "Lingua",
-            "placeholderEmail" : "Email",
-            "placeholderPassword" : "Password",
-            "placeholderSurname" : "Cognome",
-            "placeholderUser" : "User",
-            "placeholderTelephone" : "Telefono",
-            "placeholderConfirmPassword" : "Conferma password"
-        }
-    },
-    "personalArea" : {
-        "title" : "I tuoi dati",
-        "info" : "Dati dell'utente loggato, clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento",
-        "placeholderName" : "Nome",
-        "placeholderLanguage" : "Lingua",
-        "placeholderEmail" : "Email",
-        "placeholderPassword" : "Password",
-        "placeholderSurname" : "Cognome",
-        "placeholderUser" : "User",
-        "placeholderTelephone" : "Telefono",
-        "placeholderConfirmPassword" : "Conferma password"
+      "toggleFooter": "Pubblica nel footer",
+      "toggleHome": "Pubblica nella home"
     }
+  },
+  "articles": {
+    "title": "Archivio blog",
+    "info": "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli",
+    "table": {
+      "headerTable1": "TITOLO",
+      "headerTable2": "AUTORE",
+      "headerTable3": "DATA",
+      "headerTable4": "STATO"
+    },
+    "editorBlog": {
+      "titleSection": {
+        "title": "Titolo",
+        "info": "Inserisci il titolo dell'articolo",
+        "placeholderTitle": "Titolo"
+      },
+      "contentSection": {
+        "title": "Contenuto",
+        "info": "Scrivi il tuo articolo",
+        "placeholderContent": "Inserisci testo"
+      },
+      "coverSection": {
+        "title": "Copertina",
+        "info": "Inserisci una foto di copertina per l'evento"
+      },
+      "categoriesSection": {
+        "title": "Categorie",
+        "info": "Specificare le categorie da attribuire all'articolo"
+      }
+    }
+  },
+  "volunteers": {
+    "title": "Volontari",
+    "info": "Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema",
+    "table": {
+      "headerTable1": "NOME",
+      "headerTable2": "COGNOME"
+    },
+    "editorVolunteers": {
+      "title": "Dati dell'utente",
+      "info": "Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Elimina utente per cancellare i dati dell'utente dal sistema",
+      "placeholderName": "Nome",
+      "placeholderLanguage": "Lingua",
+      "placeholderEmail": "Email",
+      "placeholderPassword": "Password",
+      "placeholderSurname": "Cognome",
+      "placeholderUser": "User",
+      "placeholderTelephone": "Telefono",
+      "placeholderConfirmPassword": "Conferma password"
+    }
+  },
+  "personalArea": {
+    "title": "I tuoi dati",
+    "info": "Dati dell'utente loggato, clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento",
+    "placeholderName": "Nome",
+    "placeholderLanguage": "Lingua",
+    "ita": "Italiano",
+    "eng": "Inglese",
+    "placeholderRole": "Ruolo",
+    "placeholderEmail": "Email",
+    "placeholderPassword": "Password",
+    "placeholderSurname": "Cognome",
+    "placeholderUser": "User",
+    "placeholderTelephone": "Telefono",
+    "placeholderConfirmPassword": "Conferma password"
   },
   "Home": {
     "Hero": {
@@ -183,7 +190,7 @@
       "placeHolderText": "Inserisci testo della hero"
     },
     "Results": {
-      "title": "Results",
+      "title": "Risultati",
       "info": "Qui verranno inseriti i risultati della onlus",
       "placeHolderSubTitle": "Inserisci titolo dei risultati",
       "placeHolderText": " Inserisci testo dei risultati"
@@ -204,8 +211,7 @@
       "title": "Titolo",
       "info": "Titolo della sezione dei contenuti",
       "placeHolderText": "Inserisci il titolo"
-    },
-    "addContent": "Aggiungi un altro slot"
+    }
   },
   "Faq": {
     "info": {
@@ -218,7 +224,8 @@
       "title": "Faq",
       "info": "Domande presenti nella sezione FAQ della pagina, clicca sul pulsante +Aggiungi per aggiungere una nuova domanda e risposta, clicca sui bottoni modifica o cancella per cambiare la struttura dati",
       "question": "DOMANDA"
-    }
+    },
+    "infoSnack": "Modifiche ad info salvate con successo"
   },
   "FaqEditor": {
     "title": "Faq",
@@ -241,38 +248,40 @@
       "info": "Tabella dove viene visualizzato l'archivio di tutti gli eventi passati"
     }
   },
-  "EventsEditor":{
-    "Title":{
-      "title":"Titolo",
-      "info":"Inserisci il titolo dell'evento",
-      "placeHolderText":"inserisci Titolo"
+  "EventsEditor": {
+    "Title": {
+      "title": "Titolo",
+      "info": "Inserisci il titolo dell'evento",
+      "placeHolderText": "inserisci Titolo"
     },
-    "cover":{
-      "title":"Copertina",
-      "info":"Inserisci una foto di copertina per l'evento"
-    }, 
-    "Date":{
-      "title":"Data e ora",
-      "date":"Seleziona",
-      "info":"Inserisci la data e l'ora dell'evento"
-    }, 
-    "Place":{
-      "title":"Luogo",
-      "info":"Inserisci il luogo in cui si svolgerà l'evento",
-      "placeHolderText":"inserisci Indirizzo"
-    },    
-    "Description":{
-      "title":"Descrizione",
-      "info":"Inserisci una descrizione esplicativa dell'evento",
-      "placeHolderText":"inserisci Testo"
+    "cover": {
+      "title": "Copertina",
+      "info": "Inserisci una foto di copertina per l'evento"
     },
-    "Requirements":{
-      "title":"Requisiti",
-      "info":"Specifica i requisiti per partecipare all'evento",
-      "placeHolderText":"inserisci Testo"
+    "Date": {
+      "title": "Data e ora",
+      "date": "Seleziona",
+      "info": "Inserisci la data e l'ora dell'evento"
+    },
+    "Place": {
+      "title": "Luogo",
+      "info": "Inserisci il luogo in cui si svolgerà l'evento",
+      "placeHolderText": "inserisci Indirizzo"
+    },
+    "Description": {
+      "title": "Descrizione",
+      "info": "Inserisci una descrizione esplicativa dell'evento",
+      "placeHolderText": "inserisci Testo"
+    },
+    "Requirements": {
+      "title": "Requisiti",
+      "info": "Specifica i requisiti per partecipare all'evento",
+      "placeHolderText": "inserisci Testo"
     }
   },
   "Categories": {
+    "errorEmpty": "Inserisci una categoria",
+    "errorExist": "Categoria già esistente",
     "table": {
       "categories": "CATEGORIE",
       "blog": "ARTICOLI CORRELATI"
@@ -291,17 +300,17 @@
       "blog": "ARTICOLI PUBBLICATI"
     }
   },
-  "CollaboratorsEditor":{
-    "title":"Dati dell'utente",
-    "info":"Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Annulla modifiche per cancellare l'operazione",
-    "placeholderName":"Nome",
-    "placeholderSurname":"Cognome",
-    "placeholderLang":"Lingua",
-    "placeholderRole":"Ruolo",
-    "placeholderEmail":"Email",
-    "placeholderPhone":"Telefono",
-    "placeholderPassword":"Password",
-    "placeholderConfirmPassword":"Conferma Password"
+  "CollaboratorsEditor": {
+    "title": "Dati dell'utente",
+    "info": "Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Annulla modifiche per cancellare l'operazione",
+    "placeholderName": "Nome",
+    "placeholderSurname": "Cognome",
+    "placeholderLang": "Lingua",
+    "placeholderRole": "Ruolo",
+    "placeholderEmail": "Email",
+    "placeholderPhone": "Telefono",
+    "placeholderPassword": "Password",
+    "placeholderConfirmPassword": "Conferma Password"
   },
   "Donation": {
     "title": "Donation",
@@ -312,38 +321,38 @@
       "date": "DATA"
     },
     "amountDonation": "TOTALE DONAZIONI",
-    "subTable":{
-      "id":"ID",
-      "email":"EMAIL",
-      "value":"VALORE",
-      "date":"DATA",
-      "anonimus":"ANONIMA"
+    "subTable": {
+      "title": "Transazione",
+      "id": "ID",
+      "email": "EMAIL",
+      "value": "VALORE",
+      "date": "DATA",
+      "anonimus": "ANONIMA"
     }
   },
-  "navbar" : {
-    "siteEditor" : {
-        "title" : "EDITOR SITO",
-        "general" : "Generale",
-        "home" : "Home",
-        "about" : "About",
-        "SupportUs" : "Supportaci",
-        "faq" : "Faq",
-        "social" : "Social"
+  "navbar": {
+    "siteEditor": {
+      "title": "EDITOR SITO",
+      "general": "Generale",
+      "home": "Home",
+      "about": "About",
+      "SupportUs": "Supportaci",
+      "faq": "Faq",
+      "social": "Social"
     },
-    "events" : "EVENTI",
-    "articles" : {
-        "title" : "ARTICOLI",
-        "manageArticles" : "Gestisci articoli",
-        "manageCategories" : "Gestisci categorie"
+    "events": "EVENTI",
+    "articles": {
+      "title": "ARTICOLI",
+      "manageArticles": "Gestisci articoli",
+      "manageCategories": "Gestisci categorie"
     },
-    "users" : {
-        "title" : "UTENTI",
-        "Collaborators" : "Collaboratori",
-        "volunteers" : "Volontari"
+    "users": {
+      "title": "UTENTI",
+      "Collaborators": "Collaboratori",
+      "volunteers": "Volontari"
     },
-    "donations" : {
-        "title" : "DONAZIONI"
+    "donations": {
+      "title": "DONAZIONI"
     }
   }
-
 }

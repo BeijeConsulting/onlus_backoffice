@@ -1,5 +1,5 @@
 import { Box, Typography, Modal } from "@mui/material";
-import { FC, useState, useRef, BaseSyntheticEvent } from "react"; 
+import { FC, useState, useRef, BaseSyntheticEvent } from "react";
 
 //style
 import style from "../../../assets/styles/common.module.scss";
@@ -25,6 +25,8 @@ import checkEmptyText from "../../../customHooks/useEmptyText";
 
 //modal
 import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
+//translation
+import { useTranslation } from "react-i18next";
 
 //state
 interface State {
@@ -53,12 +55,12 @@ const initialState: State = {
   updateName: "",
   updateErrorMesssage: "",
   updateError: false,
-  addCategoryName: ""
+  addCategoryName: "",
 };
 
 const Categories: FC = (props) => {
-
   const [state, setState] = useState<State>(initialState);
+  const { t } = useTranslation();
 
   const ref: any = useRef<HTMLInputElement>(null);
 
@@ -68,62 +70,62 @@ const Categories: FC = (props) => {
       ...state,
       snackIsOpen: false,
       snackDeleteIsOpen: false,
-      snackUpdateIsOpen: false
-    })
-  }
+      snackUpdateIsOpen: false,
+    });
+  };
 
   //mostro/nascondo modal di eliminazione di una categoria
   const showDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen
-    })
-  }
+      modalIsOpen: !state.modalIsOpen,
+    });
+  };
 
   //mostro/nascondo modal di modifica di una categoria
   const showUpdateModal = (name: string) => (): void => {
     setState({
       ...state,
       modalUpdateIsOpen: !state.modalUpdateIsOpen,
-      updateName: name
-    })
-  }
+      updateName: name,
+    });
+  };
 
   //mostro/nascondo il modal per l'aggiunta della categoria
   const showModalCategory = (e: BaseSyntheticEvent): void => {
     const inputText: string = e.target.form[0].value.toLowerCase();
     const isEmpty: boolean = checkEmptyText(inputText);
     const isUnique: boolean = checkUniqueCategory(inputText);
-    let textE: string = ""
-    let inputE: boolean = false
-    let addModal: boolean = true
+    let textE: string = "";
+    let inputE: boolean = false;
+    let addModal: boolean = true;
 
     if (isEmpty) {
-      textE = "Inserisci una categoria"
-      inputE = true
-      addModal = false
+      textE = t("Categories.errorEmpty");
+      inputE = true;
+      addModal = false;
     }
     if (!isUnique) {
-      textE = "Categoria già esistente"
-      inputE = true
-      addModal = false
+      textE = t("Categories.errorExist");
+      inputE = true;
+      addModal = false;
     }
 
     setState({
       ...state,
       textError: textE,
       addModal: addModal,
-      inputError: inputE
-    })
-  }
+      inputError: inputE,
+    });
+  };
 
   //elimina categoria
   const deleteCategory = (): void => {
     setState({
       ...state,
       snackDeleteIsOpen: true,
-      modalIsOpen: false
-    })
+      modalIsOpen: false,
+    });
   };
 
   //aggiorna categoria
@@ -131,22 +133,22 @@ const Categories: FC = (props) => {
     const inputText: string = e.target.form[0].value.toLowerCase();
     const isEmpty: boolean = checkEmptyText(inputText);
     const isUnique: boolean = checkUniqueCategory(inputText);
-    let textU: string = ""
-    let inputE: boolean = false
-    let isOpen: boolean = false
-    let snack: boolean = true
+    let textU: string = "";
+    let inputE: boolean = false;
+    let isOpen: boolean = false;
+    let snack: boolean = true;
 
     if (isEmpty) {
-      textU = "Inserisci una categoria"
-      inputE = true
-      isOpen = true
-      snack = false
+      textU = t("Categories.errorEmpty");
+      inputE = true;
+      isOpen = true;
+      snack = false;
     }
     if (!isUnique) {
-      textU = "Categoria già esistente"
-      inputE = true
-      isOpen = true
-      snack = false
+      textU = t("Categories.errorExist");
+      inputE = true;
+      isOpen = true;
+      snack = false;
     }
 
     setState({
@@ -154,38 +156,37 @@ const Categories: FC = (props) => {
       updateErrorMesssage: textU,
       updateError: inputE,
       modalUpdateIsOpen: isOpen,
-      snackUpdateIsOpen: snack
-    })
+      snackUpdateIsOpen: snack,
+    });
   };
 
   //aggiungi categoria
   const addCategory = (): void => {
-    if (ref.current)
-      ref.current.value = ""
+    if (ref.current) ref.current.value = "";
 
     setState({
       ...state,
       addModal: false,
       snackIsOpen: true,
-      addCategoryName: ""
-    })
-  }
+      addCategoryName: "",
+    });
+  };
 
   //nascondo modal aggiunta
   const hideAddModal = (): void => {
     setState({
       ...state,
-      addModal: false
-    })
-  }
+      addModal: false,
+    });
+  };
 
   //nascondo modal modifica
   const hideUpdateModal = (): void => {
     setState({
       ...state,
-      modalUpdateIsOpen: false
-    })
-  }
+      modalUpdateIsOpen: false,
+    });
+  };
 
   //controllo se la categoria da inserire non è già presente fra le mie
   const checkUniqueCategory = (par: string): boolean => {
@@ -196,7 +197,7 @@ const Categories: FC = (props) => {
       }
     });
     return flag;
-  }
+  };
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -222,12 +223,12 @@ const Categories: FC = (props) => {
   const columns = [
     {
       field: "name",
-      headerName: "CATEGORIA",
+      headerName: t("Categories.table.categories"),
       flex: 1,
     },
     {
       field: "relatedArticles",
-      headerName: "ARTICOLI CORRELATI",
+      headerName: t("Categories.table.blog"),
       flex: 1,
     },
     {
@@ -236,7 +237,7 @@ const Categories: FC = (props) => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton
+      renderCell: renderDetailsButton,
     },
   ];
 
@@ -244,22 +245,20 @@ const Categories: FC = (props) => {
     <Box className={style.component}>
       <Box className={style.singleComponent}>
         <Box className={categoriesStyle.titleFlex}>
-          <Title
-            text={"Categorie"}
-            textInfo={
-              "Tabella dove vengono visualizzate le categorie che vengono associate ad un articolo"
-            }
-          />
+          <Title text={t("Categories.title")} textInfo={t("Categories.info")} />
 
           <form>
             <Box className={categoriesStyle.inputButtonContainer}>
               <CustomTextField
-                placeholder={"Inserisci categoria"}
+                placeholder={t("Categories.placeholder")}
                 error={state?.inputError}
                 errorMessage={state?.textError}
                 refCustom={ref}
               />
-              <ButtonGeneric color={style.ternaryColor} callback={showModalCategory}>
+              <ButtonGeneric
+                color={style.ternaryColor}
+                callback={showModalCategory}
+              >
                 + Aggiungi
               </ButtonGeneric>
             </Box>
@@ -271,15 +270,16 @@ const Categories: FC = (props) => {
               aria-describedby="modal-modal-description"
             >
               <Box className={categoriesStyle.modal}>
-                <Typography>
-                  Sei sicuro di voler aggiungere il seguente elemento?
-                </Typography>
+                <Typography>{t("addModal.text")}</Typography>
                 <Box className={categoriesStyle.modalButtons}>
                   <ButtonGeneric color={"green"} callback={addCategory}>
-                    Aggiungi
+                    {t("addModal.addButton")}
                   </ButtonGeneric>
-                  <ButtonGeneric color={style.ternaryColor} callback={hideAddModal}>
-                    Annulla
+                  <ButtonGeneric
+                    color={style.ternaryColor}
+                    callback={hideAddModal}
+                  >
+                    {t("addModal.DiscardChenagesButton")}
                   </ButtonGeneric>
                 </Box>
               </Box>
@@ -310,34 +310,46 @@ const Categories: FC = (props) => {
           <Box className={categoriesStyle.modal}>
             <CustomTextField
               defaultValue={state?.updateName}
-              placeholder={"Inserisci categoria"}
+              placeholder={t("Categories.placeholder")}
               errorMessage={state?.updateErrorMesssage}
               error={state?.updateError}
             />
             <Box className={categoriesStyle.modalButtons}>
               <ButtonGeneric color={"green"} callback={updateCategory}>
-                Modifica
+                {t("modificationModal.modificationButton")}
               </ButtonGeneric>
-              <ButtonGeneric color={style.ternaryColor} callback={hideUpdateModal}>
-                Annulla
+              <ButtonGeneric
+                color={style.ternaryColor}
+                callback={hideUpdateModal}
+              >
+                {t("modificationModal.DiscardChangesButton")}
               </ButtonGeneric>
             </Box>
           </Box>
         </form>
       </Modal>
 
-      {
-        state?.snackIsOpen &&
-        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
-      }
-      {
-        state?.snackUpdateIsOpen &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
-      }
-      {
-        state?.snackDeleteIsOpen &&
-        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
-      }
+      {state?.snackIsOpen && (
+        <CustomSnackbar
+          message={t("addSnack")}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state?.snackUpdateIsOpen && (
+        <CustomSnackbar
+          message={t("changesSnack")}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state?.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={t("deleteSnack")}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
     </Box>
   );
 };

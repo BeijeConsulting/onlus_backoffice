@@ -9,14 +9,15 @@ import common from "../../../assets/styles/common.module.scss";
 import style from "./faq.module.scss";
 
 //MUI
-import { Box } from '@mui/system';
+import { Box } from "@mui/system";
 
 //Components
-import LabelText from '../../../components/functional/labelText/LabelText';
-import Title from '../../../components/functional/title/Title';
-import CustomTextField from '../../../components/functional/textField/CustomTextField';
-import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGeneric';
-
+import LabelText from "../../../components/functional/labelText/LabelText";
+import Title from "../../../components/functional/title/Title";
+import CustomTextField from "../../../components/functional/textField/CustomTextField";
+import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+//translation
+import { useTranslation } from "react-i18next";
 interface State {
   answerError: boolean;
   questionError: boolean;
@@ -28,16 +29,16 @@ const initState: State = {
 };
 
 const EditorFaq: FC = (): JSX.Element => {
-
   const [error, setError] = useState<State>(initState);
 
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
-  const location = useLocation()
-  console.log(location)
+  const location = useLocation();
+  console.log(location);
 
   //Funzione per salvare domanda e risposta
   const onSaveQna = (e: any): void => {
-
     let answerErr = false;
     let questionErr = false;
 
@@ -52,7 +53,7 @@ const EditorFaq: FC = (): JSX.Element => {
     setError({
       answerError: answerErr,
       questionError: questionErr,
-    })
+    });
 
     if (!answerErr && !questionErr) {
       let qna = {
@@ -61,39 +62,43 @@ const EditorFaq: FC = (): JSX.Element => {
       };
 
       console.log(qna);
-      navigate(PAGES.editFaq, {state: {open:true}})
+      navigate(PAGES.editFaq, { state: { open: true } });
     }
-  }
+  };
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
-    navigate(PAGES.editFaq)
-  }
+    navigate(PAGES.editFaq);
+  };
 
   return (
     <Box className={common.component}>
       <Box className={common.singleComponent}>
         <form>
           <LabelText>
-            <Title text={"Faq"} textInfo={"Aggiungi una nuova domanda e risposta, clicca sul pulsante Salva modifiche per completare l'operazione oppure clicca sul pulsante Annulla modifiche per cancellare l'operazione"} />
+            <Title text={t("FaqEditor.title")} textInfo={t("FaqEditor.info")} />
 
             <Box className={style.editorFaqBox}>
               <CustomTextField
                 defaultValue={
-                  !!location?.state?.row?.question ? location?.state?.row?.question : ""
+                  !!location?.state?.row?.question
+                    ? location?.state?.row?.question
+                    : ""
                 }
                 errorMessage="Inserisci una domanda"
                 error={error.answerError}
-                placeholder={'Domanda frequente'}
+                placeholder={t("FaqEditor.question")}
               />
 
               <CustomTextField
                 defaultValue={
-                  !!location?.state?.row?.answer ? location?.state?.row?.answer : ""
+                  !!location?.state?.row?.answer
+                    ? location?.state?.row?.answer
+                    : ""
                 }
                 errorMessage="Inserisci una risposta"
                 error={error.questionError}
-                placeholder={'Inserisci una risposta...'}
+                placeholder={t("FaqEditor.answer")}
                 minrow={12}
                 maxrow={20}
                 multiline={true}
@@ -113,8 +118,7 @@ const EditorFaq: FC = (): JSX.Element => {
         </form>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
 export default EditorFaq;
-

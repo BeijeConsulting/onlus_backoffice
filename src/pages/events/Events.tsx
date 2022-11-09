@@ -27,6 +27,8 @@ import CreateIcon from "@mui/icons-material/Create";
 //modal
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
 import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
+//translation
+import { useTranslation } from "react-i18next";
 
 interface eventsProps {}
 
@@ -39,50 +41,50 @@ interface State {
 const initialState: State = {
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  modalIsOpen: false
+  modalIsOpen: false,
 };
 
 const Events: FC<eventsProps> = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const [state, setState] = useState<State>(initialState);
 
-  useEffect(()=>{
-    console.log('mounted')
-  },[])
+  useEffect(() => {
+    console.log("mounted");
+  }, []);
 
-   //Snackbar
-   const handleClose = () => {
+  //Snackbar
+  const handleClose = () => {
     setState({
       ...state,
       snackIsOpen: false,
-      snackDeleteIsOpen: false
-    })
-  }
+      snackDeleteIsOpen: false,
+    });
+  };
 
-   //mostro/nascondo modal di eliminazione dell'evento
-   const showDeleteModal = (): void => {
+  //mostro/nascondo modal di eliminazione dell'evento
+  const showDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen
-    })
-  }
+      modalIsOpen: !state.modalIsOpen,
+    });
+  };
 
   //elimina evento
   const deleteEvent = (): void => {
     setState({
       ...state,
       snackDeleteIsOpen: true,
-      modalIsOpen: false
-    })
+      modalIsOpen: false,
+    });
   };
- 
+
   //functions
   function goToEditor(): void {
     navigate(PAGES.editorEvents);
   }
-
 
   //Colonne del DataGrid
   const renderDetailsButton_1 = (params: any) => {
@@ -125,17 +127,17 @@ const Events: FC<eventsProps> = (props) => {
   const columns_1 = [
     {
       field: "title",
-      headerName: "TITOLO",
+      headerName: t("Events.table.title"),
       flex: 1,
     },
     {
       field: "place",
-      headerName: "LUOGO",
+      headerName: t("Events.table.place"),
       flex: 1,
     },
     {
       field: "date",
-      headerName: "DATA",
+      headerName: t("Events.table.date"),
       type: "date",
       flex: 1,
     },
@@ -154,17 +156,17 @@ const Events: FC<eventsProps> = (props) => {
   const columns_2 = [
     {
       field: "title",
-      headerName: "TITOLO",
+      headerName: t("Events.table.title"),
       flex: 1,
     },
     {
       field: "place",
-      headerName: "LUOGO",
+      headerName: t("Events.table.place"),
       flex: 1,
     },
     {
       field: "date",
-      headerName: "DATA",
+      headerName: t("Events.table.date"),
       type: "date",
       flex: 1,
     },
@@ -185,13 +187,11 @@ const Events: FC<eventsProps> = (props) => {
       <Box className={style.singleComponent}>
         <Box className={eventsStyle.titleFlex}>
           <Title
-            text={"Eventi in programma"}
-            textInfo={
-              "Tabella dove vengono visualizzati i prossimi eventi in programma"
-            }
+            text={t("Events.NewEvents.title")}
+            textInfo={t("Events.NewEvents.info")}
           />
           <ButtonGeneric color={style.ternaryColor} callback={goToEditor}>
-            + Aggiungi evento
+            + {t("addButton")}
           </ButtonGeneric>
         </Box>
 
@@ -203,10 +203,8 @@ const Events: FC<eventsProps> = (props) => {
         {/* sezione archivio eventi  */}
         <Box className={eventsStyle.archivesContainer}>
           <Title
-            text={"Archivio eventi"}
-            textInfo={
-              "Tabella dove viene visualizzato l'archivio di tutti gli eventi passati"
-            }
+            text={t("Events.OldEvents.title")}
+            textInfo={t("Events.OldEvents.info")}
           />
           <Box className={eventsStyle.tableContainer}>
             <CustomTable columns={columns_2} rows={events} />
@@ -214,24 +212,28 @@ const Events: FC<eventsProps> = (props) => {
         </Box>
       </Box>
 
-     {/* delete modal */}
-     <DeleteModal
+      {/* delete modal */}
+      <DeleteModal
         open={state.modalIsOpen}
         closeCallback={showDeleteModal}
         deleteCallback={deleteEvent}
       />
 
       {/* snackbar */}
-      {
-        location?.state?.open &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
-      }
-      {
-        state.snackDeleteIsOpen &&
-        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
-      }
-      
-
+      {location?.state?.open && (
+        <CustomSnackbar
+          message={t("changesSnack")}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={t("deleteSnack")}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
     </Box>
   );
 };

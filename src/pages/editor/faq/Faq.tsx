@@ -25,6 +25,8 @@ import DeleteModal from "../../../components/functional/deleteModal/DeleteModal"
 
 //Data
 import { faq } from "../../../utils/mockup/data";
+//translation
+import { useTranslation } from "react-i18next";
 
 interface State {
   titleError: boolean;
@@ -44,6 +46,8 @@ const initState: State = {
 
 const Faq: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
+
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -134,7 +138,7 @@ const Faq: FC = (): JSX.Element => {
   const columns = [
     {
       field: "question",
-      headerName: "DOMANDA",
+      headerName: t("Faq.table.question"),
       flex: 1,
     },
     {
@@ -158,25 +162,20 @@ const Faq: FC = (): JSX.Element => {
       >
         <form>
           <LabelText>
-            <Title
-              text={"Info"}
-              textInfo={
-                "Sezione Info della pagina FAQ, clicca sul pulsante Salva modifiche per accettare i cambiamenti della pagina"
-              }
-            />
+            <Title text={t("Faq.info.title")} textInfo={t("Faq.info.info")} />
 
             <CustomTextField
               defaultValue={!!faq.info.title ? faq.info.title : ""}
               errorMessage="Inserisci un Titolo"
               error={state.titleError}
-              placeholder={"Titolo"}
+              placeholder={t("Faq.info.placeHolderSubTitle")}
             />
 
             <CustomTextField
               defaultValue={!!faq.info.text ? faq.info.text : ""}
               errorMessage="Inserisci del testo"
               error={state.textError}
-              placeholder={"Inserisci testo"}
+              placeholder={t("Faq.info.placeHolderText")}
               minrow={4}
               maxrow={20}
               multiline={true}
@@ -185,7 +184,7 @@ const Faq: FC = (): JSX.Element => {
 
           <Box className={style.saveBtn}>
             <ButtonGeneric color={common.saveButtonColor} callback={onSaveInfo}>
-              Salva modifiche
+              {t("saveButton")}
             </ButtonGeneric>
           </Box>
         </form>
@@ -194,15 +193,9 @@ const Faq: FC = (): JSX.Element => {
       <Box className={common.singleComponent}>
         <LabelText>
           <Box className={style.faqRow}>
-            <Title
-              text={"Faq"}
-              textInfo={
-                "Domande presenti nella sezione FAQ della pagina, clicca sul pulsante +Aggiungi per aggiungere una nuova domanda e risposta, clicca sui bottoni modifica o cancella per cambiare la struttura dati"
-              }
-            />
-
+            <Title text={t("Faq.table.title")} textInfo={t("Faq.table.info")} />
             <ButtonGeneric color={common.ternaryColor} callback={addQna}>
-              + Aggiungi
+              + {t("addButton")}
             </ButtonGeneric>
           </Box>
 
@@ -219,7 +212,7 @@ const Faq: FC = (): JSX.Element => {
 
       {location?.state?.open && (
         <CustomSnackbar
-          message={"Modifiche avvenute con successo"}
+          message={t("changesSnack")}
           severity={"success"}
           callback={handleClose}
         />
@@ -227,14 +220,14 @@ const Faq: FC = (): JSX.Element => {
 
       {state.snackIsOpen && (
         <CustomSnackbar
-          message={"Modifiche ad info salvate con successo"}
+          message={t("Faq.infoSnack")}
           severity={"success"}
           callback={handleClose}
         />
       )}
       {state.snackDeleteIsOpen && (
         <CustomSnackbar
-          message={"Eliminazione avvenuta con successo"}
+          message={t("deleteSnack")}
           severity={"info"}
           callback={handleClose}
         />

@@ -21,9 +21,10 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 //style
 import style from "../../assets/styles/common.module.scss";
 import editorStyle from "./eventEditorStyle.module.scss";
+//translation
+import { useTranslation } from "react-i18next";
 
-interface editorEventProps {
-}
+interface editorEventProps {}
 
 interface state {
   selectedDate: any;
@@ -35,43 +36,45 @@ const initialState: state = {
 
 const EditorEvents: FC<editorEventProps> = (props: any) => {
   const [state, setState] = useState(initialState);
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
 
   //torno alla pagina eventi
   const goBack = (): void => {
-    navigate(PAGES.events)
-  }
+    navigate(PAGES.events);
+  };
 
   //salvo le modifiche
   const save = (): void => {
-    navigate(PAGES.events,{state:{open:true}})
-  }
+    navigate(PAGES.events, { state: { open: true } });
+  };
 
   return (
     <form>
       <Box className={style.component}>
         <Box className={style.doubleComponent}>
-
-
           <Box className={style.left}>
             <LabelText>
               <Title
-                text={"Titolo"}
-                textInfo={"Inserisci il titolo dell'evento"}
+                text={t("EventsEditor.Title.title")}
+                textInfo={t("EventsEditor.Title.info")}
               />
-              <CustomTextField placeholder={"Titolo"} error={false} />
+              <CustomTextField
+                placeholder={t("EventsEditor.Title.placeHolderText")}
+                error={false}
+              />
             </LabelText>
 
             <LabelText>
               <Title
-                text={"Data e ora"}
-                textInfo={"Inserisci la data e l'ora dell'evento"}
+                text={t("EventsEditor.Date.title")}
+                textInfo={t("EventsEditor.Date.info")}
               />
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
                   renderInput={(props) => <TextField size="small" {...props} />}
-                  label="Seleziona"
+                  label={t("EventsEditor.Date.date")}
                   value={state.selectedDate}
                   onChange={(newValue) => {
                     setState({
@@ -85,11 +88,11 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
 
             <LabelText>
               <Title
-                text={"Descrizione"}
-                textInfo={"Inserisci una descrizione esplicativa dell'evento"}
+                text={t("EventsEditor.Description.title")}
+                textInfo={t("EventsEditor.Description.info")}
               />
               <CustomTextField
-                placeholder={"Inserisci testo"}
+                placeholder={t("EventsEditor.Description.placeHolderText")}
                 error={false}
                 multiline={true}
                 minrow={6}
@@ -99,32 +102,34 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
           <Box className={style.right}>
             <LabelText>
               <Title
-                text={"Copertina"}
-                textInfo={"Inserisci una foto di copertina per l'evento"}
+                text={t("EventsEditor.cover.title")}
+                textInfo={t("EventsEditor.cover.info")}
               />
               <ButtonAddFile
-                callback={() => { console.log('ciao') }}
+                callback={() => {
+                  console.log("ciao");
+                }}
               />
             </LabelText>
 
             <LabelText>
               <Title
-                text={"Luogo"}
-                textInfo={"Inserisci il luogo in cui si svolgerà l'evento"}
+                text={t("EventsEditor.Place.title")}
+                textInfo={t("EventsEditor.Place.info")}
               />
               <CustomTextField
-                placeholder={"Inserisci indirizzo"}
+                placeholder={t("EventsEditor.Place.placeHolderText")}
                 error={false}
               />
             </LabelText>
 
             <LabelText>
               <Title
-                text={"Requisiti"}
-                textInfo={"Specifica i requisiti per partecipare all'evento"}
+                text={t("EventsEditor.Requirements.title")}
+                textInfo={t("EventsEditor.Requirements.info")}
               />
               <CustomTextField
-                placeholder={"Inserisci testo"}
+                placeholder={t("EventsEditor.Requirements.placeHolderText")}
                 error={false}
                 multiline={true}
                 minrow={6}
@@ -132,25 +137,17 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
             </LabelText>
 
             <Box className={editorStyle.buttonsContainer}>
-              <ButtonGeneric
-                color={style.saveButtonColor}
-                callback={save}
-              >
-                Salva modifiche
+              <ButtonGeneric color={style.saveButtonColor} callback={save}>
+                {t("saveButton")}
               </ButtonGeneric>
 
-              <ButtonGeneric
-                color={style.secondaryColor}
-                callback={goBack}
-              >
-                Annulla modifiche
+              <ButtonGeneric color={style.secondaryColor} callback={goBack}>
+                {t("cancelButton")}
               </ButtonGeneric>
             </Box>
           </Box>
-
-
         </Box>
-      </Box >
+      </Box>
     </form>
   );
 };

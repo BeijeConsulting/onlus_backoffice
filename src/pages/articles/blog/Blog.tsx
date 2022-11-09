@@ -25,6 +25,8 @@ import PAGES from "../../../router/pages";
 //style
 import common from "../../../assets/styles/common.module.scss";
 import style from "./blogStyle.module.scss";
+//translation
+import { useTranslation } from "react-i18next";
 
 interface State {
   snackIsOpen: boolean;
@@ -42,6 +44,7 @@ const initialState: State = {
 const Blog: FC = () => {
   const navigate = useNavigate();
   const [state, setState] = useState<State>(initialState);
+  const { t } = useTranslation();
 
   const location = useLocation();
 
@@ -96,24 +99,24 @@ const Blog: FC = () => {
   const columns = [
     {
       field: "title",
-      headerName: "TITOLO",
+      headerName: t("articles.table.headerTable1"),
       flex: 2,
     },
     {
       field: "author",
-      headerName: "AUTORE",
+      headerName: t("articles.table.headerTable2"),
       flex: 2,
       valueGetter: (params: any) =>
         `${params.row.name || ""} ${params.row.surname || ""}`,
     },
     {
       field: "date",
-      headerName: "DATA",
+      headerName: t("articles.table.headerTable3"),
       flex: 2,
     },
     {
       field: "status",
-      headerName: "STATO",
+      headerName: t("articles.table.headerTable4"),
       flex: 2,
     },
     {
@@ -130,14 +133,9 @@ const Blog: FC = () => {
     <Box className={common.component}>
       <Box className={common.singleComponent}>
         <Box className={`${common.row} ${style.justify}`}>
-          <Title
-            text={"Archivio Blog"}
-            textInfo={
-              "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
-            }
-          />
+          <Title text={t("articles.title")} textInfo={t("articles.info")} />
           <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
-            + Aggiungi Articolo
+            + {t("addButton")}
           </ButtonGeneric>
         </Box>
         <Box className={style.tableContainer}>
@@ -154,14 +152,14 @@ const Blog: FC = () => {
       {/* snackbar */}
       {location?.state?.open && (
         <CustomSnackbar
-          message={"Modifiche avvenute con successo"}
+          message={t("changeSnack")}
           severity={"success"}
           callback={handleClose}
         />
       )}
       {state.snackDeleteIsOpen && (
         <CustomSnackbar
-          message={"Eliminazione avvenuta con successo"}
+          message={t("deleteSnack")}
           severity={"info"}
           callback={handleClose}
         />
