@@ -191,7 +191,7 @@ const Events: FC<eventsProps> = (props) => {
             textInfo={t("Events.NewEvents.info")}
           />
           <ButtonGeneric color={style.ternaryColor} callback={goToEditor}>
-            + {t("addButton")}
+            + {t("Events.addButton")}
           </ButtonGeneric>
         </Box>
 

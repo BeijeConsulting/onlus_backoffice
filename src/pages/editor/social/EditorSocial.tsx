@@ -29,6 +29,7 @@ type social = {
 
 const EditorSocial: FC = (): JSX.Element => {
   const navigate = useNavigate();
+
   const location = useLocation();
   const { t } = useTranslation();
 

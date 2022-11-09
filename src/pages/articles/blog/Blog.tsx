@@ -135,7 +135,7 @@ const Blog: FC = () => {
         <Box className={`${common.row} ${style.justify}`}>
           <Title text={t("articles.title")} textInfo={t("articles.info")} />
           <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
-            + {t("addButton")}
+            + {t("articles.addButton")}
           </ButtonGeneric>
         </Box>
         <Box className={style.tableContainer}>

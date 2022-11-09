@@ -176,66 +176,66 @@ const General: FC = (): JSX.Element => {
                 />
                 <CustomTextField
                   error={state.error.nameSite}
-                  placeholder="inserisci il nome per il tuo sito"
+                  placeholder={t("general.nameSite.placeholder")}
                   defaultValue={state.websiteName}
                 />
               </LabelText>
               <LabelText>
                 <Title
                   text="Logo"
-                  textInfo="Qua va inserito il logo del tuo sito che sarà visibile anche ai visitatori"
+                  textInfo={t("general.logo.info")}
                 />
                 <ButtonAddFile callback={handleImage} />
               </LabelText>
               <LabelText>
                 <Title
-                  text="Seleziona Palette"
-                  textInfo="Qua vanno inseriti i colori del tuo sito visibile ai clienti, attenzione a mettere un buon contrasto tra lo sfondo e il testo"
+                  text={t("general.palettes.title")}
+                  textInfo={t("general.palettes.info")}
                 />
-                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" />
-                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" />
-                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" />
+                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" background={t("general.palettes.primary.background")} text={t("general.palettes.primary.text")}/>
+                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" background={t("general.palettes.secondary.background")} text={t("general.palettes.secondary.text")} />
+                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" background={t("general.palettes.ternary.background")} text={t("general.palettes.ternary.text")}/>
               </LabelText>
             </Box>
             <Box className={common.right}>
               <LabelText>
                 <Title
-                  text="Sezione di contatti per lavoro"
-                  textInfo="Qua vanno inseriti i contatti che veranno mostrati a tutti i visitatori del sito a fondo pagina che doovrebbero essere usati per scopi di lavoro"
+                  text={t("general.workSection.title")}
+                  textInfo={t("general.workSection.info")}
                 />
                 <CustomTextField
                   error={state.error.workText}
-                  placeholder="inserisci il testo"
+                  placeholder={t("general.workSection.placeholderText")}
                 />
                 <CustomTextField
                   error={state.error.workEmail}
-                  placeholder="inserisci la tua email lavorativa"
+                  placeholder={t("general.workSection.placeholderEmail")}
                 />
               </LabelText>
               <LabelText>
                 <Title
-                  text="Contatti"
-                  textInfo="Questi saranno i contatti e le infomazioni su di te/la tua azienda. Saranno mostrati nel footer (fondo pagina) di ogni schermata del sito disponibile ai visitatori"
+                  text={t("general.contacts.title")}
+                  textInfo={t("general.contacts.info")}
                 />
                 <CustomTextField
                   error={state.error.contactPhone}
-                  placeholder="inserisci il tuo numero di telefono"
+                  placeholder={t("general.contacts.placeholderTelephone")}
                 />
                 <CustomTextField
                   error={state.error.contactEmail}
-                  placeholder="inserisci la tua email"
+                  placeholder={t("general.contacts.placeholderEmail")}
                 />
                 <CustomTextField
                   error={state.error.contactAdress}
-                  placeholder="inserisci il tuo indirizzo"
+                  placeholder={t("general.contacts.placeholderAddress")}
                 />
                 <CustomTextField
                   error={state.error.contactVat}
-                  placeholder="inserisci la tua partitia IVA"
+                  placeholder={t("general.contacts.placeholderCf")}
                 />
                 <CustomTextField
                   error={state.error.contactCF}
-                  placeholder="inserisci il tuo codice fiscale"
+                  placeholder={t("general.contacts.placeholderIva")}
                 />
               </LabelText>
             </Box>
@@ -243,21 +243,21 @@ const General: FC = (): JSX.Element => {
           <Box className={common.doubleComponent}>
             <LabelText>
               <Title
-                text="Banner in evidenza"
-                textInfo="Qua va personalizzato il banner in evidenza delle call to action, i color vngono presi dalla palette che si può trovare più in alto della pagina"
+                text={t("general.banner.title")}
+                textInfo={t("general.workSection.info")}
               />
               <Box className={common.row}>
                 <Box className={common.rowLeft}>
                   <CustomTextField
                     error={state.error.workText}
-                    placeholder="inserisci il titolo"
+                    placeholder={t("general.banner.placeholderTitle")}
                   />
                   <CustomTextField
                     error={state.error.workText}
                     minrow={5}
                     maxrow={5}
                     multiline={true}
-                    placeholder="inserisci il sottotitolo"
+                    placeholder={t("general.banner.placeholderSubtitle")}
                   />
                 </Box>
                 <Box className={common.rowRight}>
@@ -268,19 +268,19 @@ const General: FC = (): JSX.Element => {
                     <Box style={{ width: "47%" }}>
                       <CustomTextField
                         error={state.error.workText}
-                        placeholder="Inserisci call to action bottone primario"
+                        placeholder={t("general.banner.placeholderCallToAction")}
                       />
                     </Box>
                     <Box style={{ width: "47%" }}>
                       <CustomTextField
                         error={state.error.workText}
-                        placeholder="Inserisci call to action bottone secondario"
+                        placeholder={t("general.banner.placeholderCallToAction")}
                       />
                     </Box>
                   </Box>
                   <CustomTextField
                     error={state.error.workText}
-                    placeholder="link alla pagina"
+                    placeholder={t("general.banner.placeholderLink")}
                   />
                 </Box>
               </Box>
@@ -290,7 +290,7 @@ const General: FC = (): JSX.Element => {
             callback={onSaveGeneral}
             color={common.saveButtonColor}
           >
-            Salva Modifiche
+           {t("saveButton")}
           </ButtonGeneric>
           {state.open && (
             <CustomSnackbar

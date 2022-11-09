@@ -9,6 +9,9 @@ import style from '../../../assets/styles/common.module.scss';
 //components
 import ButtonGeneric from '../buttonGeneric/ButtonGeneric';
 
+//i18n
+import { useTranslation } from 'react-i18next';
+
 interface modalProps{
   open: boolean,
   closeCallback: Function,
@@ -16,6 +19,8 @@ interface modalProps{
 }
   
 const DeleteModal: FC<modalProps> = (props) => {
+
+  const { t, i18n } = useTranslation();
 
   function closeModal(): void {
     props.closeCallback();
@@ -33,17 +38,17 @@ const DeleteModal: FC<modalProps> = (props) => {
     >
       <Box className={deleteStyle.modal}>
         <Typography>
-          Sei sicuro di voler eliminare il seguente elemento?
+          {t("deleteModal.text")}
         </Typography>
         <Box className={deleteStyle.modalButtons}>
           <ButtonGeneric
             color={style.secondaryColor}
             callback={deleteElement}
           >
-            Elimina
+            {t("deleteModal.deleteButton")}
           </ButtonGeneric>
           <ButtonGeneric color={style.ternaryColor} callback={closeModal}>
-            Annulla
+            {t("deleteModal.DiscardChangesButton")}
           </ButtonGeneric>
         </Box>
       </Box>

@@ -25,6 +25,9 @@ import LabelText from '../../../components/functional/labelText/LabelText'
 import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
 import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGeneric';
 
+//i18n
+import { useTranslation } from 'react-i18next';
+
 interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
@@ -42,6 +45,7 @@ const initialState: State = {
 const Volunteers: FC = (): JSX.Element => {
 
   const [state, setState] = useState<State>(initialState);
+  const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -113,12 +117,12 @@ const Volunteers: FC = (): JSX.Element => {
   const columns = [
     {
       field: "name",
-      headerName: "NOME",
+      headerName: t("volunteers.table.headerTable1"),
       flex: 1,
     },
     {
       field: "surname",
-      headerName: "COGNOME",
+      headerName: t("volunteers.table.headerTable2"),
       flex: 1,
     },
     {
@@ -140,12 +144,12 @@ const Volunteers: FC = (): JSX.Element => {
           {/*titolo*/}
           <Box className={style.titleRow}>
           <Title
-            text={"Volontari"}
-            textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
+            text={t("volunteers.title")}
+            textInfo={t("volunteers.info")}
           />
 
             <ButtonGeneric color={common.ternaryColor} callback={addVolunteer}>
-              + Aggiungi
+              + {t("addButton")}
             </ButtonGeneric>
           </Box>
 

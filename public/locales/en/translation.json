@@ -12,12 +12,12 @@
   "deleteModal": {
     "text": "Are you sure you want to delete the following element?",
     "deleteButton": "Delete",
-    "DiscardChenagesButton": "Cancel"
+    "DiscardChangesButton": "Cancel"
   },
   "addModal": {
     "text": "Are you sure you want to add the following element?",
     "addButton": "Add",
-    "DiscardChenagesButton": "Cancel"
+    "DiscardChangesButton": "Cancel"
   },
   "modificationModal": {
     "modificationButton": "Add",
@@ -28,7 +28,7 @@
     "nameSite": {
       "title": "Site Name",
       "info": "Here you enter the name of your site, which will be visible to all visitors to the site",
-      "placeholder": "enter the name for your site"
+      "placeholder": "Enter the name for your site"
     },
     "logo": {
       "title": "Logo",
@@ -49,29 +49,29 @@
         "background": "Tertiary background",
         "text": "Tertiary text"
       }
+    },
+    "banner": {
+      "title": "Featured banner",
+      "info": "Here the banner in evidence of the call to action must be customized, the colors are taken from the palette that can be found at the top of the page",
+      "placeholderTitle": "Enter the title",
+      "placeholderSubtitle": "Insert subtitle",
+      "placeholderCallToAction": "Insert call to action button"
+    },
+    "workSection": {
+      "title": "Section of contacts for work",
+      "info": "Here you enter the contacts that will be shown to all visitors to the site at the bottom of the page that should be used for business purposes",
+      "placeholderText": "Insert text",
+      "placeholderEmail": "Enter your business email"
+    },
+    "contacts": {
+      "title": "Contacts",
+      "info": "These will be the contacts and information about you / your company. They will be shown in the footer (bottom of page) of each screen of the site available to visitors",
+      "placeholderTelephone": "Enter your phone number",
+      "placeholderEmail": "Enter your email",
+      "placeholderAddress": "Enter your address",
+      "placeholderIva": "Enter your VAT number",
+      "placeholderCf": "Enter your tax code"
     }
-  },
-  "banner": {
-    "title": "Featured banner",
-    "info": "Here the banner in evidence of the call to action must be customized, the colors are taken from the palette that can be found at the top of the page",
-    "placeholderTitle": "Enter the title",
-    "placeholderSubtitle": "Insert subtitle",
-    "placeholderCallToAction": "Insert call to action button"
-  },
-  "workSection": {
-    "title": "Section of contacts for work",
-    "info": "Here you enter the contacts that will be shown to all visitors to the site at the bottom of the page that should be used for business purposes",
-    "placeholderText": "Insert text",
-    "placeholderEmail": "Enter your business email"
-  },
-  "contacts": {
-    "title": "Contacts",
-    "info": "These will be the contacts and information about you / your company. They will be shown in the footer (bottom of page) of each screen of the site available to visitors",
-    "placeholderTelephone": "Enter your phone number",
-    "placeholderEmail": "Enter your email",
-    "placeholderAddress": "Enter your address",
-    "placeholderIva": "Enter your VAT number",
-    "placeholderCf": "Enter your tax code"
   },
   "supportUs": {
     "hero": {
@@ -118,6 +118,7 @@
     }
   },
   "articles": {
+    "addButton": "Add article",
     "title": "Blog Archive",
     "info": "table where all the published articles are displayed, in the case of the single blogger he will see only his articles, the admin will see all the articles",
     "table": {
@@ -235,6 +236,7 @@
     "answer": "Enter Answer"
   },
   "Events": {
+    "addButton": "Add event",
     "table": {
       "title": "TITLE",
       "place": "PLACE",
@@ -283,6 +285,10 @@
   "Categories": {
     "errorEmpty": "Enter a category",
     "errorExist": "Category already exists",
+    "categoryModal": {
+      "changeButton": "Change",
+      "discardButton": "Cancel"
+    },
     "table": {
       "categories": "CATEGORIES",
       "blog": "RELATED ARTICLES"

@@ -259,7 +259,7 @@ const Categories: FC = (props) => {
                 color={style.ternaryColor}
                 callback={showModalCategory}
               >
-                + Aggiungi
+                + {t("addButton")}
               </ButtonGeneric>
             </Box>
 
@@ -279,7 +279,7 @@ const Categories: FC = (props) => {
                     color={style.ternaryColor}
                     callback={hideAddModal}
                   >
-                    {t("addModal.DiscardChenagesButton")}
+                    {t("addModal.DiscardChangesButton")}
                   </ButtonGeneric>
                 </Box>
               </Box>
@@ -316,13 +316,13 @@ const Categories: FC = (props) => {
             />
             <Box className={categoriesStyle.modalButtons}>
               <ButtonGeneric color={"green"} callback={updateCategory}>
-                {t("modificationModal.modificationButton")}
+                {t("Categories.categoryModal.changeButton")}
               </ButtonGeneric>
               <ButtonGeneric
                 color={style.ternaryColor}
                 callback={hideUpdateModal}
               >
-                {t("modificationModal.DiscardChangesButton")}
+                {t("Categories.categoryModal.discardButton")}
               </ButtonGeneric>
             </Box>
           </Box>
