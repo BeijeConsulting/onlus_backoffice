@@ -104,7 +104,7 @@ const Blog: FC = () => {
       field: "author",
       headerName: "AUTORE",
       flex: 2,
-      valueGetter: (params: any) =>
+      valueGetter: (params: object) =>
         `${params.row.name || ""} ${params.row.surname || ""}`,
     },
     {

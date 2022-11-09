@@ -17,13 +17,13 @@ interface titleProps {
 }
 //state
 interface State {
-  anchorEl: any;
+  anchorEl: HTMLElement | null;
 }
 const initialState: State = {
   anchorEl: null
 }
 
-const Title: FC<titleProps> = (props) => {
+const Title: FC<titleProps> = (props) :JSX.Element => {
 
   const [state, setState] = useState(initialState)
   const open = Boolean(state.anchorEl);

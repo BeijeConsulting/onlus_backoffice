@@ -32,11 +32,22 @@ const initialState: State = {
   users: false,
 };
 
+type User = {
+  disableDate: string | null;
+  email: string;
+  language: string;
+  name: string;
+  password: string;
+  phone: number;
+  role: Array<string>;
+  surname: string;
+}
+
 //NAVBAR
 const NavBar: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
 
-  const user: any = useSelector((state: any) => state.userDuck.user);
+  const user: User = useSelector((state: any) => state.userDuck.user);
 
   const navigate = useNavigate();
   const location = useLocation();

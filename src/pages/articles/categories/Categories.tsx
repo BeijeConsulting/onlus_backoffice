@@ -22,7 +22,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import CreateIcon from "@mui/icons-material/Create";
 
 //custom hook
-import checkEmptyText from "../../../customHooks/useEmptyText";
+import checkEmptyText from "../../../utils/checkEmptyText";
 
 //modal
 import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";

@@ -33,6 +33,17 @@ TO DO
 - user backend
  */
 
+type User = {
+  disableDate: string | null;
+  email: string;
+  language: string;
+  name: string;
+  password: string;
+  phone: number;
+  role: Array<string>;
+  surname: string;
+}
+
 const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(() => ({
   "& .MuiPaper-root": {
     backgroundColor: common.primaryColor,
@@ -46,7 +57,7 @@ const Header: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
 
-  const user: any = useSelector((state: any) => state.userDuck.user);
+  const user: User = useSelector((state: any) => state.userDuck.user);
 
   //Funzioni per aprire e chiudere il menù
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
