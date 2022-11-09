@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 
 //navigation
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,23 +28,30 @@ import common from "../../../assets/styles/common.module.scss";
 
 //interface
 interface State {
+  modalIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
-  modalIsOpen: boolean;
-  loading: boolean;
+  snackAdd: boolean;
 }
 const initialState: State = {
+  modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  modalIsOpen: false,
-  loading: true,
+  snackAdd: false,
 };
 
-const Blog: FC = ():JSX.Element => {
+const Blog: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [state, setState] = useState<State>(initialState);
 
   const location = useLocation();
+
+  useEffect(() => {
+    setState({
+      ...state,
+      snackIsOpen: location?.state?.open,
+    });
+  }, []);
 
   //Snackbar
   const handleClose = () => {
@@ -72,11 +79,21 @@ const Blog: FC = ():JSX.Element => {
     });
   };
 
+  //Funzioni di modifica e cancella
+  const updateArticle = (row: object) => (): void => {
+    navigate(PAGES.editorBlog, { state: { row } });
+  };
+
+  const addArticle = (): void => {
+    navigate(PAGES.editorBlog, { state: { showAdd: true } });
+  };
+
   const goToEditor = (): void => {
     navigate(PAGES.editorBlog);
   };
 
-  const renderDetailsButton = () => {
+  //Colonne del DataGrid
+  const renderDetailsButton = (params: any) => {
     return (
       <Box
         style={{
@@ -84,7 +101,7 @@ const Blog: FC = ():JSX.Element => {
           gap: "5px",
         }}
       >
-        <ButtonIcon callback={goToEditor}>
+        <ButtonIcon callback={updateArticle(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
         <ButtonIcon callback={showDeleteModal}>
@@ -139,7 +156,7 @@ const Blog: FC = ():JSX.Element => {
                   "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
                 }
               />
-              <ButtonGeneric color={"green"} callback={goToEditor}>
+              <ButtonGeneric color={"green"} callback={addArticle}>
                 + Aggiungi
               </ButtonGeneric>
             </Box>
@@ -157,7 +174,7 @@ const Blog: FC = ():JSX.Element => {
         />
 
         {/* snackbar */}
-        {location?.state?.open && (
+        {state.snackIsOpen && (
           <CustomSnackbar
             message={"Modifiche avvenute con successo"}
             severity={"success"}
@@ -168,6 +185,13 @@ const Blog: FC = ():JSX.Element => {
           <CustomSnackbar
             message={"Eliminazione avvenuta con successo"}
             severity={"info"}
+            callback={handleClose}
+          />
+        )}
+        {location?.state?.openAdd && (
+          <CustomSnackbar
+            message={"Inserimento avvenuto con successo"}
+            severity={"success"}
             callback={handleClose}
           />
         )}

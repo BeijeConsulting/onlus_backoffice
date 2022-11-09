@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 //components
 import LabelText from "../../../components/functional/labelText/LabelText";
@@ -29,9 +29,10 @@ import PAGES from "../../../router/pages";
 //data
 import { categories } from "../../../utils/mockup/data";
 
-const EditorBlog: FC = ():JSX.Element => {
+const EditorBlog: FC = (): JSX.Element => {
   const [checked, setChecked] = useState([1]);
-  const [state,setState] = useState();
+  const [state, setState] = useState();
+  const location = useLocation();
 
   const navigate = useNavigate();
 
@@ -47,21 +48,25 @@ const EditorBlog: FC = ():JSX.Element => {
 
     setChecked(newChecked);
   };
-  
+
   //funzione di comodo
   const log = (e: any): void => {
     console.log(e);
   };
 
   //salvo
-  const save = (): void => {
-    navigate(PAGES.articlesBlog,{state:{open:true}})
-  }
+  const onSave = (): void => {
+    if (location?.state?.showAdd) {
+      navigate(PAGES.articlesBlog, { state: { openAdd: true } });
+    } else {
+      navigate(PAGES.articlesBlog, { state: { open: true } });
+    }
+  };
 
   //torno alla pagina articoli
-  const goBack = (): void => {
-    navigate(PAGES.articlesBlog)
-  }
+  const onCancel = (): void => {
+    navigate(PAGES.articlesBlog);
+  };
 
   return (
     <form>
@@ -133,26 +138,40 @@ const EditorBlog: FC = ():JSX.Element => {
             </LabelText>
 
             <Box className={style.row}>
-              <ButtonGeneric
-                color={common.buttonColor}
-                callback={save}
-              >
-                Salva modifiche
-              </ButtonGeneric>
-
-              <ButtonGeneric
-                color={common.secondaryColor}
-                callback={goBack}
-              >
-                Annulla modifiche
-              </ButtonGeneric>
+              {location?.state?.showAdd ? (
+                <>
+                  <ButtonGeneric color={"green"} callback={onSave}>
+                    Aggiungi
+                  </ButtonGeneric>
+                  <ButtonGeneric
+                    color={common.secondaryColor}
+                    callback={onCancel}
+                  >
+                    Annulla
+                  </ButtonGeneric>
+                </>
+              ) : (
+                <>
+                  <ButtonGeneric
+                    color={common.saveButtonColor}
+                    callback={onSave}
+                  >
+                    Salva modifiche
+                  </ButtonGeneric>
+                  <ButtonGeneric
+                    color={common.secondaryColor}
+                    callback={onCancel}
+                  >
+                    Annulla modifiche
+                  </ButtonGeneric>
+                </>
+              )}
             </Box>
           </Box>
         </Box>
-      
       </Box>
     </form>
   );
-}
+};
 
 export default EditorBlog;
