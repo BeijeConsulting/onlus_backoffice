@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 //mui
@@ -29,15 +29,16 @@ import CreateIcon from "@mui/icons-material/Create";
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
 
 interface State {
+  modalIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
-  modalIsOpen: boolean;
+  snackAdd: boolean;
 }
-
 const initialState: State = {
+  modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  modalIsOpen: false
+  snackAdd: false
 };
 
 const Events: FC = (): JSX.Element => {
@@ -45,6 +46,13 @@ const Events: FC = (): JSX.Element => {
   const location = useLocation();
 
   const [state, setState] = useState<State>(initialState);
+
+  useEffect(() => {
+    setState({
+      ...state,
+      snackIsOpen: location?.state?.open,
+    });
+  }, [])
 
   //Snackbar
   const handleClose = () => {
@@ -55,30 +63,42 @@ const Events: FC = (): JSX.Element => {
     })
   }
 
-  //mostro/nascondo modal di eliminazione dell'evento
-  const showDeleteModal = (): void => {
+  //Modal
+  const openDeleteModal = (): void => {
+    setState({
+      ...state,
+      modalIsOpen: !state.modalIsOpen,
+    });
+  }
+
+  //chiudo il modale
+  const closeDeleteModal = (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen
-    })
+    });
   }
 
-  //elimina evento
+  //elimino l'evento
   const deleteEvent = (): void => {
     setState({
       ...state,
-      snackDeleteIsOpen: true,
-      modalIsOpen: false
+      modalIsOpen: false,
+      snackDeleteIsOpen: true
     })
+  }
+
+  //modifica evento
+  const updateEvent = (row: object) => (): void => {
+    navigate(PAGES.editorEvents, { state: { row } })
   };
 
-  //functions
-  function goToEditor(): void {
-    navigate(PAGES.editorEvents);
+  const addEvent = (): void => {
+    navigate(PAGES.editorEvents, { state: { showAdd: true } })
   }
 
   //Colonne del DataGrid
-  const renderDetailsButton_1 = () => {
+  const renderDetailsButton_1 = (params: any) => {
     return (
       <>
         <Box
@@ -87,10 +107,10 @@ const Events: FC = (): JSX.Element => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={goToEditor}>
+          <ButtonIcon callback={updateEvent(params)}>
             <CreateIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
-          <ButtonIcon callback={showDeleteModal}>
+          <ButtonIcon callback={openDeleteModal}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -98,7 +118,7 @@ const Events: FC = (): JSX.Element => {
     );
   };
 
-  const renderDetailsButton_2 = () => {
+  const renderDetailsButton_2 = (params: any) => {
     return (
       <>
         <Box
@@ -107,7 +127,7 @@ const Events: FC = (): JSX.Element => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={showDeleteModal}>
+          <ButtonIcon callback={openDeleteModal}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -173,20 +193,20 @@ const Events: FC = (): JSX.Element => {
     <Box className={style.component}>
       <Box className={style.singleComponent}>
         <LabelText>
-          <Box sx={{display: "flex", justifyContent: "space-between"}}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Title
               text={"Eventi in programma"}
               textInfo={
                 "Tabella dove vengono visualizzati i prossimi eventi in programma"
               }
             />
-            <ButtonGeneric color={"green"} callback={goToEditor}>
+            <ButtonGeneric color={"green"} callback={addEvent}>
               + Aggiungi
             </ButtonGeneric>
           </Box>
 
           {/* sezione eventi in programma*/}
-          <CustomTable columns={columns_1} rows={events} />
+          <CustomTable columns={columns_1} rows={events} pageSize={5} />
         </LabelText>
 
         {/* sezione archivio eventi  */}
@@ -198,8 +218,7 @@ const Events: FC = (): JSX.Element => {
                 "Tabella dove viene visualizzato l'archivio di tutti gli eventi passati"
               }
             />
-
-            <CustomTable columns={columns_2} rows={events} />
+            <CustomTable columns={columns_2} rows={events} pageSize={5} />
           </LabelText>
         </Box>
       </Box>
@@ -208,21 +227,21 @@ const Events: FC = (): JSX.Element => {
       {/* delete modal */}
       <DeleteModal
         open={state.modalIsOpen}
-        closeCallback={showDeleteModal}
-        deleteCallback={deleteEvent}
+        closeCallback={closeDeleteModal}
+        deleteCallback={deleteEvent /*API delete*/}
       />
-
-      {/* snackbar */}
       {
-        location?.state?.open &&
+        state.snackIsOpen &&
         <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
       }
       {
         state.snackDeleteIsOpen &&
         <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
       }
-
-
+      {
+        location?.state?.openAdd &&
+        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
+      }
     </Box >
   );
 };

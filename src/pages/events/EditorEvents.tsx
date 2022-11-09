@@ -1,5 +1,5 @@
-import { useState, FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, FC, BaseSyntheticEvent } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../router/pages";
 
 //MUI
@@ -19,7 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 
 //style
-import style from "../../assets/styles/common.module.scss";
+import common from "../../assets/styles/common.module.scss";
 import editorStyle from "./eventEditorStyle.module.scss";
 
 interface state {
@@ -34,24 +34,29 @@ const EditorEvents: FC = () => {
   const [state, setState] = useState(initialState);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   //torno alla pagina eventi
-  const goBack = (): void => {
+  const onCancel = (): void => {
     navigate(PAGES.events)
   }
 
   //salvo le modifiche
-  const save = (): void => {
-    navigate(PAGES.events,{state:{open:true}})
-  }
+  const onSave = (e: BaseSyntheticEvent): void => {    
+    if(location?.state?.showAdd){
+      navigate(PAGES.events, { state: { openAdd: true } });
+    }else{
+      navigate(PAGES.events, { state: { open: true } });
+    } 
+  };
 
   return (
     <form>
-      <Box className={style.component}>
-        <Box className={style.doubleComponent}>
+      <Box className={common.component}>
+        <Box className={common.doubleComponent}>
 
 
-          <Box className={style.left}>
+          <Box className={common.left}>
             <LabelText>
               <Title
                 text={"Titolo"}
@@ -93,7 +98,7 @@ const EditorEvents: FC = () => {
               />
             </LabelText>
           </Box>
-          <Box className={style.right}>
+          <Box className={common.right}>
             <LabelText>
               <Title
                 text={"Copertina"}
@@ -129,19 +134,37 @@ const EditorEvents: FC = () => {
             </LabelText>
 
             <Box className={editorStyle.buttonsContainer}>
-              <ButtonGeneric
-                color={style.saveButtonColor}
-                callback={save}
-              >
-                Salva modifiche
-              </ButtonGeneric>
-
-              <ButtonGeneric
-                color={style.secondaryColor}
-                callback={goBack}
-              >
-                Annulla modifiche
-              </ButtonGeneric>
+              {location?.state?.showAdd ? (
+                <>
+                  <ButtonGeneric
+                    color={"green"}
+                    callback={onSave}
+                  >
+                    Aggiungi
+                  </ButtonGeneric>
+                  <ButtonGeneric
+                    color={common.secondaryColor}
+                    callback={onCancel}
+                  >
+                    Annulla
+                  </ButtonGeneric>
+                </>
+              ) : (
+                <>
+                  <ButtonGeneric
+                    color={common.saveButtonColor}
+                    callback={onSave}
+                  >
+                    Salva modifiche
+                  </ButtonGeneric>
+                  <ButtonGeneric
+                    color={common.secondaryColor}
+                    callback={onCancel}
+                  >
+                    Annulla modifiche
+                  </ButtonGeneric>
+                </>
+              )}
             </Box>
           </Box>
 

@@ -34,35 +34,26 @@ const EditorSocial: FC = (): JSX.Element => {
 
   const handleClick = (): void => {};
 
-  const deleteSocial = (): void => {
+  const onCancel = (): void => {
     console.log("delete");
     navigate(PAGES.editSocial);
   };
 
-  const editSocial = (e: BaseSyntheticEvent): void => {
-    let newSocial: social = {
+  const onSave = (e: BaseSyntheticEvent): void => {
+    /*let newSocial: social = {
       id: location.state.data.id,
       name: e.target.form[0].value,
       icon: e.target.form[2].value,
       link: e.target.form[3].value,
       footerOn: e.target.form[5].checked,
       homepageOn: e.target.form[6].checked,
-    };
-    console.log(newSocial);
-    navigate(PAGES.editSocial, {state: {open: true}});
-  };
-
-  const createSocial = (e: BaseSyntheticEvent): void => {
-    let newSocial: social = {
-      name: e.target.form[0].value,
-      icon: e.target.form[2].value,
-      link: e.target.form[3].value,
-      footerOn: e.target.form[5].checked,
-      homepageOn: e.target.form[6].checked,
-    };
-    console.log(newSocial);
-
-    navigate(PAGES.editSocial, {state: {open: true}});
+    };*/
+    
+    if(location?.state?.showAdd){
+      navigate(PAGES.editSocial, { state: { openAdd: true } });
+    }else{
+      navigate(PAGES.editSocial, { state: { open: true } });
+    } 
   };
 
   return (
@@ -119,15 +110,37 @@ const EditorSocial: FC = (): JSX.Element => {
       </Box>
 
       <Box className={style.buttonsContainer}>
-        <ButtonGeneric
-          callback={!!location?.state?.data?.id ? editSocial : createSocial}
-          color={common.saveButtonColor}
-        >
-          Salva modifiche
-        </ButtonGeneric>
-        <ButtonGeneric callback={deleteSocial} color={common.secondaryColor}>
-          Annulla modifiche
-        </ButtonGeneric>
+      {location?.state?.showAdd ? (
+              <>
+                <ButtonGeneric
+                  color={"green"}
+                  callback={onSave}
+                >
+                  Aggiungi
+                </ButtonGeneric>
+                <ButtonGeneric
+                  color={common.secondaryColor}
+                  callback={onCancel}
+                >
+                  Annulla
+                </ButtonGeneric>
+              </>
+            ) : (
+              <>
+              <ButtonGeneric
+                color={common.saveButtonColor}
+                callback={onSave}
+              >
+                Salva modifiche
+              </ButtonGeneric>
+              <ButtonGeneric
+                color={common.secondaryColor}
+                callback={onCancel}
+              >
+                Annulla modifiche
+              </ButtonGeneric>
+            </>
+            )}
       </Box>
     </form>
   );

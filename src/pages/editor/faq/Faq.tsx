@@ -30,9 +30,11 @@ import { faq } from "../../../utils/mockup/data";
 interface State {
   titleError: boolean;
   textError: boolean;
-  snackIsOpen: boolean;
   modalIsOpen: boolean;
+  snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
+  snackAdd: boolean;
+
 }
 
 const initState: State = {
@@ -41,6 +43,7 @@ const initState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
+  snackAdd: false
 };
 
 const Faq: FC = (): JSX.Element => {
@@ -54,9 +57,9 @@ const Faq: FC = (): JSX.Element => {
     setState({
       ...state,
       snackIsOpen: false,
-      snackDeleteIsOpen: false,
-    });
-  };
+      snackDeleteIsOpen: false
+    })
+  }
 
   //Funzione per salvare le modifiche della sezione info
   const onSaveInfo = (e: BaseSyntheticEvent): void => {
@@ -92,31 +95,39 @@ const Faq: FC = (): JSX.Element => {
 
   //Navigazione allo screen EditorFaq
   const addQna = (): void => {
-    navigate(PAGES.editorFaq);
+    navigate(PAGES.editorFaq, { state: {showAdd:true}});
   };
 
   //Funzioni di modifica e cancella
   const updateQna = (row: object) => () => {
-    console.log(row);
     navigate(PAGES.editorFaq, { state: { row } });
   };
 
-  //elimino faq
-  const deleteQna = (): void => {
-    setState({
-      ...state,
-      snackDeleteIsOpen: true,
-      modalIsOpen: false,
-    });
-  };
+  //Modal
+  const openDeleteModal = (): void => {
 
-  //mostro/nascondo modal di eliminazione della faq
-  const showDeleteModal = (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
     });
-  };
+  }
+
+  //chiudo il modale
+  const closeDeleteModal = (): void => {
+    setState({
+      ...state,
+      modalIsOpen: !state.modalIsOpen
+    });
+  }
+
+  //elimino la faq
+  const deleteFaq =():void => {
+    setState({
+      ...state,
+      modalIsOpen: false,
+      snackDeleteIsOpen: true
+    })
+  }
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -125,7 +136,7 @@ const Faq: FC = (): JSX.Element => {
         <ButtonIcon callback={updateQna(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={showDeleteModal}>
+        <ButtonIcon callback={openDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
@@ -150,48 +161,6 @@ const Faq: FC = (): JSX.Element => {
 
   return (
     <Box className={common.component}>
-      <Box
-        className={common.singleComponent}
-        sx={{
-          marginBottom: "1%",
-          textAlign: "right",
-        }}
-      >
-        <form>
-          <LabelText>
-            <Title
-              text={"Info"}
-              textInfo={
-                "Sezione Info della pagina FAQ, clicca sul pulsante Salva modifiche per accettare i cambiamenti della pagina"
-              }
-            />
-
-            <CustomTextField
-              defaultValue={!!faq.info.title ? faq.info.title : ""}
-              errorMessage="Inserisci un Titolo"
-              error={state.titleError}
-              placeholder={"Titolo"}
-            />
-
-            <CustomTextField
-              defaultValue={!!faq.info.text ? faq.info.text : ""}
-              errorMessage="Inserisci del testo"
-              error={state.textError}
-              placeholder={"Inserisci testo"}
-              minrow={4}
-              maxrow={20}
-              multiline={true}
-            />
-          </LabelText>
-
-          <Box className={style.saveBtn}>
-            <ButtonGeneric color={common.saveButtonColor} callback={onSaveInfo}>
-              Salva modifiche
-            </ButtonGeneric>
-          </Box>
-        </form>
-      </Box>
-
       <Box className={common.singleComponent}>
         <LabelText>
           <Box className={style.faqRow}>
@@ -207,40 +176,70 @@ const Faq: FC = (): JSX.Element => {
             </ButtonGeneric>
           </Box>
 
-          <CustomTable columns={columns} rows={faq.qna} pageSize={3} />
+          <CustomTable columns={columns} rows={faq.qna} pageSize={5} />
         </LabelText>
       </Box>
 
+      <form style={{ width: '100%',marginTop:'20px' }}>
+        <Box className={common.singleComponent}>
+          <LabelText>
+            <Title
+              text={"Info"}
+              textInfo={
+                "Sezione Info della pagina FAQ, clicca sul pulsante Salva modifiche per accettare i cambiamenti della pagina"
+              }
+            />
+            <Box className={common.row}>
+              <Box className={common.rowLeft}>
+                <CustomTextField
+                  defaultValue={!!faq.info.title ? faq.info.title : ""}
+                  errorMessage="Inserisci un Titolo"
+                  error={state.titleError}
+                  placeholder={"Titolo"}
+                />
+              </Box>
+              <Box className={common.rowRight}>
+                <CustomTextField
+                  defaultValue={!!faq.info.text ? faq.info.text : ""}
+                  errorMessage="Inserisci del testo"
+                  error={state.textError}
+                  placeholder={"Inserisci testo"}
+                  minrow={10}
+                  maxrow={20}
+                  multiline={true}
+                />
+              </Box>
+            </Box>
+          </LabelText>
+        </Box>
+
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop:'20px' }}>
+          <ButtonGeneric color={common.saveButtonColor} callback={onSaveInfo}>
+            Salva modifiche
+          </ButtonGeneric>
+        </Box>
+      </form>
+
       {/* delete modal */}
       <DeleteModal
-        open={state.modalIsOpen}
-        closeCallback={showDeleteModal}
-        deleteCallback={deleteQna}
-      />
-
-      {location?.state?.open && (
-        <CustomSnackbar
-          message={"Modifiche avvenute con successo"}
-          severity={"success"}
-          callback={handleClose}
+          open={state.modalIsOpen}
+          closeCallback={closeDeleteModal}
+          deleteCallback={deleteFaq /*API delete*/}
         />
-      )}
-
-      {state.snackIsOpen && (
-        <CustomSnackbar
-          message={"Modifiche ad info salvate con successo"}
-          severity={"success"}
-          callback={handleClose}
-        />
-      )}
-      {state.snackDeleteIsOpen && (
-        <CustomSnackbar
-          message={"Eliminazione avvenuta con successo"}
-          severity={"info"}
-          callback={handleClose}
-        />
-      )}
-    </Box>
+      
+      {
+        (state.snackIsOpen || location?.state?.open) &&
+        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
+      }
+      {
+        state.snackDeleteIsOpen &&
+        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
+      }
+      {
+       location?.state?.openAdd &&
+        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
+      }
+    </Box >
   );
 };
 

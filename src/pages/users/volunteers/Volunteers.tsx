@@ -29,7 +29,7 @@ interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
-  snackAdd: boolean
+  snackAdd: boolean;
 }
 
 const initialState: State = {
@@ -71,28 +71,29 @@ const Volunteers: FC = (): JSX.Element => {
     });
   }
 
+  //chiudo il modale
   const closeDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen,
-      snackDeleteIsOpen: true
+      modalIsOpen: !state.modalIsOpen
     });
   }
 
-  //Funzioni di modifica e cancella
-  const updateGuest = (row: object) => (): void => {
-    navigate(PAGES.editorVolunteers, { state: { row } })
-  };
-
-  const deleteVolunteer = (): void =>{
+  //elimino l'utente
+  const deleteUser =():void => {
     setState({
       ...state,
-      snackDeleteIsOpen: true,
-      modalIsOpen: !state.modalIsOpen,
+      modalIsOpen: false,
+      snackDeleteIsOpen: true
     })
   }
 
-  const addVolunteer = (): void => {
+  //Funzioni di modifica e cancella
+  const updateUser = (row: object) => (): void => {
+    navigate(PAGES.editorVolunteers, { state: { row } })
+  };
+
+  const addUser = (): void => {
     navigate(PAGES.editorVolunteers, { state: {showAdd: true} })
   }
 
@@ -100,7 +101,7 @@ const Volunteers: FC = (): JSX.Element => {
   const renderDetailsButton = (params: any) => {
     return (
       <>
-        <ButtonIcon callback={updateGuest(params.row)}>
+        <ButtonIcon callback={updateUser(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
         <ButtonIcon callback={openDeleteModal}>
@@ -142,7 +143,7 @@ const Volunteers: FC = (): JSX.Element => {
             textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
           />
 
-            <ButtonGeneric color={"green"} callback={addVolunteer}>
+            <ButtonGeneric color={"green"} callback={addUser}>
               + Aggiungi
             </ButtonGeneric>
           </Box>
@@ -158,7 +159,7 @@ const Volunteers: FC = (): JSX.Element => {
         <DeleteModal
           open={state.modalIsOpen}
           closeCallback={closeDeleteModal}
-          deleteCallback={deleteVolunteer /*API delete*/}
+          deleteCallback={deleteUser /*API delete*/}
         />
       </Box>
       {

@@ -61,7 +61,11 @@ const EditorFaq: FC = (): JSX.Element => {
       };
 
       console.log(qna);
-      navigate(PAGES.editFaq, {state: {open:true}})
+      if(location?.state?.showAdd){
+        navigate(PAGES.editFaq, { state: { openAdd: true } });
+      }else{
+        navigate(PAGES.editFaq, { state: { open: true } });
+      } 
     }
   }
 
@@ -102,13 +106,37 @@ const EditorFaq: FC = (): JSX.Element => {
           </LabelText>
 
           <Box className={style.buttonsContainer}>
-            <ButtonGeneric color={common.saveButtonColor} callback={onSaveQna}>
-              Salva modifiche
-            </ButtonGeneric>
-
-            <ButtonGeneric color={common.secondaryColor} callback={onCancel}>
-              Annulla modifiche
-            </ButtonGeneric>
+          {location?.state?.showAdd ? (
+              <>
+                <ButtonGeneric
+                  color={"green"}
+                  callback={onSaveQna}
+                >
+                  Aggiungi
+                </ButtonGeneric>
+                <ButtonGeneric
+                  color={common.secondaryColor}
+                  callback={onCancel}
+                >
+                  Annulla
+                </ButtonGeneric>
+              </>
+            ) : (
+              <>
+              <ButtonGeneric
+                color={common.saveButtonColor}
+                callback={onSaveQna}
+              >
+                Salva modifiche
+              </ButtonGeneric>
+              <ButtonGeneric
+                color={common.secondaryColor}
+                callback={onCancel}
+              >
+                Annulla modifiche
+              </ButtonGeneric>
+            </>
+            )}
           </Box>
         </form>
       </Box>

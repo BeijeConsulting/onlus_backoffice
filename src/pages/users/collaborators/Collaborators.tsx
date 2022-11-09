@@ -71,20 +71,29 @@ const Collaborators: FC = (): JSX.Element => {
     });
   }
 
+  //chiudo il modale
   const closeDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen,
-      snackDeleteIsOpen: true
+      modalIsOpen: !state.modalIsOpen
     });
   }
 
+  //elimino l'utente
+  const deleteUser =():void => {
+    setState({
+      ...state,
+      modalIsOpen: false,
+      snackDeleteIsOpen: true
+    })
+  }
+
   //Funzioni di modifica e cancella
-  const updateAdmin = (row: object) => (): void => {
+  const updateUser = (row: object) => (): void => {
     navigate(PAGES.editorCollaborators, { state: { row } })
   };
 
-  const addAdmin = (): void => {
+  const addUser = (): void => {
     navigate(PAGES.editorCollaborators, { state: {showAdd: true} })
   }
 
@@ -92,7 +101,7 @@ const Collaborators: FC = (): JSX.Element => {
   const renderDetailsButton = (params: any) => {
     return (
       <>
-        <ButtonIcon callback={updateAdmin(params.row)}>
+        <ButtonIcon callback={updateUser(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
         <ButtonIcon callback={openDeleteModal}>
@@ -144,7 +153,7 @@ const Collaborators: FC = (): JSX.Element => {
               textInfo={"Collaboratori registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
             />
 
-            <ButtonGeneric color={"green"} callback={addAdmin}>
+            <ButtonGeneric color={"green"} callback={addUser}>
               + Aggiungi
             </ButtonGeneric>
           </Box>
@@ -160,7 +169,7 @@ const Collaborators: FC = (): JSX.Element => {
         <DeleteModal
           open={state.modalIsOpen}
           closeCallback={closeDeleteModal}
-          deleteCallback={closeDeleteModal /*API delete*/}
+          deleteCallback={deleteUser /*API delete*/}
         />
       </Box>
       {

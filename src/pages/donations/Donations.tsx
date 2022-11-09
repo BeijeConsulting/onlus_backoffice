@@ -40,7 +40,7 @@ const Donations: FC = () : JSX.Element => {
     donations.forEach((element) => {
       total += element.amount
     })
-    return total.toString() + "€"
+    return total.toFixed(2).toString() + "€"
   }
 
   //cambia il numero di pagina

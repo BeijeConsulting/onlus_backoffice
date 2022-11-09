@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC, useState, useEffect } from 'react'
 
 //mui
 import { Box } from "@mui/material";
@@ -27,14 +27,16 @@ import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
 interface State {
+  modalIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
-  modalIsOpen: boolean;
+  snackAdd: boolean;
 }
 const initialState: State = {
+  modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  modalIsOpen: false
+  snackAdd: false
 };
 
 const Social: FC = (): JSX.Element => {
@@ -43,6 +45,13 @@ const Social: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    setState({
+      ...state,
+      snackIsOpen: location?.state?.open,
+    });
+  }, [])
 
   //Snackbar
   const handleClose = () => {
@@ -53,38 +62,49 @@ const Social: FC = (): JSX.Element => {
     })
   }
 
-  const edit = (params: any) => (): void => {
-    navigate(PAGES.editorSocial, { state: { data: params.row } });
-  };
+  //Modal
+  const openDeleteModal = (): void => {
 
-  const deleteRow = (): void => {
     setState({
       ...state,
-      snackDeleteIsOpen: true,
-      modalIsOpen: false
-    })
-  };
+      modalIsOpen: !state.modalIsOpen,
+    });
+  }
 
-  const addSocial = (): void => {
-    navigate(PAGES.editorSocial);
-  };
-
-  //mostro/nascondo modal di eliminazione della faq
-  const showDeleteModal = (): void => {
+  //chiudo il modale
+  const closeDeleteModal = (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen
+    });
+  }
+
+  //elimino il social
+  const deleteSocial = (): void => {
+    setState({
+      ...state,
+      modalIsOpen: false,
+      snackDeleteIsOpen: true
     })
+  }
+
+  //Funzioni di modifica e cancella
+  const updateSocial = (row: object) => (): void => {
+    navigate(PAGES.editorSocial, { state: { row } })
+  };
+
+  const addSocial = (): void => {
+    navigate(PAGES.editorSocial, { state: { showAdd: true } })
   }
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
     return (
       <>
-        <ButtonIcon callback={edit(params)}>
+        <ButtonIcon callback={updateSocial(params)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={showDeleteModal}>
+        <ButtonIcon callback={openDeleteModal}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
@@ -121,7 +141,7 @@ const Social: FC = (): JSX.Element => {
     <Box className={common.component}>
       <Box className={common.doubleComponent}>
         <LabelText>
-          <Box sx={{display:"flex", justifyContent:"space-between"}}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Title text="Social" textInfo="inserisci i social" />
             <ButtonGeneric color={"green"} callback={addSocial}>
               + Aggiungi
@@ -133,16 +153,20 @@ const Social: FC = (): JSX.Element => {
       {/* delete modal */}
       <DeleteModal
         open={state.modalIsOpen}
-        closeCallback={showDeleteModal}
-        deleteCallback={deleteRow}
+        closeCallback={closeDeleteModal}
+        deleteCallback={deleteSocial /*API delete*/}
       />
       {
-        location?.state?.open &&
+        state.snackIsOpen &&
         <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
       }
       {
         state.snackDeleteIsOpen &&
         <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
+      }
+      {
+        location?.state?.openAdd &&
+        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
       }
     </Box>
   );
