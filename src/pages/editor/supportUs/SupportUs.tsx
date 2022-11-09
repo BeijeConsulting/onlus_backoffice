@@ -17,8 +17,8 @@ import CustomLink from "../../../components/functional/link/CustomLink";
 
 //state
 interface State {
-  addLeft: any;
-  addRight: Array<any>;
+  addLeft: Array<JSX.Element>;
+  addRight: Array<JSX.Element>;
   snackIsOpen: boolean;
 }
 //init state
@@ -30,7 +30,7 @@ const initialState: State = {
 
 let key:number = 0
 
-const SupportUs: FC = () => {
+const SupportUs: FC = ():JSX.Element => {
 
   const [state, setState] = useState<State>(initialState)
 
@@ -43,7 +43,7 @@ const SupportUs: FC = () => {
   }
 
   //ritorno l'elemento con il contenuto
-  const getContent = (): any => {
+  const getContent = (): JSX.Element => {
     return <LabelText key={key++}>
       <Title text={"Contenuto"} textInfo={"Testo e media che compongono il contenuto della pagina"} />
       <CustomTextField
@@ -64,8 +64,8 @@ const SupportUs: FC = () => {
 
   //aggiungo un altro slot contenuto
   const addSlot = (): void => {
-    let left: Array<any> = state.addLeft
-    let right: Array<any> = state.addRight
+    let left: Array<JSX.Element> = state.addLeft
+    let right: Array<JSX.Element> = state.addRight
     if (left.length === right.length)
       //aggiungo a sinistra
       left.push(getContent())
@@ -120,7 +120,7 @@ const SupportUs: FC = () => {
           </LabelText>
           {/*contenuto*/}
           {
-            state?.addLeft.map((element: any) => {
+            state?.addLeft.map((element: JSX.Element) => {
               return element
             })
           }
@@ -131,7 +131,7 @@ const SupportUs: FC = () => {
           {getContent()}
           {getContent()}
           {
-            state?.addRight.map((element: any) => {
+            state?.addRight.map((element: JSX.Element) => {
               return element
             })
           }

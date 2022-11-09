@@ -29,7 +29,7 @@ import PAGES from "../../../router/pages";
 //data
 import { categories } from "../../../utils/mockup/data";
 
-const EditorBlog: FC = () => {
+const EditorBlog: FC = ():JSX.Element => {
   const [checked, setChecked] = useState([1]);
   const [state,setState] = useState();
 
@@ -48,6 +48,7 @@ const EditorBlog: FC = () => {
     setChecked(newChecked);
   };
   
+  //funzione di comodo
   const log = (e: any): void => {
     console.log(e);
   };
@@ -81,7 +82,7 @@ const EditorBlog: FC = () => {
                 placeholder={"Inserisci testo"}
                 error={false}
                 multiline={true}
-                minrow={15}
+                minrow={18}
                 maxrow={25}
               />
               <ButtonAddFile callback={log} />

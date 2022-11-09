@@ -40,7 +40,7 @@ const initialState: State = {
   loading: true,
 };
 
-const Blog: FC = () => {
+const Blog: FC = ():JSX.Element => {
   const navigate = useNavigate();
   const [state, setState] = useState<State>(initialState);
 
@@ -104,7 +104,7 @@ const Blog: FC = () => {
       field: "author",
       headerName: "AUTORE",
       flex: 2,
-      valueGetter: (params: object) =>
+      valueGetter: (params: any) =>
         `${params.row.name || ""} ${params.row.surname || ""}`,
     },
     {

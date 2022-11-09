@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, BaseSyntheticEvent} from "react";
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -36,7 +36,7 @@ const EditorFaq: FC = (): JSX.Element => {
   console.log(location)
 
   //Funzione per salvare domanda e risposta
-  const onSaveQna = (e: any): void => {
+  const onSaveQna = (e: BaseSyntheticEvent): void => {
 
     let answerErr = false;
     let questionErr = false;

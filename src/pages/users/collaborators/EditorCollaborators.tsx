@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, BaseSyntheticEvent } from "react";
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -68,7 +68,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
   }, []);
 
   //Funzione per salvare i dati dell'admin
-  const onSaveAdmin = (e: any): void => {
+  const onSaveAdmin = (e: BaseSyntheticEvent): void => {
     let tmp: Array<boolean> = [
       false,
       false,

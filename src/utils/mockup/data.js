@@ -534,4 +534,25 @@ export const donations = [
     amount: 1.3,
     anonyme: true,
   },
+  {
+    id: "0004",
+    email: "anonimo2@beije.it",
+    date: new Date(),
+    amount: 1.3,
+    anonyme: true,
+  },
+  {
+    id: "0004",
+    email: "anonimo2@beije.it",
+    date: new Date(),
+    amount: 1.3,
+    anonyme: true,
+  },
+  {
+    id: "0004",
+    email: "anonimo2@beije.it",
+    date: new Date(),
+    amount: 1.3,
+    anonyme: true,
+  },
 ];

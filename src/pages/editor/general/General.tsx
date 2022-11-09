@@ -147,6 +147,7 @@ const General: FC = (): JSX.Element => {
     });
   };
 
+  //funzione di comodo
   const log = (params: any) => {
     console.log(params);
   };

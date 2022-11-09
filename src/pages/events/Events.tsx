@@ -40,7 +40,7 @@ const initialState: State = {
   modalIsOpen: false
 };
 
-const Events: FC = () => {
+const Events: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -138,9 +138,7 @@ const Events: FC = () => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton_1,
-      // valueGetter: (params: any) =>
-      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+      renderCell: renderDetailsButton_1
     },
   ];
 
@@ -167,9 +165,7 @@ const Events: FC = () => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton_2,
-      // valueGetter: (params: any) =>
-      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+      renderCell: renderDetailsButton_2
     },
   ];
 

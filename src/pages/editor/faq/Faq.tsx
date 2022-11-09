@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, BaseSyntheticEvent } from "react";
 
 //Navigazione
 import { useNavigate, useLocation } from "react-router-dom";
@@ -59,7 +59,7 @@ const Faq: FC = (): JSX.Element => {
   };
 
   //Funzione per salvare le modifiche della sezione info
-  const onSaveInfo = (e: any): void => {
+  const onSaveInfo = (e: BaseSyntheticEvent): void => {
     let titleErr = false;
     let textErr = false;
     let show = false;

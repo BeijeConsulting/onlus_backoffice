@@ -127,9 +127,7 @@ const Volunteers: FC = (): JSX.Element => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton,
-      // valueGetter: (params: any) =>
-      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+      renderCell: renderDetailsButton
     },
   ];
 

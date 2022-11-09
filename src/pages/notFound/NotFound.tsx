@@ -7,7 +7,7 @@ import { Box, Button } from "@mui/material";
 //style
 import style from "./notFoundStyle.module.scss";
 
-const NotFound = () => {
+const NotFound = ():JSX.Element => {
   const navigate = useNavigate();
 
   const goBack = (): void => {

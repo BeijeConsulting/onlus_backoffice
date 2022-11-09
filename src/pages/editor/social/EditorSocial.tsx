@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, BaseSyntheticEvent } from 'react'
 import { useLocation, useNavigate } from "react-router-dom";
 
 //mui
@@ -22,7 +22,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 type social = {
   id?: number;
   name: string;
-  icon?: any;
+  icon?: JSX.Element;
   link: string;
   footerOn: boolean;
   homepageOn: boolean;
@@ -39,7 +39,7 @@ const EditorSocial: FC = (): JSX.Element => {
     navigate(PAGES.editSocial);
   };
 
-  const editSocial = (e: any): void => {
+  const editSocial = (e: BaseSyntheticEvent): void => {
     let newSocial: social = {
       id: location.state.data.id,
       name: e.target.form[0].value,
@@ -52,7 +52,7 @@ const EditorSocial: FC = (): JSX.Element => {
     navigate(PAGES.editSocial, {state: {open: true}});
   };
 
-  const createSocial = (e: any): void => {
+  const createSocial = (e: BaseSyntheticEvent): void => {
     let newSocial: social = {
       name: e.target.form[0].value,
       icon: e.target.form[2].value,

@@ -57,7 +57,7 @@ const initialState: State = {
   addCategoryName: ""
 };
 
-const Categories: FC = (props) => {
+const Categories: FC = (): JSX.Element => {
 
   const [state, setState] = useState<State>(initialState);
 

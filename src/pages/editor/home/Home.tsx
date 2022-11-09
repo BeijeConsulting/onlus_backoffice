@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, BaseSyntheticEvent} from "react";
 
 //mui
 import { Box } from "@mui/material";
@@ -12,7 +12,6 @@ import Title from "../../../components/functional/title/Title";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
-import { useSelector } from "react-redux/es/exports";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //data
@@ -26,7 +25,7 @@ type home = {
     text: string;
   };
   results: {
-    img: null;
+    img: any;
     title: string;
     text: string;
   };
@@ -39,20 +38,16 @@ interface State{
 const initState: State = {
   snackIsOpen: false
 };
- const Home: FC = () => {
+ const Home: FC = (): JSX.Element => {
 
-  const [state,setState] = useState<State>(initState)
-  function handleClick(e: any): void {}
- 
-  const stampa: any = useSelector((state: any) => state.userDuck.user);
+  const [state,setState] = useState<State>(initState) 
 
-  function editHome(e: any): void {
+  function editHome(e: BaseSyntheticEvent): void {
+    console.log(e)
     setState({
       ...state,
       snackIsOpen: true
     })
-
-    console.log(stampa);
   }
 
   function closeSnack(): void{
@@ -62,13 +57,18 @@ const initState: State = {
     })
   }
 
+  //funzione di comodo
+  function log(){
+    console.log("handleClick")
+  }
+
   return (
     <form className={common.component}>
       <Box className={common.doubleComponent}>
         <Box className={common.left}>
           <LabelText>
             <Title text="Hero" textInfo="crea home" />
-            <ButtonAddFile callback={handleClick} />
+            <ButtonAddFile callback={log} />
             <CustomTextField error={false} defaultValue={home.hero.title} />
             <CustomTextField
               defaultValue={home.hero.text}
@@ -83,7 +83,7 @@ const initState: State = {
           <LabelText>
             <Title text="Risultati" textInfo="crea risultati" />
             <CustomTextField error={false} defaultValue={home.results.title} />
-            <ButtonAddFile callback={handleClick} />
+            <ButtonAddFile callback={log} />
             <CustomTextField
               defaultValue={home.results.text}
               error={false}

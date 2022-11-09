@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState, BaseSyntheticEvent } from 'react'
 
 //Navigazione
 import { useLocation } from "react-router-dom";
@@ -84,7 +84,7 @@ const PersonalArea: FC = (): JSX.Element => {
   }
 
   //Funzione per salvare i dati
-  const onSave = (e: any): void => {
+  const onSave = (e: BaseSyntheticEvent): void => {
 
     let tmp: Array<boolean> = [false, false, false, false, false, false, false, false]
     let open: boolean = false;

@@ -53,9 +53,8 @@ const Social: FC = (): JSX.Element => {
     })
   }
 
-  const edit = (att: any) => (): void => {
-    console.log("edit", att);
-    navigate(PAGES.editorSocial, { state: { data: att.row } });
+  const edit = (params: any) => (): void => {
+    navigate(PAGES.editorSocial, { state: { data: params.row } });
   };
 
   const deleteRow = (): void => {
@@ -114,9 +113,7 @@ const Social: FC = (): JSX.Element => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton,
-      // valueGetter: (params: any) =>
-      //   `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+      renderCell: renderDetailsButton
     },
   ];
 

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { BaseSyntheticEvent, FC, useState } from "react";
 
 //style
 import style from "../../assets/styles/common.module.scss";
@@ -30,7 +30,7 @@ const initialState: State = {
   rowsPerPage: 5
 }
 
-const Donations: FC = () => {
+const Donations: FC = () : JSX.Element => {
 
   const [state, setState] = useState<State>(initialState)
 
@@ -38,14 +38,13 @@ const Donations: FC = () => {
   const getTotal = (): string => {
     let total: number = 0
     donations.forEach((element) => {
-      console.log(element)
       total += element.amount
     })
     return total.toString() + "€"
   }
 
   //cambia il numero di pagina
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (event:BaseSyntheticEvent, newPage: number) => {
     setState({
       ...state,
       page: newPage

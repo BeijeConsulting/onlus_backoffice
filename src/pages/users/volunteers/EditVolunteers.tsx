@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState, BaseSyntheticEvent } from 'react'
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -58,7 +58,7 @@ const EditVolunteers: FC = (): JSX.Element => {
   }, [])
 
   //Funzione per salvare domanda e risposta
-  const onSaveGuest = (e: any): void => {
+  const onSaveGuest = (e: BaseSyntheticEvent): void => {
 
     let tmp: Array<boolean> = [false, false, false, false, false, false, false, false]
 
