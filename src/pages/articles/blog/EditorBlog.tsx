@@ -29,12 +29,17 @@ import PAGES from "../../../router/pages";
 //data
 import { categories } from "../../../utils/mockup/data";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 
 
 
 const EditorBlog: FC = () => {
   const [checked, setChecked] = useState([1]);
   const [state,setState] = useState();
+  const { t, i18n } = useTranslation();
+
 
   const navigate = useNavigate();
 
@@ -139,14 +144,14 @@ const EditorBlog: FC = () => {
                 color={common.buttonColor}
                 callback={save}
               >
-                Salva modifiche
+                {t("saveButton")}
               </ButtonGeneric>
 
               <ButtonGeneric
                 color={common.secondaryColor}
                 callback={goBack}
               >
-                Annulla modifiche
+                {t("cancelButton")}
               </ButtonGeneric>
             </Box>
           </Box>

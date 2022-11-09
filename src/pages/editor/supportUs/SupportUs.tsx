@@ -15,6 +15,9 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar';
 import CustomLink from "../../../components/functional/link/CustomLink";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 //state
 interface State {
   addLeft: any;
@@ -33,6 +36,7 @@ let key:number = 0
 const SupportUs: FC = () => {
 
   const [state, setState] = useState<State>(initialState)
+  const { t, i18n } = useTranslation();
 
   //Snackbar
   const handleClose = () => {
@@ -145,7 +149,7 @@ const SupportUs: FC = () => {
             color={"rgb(25, 118, 210)"}
             callback={save}
           >
-              Salva modifiche
+               {t("saveButton")}
           </ButtonGeneric>
         </Box>
       </Box>

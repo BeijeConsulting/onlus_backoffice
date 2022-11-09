@@ -16,6 +16,9 @@ import CustomSnackbar from "../../../components/functional/customSnackbar/Custom
 //data
 import { home } from "../../../utils/mockup/data";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 type home = {
   hero: {
     img: any;
@@ -39,6 +42,7 @@ const initState: State = {
  const Home: FC = () => {
 
   const [state,setState] = useState<State>(initState)
+  const { t, i18n } = useTranslation();
   function handleClick(e: any): void {}
  
 
@@ -105,7 +109,7 @@ const initState: State = {
         </Box>
       </Box>
       <ButtonGeneric callback={editHome} color={common.saveButtonColor}>
-        Salva modifiche
+        {t("saveButton")}
       </ButtonGeneric>
 
       {/* snackbar */}

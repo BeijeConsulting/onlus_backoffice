@@ -21,6 +21,8 @@ interface colorPickerProp {
   callback?: Function;
   bg?: string;
   txt?: string;
+  background?: string,
+  text?: string
 }
 
 const initState: State = {
@@ -88,7 +90,7 @@ const ColorPicker: FC<colorPickerProp> = (props) => {
             </Button>
           </Box>
         )}
-        <p>Background Primario</p>
+        <p>{props.background}</p>
       </Box>
       <Box className={style.whole}>
         <Box
@@ -109,7 +111,7 @@ const ColorPicker: FC<colorPickerProp> = (props) => {
             </Button>
           </Box>
         )}
-        <p>Background Primario</p>
+        <p>{props.text}</p>
       </Box>
     </Box>
   );

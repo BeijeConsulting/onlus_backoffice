@@ -12,19 +12,19 @@
   "deleteModal": {
     "text": "Are you sure you want to delete the following element?",
     "deleteButton": "Delete",
-    "DiscardChenagesButton": "Cancel"
+    "DiscardChangesButton": "Cancel"
   },
   "addModal": {
     "text": "Are you sure you want to add the following element?",
     "addButton": "Add",
-    "DiscardChenagesButton": "Cancel"
+    "DiscardChangesButton": "Cancel"
   },
   "link": "Add another slot",
   "general": {
     "nameSite": {
       "title": "Site Name",
       "info": "Here you enter the name of your site, which will be visible to all visitors to the site",
-      "placeholder": "enter the name for your site"
+      "placeholder": "Enter the name for your site"
     },
     "logo": {
       "title": "Logo",
@@ -45,8 +45,7 @@
         "background": "Tertiary background",
         "text": "Tertiary text"
       }
-    }
-  },
+    },
   "banner": {
     "title": "Featured banner",
     "info": "Here the banner in evidence of the call to action must be customized, the colors are taken from the palette that can be found at the top of the page",
@@ -68,7 +67,8 @@
     "placeholderAddress": "Enter your address",
     "placeholderIva": "Enter your VAT number",
     "placeholderCf": "Enter your tax code"
-  },
+  }
+},
   "supportUs": {
     "hero": {
       "title": "Hero",
@@ -114,6 +114,7 @@
     }
   },
   "articles": {
+    "addButton" : "Add article",
     "title": "Blog Archive",
     "info": "table where all the published articles are displayed, in the case of the single blogger he will see only his articles, the admin will see all the articles",
     "table": {
@@ -227,6 +228,7 @@
     "answer": "Enter Answer"
   },
   "Events": {
+    "addButton" : "Add event",
     "table": {
       "title": "TITLE",
       "place": "PLACE",
@@ -273,6 +275,10 @@
     }
   },
   "Categories": {
+    "categoryModal" : {
+        "changeButton" : "Change",
+        "discardButton" : "Cancel"
+    },
     "table": {
       "categories": "CATEGORIES",
       "blog": "RELATED ARTICLES"

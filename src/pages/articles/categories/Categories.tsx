@@ -26,6 +26,9 @@ import checkEmptyText from "../../../customHooks/useEmptyText";
 //modal
 import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 //state
 interface State {
   inputError: boolean;
@@ -59,6 +62,8 @@ const initialState: State = {
 const Categories: FC = (props) => {
 
   const [state, setState] = useState<State>(initialState);
+  const { t, i18n } = useTranslation();
+
 
   const ref: any = useRef<HTMLInputElement>(null);
 
@@ -260,7 +265,7 @@ const Categories: FC = (props) => {
                 refCustom={ref}
               />
               <ButtonGeneric color={style.ternaryColor} callback={showModalCategory}>
-                + Aggiungi
+                + {t("addButton")}
               </ButtonGeneric>
             </Box>
 
@@ -272,14 +277,14 @@ const Categories: FC = (props) => {
             >
               <Box className={categoriesStyle.modal}>
                 <Typography>
-                  Sei sicuro di voler aggiungere il seguente elemento?
+                  {t("addModal.text")}
                 </Typography>
                 <Box className={categoriesStyle.modalButtons}>
                   <ButtonGeneric color={"green"} callback={addCategory}>
-                    Aggiungi
+                    {t("addModal.addButton")}
                   </ButtonGeneric>
                   <ButtonGeneric color={style.ternaryColor} callback={hideAddModal}>
-                    Annulla
+                    {t("addModal.DiscardChangesButton")}
                   </ButtonGeneric>
                 </Box>
               </Box>
@@ -316,10 +321,10 @@ const Categories: FC = (props) => {
             />
             <Box className={categoriesStyle.modalButtons}>
               <ButtonGeneric color={"green"} callback={updateCategory}>
-                Modifica
+                {t("Categories.categoryModal.changeButton")}
               </ButtonGeneric>
               <ButtonGeneric color={style.ternaryColor} callback={hideUpdateModal}>
-                Annulla
+              {t("Categories.categoryModal.discardButton")}
               </ButtonGeneric>
             </Box>
           </Box>

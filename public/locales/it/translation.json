@@ -12,12 +12,12 @@
   "deleteModal" : {
     "text" : "Sei sicuro di voler eliminare il seguente elemento?",
     "deleteButton" : "Elimina",
-    "DiscardChenagesButton" : "Annulla"
+    "DiscardChangesButton" : "Annulla"
   },
   "addModal" : {
     "text" : "Sei sicuro di voler aggiungere il seguente elemento?",
     "addButton" : "Aggiungi",
-    "DiscardChenagesButton" : "Annulla"
+    "DiscardChangesButton" : "Annulla"
   },
   "link": "Aggiungi un altro slot",
   "general": {
@@ -51,7 +51,8 @@
       "info": "Qua va personalizzato il banner in evidenza delle call to action, i color vngono presi dalla palette che si può trovare più in alto della pagina",
       "placeholderTitle": "Inserisci il titolo",
       "placeholderSubtitle": "Inserisci il sottotitolo",
-      "placeholderCallToAction": "Inserisci call to action bottone"
+      "placeholderCallToAction": "Inserisci call to action bottone",
+      "placeholderLink" : "Insert page link"
     },
     "workSection": {
       "title": "Sezione di contatti per lavoro",
@@ -114,6 +115,7 @@
     } 
   },
   "articles" : {
+    "addButton" : "Aggiungi articolo",
     "title" : "Archivio blog",
     "info" : "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli",
     "table" : {
@@ -227,6 +229,7 @@
     "answer": "Inserisci Risposta"
   },
   "Events": {
+    "addButton" : "Aggiungi evento",
     "table": {
       "title": "TITOLO",
       "place": "LUOGO",
@@ -273,6 +276,10 @@
     }
   },
   "Categories": {
+    "categoryModal" : {
+        "changeButton" : "Modifica",
+        "discardButton" : "Annulla"
+    },
     "table": {
       "categories": "CATEGORIE",
       "blog": "ARTICOLI CORRELATI"

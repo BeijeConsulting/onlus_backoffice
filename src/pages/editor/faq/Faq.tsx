@@ -26,6 +26,9 @@ import DeleteModal from "../../../components/functional/deleteModal/DeleteModal"
 //Data
 import { faq } from "../../../utils/mockup/data";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 interface State {
   titleError: boolean;
   textError: boolean;
@@ -44,6 +47,7 @@ const initState: State = {
 
 const Faq: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
+  const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -185,7 +189,7 @@ const Faq: FC = (): JSX.Element => {
 
           <Box className={style.saveBtn}>
             <ButtonGeneric color={common.saveButtonColor} callback={onSaveInfo}>
-              Salva modifiche
+            {t("saveButton")}
             </ButtonGeneric>
           </Box>
         </form>
@@ -202,7 +206,7 @@ const Faq: FC = (): JSX.Element => {
             />
 
             <ButtonGeneric color={common.ternaryColor} callback={addQna}>
-              + Aggiungi
+              + {t("addButton")}
             </ButtonGeneric>
           </Box>
 

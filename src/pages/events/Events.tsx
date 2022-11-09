@@ -28,6 +28,9 @@ import CreateIcon from "@mui/icons-material/Create";
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
 import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 interface eventsProps {}
 
 interface State {
@@ -47,6 +50,7 @@ const Events: FC<eventsProps> = (props) => {
   const location = useLocation();
 
   const [state, setState] = useState<State>(initialState);
+  const { t, i18n } = useTranslation();
 
   useEffect(()=>{
     console.log('mounted')
@@ -191,7 +195,7 @@ const Events: FC<eventsProps> = (props) => {
             }
           />
           <ButtonGeneric color={style.ternaryColor} callback={goToEditor}>
-            + Aggiungi evento
+            + {t("Events.addButton")}
           </ButtonGeneric>
         </Box>
 

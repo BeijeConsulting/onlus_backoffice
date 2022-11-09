@@ -26,6 +26,9 @@ import PAGES from "../../../router/pages";
 import common from "../../../assets/styles/common.module.scss";
 import style from "./blogStyle.module.scss";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
@@ -42,6 +45,7 @@ const initialState: State = {
 const Blog: FC = () => {
   const navigate = useNavigate();
   const [state, setState] = useState<State>(initialState);
+  const { t, i18n } = useTranslation();
 
   const location = useLocation();
 
@@ -137,7 +141,7 @@ const Blog: FC = () => {
             }
           />
           <ButtonGeneric color={common.ternaryColor} callback={goToEditor}>
-            + Aggiungi Articolo
+            + {t("articles.addButton")}
           </ButtonGeneric>
         </Box>
         <Box className={style.tableContainer}>

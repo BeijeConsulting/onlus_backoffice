@@ -27,11 +27,8 @@ import { social } from "../../../utils/mockup/data";
 import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
-/*
-TO DO
-- i18n
-*/
-
+//translation
+import { useTranslation } from 'react-i18next';
 interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
@@ -46,6 +43,8 @@ const initialState: State = {
 const Social: FC = (): JSX.Element => {
 
   const [state, setState] = useState<State>(initialState);
+  const { t, i18n } = useTranslation();
+
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -133,7 +132,7 @@ const Social: FC = (): JSX.Element => {
           <Box className={style.TitleButton}>
             <Title text="Social" textInfo="inserisci i social" />
             <ButtonGeneric color={common.ternaryColor} callback={addSocial}>
-              <p className={style.button}>+Aggiungi</p>
+              <p className={style.button}>+{t("addButton")}</p>
             </ButtonGeneric>
           </Box>
           <CustomTable columns={columns} rows={social} />

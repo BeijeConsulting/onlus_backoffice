@@ -22,6 +22,9 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import style from "../../assets/styles/common.module.scss";
 import editorStyle from "./eventEditorStyle.module.scss";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 interface editorEventProps {
 }
 
@@ -35,6 +38,7 @@ const initialState: state = {
 
 const EditorEvents: FC<editorEventProps> = (props: any) => {
   const [state, setState] = useState(initialState);
+  const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
 
@@ -136,14 +140,14 @@ const EditorEvents: FC<editorEventProps> = (props: any) => {
                 color={style.saveButtonColor}
                 callback={save}
               >
-                Salva modifiche
+                {t("saveButton")}
               </ButtonGeneric>
 
               <ButtonGeneric
                 color={style.secondaryColor}
                 callback={goBack}
               >
-                Annulla modifiche
+                {t("cancelButton")}
               </ButtonGeneric>
             </Box>
           </Box>

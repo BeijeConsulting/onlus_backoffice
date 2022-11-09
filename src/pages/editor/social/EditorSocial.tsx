@@ -16,6 +16,9 @@ import CustomSwitch from "../../../components/functional/customSwitch/CustomSwit
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 type social = {
   id?: number;
   name: string;
@@ -27,6 +30,8 @@ type social = {
 
 const EditorSocial: FC = (): JSX.Element => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+
   const location = useLocation();
 
   const handleClick = (): void => {};
@@ -121,10 +126,10 @@ const EditorSocial: FC = (): JSX.Element => {
           callback={!!location?.state?.data?.id ? editSocial : createSocial}
           color={common.saveButtonColor}
         >
-          Salva modifiche
+          {t("saveButton")}
         </ButtonGeneric>
         <ButtonGeneric callback={deleteSocial} color={common.secondaryColor}>
-          Annulla modifiche
+        {t("cancelButton")}
         </ButtonGeneric>
       </Box>
     </form>

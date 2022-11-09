@@ -18,6 +18,9 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 import CustomSelect from "../../../components/functional/customSelect/CustomSelect";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 
+//i18n
+import { useTranslation } from 'react-i18next';
+
 //Item del CustomSelect
 type Item = {
   name: string;
@@ -56,6 +59,7 @@ const initState: State = {
 
 const EditorCollaborators: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
+  const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -138,9 +142,9 @@ const EditorCollaborators: FC = (): JSX.Element => {
         <form>
           <LabelText>
             <Title
-              text={"Dati dell'utente"}
+              text={t("CollaboratorsEditor.title")}
               textInfo={
-                "Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Annulla modifiche per cancellare l'operazione"
+                t("CollaboratorsEditor.info")
               }
             />
 
@@ -154,7 +158,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci un nome"
                   error={state.error[0]}
-                  placeholder={"Nome"}
+                  placeholder={t("CollaboratorsEditor.placeholderName")}
                 />
 
                 <CustomTextField
@@ -165,13 +169,13 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci un cognome"
                   error={state.error[1]}
-                  placeholder={"Cognome"}
+                  placeholder={t("CollaboratorsEditor.placeholderSurname")}
                 />
               </Box>
 
               <Box className={style.row}>
                 <CustomSelect
-                  label={"Lingua"}
+                  label={t("CollaboratorsEditor.placeholderLang")}
                   items={lang}
                   defaultValue={
                     !!location?.state?.row?.language
@@ -183,7 +187,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
                 />
 
                 <CustomSelect
-                  label={"Ruolo"}
+                  label={t("CollaboratorsEditor.placeholderRole")}
                   items={roles}
                   defaultValue={
                     !!location?.state?.row?.role
@@ -204,7 +208,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci una email"
                   error={state.error[4]}
-                  placeholder={"Email"}
+                  placeholder={t("CollaboratorsEditor.placeholderEmail")}
                 />
 
                 <CustomTextField
@@ -215,7 +219,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci un numero di telefono"
                   error={state.error[5]}
-                  placeholder={"Telefono"}
+                  placeholder={t("CollaboratorsEditor.placeholderPhone")}
                 />
               </Box>
 
@@ -228,7 +232,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci una password"
                   error={state.error[6]}
-                  placeholder={"Password"}
+                  placeholder={t("CollaboratorsEditor.placeholderPassword")}
                   type={"password"}
                 />
 
@@ -240,7 +244,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci una password uguale"
                   error={state.error[7]}
-                  placeholder={"Conferma password"}
+                  placeholder={t("CollaboratorsEditor.placeholderConfirmPassword")}
                   type={"password"}
                 />
               </Box>
@@ -254,13 +258,13 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   color={common.ternaryColor}
                   callback={onSaveAdmin}
                 >
-                  Aggiungi
+                  {t("addButton")}
                 </ButtonGeneric>
                 <ButtonGeneric
                   color={common.secondaryColor}
                   callback={onCancel}
                 >
-                  Annulla
+                  {t("cancelButton")}
                 </ButtonGeneric>
               </>
             ) : (
@@ -269,13 +273,13 @@ const EditorCollaborators: FC = (): JSX.Element => {
                 color={common.saveButtonColor}
                 callback={onSaveAdmin}
               >
-                Salva modifiche
+                {t("saveButton")}
               </ButtonGeneric>
               <ButtonGeneric
                 color={common.secondaryColor}
                 callback={onCancel}
               >
-                Annulla modifiche
+                {t("cancelButton")}
               </ButtonGeneric>
             </>
             )}
