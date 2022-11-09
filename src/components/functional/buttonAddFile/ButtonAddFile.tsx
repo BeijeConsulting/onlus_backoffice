@@ -7,6 +7,9 @@ import common from "./../../../assets/styles/common.module.scss";
 //mui
 import { Button, Box, Typography } from "@mui/material";
 
+//translation
+import { useTranslation } from "react-i18next";
+
 //props
 interface buttonAddFileProps {
   children?: any;
@@ -23,6 +26,7 @@ const initialState: State = {
 };
 const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
   const [state, setState] = useState<State>(initialState);
+  const { t } = useTranslation();
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
     setState({
@@ -54,7 +58,7 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
           }}
           component="span"
         >
-          Seleziona file
+          {t("buttonAddFile.selection")}
         </Button>
       </label>
       {state.selectedImage !== "" && (
@@ -64,7 +68,7 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
       )}
       {state.selectedImage === "" && (
         <Typography className={style.inputFileName}>
-          Nessun file selezionato
+         {t("buttonAddFile.file")}
         </Typography>
       )}
     </Box>
