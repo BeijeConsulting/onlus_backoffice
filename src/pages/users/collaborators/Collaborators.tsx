@@ -90,6 +90,7 @@ const Collaborators: FC = (): JSX.Element => {
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
+    
     return (
       <>
         <ButtonIcon callback={updateAdmin(params.row)}>

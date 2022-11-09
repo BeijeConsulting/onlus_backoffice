@@ -24,6 +24,9 @@ import { useNavigate } from "react-router-dom";
 //Routes
 import PAGES from "../../../router/pages";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 /*
 TO DO
 - i18n
@@ -43,6 +46,8 @@ const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(() => ({
 const Header: FC = (): JSX.Element => {
   const [langIta, setLangIta] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { t, i18n } = useTranslation();
+
 
   const navigate = useNavigate();
 
@@ -69,10 +74,12 @@ const Header: FC = (): JSX.Element => {
   //Funzioni per cambiare la lingua
   const changeLangIta = (): void => {
     setLangIta(true);
+    i18n.changeLanguage('it');
   };
 
   const changeLangEng = (): void => {
     setLangIta(false);
+    i18n.changeLanguage('en');
   };
 
   return (

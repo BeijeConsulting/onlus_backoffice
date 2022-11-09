@@ -16,6 +16,9 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 import ColorPicker from "../../../components/functional/colorPicker/ColorPicker";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
+//translation
+import { useTranslation } from 'react-i18next';
+
 //api
 import {
   getApiGeneral,
@@ -59,6 +62,7 @@ const initState: State = {
 
 const General: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
+  const { t, i18n } = useTranslation();
 
   const fetchData = async (): Promise<any> => {
     const data = await getApiGeneral();
@@ -167,8 +171,8 @@ const General: FC = (): JSX.Element => {
             <Box className={common.left}>
               <LabelText>
                 <Title
-                  text="Nome Sito"
-                  textInfo="Qua va inserito il nome del tuo sito, che sarà visibile a tutti i visitatori del sito"
+                  text={t("general.nameSite.title")}
+                  textInfo={t("general.nameSite.info")}
                 />
                 <CustomTextField
                   error={state.error.nameSite}

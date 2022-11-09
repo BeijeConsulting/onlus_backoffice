@@ -1,0 +1,349 @@
+{
+  "buttonAddFile": {
+    "selection": "Seleziona file",
+    "file": "Nessun file selezionato"
+  },
+  "saveButton": "Salva modifiche",
+  "addButton": "Aggiungi",
+  "cancelButton" : "Annulla modifiche",
+  "changesSnack" : "Modifiche avvenute con successo",
+  "deleteSnack" : "Eliminazione avvenuta con successo",
+  "addSnack" : "Inserimento avvenuto con successo",
+  "deleteModal" : {
+    "text" : "Sei sicuro di voler eliminare il seguente elemento?",
+    "deleteButton" : "Elimina",
+    "DiscardChenagesButton" : "Annulla"
+  },
+  "addModal" : {
+    "text" : "Sei sicuro di voler aggiungere il seguente elemento?",
+    "addButton" : "Aggiungi",
+    "DiscardChenagesButton" : "Annulla"
+  },
+  "link": "Aggiungi un altro slot",
+  "general": {
+    "nameSite": {
+      "title": "Nome Sito",
+      "info": "Qua va inserito il nome del tuo sito, che sarà visibile a tutti i visitatori del sito",
+      "placeholder": "inserisci il nome per il tuo sito"
+    },
+    "logo": {
+      "title": "Logo",
+      "info": "Qua va inserito il logo del tuo sito che sarà visibile anche ai visitatori"
+    },
+    "palettes": {
+      "title": "Seleziona palette",
+      "info": "Qua vanno inseriti i colori del tuo sito visibile ai clienti, attenzione a mettere un buon contrasto tra lo sfondo e il testo",
+      "primary": {
+        "background": "Background primario",
+        "text": "Testo primario"
+      },
+      "secondary": {
+        "background": "Background secondario",
+        "text": "Testo secondario"
+      },
+      "ternary": {
+        "background": "Background terziario",
+        "text": "Testo terziario"
+      }
+    },
+    "banner": {
+      "title": "Banner in evidenza",
+      "info": "Qua va personalizzato il banner in evidenza delle call to action, i color vngono presi dalla palette che si può trovare più in alto della pagina",
+      "placeholderTitle": "Inserisci il titolo",
+      "placeholderSubtitle": "Inserisci il sottotitolo",
+      "placeholderCallToAction": "Inserisci call to action bottone"
+    },
+    "workSection": {
+      "title": "Sezione di contatti per lavoro",
+      "info": "Qua vanno inseriti i contatti che veranno mostrati a tutti i visitatori del sito a fondo pagina che doovrebbero essere usati per scopi di lavoro",
+      "placeholderText": "Inserisci il testo",
+      "placeholderEmail": "Inserisci la tua mail lavorativa"
+    },
+    "contacts": {
+      "title": "Contatti",
+      "info": "Questi saranno i contatti e le infomazioni su di te/la tua azienda. Saranno mostrati nel footer (fondo pagina) di ogni schermata del sito disponibile ai visitatori",
+      "placeholderTelephone": "Inserisci il tuo numero di telefono",
+      "placeholderEmail": "Inserisci la tua mail",
+      "placeholderAddress": "Inserisci il tuo indirizzo",
+      "placeholderIva": "Inserisci la tua partita IVA",
+      "placeholderCf": "Inserisci il tuo codice fiscale"
+    }
+  },
+  "supportUs": {
+    "hero": {
+      "title": "Hero",
+      "info": "Hero della pagina con un'immagine, un titolo un testo",
+      "placeholderText": "Inserisci testo"
+    },
+    "sectionTitle": {
+      "title": "Titolo",
+      "info": "Titolo della sezione con i contenuti",
+      "placeholderTitle": "Inserisci il titolo"
+    },
+    "content": {
+      "title": "Contenuto",
+      "info": "Testo e media che compongono il contenuto della pagina",
+      "placeholderText": "Inserisci testo"
+    }
+  },
+  "social": {
+    "title": "Social",
+    "info": "Inserisci i social che saranno visibili all'interno della piattaforma",
+    "table": {
+      "headerTable1": "SOCIAL",
+      "headerTable2": "ICONA",
+      "headerTable3": "LINK"
+    },
+    "editorSocial": {
+      "socialSection": {
+        "title": "Social",
+        "info": "Inserisci il nome del social",
+        "placeholderSocial": "Nome social"
+      },
+      "iconSection" : {
+        "title": "Icona",
+        "info": "Inserisci l'icona"
+      },
+      "linkSection" : {
+        "title": "Link",
+        "info": "Inserisci il link al social",
+        "placeholderLink" : "link"
+      },
+      "toggleFooter" : "Pubblica nel footer",
+      "toggleHome" : "Pubblica nella home"
+    } 
+  },
+  "articles" : {
+    "title" : "Archivio blog",
+    "info" : "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli",
+    "table" : {
+        "headerTable1" : "TITOLO",
+        "headerTable2" : "AUTORE",
+        "headerTable3" : "DATA",
+        "headerTable4" : "STATO"
+    },
+    "editorBlog" : {
+        "titleSection" : {
+            "title": "Titolo",
+            "info": "Inserisci il titolo dell'articolo",
+            "placeholderTitle" : "Titolo"
+        },
+        "contentSection" : {
+            "title": "Contenuto",
+            "info": "Scrivi il tuo articolo",
+            "placeholderContent" : "Inserisci testo"
+        },
+        "coverSection" : {
+            "title": "Copertina",
+            "info": "Inserisci una foto di copertina per l'evento"
+        },
+        "categoriesSection" : {
+            "title": "Categorie",
+            "info": "Specificare le categorie da attribuire all'articolo"
+        }
+    },
+    "volunteers" : {
+        "title" : "Volontari",
+        "info" : "Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema",
+        "table" : {
+            "headerTable1" : "NOME",
+            "headerTable2" : "COGNOME"
+        },
+        "editorVolunteers" : {
+            "title" : "Dati dell'utente",
+            "info" : "Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Elimina utente per cancellare i dati dell'utente dal sistema",
+            "placeholderName" : "Nome",
+            "placeholderLanguage" : "Lingua",
+            "placeholderEmail" : "Email",
+            "placeholderPassword" : "Password",
+            "placeholderSurname" : "Cognome",
+            "placeholderUser" : "User",
+            "placeholderTelephone" : "Telefono",
+            "placeholderConfirmPassword" : "Conferma password"
+        }
+    },
+    "personalArea" : {
+        "title" : "I tuoi dati",
+        "info" : "Dati dell'utente loggato, clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento",
+        "placeholderName" : "Nome",
+        "placeholderLanguage" : "Lingua",
+        "placeholderEmail" : "Email",
+        "placeholderPassword" : "Password",
+        "placeholderSurname" : "Cognome",
+        "placeholderUser" : "User",
+        "placeholderTelephone" : "Telefono",
+        "placeholderConfirmPassword" : "Conferma password"
+    }
+  },
+  "Home": {
+    "Hero": {
+      "title": "Hero",
+      "info": "Qui verrà inserita l'immagine della hero, il titolo e testo della home",
+      "placeHolderSubTitle": "Inserisci titolo Hero",
+      "placeHolderText": "Inserisci testo della hero"
+    },
+    "Results": {
+      "title": "Results",
+      "info": "Qui verranno inseriti i risultati della onlus",
+      "placeHolderSubTitle": "Inserisci titolo dei risultati",
+      "placeHolderText": " Inserisci testo dei risultati"
+    }
+  },
+  "About": {
+    "Hero": {
+      "title": "Hero",
+      "info": "Qui verrà inserita l'immagine della hero, il titolo e testo di About",
+      "placeHolderText": "Inserisci testo della hero"
+    },
+    "Content": {
+      "title": "Contenuto",
+      "info": "Testo e media che compongono il contenuto della pagina",
+      "placeHolderText": "Inserisci testo"
+    },
+    "Title": {
+      "title": "Titolo",
+      "info": "Titolo della sezione dei contenuti",
+      "placeHolderText": "Inserisci il titolo"
+    },
+    "addContent": "Aggiungi un altro slot"
+  },
+  "Faq": {
+    "info": {
+      "title": "Info",
+      "info": "Sezione Info della pagina FAQ, clicca sul pulsante Salva modifiche per accettare i cambiamenti della pagina",
+      "placeHolderSubTitle": "Inserisci titolo info",
+      "placeHolderText": " Inserisci testo"
+    },
+    "table": {
+      "title": "Faq",
+      "info": "Domande presenti nella sezione FAQ della pagina, clicca sul pulsante +Aggiungi per aggiungere una nuova domanda e risposta, clicca sui bottoni modifica o cancella per cambiare la struttura dati",
+      "question": "DOMANDA"
+    }
+  },
+  "FaqEditor": {
+    "title": "Faq",
+    "info": "Aggiungi una nuova domanda e risposta, clicca sul pulsante Salva modifiche per completare l'operazione oppure clicca sul pulsante Annulla modifiche per cancellare l'operazione",
+    "question": "Domanda Frequente",
+    "answer": "Inserisci Risposta"
+  },
+  "Events": {
+    "table": {
+      "title": "TITOLO",
+      "place": "LUOGO",
+      "date": "DATA"
+    },
+    "NewEvents": {
+      "title": "Eventi in Programma",
+      "info": "Tabella dove vengono visualizzati i prossimi eventi in programma"
+    },
+    "OldEvents": {
+      "title": "Archivio Eventi",
+      "info": "Tabella dove viene visualizzato l'archivio di tutti gli eventi passati"
+    }
+  },
+  "EventsEditor":{
+    "Title":{
+      "title":"Titolo",
+      "info":"Inserisci il titolo dell'evento",
+      "placeHolderText":"inserisci Titolo"
+    },
+    "cover":{
+      "title":"Copertina",
+      "info":"Inserisci una foto di copertina per l'evento"
+    }, 
+    "Date":{
+      "title":"Data e ora",
+      "date":"Seleziona",
+      "info":"Inserisci la data e l'ora dell'evento"
+    }, 
+    "Place":{
+      "title":"Luogo",
+      "info":"Inserisci il luogo in cui si svolgerà l'evento",
+      "placeHolderText":"inserisci Indirizzo"
+    },    
+    "Description":{
+      "title":"Descrizione",
+      "info":"Inserisci una descrizione esplicativa dell'evento",
+      "placeHolderText":"inserisci Testo"
+    },
+    "Requirements":{
+      "title":"Requisiti",
+      "info":"Specifica i requisiti per partecipare all'evento",
+      "placeHolderText":"inserisci Testo"
+    }
+  },
+  "Categories": {
+    "table": {
+      "categories": "CATEGORIE",
+      "blog": "ARTICOLI CORRELATI"
+    },
+    "title": "Categorie",
+    "info": "Tabella dove vengono visualizzate le categorie che vengono associate ad un articolo",
+    "placeholder": "Inserisci Categoria"
+  },
+  "Collaborators": {
+    "title": "Collaboratori",
+    "info": "Collaboratori registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema",
+    "table": {
+      "name": "NOME",
+      "surname": "COGNOME",
+      "role": "RUOLO",
+      "blog": "ARTICOLI PUBBLICATI"
+    }
+  },
+  "CollaboratorsEditor":{
+    "title":"Dati dell'utente",
+    "info":"Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Annulla modifiche per cancellare l'operazione",
+    "placeholderName":"Nome",
+    "placeholderSurname":"Cognome",
+    "placeholderLang":"Lingua",
+    "placeholderRole":"Ruolo",
+    "placeholderEmail":"Email",
+    "placeholderPhone":"Telefono",
+    "placeholderPassword":"Password",
+    "placeholderConfirmPassword":"Conferma Password"
+  },
+  "Donation": {
+    "title": "Donation",
+    "info": "Titolo della pagina con la tabella delle donazioni",
+    "table": {
+      "id": "ID TRANSAZIONE",
+      "value": "VALORE",
+      "date": "DATA"
+    },
+    "amountDonation": "TOTALE DONAZIONI",
+    "subTable":{
+      "id":"ID",
+      "email":"EMAIL",
+      "value":"VALORE",
+      "date":"DATA",
+      "anonimus":"ANONIMA"
+    }
+  },
+  "navbar" : {
+    "siteEditor" : {
+        "title" : "EDITOR SITO",
+        "general" : "Generale",
+        "home" : "Home",
+        "about" : "About",
+        "SupportUs" : "Supportaci",
+        "faq" : "Faq",
+        "social" : "Social"
+    },
+    "events" : "EVENTI",
+    "articles" : {
+        "title" : "ARTICOLI",
+        "manageArticles" : "Gestisci articoli",
+        "manageCategories" : "Gestisci categorie"
+    },
+    "users" : {
+        "title" : "UTENTI",
+        "Collaborators" : "Collaboratori",
+        "volunteers" : "Volontari"
+    },
+    "donations" : {
+        "title" : "DONAZIONI"
+    }
+  }
+
+}
