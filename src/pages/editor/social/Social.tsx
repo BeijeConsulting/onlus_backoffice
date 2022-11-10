@@ -174,7 +174,7 @@ const Social: FC = (): JSX.Element => {
       )}
       {location?.state?.openAdd && (
         <CustomSnackbar
-          message={"Inserimento avvenuto con successo"}
+          message={t("addSnack")}
           severity={"success"}
           callback={handleClose}
         />

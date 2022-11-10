@@ -264,7 +264,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   color={common.secondaryColor}
                   callback={onCancel}
                 >
-                  {t("cancelButton")}
+                  {t("deleteModal.DiscardChangesButton")}
                 </ButtonGeneric>
               </>
             ) : (

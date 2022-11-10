@@ -187,6 +187,7 @@ const PersonalArea: FC = (): JSX.Element => {
                 <CustomSelect
                   label={t("personalArea.placeholderRole")}
                   items={roles}
+                  disabled={true}
                   defaultValue={
                     !!location?.state?.row?.role
                       ? location?.state?.row?.role

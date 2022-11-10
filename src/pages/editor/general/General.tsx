@@ -287,7 +287,7 @@ const General: FC = (): JSX.Element => {
           </ButtonGeneric>
           {state.open && (
             <CustomSnackbar
-              message={"Modifiche avvenute con successo"}
+              message={t("changesSnack")}
               severity={"success"}
               callback={handleClose}
             />

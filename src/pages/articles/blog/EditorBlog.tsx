@@ -154,13 +154,13 @@ const EditorBlog: FC = (): JSX.Element => {
               {location?.state?.showAdd ? (
                 <>
                   <ButtonGeneric color={"green"} callback={onSave}>
-                    Aggiungi
+                    {t("addButton")}
                   </ButtonGeneric>
                   <ButtonGeneric
                     color={common.secondaryColor}
                     callback={onCancel}
                   >
-                    Annulla
+                   {t("deleteModal.DiscardChangesButton")}
                   </ButtonGeneric>
                 </>
               ) : (

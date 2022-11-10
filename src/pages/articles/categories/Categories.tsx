@@ -246,8 +246,9 @@ const Categories: FC = (): JSX.Element => {
   return (
     <Box className={style.component}>
       <Box className={style.singleComponent}>
+
         <LabelText>
-          <Box className={categoriesStyle.titleFlex}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Title
               text={t("Categories.title")}
               textInfo={t("Categories.info")}
@@ -262,7 +263,7 @@ const Categories: FC = (): JSX.Element => {
                   refCustom={ref}
                 />
                 <ButtonGeneric
-                  color={style.ternaryColor}
+                  color={'green'}
                   callback={showModalCategory}
                 >
                   + {t("addButton")}
@@ -282,7 +283,7 @@ const Categories: FC = (): JSX.Element => {
                       {t("addModal.addButton")}
                     </ButtonGeneric>
                     <ButtonGeneric
-                      color={style.ternaryColor}
+                      color={style.secondaryColor}
                       callback={hideAddModal}
                     >
                       {t("addModal.DiscardChangesButton")}
@@ -299,17 +300,17 @@ const Categories: FC = (): JSX.Element => {
               >
                 <Box className={categoriesStyle.modal}>
                   <Typography>
-                    Sei sicuro di voler aggiungere il seguente elemento?
+                    {t("addModal.text")}
                   </Typography>
                   <Box className={categoriesStyle.modalButtons}>
                     <ButtonGeneric color={"green"} callback={addCategory}>
-                      Aggiungi
+                      {t("addButton")}
                     </ButtonGeneric>
                     <ButtonGeneric
-                      color={style.saveButtonColor}
+                      color={style.secondaryColor}
                       callback={hideAddModal}
                     >
-                      Annulla
+                      {t("deleteModal.DiscardChangesButton")}
                     </ButtonGeneric>
                   </Box>
                 </Box>
@@ -346,7 +347,7 @@ const Categories: FC = (): JSX.Element => {
                 {t("Categories.categoryModal.changeButton")}
               </ButtonGeneric>
               <ButtonGeneric
-                color={style.ternaryColor}
+                color={style.secondaryColor}
                 callback={hideUpdateModal}
               >
                 {t("Categories.categoryModal.discardButton")}

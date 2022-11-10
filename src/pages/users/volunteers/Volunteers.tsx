@@ -162,21 +162,21 @@ const Volunteers: FC = (): JSX.Element => {
       </Box>
       {state.snackIsOpen && (
         <CustomSnackbar
-          message={"Modifiche avvenute con successo"}
+          message={t("changesSnack")}
           severity={"success"}
           callback={handleClose}
         />
       )}
       {state.snackDeleteIsOpen && (
         <CustomSnackbar
-          message={"Eliminazione avvenuta con successo"}
+          message={t("deleteSnack")}
           severity={"info"}
           callback={handleClose}
         />
       )}
       {location?.state?.openAdd && (
         <CustomSnackbar
-          message={"Inserimento avvenuto con successo"}
+          message={t("addSnack")}
           severity={"success"}
           callback={handleClose}
         />

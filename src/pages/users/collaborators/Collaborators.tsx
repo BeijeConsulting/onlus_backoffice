@@ -151,9 +151,9 @@ const Collaborators: FC = (): JSX.Element => {
           {/*titolo*/}
           <Box className={style.titleRow}>
             <Title
-              text={"Collaboratori"}
+              text={t("Collaborators.title")}
               textInfo={
-                "Collaboratori registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"
+                t("Collaborators.info")
               }
             />
             <ButtonGeneric color={"green"} callback={addUser}>
@@ -173,21 +173,21 @@ const Collaborators: FC = (): JSX.Element => {
       </Box>
       {state.snackIsOpen && (
         <CustomSnackbar
-          message={"Modifiche avvenute con successo"}
+          message={t("changesSnack")}
           severity={"success"}
           callback={handleClose}
         />
       )}
       {state.snackDeleteIsOpen && (
         <CustomSnackbar
-          message={"Eliminazione avvenuta con successo"}
+          message={t("deleteSnack")}
           severity={"info"}
           callback={handleClose}
         />
       )}
       {location?.state?.openAdd && (
         <CustomSnackbar
-          message={"Inserimento avvenuto con successo"}
+          message={t("addSnack")}
           severity={"success"}
           callback={handleClose}
         />

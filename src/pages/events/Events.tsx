@@ -197,29 +197,34 @@ const Events: FC = (): JSX.Element => {
   return (
     <Box className={style.component}>
       <Box className={style.singleComponent}>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Title
-            text={t("Events.NewEvents.title")}
-            textInfo={t("Events.NewEvents.info")}
-          />
-          <ButtonGeneric color={"green"} callback={addEvent}>
-            + {t("Events.addButton")}
-          </ButtonGeneric>
-        </Box>
         <LabelText>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Title
+              text={t("Events.NewEvents.title")}
+              textInfo={t("Events.NewEvents.info")}
+            />
+            <ButtonGeneric color={"green"} callback={addEvent}>
+              + {t("addButton")}
+            </ButtonGeneric>
+          </Box>
+
           {/* sezione eventi in programma*/}
           <CustomTable columns={columns_1} rows={events} pageSize={5} />
         </LabelText>
 
+        <Box sx={{height: "20px"}}>
+
+        </Box>
+
         {/* sezione archivio eventi  */}
         <LabelText>
-          <Box sx={{ marginTop: "20px" }}>
+        
             <Title
               text={t("Events.OldEvents.title")}
               textInfo={t("Events.OldEvents.info")}
             />
             <CustomTable columns={columns_2} rows={events} pageSize={5} />
-          </Box>
+        
         </LabelText>
       </Box>
 

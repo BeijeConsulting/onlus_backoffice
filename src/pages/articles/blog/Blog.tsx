@@ -153,13 +153,13 @@ const Blog: FC = (): JSX.Element => {
           <LabelText>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Title
-                text={"Archivio Blog"}
+                text={t("articles.title")}
                 textInfo={
-                  "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli"
+                  t("articles.info")
                 }
               />
               <ButtonGeneric color={"green"} callback={addArticle}>
-                + Aggiungi
+                + {t("addButton")}
               </ButtonGeneric>
             </Box>
 
@@ -192,7 +192,7 @@ const Blog: FC = (): JSX.Element => {
         )}
         {location?.state?.openAdd && (
           <CustomSnackbar
-            message={"Inserimento avvenuto con successo"}
+            message={t("addSnack")}
             severity={"success"}
             callback={handleClose}
           />
