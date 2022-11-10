@@ -1,10 +1,53 @@
 import axios from "axios";
 import CONFIG from "./genericConfig";
+import { updateAuthTokenApi } from "./api/auth/updateAuthTokenApi";
 
 const axiosInstance = axios.create({
   baseURL: CONFIG.BASEURL,
   timeout: CONFIG.TIMEOUT,
 });
+
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("onlusToken");
+    if (token) {
+      config.headers["Authorization"] = "Bearer " + token;
+    }
+    return config;
+  },
+  (error) => {
+    Promise.reject(error);
+  }
+);
+
+axiosInstance.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    const originalRequest = error.config;
+    if (
+      error.response.status === 401 &&
+      originalRequest.url === `${CONFIG.BASEURL}/updateAuthToken`
+    ) {
+      return Promise.reject(error);
+    }
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      if (localStorage.getItem("onlusRefreshToken") !== null) {
+        updateAuthTokenApi().then((res) => {
+          const { token, refreshToken } = res.data;
+          localStorage.setItem("onlusToken", token);
+          localStorage.setItem("onlusRefreshToken", refreshToken);
+          axios.defaults.headers.common["Authorization"] =
+            "Bearer " + localStorage.getItem("onlusToken");
+        });
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export async function responseApi(response) {
   return {
