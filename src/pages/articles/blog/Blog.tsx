@@ -1,6 +1,16 @@
 import { Box } from "@mui/material";
 import { FC, useState, useEffect } from "react";
 
+//api
+import {
+  deleteApiArticleById,
+  getApiArticleById,
+  getApiArticles,
+  postApiArticle,
+  putApiArticleById,
+  getApiCollaborators,
+} from "../../../services/api/blog/blogApi";
+
 //navigation
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -25,6 +35,7 @@ import PAGES from "../../../router/pages";
 
 //style
 import common from "../../../assets/styles/common.module.scss";
+
 //translation
 import { useTranslation } from "react-i18next";
 
@@ -49,12 +60,23 @@ const Blog: FC = (): JSX.Element => {
 
   const location = useLocation();
 
+  //fetchAPI
+  const getCollaborators = async (token: any): Promise<void> => {
+    let res = await getApiCollaborators(token);
+    console.log(res);
+  };
+
   useEffect(() => {
     setState({
       ...state,
       snackIsOpen: location?.state?.open,
     });
+    let token: string = localStorage.getItem("onlusToken");
+    console.log("token", token);
+    getCollaborators(token);
   }, []);
+
+  
 
   //Snackbar
   const handleClose = () => {
@@ -148,56 +170,51 @@ const Blog: FC = (): JSX.Element => {
   ];
 
   return (
-      <Box className={common.component}>
-        <Box className={common.singleComponent}>
-          <LabelText>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Title
-                text={t("articles.title")}
-                textInfo={
-                  t("articles.info")
-                }
-              />
-              <ButtonGeneric color={"green"} callback={addArticle}>
-                + {t("addButton")}
-              </ButtonGeneric>
-            </Box>
+    <Box className={common.component}>
+      <Box className={common.singleComponent}>
+        <LabelText>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Title text={t("articles.title")} textInfo={t("articles.info")} />
+            <ButtonGeneric color={"green"} callback={addArticle}>
+              + {t("addButton")}
+            </ButtonGeneric>
+          </Box>
 
-            {/* sezione eventi in programma*/}
-            <CustomTable columns={columns} rows={articles} />
-          </LabelText>
-        </Box>
-
-        {/* delete modal */}
-        <DeleteModal
-          open={state.modalIsOpen}
-          closeCallback={showDeleteModal}
-          deleteCallback={deleteArticle}
-        />
-
-        {/* snackbar */}
-        {state.snackIsOpen && (
-          <CustomSnackbar
-            message={t("changeSnack")}
-            severity={"success"}
-            callback={handleClose}
-          />
-        )}
-        {state.snackDeleteIsOpen && (
-          <CustomSnackbar
-            message={t("deleteSnack")}
-            severity={"info"}
-            callback={handleClose}
-          />
-        )}
-        {location?.state?.openAdd && (
-          <CustomSnackbar
-            message={t("addSnack")}
-            severity={"success"}
-            callback={handleClose}
-          />
-        )}
+          {/* sezione eventi in programma*/}
+          <CustomTable columns={columns} rows={articles} />
+        </LabelText>
       </Box>
+
+      {/* delete modal */}
+      <DeleteModal
+        open={state.modalIsOpen}
+        closeCallback={showDeleteModal}
+        deleteCallback={deleteArticle}
+      />
+
+      {/* snackbar */}
+      {state.snackIsOpen && (
+        <CustomSnackbar
+          message={t("changeSnack")}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={t("deleteSnack")}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
+      {location?.state?.openAdd && (
+        <CustomSnackbar
+          message={t("addSnack")}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+    </Box>
   );
 };
 

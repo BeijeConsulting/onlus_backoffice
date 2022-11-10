@@ -1,6 +1,6 @@
 const CONFIG = {
-  BASEURL: "http://localhost:1337/api",
-  TIMEOUT: 5000,
+  BASEURL: "http://52.58.94.27:8080/",
+  TIMEOUT: 2000,
 };
 
 export default CONFIG;

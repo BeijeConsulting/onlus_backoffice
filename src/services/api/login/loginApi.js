@@ -1,6 +1,6 @@
-import { getApi } from "../../genericServices";
+import { postApi } from "../../genericServices";
 import APIROUTES from "../apiRoutes";
 
-export async function getApiLogin() {
-  return await getApi(`${APIROUTES.USERACCOUNTS}/1`);
+export async function signinApi(obj) {
+  return await postApi(APIROUTES.SIGNIN, obj);
 }

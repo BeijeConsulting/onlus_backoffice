@@ -18,7 +18,7 @@ import logo from "../../assets/media/logo.png";
 import { Link } from "react-router-dom";
 import { BaseSyntheticEvent } from "react";
 //api
-import { getApiLogin } from "../../services/api/login/loginApi";
+import { signinApi } from "../../services/api/login/loginApi";
 
 /*
 TO DO
@@ -35,7 +35,7 @@ interface State {
 }
 
 type User = {
-  id: string;
+  email: string;
   password: string;
 };
 
@@ -68,18 +68,25 @@ const Login: FC = (): JSX.Element => {
       emailError: eError,
       passwordError: pError,
     });
-    /*let user: User = {
-      id: e.target.form[0].value,
+    let user: User = {
+      email: e.target.form[0].value,
       password: e.target.form[2].value,
-    };*/
+    };
 
     //get
-    let tempUser = await getApiLogin();
+    let tempUser: any = await signinApi(user);
+    console.log("token", tempUser?.data?.token);
+    console.log("refreshToken", tempUser?.data?.refreshToken);
+
+    //localStorage for Token
+    localStorage.setItem("onlusToken", tempUser?.data?.token);
+    localStorage.setItem("onlusRefreshToken", tempUser?.data?.refreshToken);
 
     //setcookie
     setCookie("user", tempUser);
 
-    navigate(PAGES.personalArea);
+    //navigation
+    //navigate(PAGES.personalArea);
   }
 
   return (
