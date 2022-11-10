@@ -25,6 +25,9 @@ import LabelText from "../../../components/functional/labelText/LabelText";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 
+//i18n
+import { useTranslation } from "react-i18next";
+
 interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
@@ -41,6 +44,7 @@ const initialState: State = {
 
 const Collaborators: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
+  const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -112,22 +116,22 @@ const Collaborators: FC = (): JSX.Element => {
   const columns = [
     {
       field: "name",
-      headerName: "NOME",
+      headerName: t("Collaborators.table.name"),
       flex: 1,
     },
     {
       field: "surname",
-      headerName: "COGNOME",
+      headerName: t("Collaborators.table.surname"),
       flex: 1,
     },
     {
       field: "role",
-      headerName: "RUOLO",
+      headerName: t("Collaborators.table.role"),
       flex: 1,
     },
     {
       field: "publishedArticles",
-      headerName: "ARTICOLI PUBBLICATI",
+      headerName: t("Collaborators.table.blog"),
       flex: 1,
     },
     {
@@ -152,9 +156,8 @@ const Collaborators: FC = (): JSX.Element => {
                 "Collaboratori registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"
               }
             />
-
             <ButtonGeneric color={"green"} callback={addUser}>
-              + Aggiungi
+              + {t("addButton")}
             </ButtonGeneric>
           </Box>
 

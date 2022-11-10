@@ -1,4 +1,4 @@
-import { FC, BaseSyntheticEvent } from 'react'
+import { FC, BaseSyntheticEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 //mui
@@ -18,6 +18,8 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 import CustomSwitch from "../../../components/functional/customSwitch/CustomSwitch";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+//translation
+import { useTranslation } from "react-i18next";
 
 type social = {
   id?: number;
@@ -30,7 +32,9 @@ type social = {
 
 const EditorSocial: FC = (): JSX.Element => {
   const navigate = useNavigate();
+
   const location = useLocation();
+  const { t } = useTranslation();
 
   const handleClick = (): void => {};
 
@@ -48,12 +52,12 @@ const EditorSocial: FC = (): JSX.Element => {
       footerOn: e.target.form[5].checked,
       homepageOn: e.target.form[6].checked,
     };*/
-    
-    if(location?.state?.showAdd){
+
+    if (location?.state?.showAdd) {
       navigate(PAGES.editSocial, { state: { openAdd: true } });
-    }else{
+    } else {
       navigate(PAGES.editSocial, { state: { open: true } });
-    } 
+    }
   };
 
   return (
@@ -62,28 +66,41 @@ const EditorSocial: FC = (): JSX.Element => {
         <LabelText>
           <Box className={common.row}>
             <Box className={common.rowLeft}>
-              <Title text="Social" textInfo="inserisci il social" />
+              <Title
+                text={t("social.editorSocial.socialSection.title")}
+                textInfo={t("social.editorSocial.socialSection.info")}
+              />
               <CustomTextField
                 defaultValue={
                   !!location?.state?.data?.name
                     ? location?.state?.data?.name
                     : ""
                 }
-                placeholder="nome social"
+                placeholder={t(
+                  "social.editorSocial.socialSection.placeholderSocial"
+                )}
                 error={false}
               />
-              <Title text="Icona" textInfo="inserisci l'icona" />
+              <Title
+                text={t("social.editorSocial.iconSection.title")}
+                textInfo={t("social.editorSocial.iconSection.info")}
+              />
               <ButtonAddFile callback={handleClick} />
             </Box>
             <Box className={common.rowRight}>
-              <Title text="Link" textInfo="inserisci link" />
+              <Title
+                text={t("social.editorSocial.linkSection.title")}
+                textInfo={t("social.editorSocial.linkSection.info")}
+              />
               <CustomTextField
                 defaultValue={
                   !!location?.state?.data?.link
                     ? location?.state?.data?.link
                     : ""
                 }
-                placeholder="link"
+                placeholder={t(
+                  "social.editorSocial.linkSection.placeholderLink"
+                )}
                 error={false}
               />
               <CustomSwitch
@@ -93,7 +110,7 @@ const EditorSocial: FC = (): JSX.Element => {
                     : false
                 }
                 callback={handleClick}
-                label={"Pubblica nel footer"}
+                label={t("social.editorSocial.toggleFooter")}
               />
               <CustomSwitch
                 defaultChecked={
@@ -102,7 +119,7 @@ const EditorSocial: FC = (): JSX.Element => {
                     : false
                 }
                 callback={handleClick}
-                label={"Pubblica nella home"}
+                label={t("social.editorSocial.toggleHome")}
               />
             </Box>
           </Box>
@@ -110,40 +127,28 @@ const EditorSocial: FC = (): JSX.Element => {
       </Box>
 
       <Box className={style.buttonsContainer}>
-      {location?.state?.showAdd ? (
-              <>
-                <ButtonGeneric
-                  color={"green"}
-                  callback={onSave}
-                >
-                  Aggiungi
-                </ButtonGeneric>
-                <ButtonGeneric
-                  color={common.secondaryColor}
-                  callback={onCancel}
-                >
-                  Annulla
-                </ButtonGeneric>
-              </>
-            ) : (
-              <>
-              <ButtonGeneric
-                color={common.saveButtonColor}
-                callback={onSave}
-              >
-                Salva modifiche
-              </ButtonGeneric>
-              <ButtonGeneric
-                color={common.secondaryColor}
-                callback={onCancel}
-              >
-                Annulla modifiche
-              </ButtonGeneric>
-            </>
-            )}
+        {location?.state?.showAdd ? (
+          <>
+            <ButtonGeneric color={"green"} callback={onSave}>
+              Aggiungi
+            </ButtonGeneric>
+            <ButtonGeneric color={common.secondaryColor} callback={onCancel}>
+              Annulla
+            </ButtonGeneric>
+          </>
+        ) : (
+          <>
+            <ButtonGeneric color={common.saveButtonColor} callback={onSave}>
+              {t("saveButton")}
+            </ButtonGeneric>
+            <ButtonGeneric color={common.secondaryColor} callback={onCancel}>
+              {t("cancelButton")}
+            </ButtonGeneric>
+          </>
+        )}
       </Box>
     </form>
   );
-}
+};
 
 export default EditorSocial;

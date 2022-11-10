@@ -11,46 +11,37 @@ import style from "./personalArea.module.scss";
 import Box from "@mui/material/Box";
 
 //Components
-import Title from '../../components/functional/title/Title';
-import LabelText from '../../components/functional/labelText/LabelText';
-import CustomTextField from '../../components/functional/textField/CustomTextField';
-import CustomSelect from '../../components/functional/customSelect/CustomSelect';
-import ButtonGeneric from '../../components/functional/buttonGeneric/ButtonGeneric';
-import CustomSnackbar from '../../components/functional/customSnackbar/CustomSnackbar';
+import Title from "../../components/functional/title/Title";
+import LabelText from "../../components/functional/labelText/LabelText";
+import CustomTextField from "../../components/functional/textField/CustomTextField";
+import CustomSelect from "../../components/functional/customSelect/CustomSelect";
+import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGeneric";
+import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
+//translation
+import { useTranslation } from "react-i18next";
 
 /************
  * TODO
  * -Riempire i campi con i dati che arrivano da Login
- * 
-*/
+ *
+ */
 
 //Item del CustomSelect
 type Item = {
-  name: string,
-  value: string,
-}
-
-const lang: Array<Item> = [
-  {
-    name: 'Italiano',
-    value: 'it'
-  },
-  {
-    name: 'Inglese',
-    value: 'en'
-  },
-]
+  name: string;
+  value: string;
+};
 
 const roles: Array<Item> = [
   {
-    name: 'Admin',
-    value: 'admin'
+    name: "Admin",
+    value: "admin",
   },
   {
-    name: 'Blogger',
-    value: 'blogger'
+    name: "Blogger",
+    value: "blogger",
   },
-]
+];
 
 interface State {
   error: Array<boolean>;
@@ -63,25 +54,36 @@ const initState: State = {
 };
 
 const PersonalArea: FC = (): JSX.Element => {
-
   const [state, setState] = useState<State>(initState);
+  const { t } = useTranslation();
 
   const location = useLocation();
+
+  const lang: Array<Item> = [
+    {
+      name: t("personalArea.ita"),
+      value: "it",
+    },
+    {
+      name: t("personalArea.eng"),
+      value: "en",
+    },
+  ];
 
   useEffect(() => {
     setState({
       ...state,
-      error: [false, false, false, false, false, false, false, false]
-    })
-  }, [])
+      error: [false, false, false, false, false, false, false, false],
+    });
+  }, []);
 
   //Snackbar
   const handleClose = () => {
     setState({
       ...state,
       snackIsOpen: false,
-    })
-  }
+    });
+  };
 
   //Funzione per salvare i dati
   const onSave = (e: BaseSyntheticEvent): void => {
@@ -90,23 +92,25 @@ const PersonalArea: FC = (): JSX.Element => {
     let open: boolean = false;
 
     //controllo che tutti i campi siano pieni
-    let errors: boolean = false
+    let errors: boolean = false;
     for (let i = 0; i < 14; i += 2) {
       if (e.target.form[i].value.length === 0) {
-        tmp[i / 2] = true
-        if (!errors)
-          errors = true
+        tmp[i / 2] = true;
+        if (!errors) errors = true;
       }
     }
 
     if (e.target.form[12].value !== e.target.form[14].value) {
-      errors = true
-      tmp[7] = true
+      errors = true;
+      tmp[7] = true;
     }
 
-    if (/^[a-zA-Z0-9.]+@[a-zA-Z0-9]+.[A-Za-z]+$/.test(e.target.form[8].value) === false) {
-      errors = true
-      tmp[4] = true
+    if (
+      /^[a-zA-Z0-9.]+@[a-zA-Z0-9]+.[A-Za-z]+$/.test(e.target.form[8].value) ===
+      false
+    ) {
+      errors = true;
+      tmp[4] = true;
     }
 
     if (!errors) {
@@ -122,15 +126,15 @@ const PersonalArea: FC = (): JSX.Element => {
       };*/
 
       //API
-      open = true
+      open = true;
     }
 
     setState({
       ...state,
       error: tmp,
       snackIsOpen: open,
-    })
-  }
+    });
+  };
 
   return (
     <Box className={common.component}>
@@ -138,47 +142,55 @@ const PersonalArea: FC = (): JSX.Element => {
         <form>
           <LabelText>
             <Title
-              text={"I tuoi Dati"}
-              textInfo={"Dati dell'utente loggato, clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento"}
+              text={t("personalArea.title")}
+              textInfo={t("personalArea.info")}
             />
 
             <Box className={style.textFields}>
               <Box className={style.row}>
                 <CustomTextField
                   defaultValue={
-                    !!location?.state?.row?.name ? location?.state?.row?.name : ""
+                    !!location?.state?.row?.name
+                      ? location?.state?.row?.name
+                      : ""
                   }
                   errorMessage="Inserisci un nome"
                   error={state.error[0]}
-                  placeholder={'Nome'}
+                  placeholder={t("personalArea.placeholderName")}
                 />
 
                 <CustomTextField
                   defaultValue={
-                    !!location?.state?.row?.surname ? location?.state?.row?.surname : ""
+                    !!location?.state?.row?.surname
+                      ? location?.state?.row?.surname
+                      : ""
                   }
                   errorMessage="Inserisci un cognome"
                   error={state.error[1]}
-                  placeholder={'Cognome'}
+                  placeholder={t("personalArea.placeholderSurname")}
                 />
               </Box>
 
               <Box className={style.row}>
                 <CustomSelect
-                  label={'Lingua'}
+                  label={t("personalArea.placeholderLanguage")}
                   items={lang}
                   defaultValue={
-                    !!location?.state?.row?.language ? location?.state?.row?.language : ""
+                    !!location?.state?.row?.language
+                      ? location?.state?.row?.language
+                      : ""
                   }
                   error={state.error[2]}
                   errorMessage="Inserisci una lingua"
                 />
 
                 <CustomSelect
-                  label={'Ruolo'}
+                  label={t("personalArea.placeholderRole")}
                   items={roles}
                   defaultValue={
-                    !!location?.state?.row?.role ? location?.state?.row?.role : ""
+                    !!location?.state?.row?.role
+                      ? location?.state?.row?.role
+                      : ""
                   }
                   error={state.error[3]}
                   errorMessage="Inserisci un ruolo"
@@ -188,42 +200,50 @@ const PersonalArea: FC = (): JSX.Element => {
               <Box className={style.row}>
                 <CustomTextField
                   defaultValue={
-                    !!location?.state?.row?.email ? location?.state?.row?.email : ""
+                    !!location?.state?.row?.email
+                      ? location?.state?.row?.email
+                      : ""
                   }
                   errorMessage="Inserisci una email"
                   error={state.error[4]}
-                  placeholder={'Email'}
+                  placeholder={t("personalArea.placeholderEmail")}
                 />
 
                 <CustomTextField
                   defaultValue={
-                    !!location?.state?.row?.phone ? location?.state?.row?.phone : ""
+                    !!location?.state?.row?.phone
+                      ? location?.state?.row?.phone
+                      : ""
                   }
                   errorMessage="Inserisci un numero di telefono"
                   error={state.error[5]}
-                  placeholder={'Telefono'}
+                  placeholder={t("personalArea.placeholderTelephone")}
                 />
               </Box>
 
               <Box className={style.row}>
                 <CustomTextField
                   defaultValue={
-                    !!location?.state?.row?.password ? location?.state?.row?.password : ""
+                    !!location?.state?.row?.password
+                      ? location?.state?.row?.password
+                      : ""
                   }
                   errorMessage="Inserisci una password"
                   error={state.error[6]}
-                  placeholder={'Password'}
-                  type={'password'}
+                  placeholder={t("personalArea.placeholderPassword")}
+                  type={"password"}
                 />
 
                 <CustomTextField
                   defaultValue={
-                    !!location?.state?.row?.password ? location?.state?.row?.password : ""
+                    !!location?.state?.row?.password
+                      ? location?.state?.row?.password
+                      : ""
                   }
                   errorMessage="Inserisci una password uguale"
                   error={state.error[7]}
-                  placeholder={'Conferma password'}
-                  type={'password'}
+                  placeholder={t("personalArea.placeholderConfirmPassword")}
+                  type={"password"}
                 />
               </Box>
             </Box>
@@ -231,19 +251,22 @@ const PersonalArea: FC = (): JSX.Element => {
 
           <Box className={style.saveBtn}>
             <ButtonGeneric color={common.saveButtonColor} callback={onSave}>
-              Salva modifiche
+              {t("saveButton")}
             </ButtonGeneric>
           </Box>
         </form>
       </Box>
-      {
-        state.snackIsOpen &&
+      {state.snackIsOpen && (
         <Box className={common.singleComponent}>
-          <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
+          <CustomSnackbar
+            message={t("changesSnack")}
+            severity={"success"}
+            callback={handleClose}
+          />
         </Box>
-      }
+      )}
     </Box>
-  )
-}
+  );
+};
 
-export default PersonalArea
+export default PersonalArea;

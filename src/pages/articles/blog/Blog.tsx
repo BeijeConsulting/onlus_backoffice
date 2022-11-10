@@ -25,6 +25,8 @@ import PAGES from "../../../router/pages";
 
 //style
 import common from "../../../assets/styles/common.module.scss";
+//translation
+import { useTranslation } from "react-i18next";
 
 //interface
 interface State {
@@ -43,6 +45,7 @@ const initialState: State = {
 const Blog: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const [state, setState] = useState<State>(initialState);
+  const { t } = useTranslation();
 
   const location = useLocation();
 
@@ -114,24 +117,24 @@ const Blog: FC = (): JSX.Element => {
   const columns = [
     {
       field: "title",
-      headerName: "TITOLO",
+      headerName: t("articles.table.headerTable1"),
       flex: 2,
     },
     {
       field: "author",
-      headerName: "AUTORE",
+      headerName: t("articles.table.headerTable2"),
       flex: 2,
       valueGetter: (params: any) =>
         `${params.row.name || ""} ${params.row.surname || ""}`,
     },
     {
       field: "date",
-      headerName: "DATA",
+      headerName: t("articles.table.headerTable3"),
       flex: 2,
     },
     {
       field: "status",
-      headerName: "STATO",
+      headerName: t("articles.table.headerTable4"),
       flex: 2,
     },
     {
@@ -145,7 +148,6 @@ const Blog: FC = (): JSX.Element => {
   ];
 
   return (
-    <>
       <Box className={common.component}>
         <Box className={common.singleComponent}>
           <LabelText>
@@ -176,14 +178,14 @@ const Blog: FC = (): JSX.Element => {
         {/* snackbar */}
         {state.snackIsOpen && (
           <CustomSnackbar
-            message={"Modifiche avvenute con successo"}
+            message={t("changeSnack")}
             severity={"success"}
             callback={handleClose}
           />
         )}
         {state.snackDeleteIsOpen && (
           <CustomSnackbar
-            message={"Eliminazione avvenuta con successo"}
+            message={t("deleteSnack")}
             severity={"info"}
             callback={handleClose}
           />
@@ -196,7 +198,6 @@ const Blog: FC = (): JSX.Element => {
           />
         )}
       </Box>
-    </>
   );
 };
 

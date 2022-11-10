@@ -1,0 +1,365 @@
+{
+  "buttonAddFile": {
+    "selection": "Select file",
+    "file": "No file selected"
+  },
+  "saveButton": "Save changes",
+  "addButton": "Add",
+  "cancelButton": "Cancel changes",
+  "changesSnack": "Changes successful",
+  "deleteSnack": "Deletion successful",
+  "addSnack": "Insertion successful",
+  "deleteModal": {
+    "text": "Are you sure you want to delete the following element?",
+    "deleteButton": "Delete",
+    "DiscardChangesButton": "Cancel"
+  },
+  "addModal": {
+    "text": "Are you sure you want to add the following element?",
+    "addButton": "Add",
+    "DiscardChangesButton": "Cancel"
+  },
+  "modificationModal": {
+    "modificationButton": "Add",
+    "DiscardChangesButton": "Cancel"
+  },
+  "link": "Add another slot",
+  "general": {
+    "nameSite": {
+      "title": "Site Name",
+      "info": "Here you enter the name of your site, which will be visible to all visitors to the site",
+      "placeholder": "Enter the name for your site"
+    },
+    "logo": {
+      "title": "Logo",
+      "info": "Here you have to insert the logo of your site which will also be visible to visitors"
+    },
+    "palettes": {
+      "title": "Select palette",
+      "info": "Here you enter the colors of your site visible to customers, be careful to put a good contrast between the background and the text",
+      "primary": {
+        "background": "Primary background",
+        "text": "Primary text"
+      },
+      "secondary": {
+        "background": "Secondary background",
+        "text": "Secondary text"
+      },
+      "ternary": {
+        "background": "Tertiary background",
+        "text": "Tertiary text"
+      }
+    },
+    "banner": {
+      "title": "Featured banner",
+      "info": "Here the banner in evidence of the call to action must be customized, the colors are taken from the palette that can be found at the top of the page",
+      "placeholderTitle": "Enter the title",
+      "placeholderSubtitle": "Insert subtitle",
+      "placeholderCallToAction": "Insert call to action button"
+    },
+    "workSection": {
+      "title": "Section of contacts for work",
+      "info": "Here you enter the contacts that will be shown to all visitors to the site at the bottom of the page that should be used for business purposes",
+      "placeholderText": "Insert text",
+      "placeholderEmail": "Enter your business email"
+    },
+    "contacts": {
+      "title": "Contacts",
+      "info": "These will be the contacts and information about you / your company. They will be shown in the footer (bottom of page) of each screen of the site available to visitors",
+      "placeholderTelephone": "Enter your phone number",
+      "placeholderEmail": "Enter your email",
+      "placeholderAddress": "Enter your address",
+      "placeholderIva": "Enter your VAT number",
+      "placeholderCf": "Enter your tax code"
+    }
+  },
+  "supportUs": {
+    "hero": {
+      "title": "Hero",
+      "info": "Hero of the page with an image, a title, a text",
+      "placeholderText": "Insert text"
+    },
+    "sectionTitle": {
+      "title": "Title",
+      "info": "Title of the section with the contents",
+      "placeholderTitle": "Enter the title"
+    },
+    "content": {
+      "title": "Content",
+      "info": "Text and media that make up the page content",
+      "placeholderText": "Insert text"
+    }
+  },
+  "social": {
+    "title": "Social",
+    "info": "Enter the social networks that will be visible on the platform",
+    "table": {
+      "headerTable1": "SOCIAL",
+      "headerTable2": "ICON",
+      "headerTable3": "LINK"
+    },
+    "editorSocial": {
+      "socialSection": {
+        "title": "Social",
+        "info": "Enter the name of the social network",
+        "placeholderSocial": "Social name"
+      },
+      "iconSection": {
+        "title": "Icon",
+        "info": "Insert icon"
+      },
+      "linkSection": {
+        "title": "Link",
+        "info": "Insert the link to the social network",
+        "placeholderLink": "link"
+      },
+      "toggleFooter": "Publish to footer",
+      "toggleHome": "Publish to home"
+    }
+  },
+  "articles": {
+    "addButton": "Add article",
+    "title": "Blog Archive",
+    "info": "table where all the published articles are displayed, in the case of the single blogger he will see only his articles, the admin will see all the articles",
+    "table": {
+      "headerTable1": "TITLE",
+      "headerTable2": "AUTHOR",
+      "headerTable3": "DATA",
+      "headerTable4": "STATUS"
+    },
+    "editorBlog": {
+      "titleSection": {
+        "title": "Title",
+        "info": "Insert the title of the article",
+        "placeholderTitle": "Title"
+      },
+      "contentSection": {
+        "title": "Content",
+        "info": "Write your article",
+        "placeholderContent": "Insert text"
+      },
+      "coverSection": {
+        "title": "Cover",
+        "info": "Insert a cover photo for the event"
+      },
+      "categoriesSection": {
+        "title": "Categories",
+        "info": "Specify the categories to be assigned to the article"
+      }
+    }
+  },
+  "volunteers": {
+    "title": "Volunteers",
+    "info": "Users registered on the site, click on the edit button to manually update the user's data or click on the delete button to delete the user from the system",
+    "table": {
+      "headerTable1": "NAME",
+      "headerTable2": "SURNAME"
+    },
+    "editorVolunteers": {
+      "title": "User data",
+      "info": "Click on the Save changes button to complete the update operation or click on the Delete user button to delete the user's data from the system",
+      "placeholderName": "Name",
+      "placeholderLanguage": "Language",
+      "placeholderEmail": "Email",
+      "placeholderPassword": "Password",
+      "placeholderSurname": "Surname",
+      "placeholderUser": "User",
+      "placeholderTelephone": "Telephone",
+      "placeholderConfirmPassword": "Confirm password"
+    }
+  },
+  "personalArea": {
+    "title": "Your data",
+    "info": "Data of the logged in user, click on the Save changes button to complete the update operation",
+    "placeholderName": "Name",
+    "placeholderLanguage": "Language",
+    "ita": "Italian",
+    "eng": "English",
+    "placeholderRole": "Role",
+    "placeholderEmail": "Email",
+    "placeholderPassword": "Password",
+    "placeholderSurname": "Surname",
+    "placeholderUser": "User",
+    "placeholderTelephone": "Telephone",
+    "placeholderConfirmPassword": "Confirm password"
+  },
+  "Home": {
+    "Hero": {
+      "title": "Hero",
+      "info": "Here will be inserted the image of the hero, the title and the text of the home",
+      "placeHolderSubTitle": "Insert Hero title",
+      "placeHolderText": "Insert hero text"
+    },
+    "Results": {
+      "title": "Results",
+      "info": "The results of the non-profit organization will be entered here",
+      "placeHolderSubTitle": "Insert title of results",
+      "placeHolderText": "Insert result text"
+    }
+  },
+  "About": {
+    "Hero": {
+      "title": "Hero",
+      "info": "Here will be inserted the image of the hero, the title and the text of About",
+      "placeHolderText": "Insert hero text"
+    },
+    "Content": {
+      "title": "Content",
+      "info": "Text and media that make up the page content",
+      "placeHolderText": "Insert text"
+    },
+    "Title": {
+      "title": "Title",
+      "info": "Title of the content section",
+      "placeHolderText": "Insert title"
+    },
+    "addContent": "Add another slot"
+  },
+  "Faq": {
+    "info": {
+      "title": "Info",
+      "info": "Info section of the FAQ page, click on the Save changes button to accept the page changes",
+      "placeHolderSubTitle": "Insert info title",
+      "placeHolderText": "Insert text"
+    },
+    "table": {
+      "title": "Faq",
+      "info": "Questions in the FAQ section of the page, click on the + Add button to add a new question and answer, click on the edit or cancel buttons to change the data structure",
+      "question": "QUESTION"
+    },
+    "infoSnack": "Changes to info saved successfully"
+  },
+  "FaqEditor": {
+    "title": "Faq",
+    "info": "Add a new question and answer, click the Save changes button to complete the operation or click the Cancel changes button to cancel the operation",
+    "question": "Frequently Asked Question",
+    "answer": "Enter Answer"
+  },
+  "Events": {
+    "addButton": "Add event",
+    "table": {
+      "title": "TITLE",
+      "place": "PLACE",
+      "date": "DATE"
+    },
+    "NewEvents": {
+      "title": "Scheduled Events",
+      "info": "Table where the next scheduled events are displayed"
+    },
+    "OldEvents": {
+      "title": "Events Archive",
+      "info": "Table where the archive of all past events is displayed"
+    }
+  },
+  "EventsEditor": {
+    "Title": {
+      "title": "Title",
+      "info": "Enter the title of the event",
+      "placeHolderText": "insert Title"
+    },
+    "cover": {
+      "title": "Cover",
+      "info": "Insert a cover photo for the event"
+    },
+    "Date": {
+      "title": "Date and time",
+      "date": "Select",
+      "info": "Insert the date and time of the event"
+    },
+    "Place": {
+      "title": "Place",
+      "info": "Enter the place where the event will take place",
+      "placeHolderText": "enter Address"
+    },
+    "Description": {
+      "title": "Description",
+      "info": "Insert an explanatory description of the event",
+      "placeHolderText": "insert Text"
+    },
+    "Requirements": {
+      "title": "Requirements",
+      "info": "Specify the requirements to participate in the event",
+      "placeHolderText": "insert Text"
+    }
+  },
+  "Categories": {
+    "errorEmpty": "Enter a category",
+    "errorExist": "Category already exists",
+    "categoryModal": {
+      "changeButton": "Change",
+      "discardButton": "Cancel"
+    },
+    "table": {
+      "categories": "CATEGORIES",
+      "blog": "RELATED ARTICLES"
+    },
+    "title": "Categories",
+    "info": "Table where the categories associated with an article are displayed",
+    "placeholder": "Enter Category"
+  },
+  "Collaborators": {
+    "title": "Collaborators",
+    "info": "Registered collaborators, click on the edit button to manually update the user's data or click on the delete button to delete the user from the system",
+    "table": {
+      "name": "NAME",
+      "surname": "SURNAME",
+      "role": "ROLE",
+      "blog": "PUBLISHED ARTICLES"
+    }
+  },
+  "CollaboratorsEditor": {
+    "title": "User data",
+    "info": "Click on the Save changes button to complete the update operation or click on the Cancel changes button to cancel the operation",
+    "placeholderName": "Name",
+    "placeholderSurname": "Surname",
+    "placeholderLang": "Language",
+    "placeholderRole": "Role",
+    "placeholderEmail": "Email",
+    "placeholderPhone": "Phone",
+    "placeholderPassword": "Password",
+    "placeholderConfirmPassword": "Confirm Password"
+  },
+  "Donation": {
+    "title": "Donation",
+    "info": "Title of the page with the donation table",
+    "table": {
+      "id": "TRANSACTION ID",
+      "value": "VALUE",
+      "date": "DATE"
+    },
+    "amountDonation": "TOTAL DONATIONS",
+    "subTable": {
+      "title": "Transaction",
+      "id": "ID",
+      "email": "EMAIL",
+      "value": "VALUE",
+      "date": "DATE",
+      "anonimus": "ANONYMOUS"
+    }
+  },
+  "navbar": {
+    "siteEditor": {
+      "title": "SITE EDITOR",
+      "general": "General",
+      "home": "Home",
+      "about": "About",
+      "SupportUs": "Support us",
+      "faq": "Faq",
+      "social": "Social"
+    },
+    "events": "EVENTS",
+    "articles": {
+      "title": "ARTICLES",
+      "manageArticles": "Manage Articles",
+      "manageCategories": "Manage categories"
+    },
+    "users": {
+      "title": "USERS",
+      "Collaborators": "Collaborators",
+      "volunteers": "Volunteers"
+    },
+    "donations": {
+      "title": "DONATIONS"
+    }
+  }
+}

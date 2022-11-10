@@ -27,6 +27,10 @@ import CreateIcon from "@mui/icons-material/Create";
 
 //modal
 import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
+//translation
+import { useTranslation } from "react-i18next";
+
+interface eventsProps {}
 
 interface State {
   modalIsOpen: boolean;
@@ -38,12 +42,13 @@ const initialState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  snackAdd: false
+  snackAdd: false,
 };
 
 const Events: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const [state, setState] = useState<State>(initialState);
 
@@ -52,16 +57,16 @@ const Events: FC = (): JSX.Element => {
       ...state,
       snackIsOpen: location?.state?.open,
     });
-  }, [])
+  }, []);
 
   //Snackbar
   const handleClose = () => {
     setState({
       ...state,
       snackIsOpen: false,
-      snackDeleteIsOpen: false
-    })
-  }
+      snackDeleteIsOpen: false,
+    });
+  };
 
   //Modal
   const openDeleteModal = (): void => {
@@ -69,33 +74,33 @@ const Events: FC = (): JSX.Element => {
       ...state,
       modalIsOpen: !state.modalIsOpen,
     });
-  }
+  };
 
   //chiudo il modale
   const closeDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen
+      modalIsOpen: !state.modalIsOpen,
     });
-  }
+  };
 
   //elimino l'evento
   const deleteEvent = (): void => {
     setState({
       ...state,
       modalIsOpen: false,
-      snackDeleteIsOpen: true
-    })
-  }
+      snackDeleteIsOpen: true,
+    });
+  };
 
   //modifica evento
   const updateEvent = (row: object) => (): void => {
-    navigate(PAGES.editorEvents, { state: { row } })
+    navigate(PAGES.editorEvents, { state: { row } });
   };
 
   const addEvent = (): void => {
-    navigate(PAGES.editorEvents, { state: { showAdd: true } })
-  }
+    navigate(PAGES.editorEvents, { state: { showAdd: true } });
+  };
 
   //Colonne del DataGrid
   const renderDetailsButton_1 = (params: any) => {
@@ -138,17 +143,17 @@ const Events: FC = (): JSX.Element => {
   const columns_1 = [
     {
       field: "title",
-      headerName: "TITOLO",
+      headerName: t("Events.table.title"),
       flex: 1,
     },
     {
       field: "place",
-      headerName: "LUOGO",
+      headerName: t("Events.table.place"),
       flex: 1,
     },
     {
       field: "date",
-      headerName: "DATA",
+      headerName: t("Events.table.date"),
       type: "date",
       flex: 1,
     },
@@ -158,24 +163,24 @@ const Events: FC = (): JSX.Element => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton_1
+      renderCell: renderDetailsButton_1,
     },
   ];
 
   const columns_2 = [
     {
       field: "title",
-      headerName: "TITOLO",
+      headerName: t("Events.table.title"),
       flex: 1,
     },
     {
       field: "place",
-      headerName: "LUOGO",
+      headerName: t("Events.table.place"),
       flex: 1,
     },
     {
       field: "date",
-      headerName: "DATA",
+      headerName: t("Events.table.date"),
       type: "date",
       flex: 1,
     },
@@ -185,44 +190,38 @@ const Events: FC = (): JSX.Element => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton_2
+      renderCell: renderDetailsButton_2,
     },
   ];
 
   return (
     <Box className={style.component}>
       <Box className={style.singleComponent}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Title
+            text={t("Events.NewEvents.title")}
+            textInfo={t("Events.NewEvents.info")}
+          />
+          <ButtonGeneric color={"green"} callback={addEvent}>
+            + {t("Events.addButton")}
+          </ButtonGeneric>
+        </Box>
         <LabelText>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Title
-              text={"Eventi in programma"}
-              textInfo={
-                "Tabella dove vengono visualizzati i prossimi eventi in programma"
-              }
-            />
-            <ButtonGeneric color={"green"} callback={addEvent}>
-              + Aggiungi
-            </ButtonGeneric>
-          </Box>
-
           {/* sezione eventi in programma*/}
           <CustomTable columns={columns_1} rows={events} pageSize={5} />
         </LabelText>
 
         {/* sezione archivio eventi  */}
-        <Box sx={{ marginTop: "20px" }}>
-          <LabelText>
+        <LabelText>
+          <Box sx={{ marginTop: "20px" }}>
             <Title
-              text={"Archivio eventi"}
-              textInfo={
-                "Tabella dove viene visualizzato l'archivio di tutti gli eventi passati"
-              }
+              text={t("Events.OldEvents.title")}
+              textInfo={t("Events.OldEvents.info")}
             />
             <CustomTable columns={columns_2} rows={events} pageSize={5} />
-          </LabelText>
-        </Box>
+          </Box>
+        </LabelText>
       </Box>
-
 
       {/* delete modal */}
       <DeleteModal
@@ -230,19 +229,28 @@ const Events: FC = (): JSX.Element => {
         closeCallback={closeDeleteModal}
         deleteCallback={deleteEvent /*API delete*/}
       />
-      {
-        state.snackIsOpen &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose} />
-      }
-      {
-        state.snackDeleteIsOpen &&
-        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
-      }
-      {
-        location?.state?.openAdd &&
-        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
-      }
-    </Box >
+      {state.snackIsOpen && (
+        <CustomSnackbar
+          message={t("changesSnack")}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={t("deleteSnack")}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
+      {location?.state?.openAdd && (
+        <CustomSnackbar
+          message={"Inserimento avvenuto con successo"}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+    </Box>
   );
 };
 

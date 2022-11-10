@@ -25,6 +25,8 @@ import DeleteModal from "../../../components/functional/deleteModal/DeleteModal"
 
 //Data
 import { faq } from "../../../utils/mockup/data";
+//translation
+import { useTranslation } from "react-i18next";
 
 //interface
 interface State {
@@ -34,7 +36,6 @@ interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
-
 }
 
 const initState: State = {
@@ -43,11 +44,13 @@ const initState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  snackAdd: false
+  snackAdd: false,
 };
 
 const Faq: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
+
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,9 +60,9 @@ const Faq: FC = (): JSX.Element => {
     setState({
       ...state,
       snackIsOpen: false,
-      snackDeleteIsOpen: false
-    })
-  }
+      snackDeleteIsOpen: false,
+    });
+  };
 
   //Funzione per salvare le modifiche della sezione info
   const onSaveInfo = (e: BaseSyntheticEvent): void => {
@@ -95,7 +98,7 @@ const Faq: FC = (): JSX.Element => {
 
   //Navigazione allo screen EditorFaq
   const addQna = (): void => {
-    navigate(PAGES.editorFaq, { state: {showAdd:true}});
+    navigate(PAGES.editorFaq, { state: { showAdd: true } });
   };
 
   //Funzioni di modifica e cancella
@@ -105,29 +108,28 @@ const Faq: FC = (): JSX.Element => {
 
   //Modal
   const openDeleteModal = (): void => {
-
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
     });
-  }
+  };
 
   //chiudo il modale
   const closeDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen
+      modalIsOpen: !state.modalIsOpen,
     });
-  }
+  };
 
   //elimino la faq
-  const deleteFaq =():void => {
+  const deleteFaq = (): void => {
     setState({
       ...state,
       modalIsOpen: false,
-      snackDeleteIsOpen: true
-    })
-  }
+      snackDeleteIsOpen: true,
+    });
+  };
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -146,7 +148,7 @@ const Faq: FC = (): JSX.Element => {
   const columns = [
     {
       field: "question",
-      headerName: "DOMANDA",
+      headerName: t("Faq.table.question"),
       flex: 1,
     },
     {
@@ -161,18 +163,49 @@ const Faq: FC = (): JSX.Element => {
 
   return (
     <Box className={common.component}>
+      <Box
+        className={common.singleComponent}
+        sx={{
+          marginBottom: "1%",
+          textAlign: "right",
+        }}
+      >
+        <form>
+          <LabelText>
+            <Title text={t("Faq.info.title")} textInfo={t("Faq.info.info")} />
+
+            <CustomTextField
+              defaultValue={!!faq.info.title ? faq.info.title : ""}
+              errorMessage="Inserisci un Titolo"
+              error={state.titleError}
+              placeholder={t("Faq.info.placeHolderSubTitle")}
+            />
+
+            <CustomTextField
+              defaultValue={!!faq.info.text ? faq.info.text : ""}
+              errorMessage="Inserisci del testo"
+              error={state.textError}
+              placeholder={t("Faq.info.placeHolderText")}
+              minrow={4}
+              maxrow={20}
+              multiline={true}
+            />
+          </LabelText>
+
+          <Box className={style.saveBtn}>
+            <ButtonGeneric color={common.saveButtonColor} callback={onSaveInfo}>
+              {t("saveButton")}
+            </ButtonGeneric>
+          </Box>
+        </form>
+      </Box>
+
       <Box className={common.singleComponent}>
         <LabelText>
           <Box className={style.faqRow}>
-            <Title
-              text={"Faq"}
-              textInfo={
-                "Domande presenti nella sezione FAQ della pagina, clicca sul pulsante +Aggiungi per aggiungere una nuova domanda e risposta, clicca sui bottoni modifica o cancella per cambiare la struttura dati"
-              }
-            />
-
-            <ButtonGeneric color={"green"} callback={addQna}>
-              + Aggiungi
+            <Title text={t("Faq.table.title")} textInfo={t("Faq.table.info")} />
+            <ButtonGeneric color={common.ternaryColor} callback={addQna}>
+              + {t("addButton")}
             </ButtonGeneric>
           </Box>
 
@@ -180,7 +213,7 @@ const Faq: FC = (): JSX.Element => {
         </LabelText>
       </Box>
 
-      <form style={{ width: '100%',marginTop:'20px' }}>
+      <form style={{ width: "100%", marginTop: "20px" }}>
         <Box className={common.singleComponent}>
           <LabelText>
             <Title
@@ -213,7 +246,13 @@ const Faq: FC = (): JSX.Element => {
           </LabelText>
         </Box>
 
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', marginTop:'20px' }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: "20px",
+          }}
+        >
           <ButtonGeneric color={common.saveButtonColor} callback={onSaveInfo}>
             Salva modifiche
           </ButtonGeneric>
@@ -222,24 +261,33 @@ const Faq: FC = (): JSX.Element => {
 
       {/* delete modal */}
       <DeleteModal
-          open={state.modalIsOpen}
-          closeCallback={closeDeleteModal}
-          deleteCallback={deleteFaq /*API delete*/}
+        open={state.modalIsOpen}
+        closeCallback={closeDeleteModal}
+        deleteCallback={deleteFaq /*API delete*/}
+      />
+
+      {(state.snackIsOpen || location?.state?.open) && (
+        <CustomSnackbar
+          message={t("changesSnack")}
+          severity={"success"}
+          callback={handleClose}
         />
-      
-      {
-        (state.snackIsOpen || location?.state?.open) &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
-      }
-      {
-        state.snackDeleteIsOpen &&
-        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
-      }
-      {
-       location?.state?.openAdd &&
-        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
-      }
-    </Box >
+      )}
+      {state.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={t("deleteSnack")}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
+      {location?.state?.openAdd && (
+        <CustomSnackbar
+          message={t("Faq.infoSnack")}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+    </Box>
   );
 };
 

@@ -12,6 +12,8 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 //styles
 import style from "./editorBlogStyle.module.scss";
 import common from "../../../assets/styles/common.module.scss";
+//translation
+import { useTranslation } from "react-i18next";
 
 //Mui
 import {
@@ -34,6 +36,7 @@ const EditorBlog: FC = (): JSX.Element => {
   const [state, setState] = useState();
   const location = useLocation();
 
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleToggle = (value: number) => () => {
@@ -75,16 +78,26 @@ const EditorBlog: FC = (): JSX.Element => {
           <Box className={common.left}>
             <LabelText>
               <Title
-                text={"Titolo"}
-                textInfo={"Inserisci il titolo dell'articolo"}
+                text={t("articles.editorBlog.titleSection.title")}
+                textInfo={t("articles.editorBlog.titleSection.info")}
               />
-              <CustomTextField placeholder={"Titolo"} error={false} />
+              <CustomTextField
+                placeholder={t(
+                  "articles.editorBlog.titleSection.placeholderTitle"
+                )}
+                error={false}
+              />
             </LabelText>
 
             <LabelText>
-              <Title text={"Contenuto"} textInfo={"Scrivi il tuo articolo"} />
+              <Title
+                text={t("articles.editorBlog.contentSection.title")}
+                textInfo={t("articles.editorBlog.contentSection.info")}
+              />
               <CustomTextField
-                placeholder={"Inserisci testo"}
+                placeholder={t(
+                  "articles.editorBlog.contentSection.placeholderContent"
+                )}
                 error={false}
                 multiline={true}
                 minrow={18}
@@ -96,16 +109,16 @@ const EditorBlog: FC = (): JSX.Element => {
           <Box className={common.right}>
             <LabelText>
               <Title
-                text={"Copertina"}
-                textInfo={"Inserisci una foto di copertina per l'evento"}
+                text={t("articles.editorBlog.coverSection.title")}
+                textInfo={t("articles.editorBlog.coverSection.info")}
               />
               <ButtonAddFile callback={log} />
             </LabelText>
 
             <LabelText>
               <Title
-                text={"Categorie"}
-                textInfo={"Specifica le categorie da attribuire all'articolo"}
+                text={t("articles.editorBlog.categoriesSection.title")}
+                textInfo={t("articles.editorBlog.categoriesSection.info")}
               />
               <List
                 dense
@@ -156,13 +169,13 @@ const EditorBlog: FC = (): JSX.Element => {
                     color={common.saveButtonColor}
                     callback={onSave}
                   >
-                    Salva modifiche
+                    {t("saveButton")}
                   </ButtonGeneric>
                   <ButtonGeneric
                     color={common.secondaryColor}
                     callback={onCancel}
                   >
-                    Annulla modifiche
+                    {t("cancelButton")}
                   </ButtonGeneric>
                 </>
               )}

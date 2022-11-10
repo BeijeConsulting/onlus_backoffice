@@ -18,6 +18,9 @@ import CustomTextField from '../../../components/functional/textField/CustomText
 import CustomSelect from '../../../components/functional/customSelect/CustomSelect';
 import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGeneric';
 
+//i18n
+import { useTranslation } from 'react-i18next';
+
 //Item del CustomSelect
 type Item = {
   name: string,
@@ -46,6 +49,7 @@ const initState: State = {
 const EditVolunteers: FC = (): JSX.Element => {
 
   const [state, setState] = useState<State>(initState);
+  const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -118,8 +122,8 @@ const EditVolunteers: FC = (): JSX.Element => {
         <form>
           <LabelText>
             <Title
-              text={"Dati dell'utente"}
-              textInfo={"Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Elimina utente per cancellare i dati dell'utente dal sistema"}
+              text={t("volunteers.editorVolunteers.title")}
+              textInfo={t("volunteers.editorVolunteers.info")}
             />
 
             <Box className={style.textFields}>
@@ -130,7 +134,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci un nome"
                   error={state.error[0]}
-                  placeholder={'Nome'}
+                  placeholder={t("volunteers.editorVolunteers.placeholderName")}
                 />
 
                 <CustomTextField
@@ -139,13 +143,13 @@ const EditVolunteers: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci un cognome"
                   error={state.error[1]}
-                  placeholder={'Cognome'}
+                  placeholder={t("volunteers.editorVolunteers.placeholderSurname")}
                 />
               </Box>
 
               <Box className={style.row}>
                 <CustomSelect
-                  label={'Lingua'}
+                  label={t("volunteers.editorVolunteers.placeholderLanguage")}
                   items={lang}
                   defaultValue={
                     !!location?.state?.row?.language ? location?.state?.row?.language : ""
@@ -166,7 +170,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci una email"
                   error={state.error[4]}
-                  placeholder={'Email'}
+                  placeholder={t("volunteers.editorVolunteers.placeholderEmail")}
                 />
 
                 <CustomTextField
@@ -175,7 +179,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci un numero di telefono"
                   error={state.error[5]}
-                  placeholder={'Telefono'}
+                  placeholder={t("volunteers.editorVolunteers.placeholderTelephone")}
                 />
               </Box>
 
@@ -186,7 +190,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci una password"
                   error={state.error[6]}
-                  placeholder={'Password'}
+                  placeholder={t("volunteers.editorVolunteers.placeholderPassword")}
                   type={'password'}
                 />
 
@@ -196,7 +200,7 @@ const EditVolunteers: FC = (): JSX.Element => {
                   }
                   errorMessage="Inserisci una password uguale"
                   error={state.error[7]}
-                  placeholder={'Conferma password'}
+                  placeholder={t("volunteers.editorVolunteers.placeholderConfirmPassword")}
                   type={'password'}
                 />
               </Box>
@@ -210,13 +214,13 @@ const EditVolunteers: FC = (): JSX.Element => {
                   color={"green"}
                   callback={onSaveGuest}
                 >
-                  Aggiungi
+                  {t("addButton")}
                 </ButtonGeneric>
                 <ButtonGeneric
                   color={common.secondaryColor}
                   callback={onCancel}
                 >
-                  Annulla
+                  {t("cancelButton")}
                 </ButtonGeneric>
               </>
             ) : (
@@ -225,13 +229,13 @@ const EditVolunteers: FC = (): JSX.Element => {
                 color={common.saveButtonColor}
                 callback={onSaveGuest}
               >
-                Salva modifiche
+                {t("saveButton")}
               </ButtonGeneric>
               <ButtonGeneric
                 color={common.secondaryColor}
                 callback={onCancel}
               >
-                Annulla modifiche
+                {t("cancelButton")}
               </ButtonGeneric>
             </>
             )}

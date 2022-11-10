@@ -1,4 +1,4 @@
-import { FC, useState, BaseSyntheticEvent} from "react";
+import { FC, useState, BaseSyntheticEvent } from "react";
 
 //mui
 import { Box } from "@mui/material";
@@ -16,6 +16,8 @@ import CustomSnackbar from "../../../components/functional/customSnackbar/Custom
 
 //data
 import { home } from "../../../utils/mockup/data";
+//translation
+import { useTranslation } from "react-i18next";
 
 //interface
 type home = {
@@ -31,35 +33,35 @@ type home = {
   };
 };
 
-interface State{
-  snackIsOpen: boolean
+interface State {
+  snackIsOpen: boolean;
 }
 
 const initState: State = {
-  snackIsOpen: false
+  snackIsOpen: false,
 };
- const Home: FC = (): JSX.Element => {
-
-  const [state,setState] = useState<State>(initState) 
+const Home: FC = (): JSX.Element => {
+  const [state, setState] = useState<State>(initState);
+  const { t } = useTranslation();
 
   function editHome(e: BaseSyntheticEvent): void {
-    console.log(e)
+    console.log(e);
     setState({
       ...state,
-      snackIsOpen: true
-    })
+      snackIsOpen: true,
+    });
   }
 
-  function closeSnack(): void{
+  function closeSnack(): void {
     setState({
       ...state,
-      snackIsOpen: false
-    })
+      snackIsOpen: false,
+    });
   }
 
   //funzione di comodo
-  function log(){
-    console.log("handleClick")
+  function log() {
+    console.log("handleClick");
   }
 
   return (
@@ -67,10 +69,15 @@ const initState: State = {
       <Box className={common.doubleComponent}>
         <Box className={common.left}>
           <LabelText>
-            <Title text="Hero" textInfo="crea home" />
+            <Title text={t("Home.Hero.title")} textInfo={t("Home.Hero.info")} />
             <ButtonAddFile callback={log} />
-            <CustomTextField error={false} defaultValue={home.hero.title} />
             <CustomTextField
+              placeholder={t("Home.Hero.placeHolderSubTitle")}
+              error={false}
+              defaultValue={home.hero.title}
+            />
+            <CustomTextField
+              placeholder={t("Home.Hero.placeHolderText")}
               defaultValue={home.hero.text}
               error={false}
               multiline={true}
@@ -81,10 +88,18 @@ const initState: State = {
         </Box>
         <Box className={common.right}>
           <LabelText>
-            <Title text="Risultati" textInfo="crea risultati" />
-            <CustomTextField error={false} defaultValue={home.results.title} />
+            <Title
+              text={t("Home.Results.title")}
+              textInfo={t("Home.Results.info")}
+            />
+            <CustomTextField
+              placeholder={t("Home.Results.placeHolderSubTitle")}
+              error={false}
+              defaultValue={home.results.title}
+            />
             <ButtonAddFile callback={log} />
             <CustomTextField
+              placeholder={t("Home.Results.placeHolderSubTitle")}
               defaultValue={home.results.text}
               error={false}
               multiline={true}
@@ -95,21 +110,19 @@ const initState: State = {
         </Box>
       </Box>
       <ButtonGeneric callback={editHome} color={common.saveButtonColor}>
-        Salva modifiche
+        {t("saveButton")}
       </ButtonGeneric>
 
       {/* snackbar */}
-      {
-        state.snackIsOpen && 
-        <CustomSnackbar 
-          message={"Modifiche avvenute con successo"}
+      {state.snackIsOpen && (
+        <CustomSnackbar
+          message={t("changesSnack")}
           severity={"success"}
           callback={closeSnack}
         />
-      }
-
+      )}
     </form>
   );
-}
+};
 
 export default Home;

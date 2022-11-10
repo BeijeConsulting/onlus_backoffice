@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from "react";
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,13 +17,16 @@ import CreateIcon from "@mui/icons-material/Create";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 //Components
-import Title from '../../../components/functional/title/Title';
-import CustomTable from '../../../components/functional/table/CustomTable';
-import ButtonIcon from '../../../components/functional/buttonIcon/ButtonIcon';
-import DeleteModal from '../../../components/functional/deleteModal/DeleteModal';
-import LabelText from '../../../components/functional/labelText/LabelText'
-import CustomSnackbar from '../../../components/functional/customSnackbar/CustomSnackbar'
-import ButtonGeneric from '../../../components/functional/buttonGeneric/ButtonGeneric';
+import Title from "../../../components/functional/title/Title";
+import CustomTable from "../../../components/functional/table/CustomTable";
+import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
+import DeleteModal from "../../../components/functional/deleteModal/DeleteModal";
+import LabelText from "../../../components/functional/labelText/LabelText";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+
+//i18n
+import { useTranslation } from "react-i18next";
 
 interface State {
   modalIsOpen: boolean;
@@ -36,12 +39,12 @@ const initialState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
-  snackAdd: false
+  snackAdd: false,
 };
 
 const Volunteers: FC = (): JSX.Element => {
-
   const [state, setState] = useState<State>(initialState);
+  const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -51,51 +54,50 @@ const Volunteers: FC = (): JSX.Element => {
       ...state,
       snackIsOpen: location?.state?.open,
     });
-  }, [])
+  }, []);
 
   //Snackbar
   const handleClose = () => {
     setState({
       ...state,
       snackIsOpen: false,
-      snackDeleteIsOpen: false
-    })
-  }
+      snackDeleteIsOpen: false,
+    });
+  };
 
   //Modal
   const openDeleteModal = (): void => {
-
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
     });
-  }
+  };
 
   //chiudo il modale
   const closeDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen
+      modalIsOpen: !state.modalIsOpen,
     });
-  }
+  };
 
   //elimino l'utente
-  const deleteUser =():void => {
+  const deleteUser = (): void => {
     setState({
       ...state,
       modalIsOpen: false,
-      snackDeleteIsOpen: true
-    })
-  }
+      snackDeleteIsOpen: true,
+    });
+  };
 
   //Funzioni di modifica e cancella
   const updateUser = (row: object) => (): void => {
-    navigate(PAGES.editorVolunteers, { state: { row } })
+    navigate(PAGES.editorVolunteers, { state: { row } });
   };
 
   const addUser = (): void => {
-    navigate(PAGES.editorVolunteers, { state: {showAdd: true} })
-  }
+    navigate(PAGES.editorVolunteers, { state: { showAdd: true } });
+  };
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -114,12 +116,12 @@ const Volunteers: FC = (): JSX.Element => {
   const columns = [
     {
       field: "name",
-      headerName: "NOME",
+      headerName: t("volunteers.table.headerTable1"),
       flex: 1,
     },
     {
       field: "surname",
-      headerName: "COGNOME",
+      headerName: t("volunteers.table.headerTable2"),
       flex: 1,
     },
     {
@@ -128,7 +130,7 @@ const Volunteers: FC = (): JSX.Element => {
       type: "number",
       sortable: false,
       flex: 1,
-      renderCell: renderDetailsButton
+      renderCell: renderDetailsButton,
     },
   ];
 
@@ -138,22 +140,18 @@ const Volunteers: FC = (): JSX.Element => {
         <LabelText>
           {/*titolo*/}
           <Box className={style.titleRow}>
-          <Title
-            text={"Volontari"}
-            textInfo={"Utenti registrati al sito, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema"}
-          />
+            <Title
+              text={t("volunteers.title")}
+              textInfo={t("volunteers.info")}
+            />
 
             <ButtonGeneric color={"green"} callback={addUser}>
-              + Aggiungi
+              + {t("addButton")}
             </ButtonGeneric>
           </Box>
 
           {/*tabella*/}
-          <CustomTable
-            columns={columns}
-            rows={users}
-            pageSize={5}
-          />
+          <CustomTable columns={columns} rows={users} pageSize={5} />
         </LabelText>
 
         <DeleteModal
@@ -162,20 +160,29 @@ const Volunteers: FC = (): JSX.Element => {
           deleteCallback={deleteUser /*API delete*/}
         />
       </Box>
-      {
-        state.snackIsOpen &&
-        <CustomSnackbar message={"Modifiche avvenute con successo"} severity={"success"} callback={handleClose}/>
-      }
-      {
-        state.snackDeleteIsOpen &&
-        <CustomSnackbar message={"Eliminazione avvenuta con successo"} severity={"info"} callback={handleClose} />
-      }
-      {
-       location?.state?.openAdd &&
-        <CustomSnackbar message={"Inserimento avvenuto con successo"} severity={"success"} callback={handleClose} />
-      }
+      {state.snackIsOpen && (
+        <CustomSnackbar
+          message={"Modifiche avvenute con successo"}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackDeleteIsOpen && (
+        <CustomSnackbar
+          message={"Eliminazione avvenuta con successo"}
+          severity={"info"}
+          callback={handleClose}
+        />
+      )}
+      {location?.state?.openAdd && (
+        <CustomSnackbar
+          message={"Inserimento avvenuto con successo"}
+          severity={"success"}
+          callback={handleClose}
+        />
+      )}
     </Box>
-  )
-}
+  );
+};
 
-export default Volunteers
+export default Volunteers;
