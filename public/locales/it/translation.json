@@ -115,7 +115,7 @@
     }
   },
   "articles": {
-    "addButton" : "Aggiungi articolo",
+    "addButton": "Aggiungi articolo",
     "title": "Archivio blog",
     "info": "tabella dove vengono viualizzati tutti gli articoli pubblicati, nel caso del singolo blogger vedrà solo i suoi articoli, gli admin vedranno tutti gli articoli",
     "table": {
@@ -222,8 +222,7 @@
       "title": "Faq",
       "info": "Domande presenti nella sezione FAQ della pagina, clicca sul pulsante +Aggiungi per aggiungere una nuova domanda e risposta, clicca sui bottoni modifica o cancella per cambiare la struttura dati",
       "question": "DOMANDA"
-    },
-    "infoSnack": "Modifiche ad info salvate con successo"
+    }
   },
   "FaqEditor": {
     "title": "Faq",

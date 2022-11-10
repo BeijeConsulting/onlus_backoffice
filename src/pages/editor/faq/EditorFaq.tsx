@@ -114,13 +114,13 @@ const EditorFaq: FC = (): JSX.Element => {
             {location?.state?.showAdd ? (
               <>
                 <ButtonGeneric color={"green"} callback={onSaveQna}>
-                  Aggiungi
+                  {t("addButton")}
                 </ButtonGeneric>
                 <ButtonGeneric
                   color={common.secondaryColor}
                   callback={onCancel}
                 >
-                  Annulla
+                  {t("deleteModal.DiscardChangesButton")}
                 </ButtonGeneric>
               </>
             ) : (

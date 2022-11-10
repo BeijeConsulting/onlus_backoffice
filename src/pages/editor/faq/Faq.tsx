@@ -169,8 +169,23 @@ const Faq: FC = (): JSX.Element => {
           marginBottom: "1%",
           textAlign: "right",
         }}
-      >
-        <form>
+      ></Box>
+
+      <Box className={common.singleComponent}>
+        <LabelText>
+          <Box className={style.faqRow}>
+            <Title text={t("Faq.table.title")} textInfo={t("Faq.table.info")} />
+            <ButtonGeneric color={"green"} callback={addQna}>
+              + {t("addButton")}
+            </ButtonGeneric>
+          </Box>
+
+          <CustomTable columns={columns} rows={faq.qna} pageSize={5} />
+        </LabelText>
+      </Box>
+
+      <form style={{ width: "100%", marginTop: "20px" }}>
+        <Box className={common.singleComponent}>
           <LabelText>
             <Title text={t("Faq.info.title")} textInfo={t("Faq.info.info")} />
 
@@ -197,65 +212,6 @@ const Faq: FC = (): JSX.Element => {
               {t("saveButton")}
             </ButtonGeneric>
           </Box>
-        </form>
-      </Box>
-
-      <Box className={common.singleComponent}>
-        <LabelText>
-          <Box className={style.faqRow}>
-            <Title text={t("Faq.table.title")} textInfo={t("Faq.table.info")} />
-            <ButtonGeneric color={common.ternaryColor} callback={addQna}>
-              + {t("addButton")}
-            </ButtonGeneric>
-          </Box>
-
-          <CustomTable columns={columns} rows={faq.qna} pageSize={5} />
-        </LabelText>
-      </Box>
-
-      <form style={{ width: "100%", marginTop: "20px" }}>
-        <Box className={common.singleComponent}>
-          <LabelText>
-            <Title
-              text={"Info"}
-              textInfo={
-                "Sezione Info della pagina FAQ, clicca sul pulsante Salva modifiche per accettare i cambiamenti della pagina"
-              }
-            />
-            <Box className={common.row}>
-              <Box className={common.rowLeft}>
-                <CustomTextField
-                  defaultValue={!!faq.info.title ? faq.info.title : ""}
-                  errorMessage="Inserisci un Titolo"
-                  error={state.titleError}
-                  placeholder={"Titolo"}
-                />
-              </Box>
-              <Box className={common.rowRight}>
-                <CustomTextField
-                  defaultValue={!!faq.info.text ? faq.info.text : ""}
-                  errorMessage="Inserisci del testo"
-                  error={state.textError}
-                  placeholder={"Inserisci testo"}
-                  minrow={10}
-                  maxrow={20}
-                  multiline={true}
-                />
-              </Box>
-            </Box>
-          </LabelText>
-        </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "20px",
-          }}
-        >
-          <ButtonGeneric color={common.saveButtonColor} callback={onSaveInfo}>
-            Salva modifiche
-          </ButtonGeneric>
         </Box>
       </form>
 
@@ -282,7 +238,7 @@ const Faq: FC = (): JSX.Element => {
       )}
       {location?.state?.openAdd && (
         <CustomSnackbar
-          message={t("Faq.infoSnack")}
+          message={t("addSnack")}
           severity={"success"}
           callback={handleClose}
         />

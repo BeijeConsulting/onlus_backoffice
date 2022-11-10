@@ -72,9 +72,7 @@ const EditorSocial: FC = (): JSX.Element => {
               />
               <CustomTextField
                 defaultValue={
-                  !!location?.state?.data?.name
-                    ? location?.state?.data?.name
-                    : ""
+                  !!location?.state?.data?.name ? location.state.data.name : ""
                 }
                 placeholder={t(
                   "social.editorSocial.socialSection.placeholderSocial"

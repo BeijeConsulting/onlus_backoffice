@@ -3,12 +3,13 @@
     "selection": "Select file",
     "file": "No file selected"
   },
+
   "saveButton": "Save changes",
   "addButton": "Add",
   "cancelButton": "Cancel changes",
   "changesSnack": "Changes successful",
   "deleteSnack": "Deletion successful",
-  "addSnack": "Insertion successful",
+  "addSnack": "inclusion successful",
   "deleteModal": {
     "text": "Are you sure you want to delete the following element?",
     "deleteButton": "Delete",
@@ -226,8 +227,7 @@
       "title": "Faq",
       "info": "Questions in the FAQ section of the page, click on the + Add button to add a new question and answer, click on the edit or cancel buttons to change the data structure",
       "question": "QUESTION"
-    },
-    "infoSnack": "Changes to info saved successfully"
+    }
   },
   "FaqEditor": {
     "title": "Faq",

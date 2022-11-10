@@ -91,8 +91,8 @@ const Social: FC = (): JSX.Element => {
   };
 
   //Funzioni di modifica e cancella
-  const updateSocial = (row: object) => (): void => {
-    navigate(PAGES.editorSocial, { state: { row } });
+  const updateSocial = (row: any) => (): void => {
+    navigate(PAGES.editorSocial, { state: { data: row.row } });
   };
 
   const addSocial = (): void => {

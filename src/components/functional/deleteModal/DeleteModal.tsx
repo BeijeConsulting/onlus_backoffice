@@ -1,32 +1,31 @@
 import { FC } from "react";
 
-import {Modal,Box,Typography} from "@mui/material";
+import { Modal, Box, Typography } from "@mui/material";
 
 //style
-import deleteStyle from './deleteModal.module.scss';
-import style from '../../../assets/styles/common.module.scss';
+import deleteStyle from "./deleteModal.module.scss";
+import style from "../../../assets/styles/common.module.scss";
 
 //components
-import ButtonGeneric from '../buttonGeneric/ButtonGeneric';
+import ButtonGeneric from "../buttonGeneric/ButtonGeneric";
 
 //i18n
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
-interface modalProps{
-  open: boolean,
-  closeCallback: Function,
-  deleteCallback: Function
+interface modalProps {
+  open: boolean;
+  closeCallback: Function;
+  deleteCallback: Function;
 }
-  
-const DeleteModal: FC<modalProps> = (props):JSX.Element => {
 
+const DeleteModal: FC<modalProps> = (props): JSX.Element => {
   const { t, i18n } = useTranslation();
 
   function closeModal(): void {
     props.closeCallback();
   }
 
-  function deleteElement(): void{
+  function deleteElement(): void {
     props.deleteCallback();
   }
 
@@ -37,17 +36,12 @@ const DeleteModal: FC<modalProps> = (props):JSX.Element => {
       aria-describedby="modal-modal-description"
     >
       <Box className={deleteStyle.modal}>
-        <Typography>
-          {t("deleteModal.text")}
-        </Typography>
+        <Typography>{t("deleteModal.text")}</Typography>
         <Box className={deleteStyle.modalButtons}>
-          <ButtonGeneric
-            color={style.secondaryColor}
-            callback={deleteElement}
-          >
+          <ButtonGeneric color={style.secondaryColor} callback={deleteElement}>
             {t("deleteModal.deleteButton")}
           </ButtonGeneric>
-          <ButtonGeneric color={style.ternaryColor} callback={closeModal}>
+          <ButtonGeneric color={style.saveButtonColor} callback={closeModal}>
             {t("deleteModal.DiscardChangesButton")}
           </ButtonGeneric>
         </Box>
