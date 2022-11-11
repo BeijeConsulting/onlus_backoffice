@@ -1,8 +1,6 @@
 import { getApi, putApi, postApi, deleteApi } from "../../genericServices";
 import APIROUTES from "../apiRoutes";
 
-
-
 //get all
 export async function getApiArticles() {
   return await getApi(APIROUTES.ARTICLE);
@@ -29,5 +27,5 @@ export async function deleteApiArticleById(id) {
 }
 
 export async function getApiCollaborators(token) {
-  return await getApi(`${APIROUTES.COLLABORATORS}`, token);
+  return await getApi(`${APIROUTES.COLLABORATORS}`);
 }

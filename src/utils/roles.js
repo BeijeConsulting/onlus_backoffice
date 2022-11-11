@@ -1,7 +1,7 @@
 const roles = {
-  owner: "owner",
-  admin: "admin",
-  blogger: "blogger",
-  volounteer: "volounteer",
+  owner: "SUPERADMIN",
+  admin: "ADMIN",
+  blogger: "BLOGGER",
+  volounteer: "USER",
 };
 export default roles;

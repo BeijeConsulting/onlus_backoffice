@@ -44,7 +44,7 @@ function App() {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
   const dispatch: any = useDispatch();
-  const sendUser = cookies?.user?.data?.attributes?.users;
+  const sendUser = cookies?.user?.data;
 
   useEffect(() => {
     dispatch(setUser({ user: sendUser }));
@@ -57,11 +57,11 @@ function App() {
       <div className="App">
         <Routes>
           <Route path={PAGES.login} element={<Login />} />
-          {!!user?.role && (
+          {!!user?.permission && (
             <>
               <Route path={PAGES.entryApp} element={<EntryApp />}>
                 <Route path={PAGES.personalArea} element={<PersonalArea />} />
-                {user?.role?.includes(roles.admin) && (
+                {user?.permission?.includes(roles.admin) && (
                   <>
                     <Route path={PAGES.editGeneral} element={<General />} />
                     <Route path={PAGES.editHome} element={<Home />} />
