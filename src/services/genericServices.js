@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   timeout: CONFIG.TIMEOUT,
 });
 
-axiosInstance.interceptors.request.use(
+axios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("onlusToken");
     if (token) {
@@ -19,20 +19,6 @@ axiosInstance.interceptors.request.use(
     Promise.reject(error);
   }
 );
-axiosInstance.interceptors.request.use(
-  async config => {
-    const value = await redisClient.get(rediskey)
-    const keys = JSON.parse(value)
-    config.headers = { 
-      'Authorization': `Bearer ${keys.access_token}`,
-      'Accept': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-    return config;
-  },
-  error => {
-    Promise.reject(error)
-});
 
 axiosInstance.interceptors.response.use(
   function (response) {
@@ -40,23 +26,19 @@ axiosInstance.interceptors.response.use(
   },
   async function (error) {
     const originalRequest = error.config;
-    originalRequest._retry = false;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      if (localStorage.getItem("onlusRefreshToken") !== null) {
-        let updateToken = await updateAuthTokenApi();
-        console.log(updateToken);
-        if (updateToken.status === 200) {
-          const { token, refreshToken } = updateToken.data;
-          console.log("updateToken", updateToken);
-          localStorage.setItem("onlusToken", token);
-          localStorage.setItem("onlusRefreshToken", refreshToken);
-          axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-          return axiosInstance(originalRequest);
-        }
+      const updateToken = await updateAuthTokenApi();
+      console.log(updateToken);
+      if (updateToken.status === 200) {
+        const { token, refreshToken } = updateToken.data;
+        console.log("updateToken", updateToken);
+        localStorage.setItem("onlusToken", token);
+        localStorage.setItem("onlusRefreshToken", refreshToken);
+        // axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+        return axiosInstance(originalRequest);
       }
     }
-
     return Promise.reject(error);
   }
 );
