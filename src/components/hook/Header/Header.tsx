@@ -37,14 +37,11 @@ TO DO
  */
 
 type User = {
-  disableDate: string | null;
   email: string;
-  language: string;
-  name: string;
-  password: string;
-  phone: number;
-  role: Array<string>;
-  surname: string;
+  id: number;
+  token: string;
+  refreshToken: string;
+  permission: Array<string>;
 }
 
 const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(() => ({
@@ -106,7 +103,7 @@ const Header: FC = (): JSX.Element => {
               <PersonIcon fontSize="large" />
               <p>Nome Utente</p>
             </span>
-            <span className={css.authSpan}>{!!user?.role && user?.role[0]}</span>
+            <span className={css.authSpan}>{!!user?.permission && user?.permission[0]}</span>
           </div>
 
           <StyledMenu

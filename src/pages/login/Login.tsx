@@ -86,7 +86,7 @@ const Login: FC = (): JSX.Element => {
     setCookie("user", tempUser);
 
     //navigation
-    //navigate(PAGES.personalArea);
+    navigate(PAGES.personalArea);
   }
 
   return (

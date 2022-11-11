@@ -23,30 +23,22 @@ const userDuck = createSlice({
   name: "userDuck",
   initialState: {
     user: {
-      id: undefined,
-      name: undefined,
-      surname: undefined,
-      role: undefined,
       email: undefined,
-      phone: undefined,
-      password: undefined,
-      language: undefined,
-      disableDate: undefined,
+      id: undefined,
+      permission: undefined,
+      refreshToken: undefined,
+      token: undefined
     },
   },
   reducers: {
     initUserAction: (state) => {
       state.user = {
-        id: undefined,
-        name: undefined,
-        surname: undefined,
-        role: undefined,
         email: undefined,
-        phone: undefined,
-        password: undefined,
-        language: undefined,
-        disableDate: undefined,
-      };
+        id: undefined,
+        permission: undefined,
+        refreshToken: undefined,
+        token: undefined
+      }
     },
     setUserAction: (state, action) => {
       state.user = action.payload.user;

@@ -26,6 +26,6 @@ export async function deleteApiArticleById(id) {
   return await deleteApi(`${APIROUTES.ARTICLE}/${id}`);
 }
 
-export async function getApiCollaborators(token) {
+export async function getApiCollaborators() {
   return await getApi(`${APIROUTES.COLLABORATORS}`);
 }

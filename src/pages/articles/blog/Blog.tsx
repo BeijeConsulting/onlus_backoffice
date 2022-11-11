@@ -61,8 +61,8 @@ const Blog: FC = (): JSX.Element => {
   const location = useLocation();
 
   //fetchAPI
-  const getCollaborators = async (token: any): Promise<void> => {
-    let res = await getApiCollaborators(token);
+  const getCollaborators = async (): Promise<void> => {
+    let res = await getApiCollaborators();
     console.log(res);
   };
 
@@ -73,7 +73,7 @@ const Blog: FC = (): JSX.Element => {
     });
     let token: string = localStorage.getItem("onlusToken");
     console.log("token", token);
-    getCollaborators(token);
+    getCollaborators();
   }, []);
 
   

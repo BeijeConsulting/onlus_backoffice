@@ -33,14 +33,11 @@ const initialState: State = {
 };
 
 type User = {
-  disableDate: string | null;
   email: string;
-  language: string;
-  name: string;
-  password: string;
-  phone: number;
-  role: Array<string>;
-  surname: string;
+  id: number;
+  token: string;
+  refreshToken: string;
+  permission: Array<string>;
 }
 
 //NAVBAR
@@ -95,7 +92,7 @@ const NavBar: FC = (): JSX.Element => {
 
   return (
     <List className={css.nav} component="nav">
-      {user?.role?.includes(roles.admin) && (
+      {user?.permission?.includes(roles.admin) && (
         <>
           <ListItemButton className={css.father} onClick={openEditor}>
             <Typography className={css.text}>EDITOR SITO</Typography>
@@ -211,7 +208,7 @@ const NavBar: FC = (): JSX.Element => {
           </ListItemButton>
         </List>
       </Collapse>
-      {user?.role?.includes(roles.admin) && (
+      {user?.permission?.includes(roles.admin) && (
         <>
           <ListItemButton className={css.father} onClick={openUsers}>
             <Typography>UTENTI</Typography>
