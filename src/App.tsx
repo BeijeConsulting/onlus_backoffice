@@ -52,8 +52,6 @@ function App() {
 
   let user = useSelector((state: any) => state.userDuck.user);
 
-  console.log(user)
-
   return (
     <StyledEngineProvider injectFirst>
       <div className="App">

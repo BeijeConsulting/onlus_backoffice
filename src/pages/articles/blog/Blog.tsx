@@ -7,8 +7,7 @@ import {
   getApiArticleById,
   getApiArticles,
   postApiArticle,
-  putApiArticleById,
-  getApiCollaborators,
+  putApiArticleById
 } from "../../../services/api/blog/blogApi";
 
 //navigation
@@ -24,7 +23,7 @@ import CustomSnackbar from "../../../components/functional/customSnackbar/Custom
 import LabelText from "../../../components/functional/labelText/LabelText";
 
 //data
-import { articles } from "../../../utils/mockup/data";
+import { fetchData } from '../../../utils/fetchData'
 
 //icons
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -41,16 +40,20 @@ import { useTranslation } from "react-i18next";
 
 //interface
 interface State {
+  ready: boolean,
   modalIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
+  articles: Array<any>;
 }
 const initialState: State = {
+  ready: false,
   modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
+  articles: []
 };
 
 const Blog: FC = (): JSX.Element => {
@@ -60,23 +63,22 @@ const Blog: FC = (): JSX.Element => {
 
   const location = useLocation();
 
-  //fetchAPI
-  const getCollaborators = async (): Promise<void> => {
-    let res = await getApiCollaborators();
-    console.log(res);
-  };
-
+  //component did mount
   useEffect(() => {
-    setState({
-      ...state,
-      snackIsOpen: location?.state?.open,
-    });
-    let token: string = localStorage.getItem("onlusToken");
-    console.log("token", token);
-    getCollaborators();
+    getArticles();
   }, []);
 
-  
+  //fetchAPI
+  const getArticles = async (): Promise<void> => {
+    let res = await fetchData(getApiArticles);
+    console.log(res.data)
+    setState({
+      ...state,
+      articles: res.data,
+      ready: true,
+      snackIsOpen: location?.state?.open
+    })
+  };
 
   //Snackbar
   const handleClose = () => {
@@ -104,17 +106,14 @@ const Blog: FC = (): JSX.Element => {
     });
   };
 
-  //Funzioni di modifica e cancella
-  const updateArticle = (row: object) => (): void => {
-    navigate(PAGES.editorBlog, { state: { row } });
+  //modifica articolo
+  const updateArticle = (id: number) => (): void => {
+    navigate(PAGES.editorBlog, { state: { id: id } });
   };
 
+  //aggiungni articolo
   const addArticle = (): void => {
     navigate(PAGES.editorBlog, { state: { showAdd: true } });
-  };
-
-  const goToEditor = (): void => {
-    navigate(PAGES.editorBlog);
   };
 
   //Colonne del DataGrid
@@ -126,7 +125,7 @@ const Blog: FC = (): JSX.Element => {
           gap: "5px",
         }}
       >
-        <ButtonIcon callback={updateArticle(params.row)}>
+        <ButtonIcon callback={updateArticle(params.row.id)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
         <ButtonIcon callback={showDeleteModal}>
@@ -136,6 +135,7 @@ const Blog: FC = (): JSX.Element => {
     );
   };
 
+  //colonne del datagrid
   const columns = [
     {
       field: "title",
@@ -171,48 +171,53 @@ const Blog: FC = (): JSX.Element => {
 
   return (
     <Box className={common.component}>
-      <Box className={common.singleComponent}>
-        <LabelText>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Title text={t("articles.title")} textInfo={t("articles.info")} />
-            <ButtonGeneric color={"green"} callback={addArticle}>
-              + {t("addButton")}
-            </ButtonGeneric>
+      {state.ready && (
+        <>
+          <Box className={common.singleComponent}>
+            <LabelText>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Title text={t("articles.title")} textInfo={t("articles.info")} />
+                <ButtonGeneric color={"green"} callback={addArticle}>
+                  + {t("addButton")}
+                </ButtonGeneric>
+              </Box>
+
+              {/* sezione eventi in programma*/}
+              <CustomTable columns={columns} rows={state.articles} />
+            </LabelText>
           </Box>
 
-          {/* sezione eventi in programma*/}
-          <CustomTable columns={columns} rows={articles} />
-        </LabelText>
-      </Box>
+          {/* delete modal */}
+          <DeleteModal
+            open={state.modalIsOpen}
+            closeCallback={showDeleteModal}
+            deleteCallback={deleteArticle}
+          />
 
-      {/* delete modal */}
-      <DeleteModal
-        open={state.modalIsOpen}
-        closeCallback={showDeleteModal}
-        deleteCallback={deleteArticle}
-      />
+          {/* snackbar */}
+          {state.snackIsOpen && (
+            <CustomSnackbar
+              message={t("changeSnack")}
+              severity={"success"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackDeleteIsOpen && (
+            <CustomSnackbar
+              message={t("deleteSnack")}
+              severity={"info"}
+              callback={handleClose}
+            />
+          )}
+          {location?.state?.openAdd && (
+            <CustomSnackbar
+              message={t("addSnack")}
+              severity={"success"}
+              callback={handleClose}
+            />
+          )}
 
-      {/* snackbar */}
-      {state.snackIsOpen && (
-        <CustomSnackbar
-          message={t("changeSnack")}
-          severity={"success"}
-          callback={handleClose}
-        />
-      )}
-      {state.snackDeleteIsOpen && (
-        <CustomSnackbar
-          message={t("deleteSnack")}
-          severity={"info"}
-          callback={handleClose}
-        />
-      )}
-      {location?.state?.openAdd && (
-        <CustomSnackbar
-          message={t("addSnack")}
-          severity={"success"}
-          callback={handleClose}
-        />
+        </>
       )}
     </Box>
   );

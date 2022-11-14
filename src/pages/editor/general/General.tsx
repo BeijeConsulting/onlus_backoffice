@@ -63,6 +63,7 @@ const General: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
   const { t, i18n } = useTranslation();
 
+  //
   const fetchData = async (): Promise<any> => {
     const data = await getApiGeneral();
     console.log(data);
