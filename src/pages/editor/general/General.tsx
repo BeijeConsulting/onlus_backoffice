@@ -16,7 +16,7 @@ import ColorPicker from "../../../components/functional/colorPicker/ColorPicker"
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //translation
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 //api
 import {
@@ -65,12 +65,14 @@ const General: FC = (): JSX.Element => {
 
   const fetchData = async (): Promise<any> => {
     const data = await getApiGeneral();
+    console.log(data);
+
     return data;
   };
 
   const componentReady = async (): Promise<any> => {
     const res = await fetchData();
-    const data = res.data.attributes.general;
+    const data = res.data;
     console.log(data);
     setState({
       ...state,
@@ -174,10 +176,7 @@ const General: FC = (): JSX.Element => {
                 />
               </LabelText>
               <LabelText>
-                <Title
-                  text="Logo"
-                  textInfo={t("general.logo.info")}
-                />
+                <Title text="Logo" textInfo={t("general.logo.info")} />
                 <ButtonAddFile callback={handleImage} />
               </LabelText>
               <LabelText>
@@ -185,9 +184,27 @@ const General: FC = (): JSX.Element => {
                   text={t("general.palettes.title")}
                   textInfo={t("general.palettes.info")}
                 />
-                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" background={t("general.palettes.primary.background")} text={t("general.palettes.primary.text")}/>
-                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" background={t("general.palettes.secondary.background")} text={t("general.palettes.secondary.text")} />
-                <ColorPicker callback={log} bg="bgColorOne" txt="txtColorOne" background={t("general.palettes.ternary.background")} text={t("general.palettes.ternary.text")}/>
+                <ColorPicker
+                  callback={log}
+                  bg="bgColorOne"
+                  txt="txtColorOne"
+                  background={t("general.palettes.primary.background")}
+                  text={t("general.palettes.primary.text")}
+                />
+                <ColorPicker
+                  callback={log}
+                  bg="bgColorOne"
+                  txt="txtColorOne"
+                  background={t("general.palettes.secondary.background")}
+                  text={t("general.palettes.secondary.text")}
+                />
+                <ColorPicker
+                  callback={log}
+                  bg="bgColorOne"
+                  txt="txtColorOne"
+                  background={t("general.palettes.ternary.background")}
+                  text={t("general.palettes.ternary.text")}
+                />
               </LabelText>
             </Box>
             <Box className={common.right}>
@@ -261,13 +278,17 @@ const General: FC = (): JSX.Element => {
                     <Box style={{ width: "47%" }}>
                       <CustomTextField
                         error={state.error.workText}
-                        placeholder={t("general.banner.placeholderCallToAction")}
+                        placeholder={t(
+                          "general.banner.placeholderCallToAction"
+                        )}
                       />
                     </Box>
                     <Box style={{ width: "47%" }}>
                       <CustomTextField
                         error={state.error.workText}
-                        placeholder={t("general.banner.placeholderCallToAction")}
+                        placeholder={t(
+                          "general.banner.placeholderCallToAction"
+                        )}
                       />
                     </Box>
                   </Box>
@@ -283,7 +304,7 @@ const General: FC = (): JSX.Element => {
             callback={onSaveGeneral}
             color={common.saveButtonColor}
           >
-           {t("saveButton")}
+            {t("saveButton")}
           </ButtonGeneric>
           {state.open && (
             <CustomSnackbar
