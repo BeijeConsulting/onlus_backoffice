@@ -71,7 +71,7 @@ const Blog: FC = (): JSX.Element => {
   //fetchAPI
   const getArticles = async (): Promise<void> => {
     let res = await fetchData(getApiArticles);
-    console.log(res.data)
+    console.log("Articles",res.data)
     setState({
       ...state,
       articles: res.data,

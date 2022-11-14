@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useState, useEffect } from "react";
 
 //style
 import style from "./buttonAddFile.module.scss";
@@ -14,6 +14,8 @@ import { useTranslation } from "react-i18next";
 interface buttonAddFileProps {
   children?: any;
   callback: Function;
+  image?: string;
+  customKey?: number;
 }
 //state
 interface State {
@@ -22,12 +24,21 @@ interface State {
 }
 const initialState: State = {
   selectedImage: "",
-  file: "",
+  file: ""
 };
 const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
   const [state, setState] = useState<State>(initialState);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    setState({
+      ...state,
+      selectedImage: !!props.image ? props.image : "",
+      file: !!props.image ? props.image : ""
+    })
+    
+  }, [])
+  
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
     setState({
       ...state,
@@ -43,12 +54,12 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
       <input
         accept="image/*"
         type="file"
-        name="selectImage"
-        id="selectImage"
+        name={`selectImage${!!props.customKey ? props.customKey : ""}`}
+        id={`selectImage${!!props.customKey ? props.customKey : ""}`}
         style={{ display: "none" }}
         onChange={onChangeInput}
       />
-      <label htmlFor="selectImage">
+      <label htmlFor={`selectImage${!!props.customKey ? props.customKey : ""}`}>
         <Button
           variant="contained"
           sx={{

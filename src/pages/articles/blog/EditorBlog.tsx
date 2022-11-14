@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 //api
@@ -38,13 +38,15 @@ import {
   ListItemButton,
   ListItemText,
   Checkbox,
+  Link
 } from "@mui/material";
 
 //pages
 import PAGES from "../../../router/pages";
 
 //types
-import { Article, Category } from '../../../utils/mockup/types'
+import { Article, Category, ArticleContent} from '../../../utils/mockup/types'
+import { ConnectedTv } from "@mui/icons-material";
 
 //interface
 interface State {
@@ -71,8 +73,6 @@ const initialState: State = {
   addRight: [],
 };
 
-let key: number = 0
-
 const EditorBlog: FC = (): JSX.Element => {
   const [state, setState] = useState(initialState);
   const location = useLocation();
@@ -87,6 +87,8 @@ const EditorBlog: FC = (): JSX.Element => {
   //fetchAPI
   const getData = async (): Promise<void> => {
     let checked: Array<number> = []
+    let addLeft: Array<JSX.Element> = []
+    let addRight: Array<JSX.Element> = []
     let article: Article = {
       category: [],
       content: [],
@@ -96,8 +98,8 @@ const EditorBlog: FC = (): JSX.Element => {
       title: ""
     }
 
+    //se sto modificando
     if (!location?.state?.showAdd) {
-      console.log(location?.state?.id)
       let dataArticle = await fetchData(getApiArticleById, location?.state?.id);
       console.log("Article", dataArticle.data)
       article = {
@@ -109,9 +111,17 @@ const EditorBlog: FC = (): JSX.Element => {
         title: dataArticle.data.title
       }
 
+      //assegno le categorie
       dataArticle.data.category.forEach((element: Category) => {
         checked.push(element.id)
       })
+
+      for (let i = 1; i < dataArticle.data.content.length; i++) {
+        if (i % 2 !== 0)
+          addLeft.push(getContent(dataArticle.data.content[i],i))
+        else
+          addRight.push(getContent(dataArticle.data.content[i],i))
+      }
     }
 
     let categories = await fetchData(getApiCategories);
@@ -122,7 +132,9 @@ const EditorBlog: FC = (): JSX.Element => {
       categories: categories.data,
       article: article,
       ready: true,
-      checked: checked
+      checked: checked,
+      addLeft: addLeft,
+      addRight: addRight
     })
   };
 
@@ -144,9 +156,9 @@ const EditorBlog: FC = (): JSX.Element => {
   };
 
   //ritorno l'elemento con il contenuto
-  const getContent = (): JSX.Element => {
+  const getContent = (content:ArticleContent=null,key: number=null): JSX.Element => {
     return (
-      <LabelText>
+      <LabelText key={key}>
         <Title
           text={t("articles.editorBlog.contentSection.title")}
           textInfo={t("articles.editorBlog.contentSection.info")}
@@ -159,8 +171,9 @@ const EditorBlog: FC = (): JSX.Element => {
           multiline={true}
           minrow={10}
           maxrow={25}
+          defaultValue={content?.paragraph}
         />
-        <ButtonAddFile callback={log} />
+        <ButtonAddFile callback={log} image={content?.media[0]?.content} customKey={key} />
       </LabelText>
     );
   };
@@ -169,14 +182,14 @@ const EditorBlog: FC = (): JSX.Element => {
   const addSlot = (): void => {
     let left: Array<JSX.Element> = state.addLeft;
     let right: Array<JSX.Element> = state.addRight;
-    
+
     if (left.length === right.length) {
       //aggiungo a sinistra
-      left.push(getContent());
+      left.push(getContent(null, state?.article?.content.length + left.length + right.length +1));
     }
     //aggiungo a destra
     else {
-      right.push(getContent());
+      right.push(getContent(null, state?.article?.content.length + left.length + right.length +1));
     }
 
     setState({
@@ -187,12 +200,21 @@ const EditorBlog: FC = (): JSX.Element => {
   };
 
   //salvo
-  const onSave = (): void => {
+  const onSave = (e:BaseSyntheticEvent): void => {
     if (location?.state?.showAdd) {
       navigate(PAGES.articlesBlog, { state: { openAdd: true } });
     }
     else {
+      let article: Article = {
+        category: [],
+        content: [],
+        cover: "",
+        date: "",
+        status: "",
+        title: ""
+      }
 
+      console.log(e.target)
       navigate(PAGES.articlesBlog, { state: { open: true } });
     }
   };
@@ -228,8 +250,8 @@ const EditorBlog: FC = (): JSX.Element => {
                     />
                   </LabelText>
 
-                  {getContent()}
-                  {state?.addLeft.map((element: JSX.Element) => {
+                  {getContent(state?.article?.content[0],0)}
+                  {state?.addLeft?.map((element: JSX.Element) => {
                     return element;
                   })}
                 </Box>
@@ -239,7 +261,7 @@ const EditorBlog: FC = (): JSX.Element => {
                       text={t("articles.editorBlog.coverSection.title")}
                       textInfo={t("articles.editorBlog.coverSection.info")}
                     />
-                    <ButtonAddFile callback={log} />
+                    <ButtonAddFile callback={log} image={state?.article?.cover} customKey={999}/>
                   </LabelText>
 
                   <LabelText>
@@ -284,11 +306,18 @@ const EditorBlog: FC = (): JSX.Element => {
                     </List>
                   </LabelText>
 
-                  {state?.addRight.map((element: JSX.Element) => {
+                  {state?.addRight?.map((element: JSX.Element) => {
                     return element;
                   })}
                   {/*link*/}
-                  <CustomLink text={t("link")} callback={addSlot} />
+                  <Link
+                    color="#000000"
+                    variant="body2"
+                    onClick={addSlot}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {t("link")}
+                  </Link>
 
                   <Box className={style.row}>
                     {location?.state?.showAdd ? (
