@@ -205,22 +205,23 @@ const EditorBlog: FC = (): JSX.Element => {
       navigate(PAGES.articlesBlog, { state: { openAdd: true } });
     }
     else {
+     console.log(e)
+
       let article: Article = {
         category: [],
         content: [],
         cover: "",
         date: "",
         status: "",
-        title: ""
+        title: e.target.form[0]
       }
 
-      console.log(e.target)
-      navigate(PAGES.articlesBlog, { state: { open: true } });
+      //navigate(PAGES.articlesBlog, { state: { open: true } });
     }
   };
 
-  function log() {
-    console.log()
+  const log = (s:string): void => {
+    console.log(s)
   }
 
   //torno alla pagina articoli

@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 //props
 interface buttonAddFileProps {
   children?: any;
-  callback: Function;
+  callback: any;
   image?: string;
   customKey?: number;
 }
