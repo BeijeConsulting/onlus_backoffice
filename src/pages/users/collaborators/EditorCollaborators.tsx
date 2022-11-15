@@ -18,8 +18,22 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 import CustomSelect from "../../../components/functional/customSelect/CustomSelect";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 
+//API
+import { fetchData } from "../../../utils/fetchData";
+import { postCollaborator } from "../../../services/api/collaborators/collaborators";
+
 //i18n
 import { useTranslation } from 'react-i18next';
+
+type User = {
+  name: string;
+  surname: string;
+  email: string;
+  phone: string;
+  language: string;
+  password: string;
+  role: number;
+}
 
 //Item del CustomSelect
 type Item = {
@@ -41,11 +55,11 @@ const lang: Array<Item> = [
 const roles: Array<Item> = [
   {
     name: "Admin",
-    value: "admin",
+    value: "2",
   },
   {
     name: "Blogger",
-    value: "blogger",
+    value: "4",
   },
 ];
 
@@ -72,7 +86,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
   }, []);
 
   //Funzione per salvare i dati dell'admin
-  const onSaveAdmin = (e: BaseSyntheticEvent): void => {
+  const onSaveAdmin = async (e: BaseSyntheticEvent): Promise<void> => {
     let tmp: Array<boolean> = [
       false,
       false,
@@ -107,16 +121,21 @@ const EditorCollaborators: FC = (): JSX.Element => {
     }
 
     if (!errors) {
-      /*let guest = {
+      let user: User = {
         name: e.target.form[0].value,
         surname: e.target.form[2].value,
-        lang: e.target.form[4].value,
-        role: e.target.form[6].value,
+        language: e.target.form[4].value,
+        role: parseInt(e.target.form[6].value),
         email: e.target.form[8].value,
         phone: e.target.form[10].value,
         password: e.target.form[12].value,
-        confirmPassword: e.target.form[14].value,
-      };*/
+      };
+
+      if(!!location?.state?.row?.id){
+        //inserire putApi
+      } else {
+        await postApi(user)
+      }
 
       if(location?.state?.showAdd){
         navigate(PAGES.usersCollaborators, { state: { openAdd: true } });
@@ -130,6 +149,16 @@ const EditorCollaborators: FC = (): JSX.Element => {
       error: tmp,
     });
   };
+
+  //PostAPI
+  const postApi = async (user: User): Promise<void> => {
+    let res = await fetchData(postCollaborator, user)
+    console.log("Collaborator: ", res)
+  }
+
+  const log = (): void => {
+
+  }
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
@@ -271,7 +300,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
               <>
               <ButtonGeneric
                 color={common.saveButtonColor}
-                callback={onSaveAdmin}
+                callback={log /*sostituire con onSaveAdmin*/}
               >
                 {t("saveButton")}
               </ButtonGeneric>

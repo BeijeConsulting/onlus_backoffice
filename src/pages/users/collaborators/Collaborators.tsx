@@ -4,9 +4,6 @@ import { FC, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
-//Data
-import { users } from "../../../utils/mockup/data";
-
 //Style
 import common from "../../../assets/styles/common.module.scss";
 import style from "./collaborators.module.scss";
@@ -25,6 +22,10 @@ import LabelText from "../../../components/functional/labelText/LabelText";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 
+//API
+import { fetchData } from "../../../utils/fetchData";
+import { getCollaborators, deleteCollaboratorById } from "../../../services/api/collaborators/collaborators";
+
 //i18n
 import { useTranslation } from "react-i18next";
 
@@ -33,6 +34,9 @@ interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
+  ready: boolean;
+  collaborators: Array<any>;
+  idToDelete: number;
 }
 
 const initialState: State = {
@@ -40,6 +44,9 @@ const initialState: State = {
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
+  ready: false,
+  collaborators: [],
+  idToDelete: null,
 };
 
 const Collaborators: FC = (): JSX.Element => {
@@ -50,11 +57,26 @@ const Collaborators: FC = (): JSX.Element => {
   const location = useLocation();
 
   useEffect(() => {
+    getCollaboratorsData()
+
     setState({
       ...state,
       snackIsOpen: location?.state?.open,
     });
   }, []);
+
+  //fetchAPI
+  const getCollaboratorsData = async (): Promise<void> => {
+    let res = await fetchData(getCollaborators);
+    console.log("Collab: ", res.data);
+
+    setState({
+      ...state,
+      collaborators: res.data,
+      ready: true,
+      snackIsOpen: location?.state?.open
+    })
+  }
 
   //Snackbar
   const handleClose = () => {
@@ -66,14 +88,15 @@ const Collaborators: FC = (): JSX.Element => {
   };
 
   //Modal
-  const openDeleteModal = (): void => {
+  const openDeleteModal = (id: number) => (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
+      idToDelete: id,
     });
   };
 
-  //chiudo il modale
+  //chiude il modale
   const closeDeleteModal = (): void => {
     setState({
       ...state,
@@ -81,8 +104,11 @@ const Collaborators: FC = (): JSX.Element => {
     });
   };
 
-  //elimino l'utente
+  //elimina l'utente
   const deleteUser = (): void => {
+
+    deleteApi(state.idToDelete)
+
     setState({
       ...state,
       modalIsOpen: false,
@@ -90,7 +116,13 @@ const Collaborators: FC = (): JSX.Element => {
     });
   };
 
-  //Funzioni di modifica e cancella
+  //DeleteAPI
+  const deleteApi = async (id: number): Promise<void> => {
+    let res = await fetchData(deleteCollaboratorById, id)
+    console.log("Delete: ", res.data)
+  }
+
+  //Funzioni di modifica e aggiunta
   const updateUser = (row: object) => (): void => {
     navigate(PAGES.editorCollaborators, { state: { row } });
   };
@@ -106,7 +138,7 @@ const Collaborators: FC = (): JSX.Element => {
         <ButtonIcon callback={updateUser(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal}>
+        <ButtonIcon callback={openDeleteModal(params.row.id)}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
@@ -146,51 +178,55 @@ const Collaborators: FC = (): JSX.Element => {
 
   return (
     <Box className={common.component}>
-      <Box className={common.singleComponent}>
-        <LabelText>
-          {/*titolo*/}
-          <Box className={style.titleRow}>
-            <Title
-              text={t("Collaborators.title")}
-              textInfo={
-                t("Collaborators.info")
-              }
+      {state.ready && (
+        <>
+          <Box className={common.singleComponent}>
+            <LabelText>
+              {/*titolo*/}
+              <Box className={style.titleRow}>
+                <Title
+                  text={t("Collaborators.title")}
+                  textInfo={
+                    t("Collaborators.info")
+                  }
+                />
+                <ButtonGeneric color={"green"} callback={addUser}>
+                  + {t("addButton")}
+                </ButtonGeneric>
+              </Box>
+
+              {/*tabella*/}
+              <CustomTable columns={columns} rows={state.collaborators} pageSize={5} />
+            </LabelText>
+
+            <DeleteModal
+              open={state.modalIsOpen}
+              closeCallback={closeDeleteModal}
+              deleteCallback={deleteUser /*API delete*/}
             />
-            <ButtonGeneric color={"green"} callback={addUser}>
-              + {t("addButton")}
-            </ButtonGeneric>
           </Box>
-
-          {/*tabella*/}
-          <CustomTable columns={columns} rows={users} pageSize={5} />
-        </LabelText>
-
-        <DeleteModal
-          open={state.modalIsOpen}
-          closeCallback={closeDeleteModal}
-          deleteCallback={deleteUser /*API delete*/}
-        />
-      </Box>
-      {state.snackIsOpen && (
-        <CustomSnackbar
-          message={t("changesSnack")}
-          severity={"success"}
-          callback={handleClose}
-        />
-      )}
-      {state.snackDeleteIsOpen && (
-        <CustomSnackbar
-          message={t("deleteSnack")}
-          severity={"info"}
-          callback={handleClose}
-        />
-      )}
-      {location?.state?.openAdd && (
-        <CustomSnackbar
-          message={t("addSnack")}
-          severity={"success"}
-          callback={handleClose}
-        />
+          {state.snackIsOpen && (
+            <CustomSnackbar
+              message={t("changesSnack")}
+              severity={"success"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackDeleteIsOpen && (
+            <CustomSnackbar
+              message={t("deleteSnack")}
+              severity={"info"}
+              callback={handleClose}
+            />
+          )}
+          {location?.state?.openAdd && (
+            <CustomSnackbar
+              message={t("addSnack")}
+              severity={"success"}
+              callback={handleClose}
+            />
+          )}
+        </>
       )}
     </Box>
   );

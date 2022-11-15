@@ -79,7 +79,7 @@ const EditorFaq: FC = (): JSX.Element => {
         await putApi(location?.state?.row?.id, qna)
       } else {
         await postApi(qna)
-      }  
+      }
 
       if (location?.state?.showAdd) {
         navigate(PAGES.editFaq, { state: { openAdd: true } });
