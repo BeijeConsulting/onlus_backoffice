@@ -49,7 +49,7 @@ const EditorFaq: FC = (): JSX.Element => {
   console.log(location);
 
   //Funzione per salvare domanda e risposta
-  const onSaveQna = (e: BaseSyntheticEvent): void => {
+  const onSaveQna = async (e: BaseSyntheticEvent): Promise<void> => {
     let questionErr = false;
     let answerErr = false;
 
@@ -73,27 +73,32 @@ const EditorFaq: FC = (): JSX.Element => {
       };
 
       console.log(qna);
-      postApi(qna)
-      //putApi(location?.state?.row?.id, qna)
 
-      /*if (location?.state?.showAdd) {
+      //controlla se bisogna fare PUT o POST
+      if(!!location?.state?.row?.id){
+        await putApi(location?.state?.row?.id, qna)
+      } else {
+        await postApi(qna)
+      }  
+
+      if (location?.state?.showAdd) {
         navigate(PAGES.editFaq, { state: { openAdd: true } });
       } else {
         navigate(PAGES.editFaq, { state: { open: true } });
-      }*/
+      }
     }
   };
 
   //PostAPI
   const postApi = async (qna: QNA): Promise<void> => {
-    let res = await fetchData(postQna, JSON.stringify(qna))
-    console.log("QNA: ", res.data)
+    let res = await fetchData(postQna, qna)
+    console.log("QNA: ", res)
   }
 
   //PutAPI
   const putApi = async (id: number, qna: QNA): Promise<void> => {
     let res = await fetchData(putQnaBydId, id, qna)
-    console.log("QNA: ", res.data)
+    console.log("QNA: ", res)
   }
 
   //Funzione per cancellare l'operazione

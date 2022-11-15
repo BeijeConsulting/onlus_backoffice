@@ -26,7 +26,7 @@ import DeleteModal from "../../../components/functional/deleteModal/DeleteModal"
 
 //API
 import { fetchData } from "../../../utils/fetchData";
-import { getFaq, putFaqInfo } from "../../../services/api/faq/faqApi";
+import { deleteQnaById, getFaq, putFaqInfo } from "../../../services/api/faq/faqApi";
 
 //Translation
 import { useTranslation } from "react-i18next";
@@ -48,6 +48,7 @@ interface State {
   ready: boolean;
   qna: Array<any>;
   info: Info;
+  idToDelete: number;
 }
 
 const initState: State = {
@@ -63,6 +64,7 @@ const initState: State = {
     title: '',
     text: '',
   },
+  idToDelete: null,
 };
 
 const Faq: FC = (): JSX.Element => {
@@ -75,6 +77,13 @@ const Faq: FC = (): JSX.Element => {
 
   useEffect(() => {
     getFaqData();
+    
+    return() => {
+      setState({
+        ...state,
+        ready: false,
+      })
+    }
   }, [])
 
   //fetchAPI
@@ -135,7 +144,7 @@ const Faq: FC = (): JSX.Element => {
 
   //PutAPI
   const putInfo = async (info: Info): Promise<void> => {
-    let res = await fetchData(putFaqInfo, 1, JSON.stringify(info))
+    let res = await fetchData(putFaqInfo, 1, info)
     console.log("Info: ", res.data)
   }
 
@@ -145,19 +154,20 @@ const Faq: FC = (): JSX.Element => {
   };
 
   //Funzioni di modifica e cancella
-  const updateQna = (row: object) => () => {
+  const updateQna = (row: object) => (): void => {
     navigate(PAGES.editorFaq, { state: { row } });
   };
 
   //Modal
-  const openDeleteModal = (): void => {
+  const openDeleteModal = (id: number) => (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
+      idToDelete: id,
     });
   };
 
-  //chiudo il modale
+  //chiude il modale
   const closeDeleteModal = (): void => {
     setState({
       ...state,
@@ -165,14 +175,25 @@ const Faq: FC = (): JSX.Element => {
     });
   };
 
-  //elimino la faq
+  //elimina la faq
   const deleteFaq = (): void => {
+
+    deleteApi(state.idToDelete)
+
     setState({
       ...state,
       modalIsOpen: false,
       snackDeleteIsOpen: true,
+      qna: state.qna.filter((row) => row.id !== state.idToDelete),
+      idToDelete: null,
     });
   };
+
+  //DeleteAPI
+  const deleteApi = async (id: number): Promise<void> => {
+    let res = await fetchData(deleteQnaById, id)
+    console.log("Delete: ", res.data)
+  }
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -181,7 +202,7 @@ const Faq: FC = (): JSX.Element => {
         <ButtonIcon callback={updateQna(params.row)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal}>
+        <ButtonIcon callback={openDeleteModal(params.row.id)}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
@@ -250,13 +271,11 @@ const Faq: FC = (): JSX.Element => {
             </Box>
           </form>
 
-
           <DeleteModal
             open={state.modalIsOpen}
             closeCallback={closeDeleteModal}
-            deleteCallback={deleteFaq /*API delete*/}
+            deleteCallback={deleteFaq}
           />
-
 
           {(state.snackIsOpen || location?.state?.open) && (
             <CustomSnackbar
