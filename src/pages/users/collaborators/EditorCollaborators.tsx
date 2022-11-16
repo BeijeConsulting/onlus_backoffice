@@ -59,7 +59,7 @@ const initState: State = {
 
 const EditorCollaborators: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();

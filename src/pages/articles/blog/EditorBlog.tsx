@@ -18,8 +18,7 @@ import Title from "../../../components/functional/title/Title";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
-import CustomLink from "../../../components/functional/link/CustomLink";
-//import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //data
 import { fetchData } from '../../../utils/fetchData'
@@ -27,6 +26,7 @@ import { fetchData } from '../../../utils/fetchData'
 //styles
 import style from "./editorBlogStyle.module.scss";
 import common from "../../../assets/styles/common.module.scss";
+
 //translation
 import { useTranslation } from "react-i18next";
 
@@ -45,8 +45,7 @@ import {
 import PAGES from "../../../router/pages";
 
 //types
-import { Article, Category, ArticleContent} from '../../../utils/mockup/types'
-import { ConnectedTv } from "@mui/icons-material";
+import { Article, Category, ArticleContent } from '../../../utils/mockup/types'
 
 //interface
 interface State {
@@ -56,6 +55,10 @@ interface State {
   article: Article,
   addLeft: Array<JSX.Element>;
   addRight: Array<JSX.Element>;
+  error: Array<boolean>;
+  articleContentError: Array<boolean>;
+  snackErrorIsOpen: boolean;
+  snackWarningIsOpen: boolean;
 }
 const initialState: State = {
   ready: false,
@@ -71,6 +74,10 @@ const initialState: State = {
   },
   addLeft: [],
   addRight: [],
+  error: [],
+  articleContentError: [],
+  snackErrorIsOpen: false,
+  snackWarningIsOpen: false
 };
 
 const EditorBlog: FC = (): JSX.Element => {
@@ -78,6 +85,15 @@ const EditorBlog: FC = (): JSX.Element => {
   const location = useLocation();
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackErrorIsOpen: false,
+      snackWarningIsOpen: false,
+    });
+  };
 
   //component did mount
   useEffect(() => {
@@ -89,12 +105,12 @@ const EditorBlog: FC = (): JSX.Element => {
     let checked: Array<number> = []
     let addLeft: Array<JSX.Element> = []
     let addRight: Array<JSX.Element> = []
+    let articleContentError: Array<boolean> = []
+
     let article: Article = {
       category: [],
       content: [],
       cover: "",
-      date: "",
-      status: "",
       title: ""
     }
 
@@ -106,9 +122,11 @@ const EditorBlog: FC = (): JSX.Element => {
         category: dataArticle.data.category,
         content: dataArticle.data.content,
         cover: dataArticle.data.cover,
-        date: dataArticle.data.date,
-        status: dataArticle.data.status,
         title: dataArticle.data.title
+      }
+
+      for (let i = 0; i < article.content.length; i++) {
+        articleContentError.push(false)
       }
 
       //assegno le categorie
@@ -118,9 +136,9 @@ const EditorBlog: FC = (): JSX.Element => {
 
       for (let i = 1; i < dataArticle.data.content.length; i++) {
         if (i % 2 !== 0)
-          addLeft.push(getContent(dataArticle.data.content[i],i))
+          addLeft.push(getContent(dataArticle.data.content[i], i, addLeft.length + addRight.length + 1))
         else
-          addRight.push(getContent(dataArticle.data.content[i],i))
+          addRight.push(getContent(dataArticle.data.content[i], i, addLeft.length + addRight.length + 1))
       }
     }
 
@@ -134,7 +152,9 @@ const EditorBlog: FC = (): JSX.Element => {
       ready: true,
       checked: checked,
       addLeft: addLeft,
-      addRight: addRight
+      addRight: addRight,
+      error: [false, false, false],
+      articleContentError: articleContentError
     })
   };
 
@@ -156,7 +176,7 @@ const EditorBlog: FC = (): JSX.Element => {
   };
 
   //ritorno l'elemento con il contenuto
-  const getContent = (content:ArticleContent=null,key: number=null): JSX.Element => {
+  const getContent = (content: ArticleContent = null, key: number = null, index: number): JSX.Element => {
     return (
       <LabelText key={key}>
         <Title
@@ -167,29 +187,32 @@ const EditorBlog: FC = (): JSX.Element => {
           placeholder={t(
             "articles.editorBlog.contentSection.placeholderContent"
           )}
-          error={false}
+          error={state.articleContentError[index]}
           multiline={true}
           minrow={10}
           maxrow={25}
           defaultValue={content?.paragraph}
         />
-        <ButtonAddFile callback={log} image={content?.media[0]?.content} customKey={key} />
+        <ButtonAddFile callback={log} error={state.articleContentError[index]} image={content?.media[0]?.content} customKey={key} />
       </LabelText>
     );
   };
 
   //aggiungo un altro slot contenuto
-  const addSlot = (): void => {
+  const addSlot = async (): Promise<void> => {
+    let articleContentError: Array<boolean> = state.articleContentError
+    articleContentError.push(true)
+    await setArticleContentError(articleContentError)
+
     let left: Array<JSX.Element> = state.addLeft;
     let right: Array<JSX.Element> = state.addRight;
-
     if (left.length === right.length) {
       //aggiungo a sinistra
-      left.push(getContent(null, state?.article?.content.length + left.length + right.length +1));
+      left.push(getContent(null, state?.article?.content.length + left.length + right.length + 1, left.length + right.length + 1));
     }
     //aggiungo a destra
     else {
-      right.push(getContent(null, state?.article?.content.length + left.length + right.length +1));
+      right.push(getContent(null, state?.article?.content.length + left.length + right.length + 1, left.length + right.length + 1));
     }
 
     setState({
@@ -197,30 +220,192 @@ const EditorBlog: FC = (): JSX.Element => {
       addLeft: left,
       addRight: right,
     });
+
   };
+
+  //aggiorno l ostato che contiente gli errori relativi al contenuto dell'articolo
+  const setArticleContentError = async (articleContentError: Array<boolean>): Promise<void> => {
+    setState({
+      ...state,
+      articleContentError: articleContentError
+    })
+  }
 
   //salvo
-  const onSave = (e:BaseSyntheticEvent): void => {
-    if (location?.state?.showAdd) {
-      navigate(PAGES.articlesBlog, { state: { openAdd: true } });
+  const onSave = (e: BaseSyntheticEvent): void => {
+    let article: Article = {
+      category: [],
+      content: [{
+        articleId: 0,
+        media: [{
+          content: e.target.form[5].name,
+          type: "image"
+        }],
+        paragraph: e.target.form[2].value
+      }],
+      cover: e.target.form[6 + (state.addLeft.length * 4)].name,
+      title: e.target.form[0].value
+    }
+
+    //inserisco solo categorie selezionate
+    article.category = state.categories.filter((element) => {
+      return state.checked.some((f) => {
+        return f === element.id
+      })
+    })
+
+    //aggiungo i contenuti dinamici
+    article.content = getDynamicArticleContents(article, e)
+
+    //gestisco gli errori
+    let error: Array<boolean> = handleErrors(article)
+    let articleContentError: Array<boolean> = handleContentErrors(article)
+    let errors: boolean = getErrors(error)
+    let articleContentErrors: boolean = getErrors(articleContentError)
+
+    console.log(error,articleContentError)
+
+    if (!errors && !articleContentErrors){
+      if (location?.state?.showAdd) {
+        //add
+        addArticle(article)
+      }
+      else{
+        //update
+        updateArticle(article)
+      }
     }
     else {
-     console.log(e)
-
-      let article: Article = {
-        category: [],
-        content: [],
-        cover: "",
-        date: "",
-        status: "",
-        title: e.target.form[0]
-      }
-
-      //navigate(PAGES.articlesBlog, { state: { open: true } });
+      setState({
+        ...state,
+        snackErrorIsOpen: true,
+        error: error,
+        articleContentError: articleContentError
+      })
     }
   };
 
-  const log = (s:string): void => {
+  //gestisco i contenuti dinamici
+  const getDynamicArticleContents = (article: Article, e: BaseSyntheticEvent): Array<ArticleContent> => {
+    let contentLeft: Array<ArticleContent> = []
+    let contentRight: Array<ArticleContent> = []
+    let contentIndex: number = 1
+    //sx
+    for (let i = 0; i < state.addLeft.length; i++) {
+      contentLeft.push({
+        articleId: contentIndex++,
+        media: [{
+          content: e.target.form[9 + 4 * i].name,
+          type: "image"
+        }],
+        paragraph: e.target.form[6 + 4 * i].value
+      })
+    }
+
+    //dx
+    for (let i = 0; i < state.addRight.length; i++) {
+      contentRight.push({
+        articleId: contentIndex++,
+        media: [{
+          content: e.target.form[9 + (state.addLeft.length * 4) + state.categories.length + 1 + 4 * i].name,
+          type: "image"
+        }],
+        paragraph: e.target.form[6 + (state.addLeft.length * 4) + state.categories.length + 1 + 4 * i].value
+      })
+    }
+
+    //aggiungo sx e dx l content
+    for (let i = 0; i < contentLeft.length; i++) {
+      article.content.push(contentLeft[i])
+      if (i < contentRight.length)
+        article.content.push(contentRight[i])
+    }
+
+    return article.content
+  }
+
+  //gestisco gli errori
+  const handleErrors = (article: Article): Array<boolean> => {
+    let error: Array<boolean> = [false, false, false]
+
+    if (article.title.length === 0)
+      error[0] = true
+    if (article.cover.length === 0)
+      error[1] = true
+    if (article.category.length === 0)
+      error[2] = true
+
+    return error
+  }
+
+  //gestisco gli errori del content
+  const handleContentErrors = (article: Article): Array<boolean> => {
+    let articleContentError: Array<boolean> = []
+
+    for (let i = 0; i < article.content.length; i++) {
+      if (article.content[i].paragraph.length === 0 || article.content[i].media[0].content.length === 0)
+        articleContentError[i] = true
+      else
+        articleContentError[i] = false
+    }
+
+    return articleContentError
+  }
+
+  //ritorno true se l'array è composto da tutti true o viceversa
+  const getErrors = (error: Array<boolean>): boolean => {
+    let errors: boolean = false
+    for (let i = 0; i < error.length; i++) {
+      if (error[i]) {
+        errors = true
+      }
+    }
+    return errors
+  }
+
+  //modifico l'articolo
+  const updateArticle = async (article: Article): Promise<void> => {
+    article.id = location?.state?.id
+    console.log(article)
+    let response = await putApiArticleById(article.id, article)
+
+    if (response.status === 200)
+      navigate(PAGES.articlesBlog, { state: { open: true } });
+    else if (response.status === 500 || response.status === undefined) {
+      setState({
+        ...state,
+        snackWarningIsOpen: true
+      })
+    }
+    else {
+      setState({
+        ...state,
+        snackErrorIsOpen: true
+      })
+    }
+  }
+
+  //aggiungo l'articolo
+  const addArticle = async (article: Article): Promise<void> => {
+    let response = await postApiArticle(article)
+
+    if (response.status === 200)
+      navigate(PAGES.articlesBlog, { state: { openAdd: true } });
+    else if (response.status === 500 || response.status === undefined) {
+      setState({
+        ...state,
+        snackWarningIsOpen: true
+      })
+    }
+    else {
+      setState({
+        ...state,
+        snackErrorIsOpen: true
+      })
+    }
+  }
+
+  const log = (s: string): void => {
     console.log(s)
   }
 
@@ -233,7 +418,7 @@ const EditorBlog: FC = (): JSX.Element => {
     <Box>
       {state.ready && (
         <>
-          <form>
+          <form onSubmit={onSave}>
             <Box className={common.component}>
               <Box className={common.doubleComponent}>
                 <Box className={common.left}>
@@ -246,12 +431,12 @@ const EditorBlog: FC = (): JSX.Element => {
                       placeholder={t(
                         "articles.editorBlog.titleSection.placeholderTitle"
                       )}
-                      error={false}
+                      error={state.error[0]}
                       defaultValue={location?.state?.showAdd ? "" : state.article.title}
                     />
                   </LabelText>
 
-                  {getContent(state?.article?.content[0],0)}
+                  {getContent(state?.article?.content[0], 0, 0)}
                   {state?.addLeft?.map((element: JSX.Element) => {
                     return element;
                   })}
@@ -262,7 +447,7 @@ const EditorBlog: FC = (): JSX.Element => {
                       text={t("articles.editorBlog.coverSection.title")}
                       textInfo={t("articles.editorBlog.coverSection.info")}
                     />
-                    <ButtonAddFile callback={log} image={state?.article?.cover} customKey={999}/>
+                    <ButtonAddFile callback={log} error={state.error[1]} image={state?.article?.cover} customKey={999} />
                   </LabelText>
 
                   <LabelText>
@@ -304,6 +489,7 @@ const EditorBlog: FC = (): JSX.Element => {
                           </ListItem>
                         );
                       })}
+                      <ListItemText sx={{ color: 'red', paddingLeft: '16px' }}>{state.error[2] ? t("articles.editorBlog.categoriesError") : ""}</ListItemText>
                     </List>
                   </LabelText>
 
@@ -349,6 +535,22 @@ const EditorBlog: FC = (): JSX.Element => {
                         </ButtonGeneric>
                       </>
                     )}
+                    {
+                      state.snackErrorIsOpen &&
+                      <CustomSnackbar
+                        message={t("responseErrorSnack")}
+                        severity={"error"}
+                        callback={handleClose}
+                      />
+                    }
+                    {
+                      state.snackWarningIsOpen &&
+                      <CustomSnackbar
+                        message={t("responseWarningSnack")}
+                        severity={"warning"}
+                        callback={handleClose}
+                      />
+                    }
                   </Box>
                 </Box>
               </Box>

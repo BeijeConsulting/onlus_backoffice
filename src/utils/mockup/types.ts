@@ -80,12 +80,17 @@ export type Donation = {
 export type Event = {
   cover?: string;
   description?: string;
+<<<<<<< HEAD
   eventDate?: string | Dayjs;
+=======
+  eventDate?: string;
+>>>>>>> develop
   place?: string;
   requirements?: string;
   title?: string;
   id?: Number | null;
 };
+<<<<<<< HEAD
 
 export type AboutContent = {
   id: number,
@@ -111,3 +116,5 @@ export type AboutType = {
   title: AboutTitle
 }
 
+=======
+>>>>>>> develop

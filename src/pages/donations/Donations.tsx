@@ -26,6 +26,8 @@ import {
   getApiDonation,
   getApiDonationAmount,
 } from "../../services/api/donation/donationApi";
+//types
+import { Donation } from "../../utils/mockup/types";
 
 //state
 interface State {
@@ -34,14 +36,6 @@ interface State {
   donations: Array<Donation>;
   totalAmount: number;
 }
-
-type Donation = {
-  name: string;
-  surname: string;
-  userId: number;
-  amount: number;
-  donationDate: string;
-};
 
 const initialState: State = {
   page: 0,

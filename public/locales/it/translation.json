@@ -8,6 +8,8 @@
   "cancelButton": "Annulla modifiche",
   "changesSnack": "Modifiche avvenute con successo",
   "deleteSnack": "Eliminazione avvenuta con successo",
+  "responseErrorSnack": "Errore nella richiesta, riprova",
+  "responseWarningSnack": "Errore interno del server, riprova più tardi",
   "addSnack": "Inserimento avvenuto con successo",
   "deleteModal": {
     "text": "Sei sicuro di voler eliminare il seguente elemento?",
@@ -142,7 +144,8 @@
       "categoriesSection": {
         "title": "Categorie",
         "info": "Specificare le categorie da attribuire all'articolo"
-      }
+      },
+      "categoriesError": "Selezionare almeno una categoria"
     }
   },
   "volunteers": {
@@ -315,7 +318,7 @@
     "placeholderConfirmPassword": "Conferma Password"
   },
   "Donation": {
-    "title": "Donation",
+    "title": "Donazioni",
     "info": "Titolo della pagina con la tabella delle donazioni",
     "table": {
       "id": "ID TRANSAZIONE",

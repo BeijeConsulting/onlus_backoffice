@@ -1,5 +1,8 @@
 import { ChangeEvent, FC, useState, useEffect } from "react";
 
+//functions 
+import { fromBlobToBase64 } from "../../../utils/fromBlobToBase64"
+
 //style
 import style from "./buttonAddFile.module.scss";
 import common from "./../../../assets/styles/common.module.scss";
@@ -16,6 +19,7 @@ interface buttonAddFileProps {
   callback: any;
   image?: string;
   customKey?: number;
+  error?: boolean;
 }
 //state
 interface State {
@@ -26,7 +30,7 @@ const initialState: State = {
   selectedImage: "",
   file: ""
 };
-const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
+const ButtonAddFile: FC<buttonAddFileProps> = (props): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
   const { t } = useTranslation();
 
@@ -36,17 +40,19 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
       selectedImage: !!props.image ? props.image : "",
       file: !!props.image ? props.image : ""
     })
-    
+
   }, [])
-  
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>): void => {
+
+  const onChangeInput = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
+    let file = await fromBlobToBase64(e.target.files[0])
     setState({
       ...state,
-      selectedImage: e.target!.files[0]!.name,
-      file: URL.createObjectURL(e.target.files[0]),
+      selectedImage: e.target.files[0]!.name,
+      file: file,
     });
 
-    props.callback(URL.createObjectURL(e.target.files[0]));
+    console.log(e.target.files[0])
+    props.callback(file);
   };
 
   return (
@@ -54,7 +60,7 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
       <input
         accept="image/*"
         type="file"
-        name={`selectImage${!!props.customKey ? props.customKey : ""}`}
+        name={state.file}
         id={`selectImage${!!props.customKey ? props.customKey : ""}`}
         style={{ display: "none" }}
         onChange={onChangeInput}
@@ -73,13 +79,13 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props):JSX.Element => {
         </Button>
       </label>
       {state.selectedImage !== "" && (
-        <Typography className={style.inputFileName}>
+        <Typography className={style.inputFileName} sx={props.error ? { color: 'red' } : {}}>
           {state.selectedImage}
         </Typography>
       )}
       {state.selectedImage === "" && (
         <Typography className={style.inputFileName}>
-         {t("buttonAddFile.file")}
+          {t("buttonAddFile.file")}
         </Typography>
       )}
     </Box>
