@@ -23,7 +23,7 @@ axiosInstanceToken.interceptors.request.use(
       config.headers = {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
-        "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
       };
     }
     return config;
