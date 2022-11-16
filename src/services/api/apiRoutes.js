@@ -17,6 +17,7 @@ const APIROUTES = {
     FAQHANDLE: "/faq/question",
     INFOPUT: "/faq/info",
     SOCIAL : "/social",
+    SOCIALSINGLE : "/social/by-id",
     SOCIALADD : "/social/save",
     SOCIALDELETE : "/social/delete",
     SOCIALUPDATE : "/social/update",

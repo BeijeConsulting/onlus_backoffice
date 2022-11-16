@@ -111,3 +111,12 @@ export type AboutType = {
   title: AboutTitle
 }
 
+export type SingleSocial = {
+  footerOn: boolean,
+  homepageOn: boolean,
+  icon: string,
+  id?: Number,
+  link: string,
+  name: string
+}
+

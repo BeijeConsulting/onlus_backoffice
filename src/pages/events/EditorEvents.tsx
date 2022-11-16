@@ -130,7 +130,7 @@ const EditorEvents: FC = () => {
       validateForm(e);
   };
 
-  function validateForm(e: any): void {
+  function validateForm(e: BaseSyntheticEvent): void {
 
     let formIsValid = true;
     let newEvent: Event = {
@@ -187,7 +187,7 @@ const EditorEvents: FC = () => {
     } else {
       //oggetto che viene inviato al server
       newEvent = {
-        cover: inputCover,
+        cover: "test",
         description: inputDescription.value,
         place: inputPlace.value,
         requirements: inputRequirements.value,
@@ -196,7 +196,7 @@ const EditorEvents: FC = () => {
       };
       if(location?.state?.showAdd){
         sendData(newEvent);
-        navigate(PAGES.events, { state: { openAdd: true } });
+       
       }else{
         updateEvent(newEvent)
         navigate(PAGES.events, { state: { openChange: true } });
@@ -210,7 +210,10 @@ const EditorEvents: FC = () => {
   }
 
   async function sendData(newEvent: Event) {
-    await createEventApi(newEvent);
+    let resp = await createEventApi(newEvent);
+    if(resp?.status === 200){
+      navigate(PAGES.events, { state: { openAdd: true } });
+    }
   }
 
   return (
