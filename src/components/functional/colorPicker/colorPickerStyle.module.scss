@@ -5,6 +5,7 @@
   flex-direction: row;
   margin-bottom: 7px;
   margin-top: 8px;
+  width: 100%;
 
   .whole {
     display: flex;
@@ -13,6 +14,7 @@
     position: relative;
     margin-left: 5px;
     margin-right: 15px;
+    width: 50%;
 
     .color {
       width: 28px;
