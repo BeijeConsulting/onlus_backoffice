@@ -290,11 +290,11 @@ const EditorBlog: FC = (): JSX.Element => {
     if (!errors && !articleContentErrors) {
       if (location?.state?.showAdd) {
         //add
-        addArticle(article)
+        addArticle(article, error, articleContentError)
       }
       else {
         //update
-        updateArticle(article)
+        updateArticle(article, error, articleContentError)
       }
     }
     else {
@@ -389,39 +389,29 @@ const EditorBlog: FC = (): JSX.Element => {
   }
 
   //modifico l'articolo
-  const updateArticle = async (article: Article): Promise<void> => {
+  const updateArticle = async (article: Article, error:Array<boolean>, articleContentError: Array<boolean>): Promise<void> => {
     article.id = location?.state?.id
     console.log(article)
     let response = await putApiArticleById(article.id, article)
 
     if (response.status === 200)
       navigate(PAGES.articlesBlog, { state: { open: true } });
-    else if (response.status === 500 || response.status === undefined) {
-      setState({
-        ...state,
-        snackWarningIsOpen: true
-      })
-    }
-    else {
-      setState({
-        ...state,
-        snackErrorIsOpen: true
-      })
-    }
+    else 
+      handleAddUpdateResponse(response.status, error, articleContentError)
   }
 
   //aggiungo l'articolo
-  const addArticle = async (article: Article): Promise<void> => {
+  const addArticle = async (article: Article, error:Array<boolean>, articleContentError: Array<boolean>): Promise<void> => {
     let response = await postApiArticle(article)
 
     if (response.status === 200)
       navigate(PAGES.articlesBlog, { state: { openAdd: true } });
     else
-      handleAddUpdateResponse(response.status)
+      handleAddUpdateResponse(response.status, error, articleContentError)
   }
 
   //gestisco la risposta all'eliminazione dell'articolo
-  const handleAddUpdateResponse = async (status: number) => {
+  const handleAddUpdateResponse = async (status: number, error:Array<boolean>, articleContentError: Array<boolean>) => {
     let snackWarning: boolean = state.snackWarningIsOpen
     let snackError: boolean = state.snackErrorIsOpen
 
@@ -433,7 +423,9 @@ const EditorBlog: FC = (): JSX.Element => {
     setState({
       ...state,
       snackWarningIsOpen: snackWarning,
-      snackErrorIsOpen: snackError
+      snackErrorIsOpen: snackError,
+      error: error,
+      articleContentError: articleContentError
     })
   };
 
