@@ -30,3 +30,13 @@ export async function deleteCollaboratorById(id) {
 export async function activateCollaboratorById(id) {
     return await putApi(`${APIROUTES.USER}/active/${id}`);
 }
+
+//get active guests
+export async function getActiveGuests() {
+    return await getApi(APIROUTES.ACTIVEGUESTS);
+}
+
+//get deactivated guests
+export async function getDeactivatedGuests() {
+    return await getApi(APIROUTES.DEACTIVATEDGUESTS);
+}

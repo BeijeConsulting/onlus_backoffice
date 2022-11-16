@@ -24,7 +24,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 
 //API
 import { fetchData } from "../../../utils/fetchData";
-import { getActiveCollaborators, getDeactivatedCollaborators, deleteCollaboratorById, activateCollaboratorById } from "../../../services/api/collaborators/collaborators";
+import { getActiveCollaborators, getDeactivatedCollaborators, deleteCollaboratorById, activateCollaboratorById, getActiveGuests, getDeactivatedGuests } from "../../../services/api/collaborators/collaborators";
 
 //i18n
 import { useTranslation } from "react-i18next";
@@ -72,19 +72,40 @@ const Collaborators: FC = (): JSX.Element => {
   const location = useLocation();
 
   useEffect(() => {
-    getCollaboratorsData()
+    if(window.location.href.includes('collaborators')){
+      getCollaboratorsData()
+    } else {
+      getGuestsData()
+    }
 
     setState({
       ...state,
       snackIsOpen: location?.state?.open,
     });
-  }, []);
+  }, [window.location.href]);
 
-  //fetchAPI
+  //fetchAPI collaborators
   const getCollaboratorsData = async (): Promise<void> => {
     let res = await fetchData(getActiveCollaborators);
     let res2 = await fetchData(getDeactivatedCollaborators);
     console.log("Collab: ", res.data);
+    console.log("Deactivated: ", res2.data);
+
+    setState({
+      ...state,
+      collaborators: res.data,
+      deactivated: res2.data,
+      ready: true,
+      snackIsOpen: location?.state?.open
+    })
+  }
+
+  //fetchAPI guests
+  const getGuestsData = async (): Promise<void> => {
+    let res = await fetchData(getActiveGuests);
+    let res2 = await fetchData(getDeactivatedGuests);
+    console.log("Guests: ", res.data);
+    console.log("Deactivated: ", res2.data);
 
     setState({
       ...state,
@@ -139,12 +160,19 @@ const Collaborators: FC = (): JSX.Element => {
   //elimina l'utente
   const deleteUser = async (): Promise<void> => {
 
-    await deleteApi(state.idToDelete)
+    deleteApi(state.idToDelete)
+    let tmp = Object.assign([], state.deactivated)
+    let add = state.collaborators.find(obj => obj.id === state.idToDelete)
+    add.disableDate = new Date().toDateString()
+    tmp.push(add)
 
     setState({
       ...state,
       modalIsOpen: false,
       snackDeleteIsOpen: true,
+      collaborators: state.collaborators.filter((row) => row.id !== state.idToDelete),
+      deactivated: tmp,
+      idToDelete: null,
     });
   };
 
@@ -157,12 +185,19 @@ const Collaborators: FC = (): JSX.Element => {
   //riattiva l'utente
   const activateUser = async (): Promise<void> => {
 
-    await putActiveApi(state.idToActivate)
+    putActiveApi(state.idToActivate)
+    let tmp = Object.assign([], state.collaborators)
+    let add = state.deactivated.find(obj => obj.id === state.idToActivate)
+    add.disableDate = ''
+    tmp.push(add)
 
     setState({
       ...state,
       modalActiveIsOpen: false,
       snackDeleteIsOpen: true,
+      deactivated: state.deactivated.filter((row) => row.id !== state.idToActivate),
+      collaborators: tmp,
+      idToActivate: null,
     });
   }
 
@@ -183,14 +218,28 @@ const Collaborators: FC = (): JSX.Element => {
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
+
     //tabella disattivi
     if (params.row.disableDate !== '') {
-      return (
-        <ButtonIcon callback={openActiveModal(params.row.id)}>
-          <CreateIcon sx={{ fontSize: "18px" }} />
-        </ButtonIcon>
-      );
+      if (params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)) {
+
+        return (
+          <ButtonIcon disable={true}>
+            <CreateIcon sx={{ fontSize: "18px", color: 'gray' }} />
+          </ButtonIcon>
+        );
+
+      } else {
+
+        return (
+          <ButtonIcon callback={openActiveModal(params.row.id)}>
+            <CreateIcon sx={{ fontSize: "18px" }} />
+          </ButtonIcon>
+        );
+      }
+
     } else {
+
       //tabella attivi
       if (params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)) {
         return (
@@ -203,6 +252,7 @@ const Collaborators: FC = (): JSX.Element => {
             </ButtonIcon>
           </>
         );
+
       } else {
         return (
           <>
@@ -277,7 +327,7 @@ const Collaborators: FC = (): JSX.Element => {
               <CustomTable columns={columns} rows={state.collaborators} pageSize={5} />
             </LabelText>
 
-            <Box sx={{height: "20px"}}/>
+            <Box sx={{ height: "20px" }} />
 
             <LabelText>
               {/*titolo*/}
