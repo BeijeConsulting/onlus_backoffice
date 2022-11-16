@@ -10,6 +10,8 @@
   "changesSnack": "Changes successful",
   "deleteSnack": "Deletion successful",
   "addSnack": "inclusion successful",
+  "responseErrorSnack": "Request error, retry",
+  "responseWarningSnack": "Internal server error, retry later",
   "deleteModal": {
     "text": "Are you sure you want to delete the following element?",
     "deleteButton": "Delete",
@@ -146,7 +148,8 @@
       "categoriesSection": {
         "title": "Categories",
         "info": "Specify the categories to be assigned to the article"
-      }
+      },
+      "categoriesError": "Tou have to select one category"
     }
   },
   "volunteers": {

@@ -46,6 +46,9 @@ interface State {
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
   articles: Array<any>;
+  idToDelete: number;
+  snackErrorIsOpen: boolean;
+  snackWarningIsOpen: boolean;
 }
 const initialState: State = {
   ready: false,
@@ -53,7 +56,10 @@ const initialState: State = {
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
-  articles: []
+  articles: [],
+  idToDelete: null,
+  snackErrorIsOpen: false,
+  snackWarningIsOpen: false
 };
 
 const Blog: FC = (): JSX.Element => {
@@ -71,7 +77,7 @@ const Blog: FC = (): JSX.Element => {
   //fetchAPI
   const getArticles = async (): Promise<void> => {
     let res = await fetchData(getApiArticles);
-    console.log("Articles",res.data)
+    console.log("Articles", res.data)
     setState({
       ...state,
       articles: res.data,
@@ -86,24 +92,50 @@ const Blog: FC = (): JSX.Element => {
       ...state,
       snackIsOpen: false,
       snackDeleteIsOpen: false,
+      snackErrorIsOpen: false,
+      snackWarningIsOpen: false
     });
   };
 
   //mostro/nascondo modal di eliminazione dell'evento
-  const showDeleteModal = (): void => {
+  const showDeleteModal = (id: number) => (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
+      idToDelete: id
     });
   };
 
   //elimina articolo
-  const deleteArticle = (): void => {
+  const deleteArticle = async (): Promise<void> => {
+    let response = await deleteApiArticleById(state.idToDelete)
+    handleErrorResponse(response.status)
+  };
+
+  //gestisco la risposta all'eliminazione dell'articolo
+  const handleErrorResponse = async (status:number) => {
+    let snack: boolean = state.snackDeleteIsOpen
+    let snackWarning: boolean = state.snackWarningIsOpen
+    let snackError: boolean = state.snackErrorIsOpen
+    let response: any = {}
+    if (status === 200){
+      response = await fetchData(getApiArticles);
+      console.log("Articles", response.data)
+      snack = true
+    }  
+    else if (status === 500 || undefined) 
+      snackWarning = true
+    else 
+      snackError = true
+
     setState({
       ...state,
-      snackDeleteIsOpen: true,
+      snackDeleteIsOpen:snack,
+      snackWarningIsOpen: snackWarning,
+      snackErrorIsOpen: snackError,
       modalIsOpen: false,
-    });
+      articles: response.data
+    })
   };
 
   //modifica articolo
@@ -128,7 +160,7 @@ const Blog: FC = (): JSX.Element => {
         <ButtonIcon callback={updateArticle(params.row.id)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={showDeleteModal}>
+        <ButtonIcon callback={showDeleteModal(params.row.id)}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </Box>
@@ -197,7 +229,7 @@ const Blog: FC = (): JSX.Element => {
           {/* snackbar */}
           {state.snackIsOpen && (
             <CustomSnackbar
-              message={t("changeSnack")}
+              message={t("changesSnack")}
               severity={"success"}
               callback={handleClose}
             />
@@ -216,6 +248,22 @@ const Blog: FC = (): JSX.Element => {
               callback={handleClose}
             />
           )}
+          {
+            state.snackErrorIsOpen &&
+            <CustomSnackbar
+              message={t("responseErrorSnack")}
+              severity={"error"}
+              callback={handleClose}
+            />
+          }
+          {
+            state.snackWarningIsOpen &&
+            <CustomSnackbar
+              message={t("responseWarningSnack")}
+              severity={"warning"}
+              callback={handleClose}
+            />
+          }
 
         </>
       )}

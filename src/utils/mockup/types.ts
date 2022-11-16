@@ -18,11 +18,11 @@ export type Article = {
     category: Array<Category>,
     content: Array<ArticleContent>,
     cover: string,
-    date: string,
+    date?: string,
     email?: string,
     id?: number,
     name?: string,
-    status: string,
+    status?: string,
     surname?: string,
     title: string,
     userId?: number;
