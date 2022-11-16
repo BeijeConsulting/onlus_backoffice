@@ -1,7 +1,10 @@
-import { getApi } from "../../genericServices";
+import { getApiNoAuth, postApi } from "../../genericServices";
 import APIROUTES from "../apiRoutes";
 
+export async function getApiHome() {
+  return await getApiNoAuth(APIROUTES.HOME);
+}
 
-export async function getApiGeneral() {
-    return await getApi(APIROUTES.GENERAL)
+export async function postApiHome(obj) {
+  return await postApi(APIROUTES.HOMEEDIT, obj);
 }

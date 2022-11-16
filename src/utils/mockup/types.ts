@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export type Category = {
   id: number;
   name: string;
@@ -78,9 +80,33 @@ export type Donation = {
 export type Event = {
   cover?: string;
   description?: string;
-  eventDate?: string;
+  eventDate?: string | Dayjs;
   place?: string;
   requirements?: string;
   title?: string;
   id?: Number | null;
+};
+
+export type AboutContent = {
+  id: number;
+  mediaContent: string;
+  mediaType: string;
+  paragraph: string;
+};
+
+export type AboutHero = {
+  image: string;
+  subtitle: string;
+  text: string;
+};
+
+export type AboutTitle = {
+  id: number;
+  title: string;
+};
+
+export type AboutType = {
+  content: Array<AboutContent>;
+  hero: AboutHero;
+  title: AboutTitle;
 };

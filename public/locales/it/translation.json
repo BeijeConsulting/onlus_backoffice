@@ -195,6 +195,11 @@
       "info": "Qui verranno inseriti i risultati della onlus",
       "placeHolderSubTitle": "Inserisci titolo dei risultati",
       "placeHolderText": " Inserisci testo dei risultati"
+    },
+    "Story": {
+      "title": "Storia",
+      "info": "Qui verranno inserito una anteprima di storia della onlus",
+      "placeHolderText": " Inserisci testo della storia"
     }
   },
   "About": {

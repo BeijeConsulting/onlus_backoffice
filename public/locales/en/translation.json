@@ -199,6 +199,11 @@
       "info": "The results of the non-profit organization will be entered here",
       "placeHolderSubTitle": "Insert title of results",
       "placeHolderText": "Insert result text"
+    },
+    "Story": {
+      "title": "Story",
+      "info": "Here will be inserted a preview of the history of the non-profit organization",
+      "placeHolderText": "Insert story text"
     }
   },
   "About": {

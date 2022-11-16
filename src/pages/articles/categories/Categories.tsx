@@ -1,5 +1,5 @@
 import { Box, Typography, Modal } from "@mui/material";
-import { FC, useState, useRef, BaseSyntheticEvent } from "react";
+import { FC, useState, useRef, BaseSyntheticEvent, useEffect } from "react";
 
 //style
 import style from "../../../assets/styles/common.module.scss";
@@ -14,7 +14,12 @@ import CustomSnackbar from "../../../components/functional/customSnackbar/Custom
 import LabelText from "../../../components/functional/labelText/LabelText";
 
 //mockup data
-import { categories } from "../../../utils/mockup/data";
+import {
+  getApiCategories,
+  postApiCategory,
+  putApiCategoryById,
+  deleteApiCategoryById,
+} from "../../../services/api/categories/categoriesApi";
 import ButtonIcon from "../../../components/functional/buttonIcon/ButtonIcon";
 
 //icons
@@ -36,6 +41,8 @@ interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackUpdateIsOpen: boolean;
+  snackWarningIsOpen: boolean;
+  snackErrorIsOpen: boolean;
   modalIsOpen: boolean;
   modalUpdateIsOpen: boolean;
   addModal: boolean;
@@ -43,6 +50,9 @@ interface State {
   updateErrorMesssage: string;
   updateError: boolean;
   addCategoryName: string;
+  category: Array<Category>;
+  ready: boolean;
+  idCategoryApi: number;
 }
 const initialState: State = {
   addModal: false,
@@ -51,20 +61,50 @@ const initialState: State = {
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackUpdateIsOpen: false,
+  snackWarningIsOpen: false,
+  snackErrorIsOpen: false,
   modalIsOpen: false,
   modalUpdateIsOpen: false,
   updateName: "",
   updateErrorMesssage: "",
   updateError: false,
   addCategoryName: "",
+  category: [
+    {
+      id: null,
+      name: "",
+      // relatedArticles: 0,
+    },
+  ],
+  ready: false,
+  idCategoryApi: null,
+};
+
+type Category = {
+  id?: number;
+  name: string;
+  //relatedArticles: number;
 };
 
 const Categories: FC = (): JSX.Element => {
-
   const [state, setState] = useState<State>(initialState);
   const { t } = useTranslation();
 
   const ref: any = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const category: any = await getApiCategories();
+
+    setState({
+      ...state,
+      category: category.data,
+      ready: true,
+    });
+  };
 
   //Snackbar
   const handleClose = () => {
@@ -77,19 +117,21 @@ const Categories: FC = (): JSX.Element => {
   };
 
   //mostro/nascondo modal di eliminazione di una categoria
-  const showDeleteModal = (): void => {
+  const showDeleteModal = (row: any) => (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
+      idCategoryApi: row.id,
     });
   };
 
   //mostro/nascondo modal di modifica di una categoria
-  const showUpdateModal = (name: string) => (): void => {
+  const showUpdateModal = (row: any) => (): void => {
     setState({
       ...state,
       modalUpdateIsOpen: !state.modalUpdateIsOpen,
-      updateName: name,
+      updateName: row.name,
+      idCategoryApi: row.id,
     });
   };
 
@@ -112,7 +154,6 @@ const Categories: FC = (): JSX.Element => {
       inputE = true;
       addModal = false;
     }
-
     setState({
       ...state,
       textError: textE,
@@ -122,16 +163,32 @@ const Categories: FC = (): JSX.Element => {
   };
 
   //elimina categoria
-  const deleteCategory = (): void => {
+  const deleteCategory = async (): Promise<void> => {
+    let category: any = state.category;
+    let snackWarningIsOpen = false;
+    let snackErrorIsOpen = false;
+    const response = await deleteApiCategoryById(state.idCategoryApi);
+
+    if (response.status === 200) {
+      let categoryData: any = await getApiCategories();
+      category = categoryData.data;
+    } else if (response.status === 500 || response.status === undefined) {
+      snackWarningIsOpen = true;
+    } else {
+      snackErrorIsOpen = true;
+    }
     setState({
       ...state,
       snackDeleteIsOpen: true,
       modalIsOpen: false,
+      category: category,
+      snackWarningIsOpen: snackWarningIsOpen,
+      snackErrorIsOpen: snackErrorIsOpen,
     });
   };
 
   //aggiorna categoria
-  const updateCategory = (e: BaseSyntheticEvent): void => {
+  const updateCategory = async (e: BaseSyntheticEvent): Promise<void> => {
     const inputText: string = e.target.form[0].value.toLowerCase();
     const isEmpty: boolean = checkEmptyText(inputText);
     const isUnique: boolean = checkUniqueCategory(inputText);
@@ -139,6 +196,9 @@ const Categories: FC = (): JSX.Element => {
     let inputE: boolean = false;
     let isOpen: boolean = false;
     let snack: boolean = true;
+    let categoryData: any = state.category;
+    let snackWarningIsOpen = false;
+    let snackErrorIsOpen = false;
 
     if (isEmpty) {
       textU = t("Categories.errorEmpty");
@@ -153,24 +213,68 @@ const Categories: FC = (): JSX.Element => {
       snack = false;
     }
 
+    if (!isEmpty && isUnique) {
+      const category: Category = {
+        id: state.idCategoryApi,
+        name: inputText,
+        //relatedArticles: 0;
+      };
+      const response = await putApiCategoryById(state.idCategoryApi, category);
+
+      if (response.status === 200) {
+        let categoryApi: any = await getApiCategories();
+        categoryData = categoryApi.data;
+      } else if (response.status === 500 || response.status === undefined) {
+        snackWarningIsOpen = true;
+      } else {
+        snackErrorIsOpen = true;
+      }
+    }
+    //if falso
     setState({
       ...state,
+      snackWarningIsOpen: snackWarningIsOpen,
+      snackErrorIsOpen: snackErrorIsOpen,
       updateErrorMesssage: textU,
       updateError: inputE,
       modalUpdateIsOpen: isOpen,
       snackUpdateIsOpen: snack,
+      category: categoryData,
     });
   };
 
   //aggiungi categoria
-  const addCategory = (): void => {
+  const addCategory = async (): Promise<void> => {
+    let categories: any = state.category;
+    let snackIsOpen = false;
+    let snackWarningIsOpen = false;
+    let snackErrorIsOpen = false;
+    const category: Category = {
+      name: ref.current.value,
+      //relatedArticles: 0;
+    };
+
+    const response = await postApiCategory(category);
+    if (response.status === 200) {
+      let categoryData: any = await getApiCategories();
+      categories = categoryData.data;
+      snackIsOpen = true;
+    } else if (response.status === 500 || response.status === undefined) {
+      snackWarningIsOpen = true;
+    } else {
+      snackErrorIsOpen = true;
+    }
+
     if (ref.current) ref.current.value = "";
 
     setState({
       ...state,
       addModal: false,
-      snackIsOpen: true,
+      snackIsOpen: snackIsOpen,
+      snackWarningIsOpen: snackWarningIsOpen,
+      snackErrorIsOpen: snackErrorIsOpen,
       addCategoryName: "",
+      category: categories,
     });
   };
 
@@ -193,7 +297,7 @@ const Categories: FC = (): JSX.Element => {
   //controllo se la categoria da inserire non è già presente fra le mie
   const checkUniqueCategory = (par: string): boolean => {
     let flag = true;
-    categories.forEach((el) => {
+    state.category.forEach((el) => {
       if (el.name === par) {
         flag = false;
       }
@@ -211,10 +315,10 @@ const Categories: FC = (): JSX.Element => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={showUpdateModal(params.row.name)}>
+          <ButtonIcon callback={showUpdateModal(params.row)}>
             <CreateIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
-          <ButtonIcon callback={showDeleteModal}>
+          <ButtonIcon callback={showDeleteModal(params.row)}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -245,138 +349,147 @@ const Categories: FC = (): JSX.Element => {
 
   return (
     <Box className={style.component}>
-      <Box className={style.singleComponent}>
-
-        <LabelText>
-          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-            <Title
-              text={t("Categories.title")}
-              textInfo={t("Categories.info")}
-            />
-
-            <form>
-              <Box className={categoriesStyle.inputButtonContainer}>
-                <CustomTextField
-                  placeholder={t("Categories.placeholder")}
-                  error={state?.inputError}
-                  errorMessage={state?.textError}
-                  refCustom={ref}
+      {state.ready && (
+        <>
+          <Box className={style.singleComponent}>
+            <LabelText>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Title
+                  text={t("Categories.title")}
+                  textInfo={t("Categories.info")}
                 />
-                <ButtonGeneric
-                  color={'green'}
-                  callback={showModalCategory}
-                >
-                  + {t("addButton")}
-                </ButtonGeneric>
+
+                <form>
+                  <Box className={categoriesStyle.inputButtonContainer}>
+                    <CustomTextField
+                      placeholder={t("Categories.placeholder")}
+                      error={state?.inputError}
+                      errorMessage={state?.textError}
+                      refCustom={ref}
+                    />
+                    <ButtonGeneric color={"green"} callback={showModalCategory}>
+                      + {t("addButton")}
+                    </ButtonGeneric>
+                  </Box>
+
+                  {/* modale per la conferma aggiunta categoria */}
+                  <Modal
+                    open={state?.addModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box className={categoriesStyle.modal}>
+                      <Typography>{t("addModal.text")}</Typography>
+                      <Box className={categoriesStyle.modalButtons}>
+                        <ButtonGeneric color={"green"} callback={addCategory}>
+                          {t("addModal.addButton")}
+                        </ButtonGeneric>
+                        <ButtonGeneric
+                          color={style.secondaryColor}
+                          callback={hideAddModal}
+                        >
+                          {t("addModal.DiscardChangesButton")}
+                        </ButtonGeneric>
+                      </Box>
+                    </Box>
+                  </Modal>
+
+                  {/* modale per la conferma aggiunta categoria */}
+                  <Modal
+                    open={state?.addModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box className={categoriesStyle.modal}>
+                      <Typography>{t("addModal.text")}</Typography>
+                      <Box className={categoriesStyle.modalButtons}>
+                        <ButtonGeneric color={"green"} callback={addCategory}>
+                          {t("addButton")}
+                        </ButtonGeneric>
+                        <ButtonGeneric
+                          color={style.secondaryColor}
+                          callback={hideAddModal}
+                        >
+                          {t("deleteModal.DiscardChangesButton")}
+                        </ButtonGeneric>
+                      </Box>
+                    </Box>
+                  </Modal>
+                </form>
               </Box>
-
-              {/* modale per la conferma aggiunta categoria */}
-              <Modal
-                open={state?.addModal}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box className={categoriesStyle.modal}>
-                  <Typography>{t("addModal.text")}</Typography>
-                  <Box className={categoriesStyle.modalButtons}>
-                    <ButtonGeneric color={"green"} callback={addCategory}>
-                      {t("addModal.addButton")}
-                    </ButtonGeneric>
-                    <ButtonGeneric
-                      color={style.secondaryColor}
-                      callback={hideAddModal}
-                    >
-                      {t("addModal.DiscardChangesButton")}
-                    </ButtonGeneric>
-                  </Box>
+              <CustomTable columns={columns} rows={state.category} />
+            </LabelText>
+          </Box>
+          {/* modale per la conferma eliminazione */}
+          <DeleteModal
+            open={state?.modalIsOpen}
+            closeCallback={showDeleteModal}
+            deleteCallback={deleteCategory}
+          />
+          {/* modale per la modifica della categoria */}
+          <Modal
+            open={state?.modalUpdateIsOpen}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <form>
+              <Box className={categoriesStyle.modal}>
+                <CustomTextField
+                  defaultValue={state?.updateName}
+                  placeholder={t("Categories.placeholder")}
+                  errorMessage={state?.updateErrorMesssage}
+                  error={state?.updateError}
+                />
+                <Box className={categoriesStyle.modalButtons}>
+                  <ButtonGeneric color={"green"} callback={updateCategory}>
+                    {t("Categories.categoryModal.changeButton")}
+                  </ButtonGeneric>
+                  <ButtonGeneric
+                    color={style.secondaryColor}
+                    callback={hideUpdateModal}
+                  >
+                    {t("Categories.categoryModal.discardButton")}
+                  </ButtonGeneric>
                 </Box>
-              </Modal>
-
-              {/* modale per la conferma aggiunta categoria */}
-              <Modal
-                open={state?.addModal}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-              >
-                <Box className={categoriesStyle.modal}>
-                  <Typography>
-                    {t("addModal.text")}
-                  </Typography>
-                  <Box className={categoriesStyle.modalButtons}>
-                    <ButtonGeneric color={"green"} callback={addCategory}>
-                      {t("addButton")}
-                    </ButtonGeneric>
-                    <ButtonGeneric
-                      color={style.secondaryColor}
-                      callback={hideAddModal}
-                    >
-                      {t("deleteModal.DiscardChangesButton")}
-                    </ButtonGeneric>
-                  </Box>
-                </Box>
-              </Modal>
+              </Box>
             </form>
-          </Box>
-          <CustomTable columns={columns} rows={categories} />
-        </LabelText>
-      </Box>
-
-      {/* modale per la conferma eliminazione */}
-      <DeleteModal
-        open={state?.modalIsOpen}
-        closeCallback={showDeleteModal}
-        deleteCallback={deleteCategory}
-      />
-
-      {/* modale per la modifica della categoria */}
-      <Modal
-        open={state?.modalUpdateIsOpen}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <form>
-          <Box className={categoriesStyle.modal}>
-            <CustomTextField
-              defaultValue={state?.updateName}
-              placeholder={t("Categories.placeholder")}
-              errorMessage={state?.updateErrorMesssage}
-              error={state?.updateError}
+          </Modal>
+          {state?.snackIsOpen && (
+            <CustomSnackbar
+              message={t("addSnack")}
+              severity={"success"}
+              callback={handleClose}
             />
-            <Box className={categoriesStyle.modalButtons}>
-              <ButtonGeneric color={"green"} callback={updateCategory}>
-                {t("Categories.categoryModal.changeButton")}
-              </ButtonGeneric>
-              <ButtonGeneric
-                color={style.secondaryColor}
-                callback={hideUpdateModal}
-              >
-                {t("Categories.categoryModal.discardButton")}
-              </ButtonGeneric>
-            </Box>
-          </Box>
-        </form>
-      </Modal>
-
-      {state?.snackIsOpen && (
-        <CustomSnackbar
-          message={t("addSnack")}
-          severity={"success"}
-          callback={handleClose}
-        />
-      )}
-      {state?.snackUpdateIsOpen && (
-        <CustomSnackbar
-          message={t("changesSnack")}
-          severity={"success"}
-          callback={handleClose}
-        />
-      )}
-      {state?.snackDeleteIsOpen && (
-        <CustomSnackbar
-          message={t("deleteSnack")}
-          severity={"info"}
-          callback={handleClose}
-        />
+          )}
+          {state?.snackUpdateIsOpen && (
+            <CustomSnackbar
+              message={t("changesSnack")}
+              severity={"success"}
+              callback={handleClose}
+            />
+          )}
+          {state?.snackDeleteIsOpen && (
+            <CustomSnackbar
+              message={t("deleteSnack")}
+              severity={"info"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackErrorIsOpen && (
+            <CustomSnackbar
+              message={t("responseErrorSnack")}
+              severity={"error"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackWarningIsOpen && (
+            <CustomSnackbar
+              message={t("responseWarningSnack")}
+              severity={"warning"}
+              callback={handleClose}
+            />
+          )}
+        </>
       )}
     </Box>
   );

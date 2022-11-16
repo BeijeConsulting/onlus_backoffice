@@ -1,4 +1,4 @@
-import { FC, useState, BaseSyntheticEvent } from "react";
+import { FC, useState, BaseSyntheticEvent, useEffect } from "react";
 
 //mui
 import { Box } from "@mui/material";
@@ -15,41 +15,115 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //data
-import { home } from "../../../utils/mockup/data";
+import { getApiHome, postApiHome } from "../../../services/api/home/homeApi";
 //translation
 import { useTranslation } from "react-i18next";
 
 //interface
 type home = {
   hero: {
-    img: any;
+    image: any;
+    subtitle: string;
+    text: string;
+  };
+  result: {
+    image: any;
     title: string;
     text: string;
   };
-  results: {
-    img: any;
-    title: string;
+  story: {
+    image: any;
     text: string;
   };
 };
 
 interface State {
   snackIsOpen: boolean;
+  home: home;
+  ready: boolean;
 }
 
 const initState: State = {
   snackIsOpen: false,
+  home: {
+    hero: {
+      image: null,
+      subtitle: "",
+      text: "",
+    },
+    result: {
+      image: null,
+      title: "",
+      text: "",
+    },
+    story: {
+      image: null,
+      text: "",
+    },
+  },
+  ready: false,
 };
 const Home: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
   const { t } = useTranslation();
 
-  function editHome(e: BaseSyntheticEvent): void {
-    console.log(e);
+  useEffect(() => {
+    getData();
+  }, []);
+
+  async function getData() {
+    const homeData: any = await getApiHome();
+
     setState({
       ...state,
-      snackIsOpen: true,
+      ready: true,
+      home: {
+        hero: {
+          image: homeData.data.hero.image,
+          subtitle: homeData.data.hero.subtitle,
+          text: homeData.data.hero.text,
+        },
+        result: {
+          image: homeData.data.result.image,
+          title: homeData.data.result.title,
+          text: homeData.data.result.text,
+        },
+        story: {
+          image: homeData.data.story.image,
+          text: homeData.data.story.text,
+        },
+      },
     });
+  }
+
+  async function editHome(e: BaseSyntheticEvent): Promise<void> {
+    let home: home = {
+      hero: {
+        image: e.target.form[0].name,
+        subtitle: e.target.form[1].value,
+        text: e.target.form[3].value,
+      },
+      result: {
+        image: e.target.form[12].name,
+        title: e.target.form[10].value,
+        text: e.target.form[13].value,
+      },
+      story: {
+        image: e.target.form[6].name,
+        text: e.target.form[7].value,
+      },
+    };
+    console.log(home);
+
+    const editHome: any = await postApiHome(home);
+    console.log(editHome);
+
+    if (editHome.status === 200) {
+      setState({
+        ...state,
+        snackIsOpen: true,
+      });
+    }
   }
 
   function closeSnack(): void {
@@ -66,60 +140,92 @@ const Home: FC = (): JSX.Element => {
 
   return (
     <form className={common.component}>
-      <Box className={common.doubleComponent}>
-        <Box className={common.left}>
-          <LabelText>
-            <Title text={t("Home.Hero.title")} textInfo={t("Home.Hero.info")} />
-            <ButtonAddFile callback={log} />
-            <CustomTextField
-              placeholder={t("Home.Hero.placeHolderSubTitle")}
-              error={false}
-              defaultValue={home.hero.title}
-            />
-            <CustomTextField
-              placeholder={t("Home.Hero.placeHolderText")}
-              defaultValue={home.hero.text}
-              error={false}
-              multiline={true}
-              minrow={7}
-              maxrow={10}
-            />
-          </LabelText>
-        </Box>
-        <Box className={common.right}>
-          <LabelText>
-            <Title
-              text={t("Home.Results.title")}
-              textInfo={t("Home.Results.info")}
-            />
-            <CustomTextField
-              placeholder={t("Home.Results.placeHolderSubTitle")}
-              error={false}
-              defaultValue={home.results.title}
-            />
-            <ButtonAddFile callback={log} />
-            <CustomTextField
-              placeholder={t("Home.Results.placeHolderSubTitle")}
-              defaultValue={home.results.text}
-              error={false}
-              multiline={true}
-              minrow={7}
-              maxrow={15}
-            />
-          </LabelText>
-        </Box>
-      </Box>
-      <ButtonGeneric callback={editHome} color={common.saveButtonColor}>
-        {t("saveButton")}
-      </ButtonGeneric>
+      {state.ready && (
+        <>
+          <Box className={common.doubleComponent}>
+            <Box className={common.left}>
+              <LabelText>
+                <Title
+                  text={t("Home.Hero.title")}
+                  textInfo={t("Home.Hero.info")}
+                />
+                <ButtonAddFile
+                  callback={log}
+                  image={state?.home?.hero?.image}
+                />
+                <CustomTextField
+                  defaultValue={state?.home?.hero?.subtitle}
+                  placeholder={t("Home.Hero.placeHolderSubTitle")}
+                  error={false}
+                />
+                <CustomTextField
+                  placeholder={t("Home.Hero.placeHolderText")}
+                  defaultValue={state?.home?.hero?.text}
+                  error={false}
+                  multiline={true}
+                  minrow={7}
+                  maxrow={10}
+                />
+              </LabelText>
+              <LabelText>
+                <Title
+                  text={t("Home.Story.title")}
+                  textInfo={t("Home.Story.info")}
+                />
+                <ButtonAddFile
+                  callback={log}
+                  image={state?.home?.story?.image}
+                />
 
-      {/* snackbar */}
-      {state.snackIsOpen && (
-        <CustomSnackbar
-          message={t("changesSnack")}
-          severity={"success"}
-          callback={closeSnack}
-        />
+                <CustomTextField
+                  placeholder={t("Home.Story.placeHolderText")}
+                  defaultValue={state?.home?.story?.text}
+                  error={false}
+                  multiline={true}
+                  minrow={7}
+                  maxrow={10}
+                />
+              </LabelText>
+            </Box>
+            <Box className={common.right}>
+              <LabelText>
+                <Title
+                  text={t("Home.Results.title")}
+                  textInfo={t("Home.Results.info")}
+                />
+                <CustomTextField
+                  placeholder={t("Home.Results.placeHolderSubTitle")}
+                  error={false}
+                  defaultValue={state?.home?.result?.title}
+                />
+                <ButtonAddFile
+                  callback={log}
+                  image={state?.home?.result?.image}
+                />
+                <CustomTextField
+                  placeholder={t("Home.Results.placeHolderSubTitle")}
+                  defaultValue={state?.home?.result?.text}
+                  error={false}
+                  multiline={true}
+                  minrow={7}
+                  maxrow={15}
+                />
+              </LabelText>
+            </Box>
+          </Box>
+          <ButtonGeneric callback={editHome} color={common.saveButtonColor}>
+            {t("saveButton")}
+          </ButtonGeneric>
+
+          {/* snackbar */}
+          {state.snackIsOpen && (
+            <CustomSnackbar
+              message={t("changesSnack")}
+              severity={"success"}
+              callback={closeSnack}
+            />
+          )}
+        </>
       )}
     </form>
   );
