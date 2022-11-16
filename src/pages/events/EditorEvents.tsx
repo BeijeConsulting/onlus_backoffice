@@ -146,7 +146,9 @@ const EditorEvents: FC = () => {
     const inputDescription = e.target.form[5];
     const inputPlace = e.target.form[9];
     const inputRequirements = e.target.form[11];
-    const inputCover = e.target.form[8];
+    const inputCover = e.target.form[8].name;
+    console.log(inputCover);
+    
 
     let errorTitle = false;
     let errorDescription = false;
@@ -185,7 +187,7 @@ const EditorEvents: FC = () => {
     } else {
       //oggetto che viene inviato al server
       newEvent = {
-        cover: "covertest",
+        cover: inputCover,
         description: inputDescription.value,
         place: inputPlace.value,
         requirements: inputRequirements.value,
@@ -227,6 +229,7 @@ const EditorEvents: FC = () => {
                   <CustomTextField
                     placeholder={t("EventsEditor.Title.placeHolderText")}
                     error={state.titleError}
+                    errorMessage={"Inserisci il titolo"}
                     id={"title"}
                     defaultValue={state?.currentEvent?.title}
                   />
@@ -263,6 +266,7 @@ const EditorEvents: FC = () => {
                     multiline={true}
                     minrow={6}
                     defaultValue={state?.currentEvent?.description}
+                    errorMessage={"Inserisci una descrizione dell'evento"}
                   />
                 </LabelText>
               </Box>
@@ -276,6 +280,7 @@ const EditorEvents: FC = () => {
                     callback={() => {
                       console.log("ciao");
                     }}
+                    image={state?.currentEvent?.cover}
                   />
                 </LabelText>
 
@@ -288,6 +293,7 @@ const EditorEvents: FC = () => {
                     placeholder={t("EventsEditor.Place.placeHolderText")}
                     error={state.placeError}
                     defaultValue={state?.currentEvent?.place}
+                    errorMessage={"Inserisci il luogo dove si svolgerà l'evento"}
                   />
                 </LabelText>
 
@@ -302,6 +308,7 @@ const EditorEvents: FC = () => {
                     multiline={true}
                     minrow={6}
                     defaultValue={state?.currentEvent?.requirements}
+                    errorMessage={"Inserisci i requisiti per partecipare all'evento"}
                   />
                 </LabelText>
 

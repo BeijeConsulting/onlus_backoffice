@@ -143,11 +143,6 @@ const Events: FC = (): JSX.Element => {
   const deleteEvent = async (): Promise<void> => {
     let resp = await deleteEventByIdApi(state?.currentEventId);
     if (resp?.status === 200) {
-      // setState({
-      //   ...state,
-      //   modalIsOpen: false,
-      //   snackDeleteIsOpen: true,
-      // });
       getEvents(true);
     }
   };
