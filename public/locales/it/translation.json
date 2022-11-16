@@ -332,6 +332,8 @@
     },
     "amountDonation": "TOTALE DONAZIONI",
     "subTable": {
+      "name": "NOME",
+      "surname": "COGNOME",
       "title": "Transazione",
       "id": "ID",
       "email": "EMAIL",
