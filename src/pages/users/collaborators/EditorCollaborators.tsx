@@ -25,6 +25,10 @@ import { postCollaborator } from "../../../services/api/collaborators/collaborat
 //i18n
 import { useTranslation } from 'react-i18next';
 
+//Redux
+import { useSelector } from 'react-redux/es/exports'
+import roles from '../../../utils/roles'
+
 type User = {
   name: string;
   surname: string;
@@ -44,15 +48,30 @@ type Item = {
 const lang: Array<Item> = [
   {
     name: "Italiano",
-    value: "it",
+    value: "IT",
   },
   {
     name: "Inglese",
-    value: "en",
+    value: "EN",
   },
 ];
 
-const roles: Array<Item> = [
+const rolesForSuper: Array<Item> = [
+  {
+    name: "Superadmin",
+    value: "3",
+  },
+  {
+    name: "Admin",
+    value: "2",
+  },
+  {
+    name: "Blogger",
+    value: "4",
+  },
+];
+
+const rolesForAdmin: Array<Item> = [
   {
     name: "Admin",
     value: "2",
@@ -74,6 +93,8 @@ const initState: State = {
 const EditorCollaborators: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
   const { t, i18n } = useTranslation();
+
+  const currentUser = useSelector((state: any) => state.userDuck.user)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -156,14 +177,24 @@ const EditorCollaborators: FC = (): JSX.Element => {
     console.log("Collaborator: ", res)
   }
 
-  const log = (): void => {
-
-  }
-
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
     navigate(PAGES.usersCollaborators);
   };
+
+  const log = (): void => {
+
+  }
+
+  const checkRole = (): string => {
+    if(location?.state?.row.role.includes('SUPERADMIN')) {
+      return '3'
+    } else if(location?.state?.row.role.includes('ADMIN')) {
+      return '2'
+    } else {
+      return '4'
+    }
+  }
 
   return (
     <Box className={common.component}>
@@ -217,10 +248,14 @@ const EditorCollaborators: FC = (): JSX.Element => {
 
                 <CustomSelect
                   label={t("CollaboratorsEditor.placeholderRole")}
-                  items={roles}
+                  items={
+                    currentUser.permission.includes(roles.owner)
+                    ? rolesForSuper
+                    : rolesForAdmin
+                  }
                   defaultValue={
                     !!location?.state?.row?.role
-                      ? location?.state?.row?.role
+                      ? checkRole()
                       : ""
                   }
                   error={state.error[3]}

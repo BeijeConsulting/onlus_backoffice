@@ -29,6 +29,10 @@ import { getCollaborators, deleteCollaboratorById } from "../../../services/api/
 //i18n
 import { useTranslation } from "react-i18next";
 
+//Redux
+import { useSelector } from 'react-redux/es/exports'
+import roles from '../../../utils/roles'
+
 interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
@@ -52,6 +56,8 @@ const initialState: State = {
 const Collaborators: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
   const { t, i18n } = useTranslation();
+
+  const currentUser = useSelector((state: any) => state.userDuck.user)
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -133,16 +139,29 @@ const Collaborators: FC = (): JSX.Element => {
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
-    return (
-      <>
-        <ButtonIcon callback={updateUser(params.row)}>
-          <CreateIcon sx={{ fontSize: "18px" }} />
-        </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal(params.row.id)}>
-          <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
-        </ButtonIcon>
-      </>
-    );
+    if(params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)){
+      return (
+        <>
+          <ButtonIcon disable={true}>
+            <CreateIcon sx={{ fontSize: "18px", color: 'gray' }} />
+          </ButtonIcon>
+          <ButtonIcon disable={true}>
+            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px", color: 'gray' }} />
+          </ButtonIcon>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <ButtonIcon callback={updateUser(params.row)}>
+            <CreateIcon sx={{ fontSize: "18px" }} />
+          </ButtonIcon>
+          <ButtonIcon callback={openDeleteModal(params.row.id)}>
+            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
+          </ButtonIcon>
+        </>
+      );
+    }
   };
 
   const columns = [
@@ -199,10 +218,28 @@ const Collaborators: FC = (): JSX.Element => {
               <CustomTable columns={columns} rows={state.collaborators} pageSize={5} />
             </LabelText>
 
+            <LabelText>
+              {/*titolo*/}
+              <Box className={style.titleRow}>
+                <Title
+                  text={t("Collaborators.title")}
+                  textInfo={
+                    t("Collaborators.info")
+                  }
+                />
+                <ButtonGeneric color={"green"} callback={addUser}>
+                  + {t("addButton")}
+                </ButtonGeneric>
+              </Box>
+
+              {/*tabella*/}
+              <CustomTable columns={columns} rows={state.collaborators} pageSize={5} />
+            </LabelText>
+
             <DeleteModal
               open={state.modalIsOpen}
               closeCallback={closeDeleteModal}
-              deleteCallback={deleteUser /*API delete*/}
+              deleteCallback={deleteUser}
             />
           </Box>
           {state.snackIsOpen && (
