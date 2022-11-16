@@ -11,6 +11,11 @@ export async function postCollaborator(obj) {
     return await postApi(`${APIROUTES.USERADD}`, obj);
 }
 
+//put by ID
+export async function putApiCollaboratorById(id, obj) {
+    return await putApi(`${APIROUTES.USER}/${id}`, obj);
+}
+
 //delete by ID
 export async function deleteCollaboratorById(id) {
     return await deleteApi(`${APIROUTES.USER}/${id}`);

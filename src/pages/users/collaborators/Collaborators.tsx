@@ -164,6 +164,10 @@ const Collaborators: FC = (): JSX.Element => {
     }
   };
 
+  const renderValue = (params: any) => {
+    return params.row.role[0];
+  }
+
   const columns = [
     {
       field: "name",
@@ -179,6 +183,7 @@ const Collaborators: FC = (): JSX.Element => {
       field: "role",
       headerName: t("Collaborators.table.role"),
       flex: 1,
+      valueGetter: renderValue,
     },
     {
       field: "publishedArticles",

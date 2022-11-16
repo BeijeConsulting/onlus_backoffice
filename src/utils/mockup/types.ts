@@ -27,3 +27,16 @@ export type Article = {
     title: string,
     userId?: number;
 }
+
+export type User = {
+    disableDate?: string,
+    email: string,
+    id?: number,
+    language: string,
+    name: string,
+    surname: string,
+    password: string,
+    phone: string,
+    publishedArticles?: number,
+    role: Array<string> | number
+}
