@@ -80,41 +80,33 @@ export type Donation = {
 export type Event = {
   cover?: string;
   description?: string;
-<<<<<<< HEAD
   eventDate?: string | Dayjs;
-=======
-  eventDate?: string;
->>>>>>> develop
   place?: string;
   requirements?: string;
   title?: string;
   id?: Number | null;
 };
-<<<<<<< HEAD
 
 export type AboutContent = {
-  id: number,
-  mediaContent: string,
-  mediaType: string,
-  paragraph: string
-}
+  id: number;
+  mediaContent: string;
+  mediaType: string;
+  paragraph: string;
+};
 
 export type AboutHero = {
-  image: string,
-  subtitle: string,
-  text: string
-}
+  image: string;
+  subtitle: string;
+  text: string;
+};
 
 export type AboutTitle = {
-  id: number,
-  title: string
-}
+  id: number;
+  title: string;
+};
 
 export type AboutType = {
-  content: Array<AboutContent>,
-  hero: AboutHero,
-  title: AboutTitle
-}
-
-=======
->>>>>>> develop
+  content: Array<AboutContent>;
+  hero: AboutHero;
+  title: AboutTitle;
+};
