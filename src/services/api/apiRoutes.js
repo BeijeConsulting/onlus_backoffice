@@ -1,4 +1,6 @@
 const APIROUTES = {
+    ABOUT : "/about",
+    ABOUTUPDATE : "/about/update-about",
     ARTICLE : "/article/",
     ARTICLEADD : "article/add",
     SIGNIN : "/signin",
@@ -15,6 +17,8 @@ const APIROUTES = {
     SOCIALADD : "/social/save",
     SOCIALDELETE : "/social/delete",
     SOCIALUPDATE : "/social/update",
+    SUPPORTUS: "/support",
+    SUPPORTUSUPDATE: "/support/update-support",
     USER : "/user",
     COLLABORATORS : "user/collaborators",
     GUEST : "user/guest",

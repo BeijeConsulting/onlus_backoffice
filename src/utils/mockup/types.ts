@@ -84,3 +84,52 @@ export type Event = {
   title?: string;
   id?: Number | null;
 };
+
+export type AboutContent = {
+  id: number,
+  mediaContent: string,
+  mediaType: string,
+  paragraph: string
+}
+
+export type AboutHero = {
+  image: string,
+  subtitle: string,
+  text: string
+}
+
+export type AboutTitle = {
+  id: number,
+  title: string
+}
+
+export type AboutType = {
+  content: Array<AboutContent>,
+  hero: AboutHero,
+  title: AboutTitle
+}
+
+export type SupportContent = {
+  id: number,
+  mediaContent: string,
+  mediaType: string,
+  paragraph: string
+}
+
+export type SupportHero = {
+  image: string,
+  subtitle: string,
+  text: string
+}
+
+export type SupportTitle = {
+  id: number,
+  title: string
+}
+
+export type Support = {
+  content: Array<AboutContent>,
+  hero: AboutHero,
+  title: AboutTitle
+}
+
