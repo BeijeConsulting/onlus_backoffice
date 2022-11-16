@@ -1,4 +1,4 @@
-import { useState, FC, BaseSyntheticEvent } from "react";
+import { useState, FC, BaseSyntheticEvent, useEffect } from "react";
 
 //style
 import style from "./colorPickerStyle.module.scss";
@@ -13,27 +13,36 @@ import { ColorResult, SketchPicker } from "@hello-pangea/color-picker";
 interface State {
   bgToggleOne: boolean;
   txtToggleOne: boolean;
-  bgColorOne: string;
-  txtColorOne: string;
+  bgColor: string;
+  txtColor: string;
 }
 
 interface colorPickerProp {
-  callback?: Function;
+  callbackBg: Function;
+  callbackTxt: Function;
   bg?: string;
   txt?: string;
-  background?: string,
-  text?: string
+  background?: string;
+  text?: string;
 }
 
 const initState: State = {
   bgToggleOne: false,
   txtToggleOne: false,
-  bgColorOne: "#262e36",
-  txtColorOne: "#ffffff",
+  bgColor: "#262e36",
+  txtColor: "#ffffff",
 };
 
 const ColorPicker: FC<colorPickerProp> = (props): JSX.Element => {
   const [state, setState] = useState<State>(initState);
+
+  useEffect(() => {
+    setState({
+      ...state,
+      bgColor: props.bg,
+      txtColor: props.txt,
+    });
+  }, []);
 
   const openColorPicker = (e: BaseSyntheticEvent): void => {
     console.log(e.target.id);
@@ -44,21 +53,19 @@ const ColorPicker: FC<colorPickerProp> = (props): JSX.Element => {
   };
 
   const setChangedColorBg = (color: ColorResult): void => {
-    console.log(props.bg);
     setState({
       ...state,
-      [props.bg]: color.hex,
+      bgColor: color.hex,
     });
-    props.callback(color.hex);
+    props.callbackBg(color.hex);
   };
 
   const setChangedColorTxt = (color: ColorResult): void => {
-    console.log(props.txt);
     setState({
       ...state,
-      [props.txt]: color.hex,
+      txtColor: color.hex,
     });
-    props.callback(color.hex);
+    props.callbackTxt(color.hex);
   };
 
   const closeColorPicker = (e: BaseSyntheticEvent): void => {
@@ -75,7 +82,7 @@ const ColorPicker: FC<colorPickerProp> = (props): JSX.Element => {
         <Box
           id="bgToggleOne"
           className={style.color}
-          style={{ backgroundColor: state.bgColorOne }}
+          style={{ backgroundColor: state.bgColor }}
           onClick={openColorPicker}
         ></Box>
         {state.bgToggleOne === true && (
@@ -96,7 +103,7 @@ const ColorPicker: FC<colorPickerProp> = (props): JSX.Element => {
         <Box
           id="txtToggleOne"
           className={style.color}
-          style={{ backgroundColor: state.txtColorOne }}
+          style={{ backgroundColor: state.txtColor }}
           onClick={openColorPicker}
         ></Box>
         {state.txtToggleOne === true && (

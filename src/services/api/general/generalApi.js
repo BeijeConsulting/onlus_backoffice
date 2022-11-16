@@ -1,12 +1,10 @@
-import {getApi,putApi} from "../../genericServices";
+import { getApi, putApi } from "../../genericServices";
 import APIROUTES from "../apiRoutes";
 
-
-export async function getApiGeneral(){
-    return await getApi(APIROUTES.GENERAL)
+export async function getApiGeneral() {
+  return await getApi(APIROUTES.GENERAL);
 }
 
-export async function putApiGeneral(obj){
-    return await putApi(`${APIROUTES.GENERAL}/?id=1`,obj)
+export async function putApiGeneral(id, obj) {
+  return await putApi(`${APIROUTES.GENERALPUT}/${id}`, obj);
 }
- 
