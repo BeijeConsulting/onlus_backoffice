@@ -24,7 +24,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 
 //API
 import { fetchData } from "../../../utils/fetchData";
-import { getCollaborators, deleteCollaboratorById } from "../../../services/api/collaborators/collaborators";
+import { getActiveCollaborators, getDeactivatedCollaborators, deleteCollaboratorById, activateCollaboratorById } from "../../../services/api/collaborators/collaborators";
 
 //i18n
 import { useTranslation } from "react-i18next";
@@ -33,24 +33,33 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from 'react-redux/es/exports'
 import roles from '../../../utils/roles'
 
+//Utils
+import { User } from "../../../utils/mockup/types";
+
 interface State {
   modalIsOpen: boolean;
+  modalActiveIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
   ready: boolean;
-  collaborators: Array<any>;
+  collaborators: Array<User>;
+  deactivated: Array<User>;
   idToDelete: number;
+  idToActivate: number;
 }
 
 const initialState: State = {
   modalIsOpen: false,
+  modalActiveIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
   ready: false,
   collaborators: [],
+  deactivated: [],
   idToDelete: null,
+  idToActivate: null,
 };
 
 const Collaborators: FC = (): JSX.Element => {
@@ -73,12 +82,14 @@ const Collaborators: FC = (): JSX.Element => {
 
   //fetchAPI
   const getCollaboratorsData = async (): Promise<void> => {
-    let res = await fetchData(getCollaborators);
+    let res = await fetchData(getActiveCollaborators);
+    let res2 = await fetchData(getDeactivatedCollaborators);
     console.log("Collab: ", res.data);
 
     setState({
       ...state,
       collaborators: res.data,
+      deactivated: res2.data,
       ready: true,
       snackIsOpen: location?.state?.open
     })
@@ -102,6 +113,14 @@ const Collaborators: FC = (): JSX.Element => {
     });
   };
 
+  const openActiveModal = (id: number) => (): void => {
+    setState({
+      ...state,
+      modalActiveIsOpen: !state.modalActiveIsOpen,
+      idToActivate: id,
+    });
+  };
+
   //chiude il modale
   const closeDeleteModal = (): void => {
     setState({
@@ -110,10 +129,17 @@ const Collaborators: FC = (): JSX.Element => {
     });
   };
 
-  //elimina l'utente
-  const deleteUser = (): void => {
+  const closeActiveModal = (): void => {
+    setState({
+      ...state,
+      modalActiveIsOpen: !state.modalActiveIsOpen,
+    });
+  };
 
-    deleteApi(state.idToDelete)
+  //elimina l'utente
+  const deleteUser = async (): Promise<void> => {
+
+    await deleteApi(state.idToDelete)
 
     setState({
       ...state,
@@ -128,6 +154,24 @@ const Collaborators: FC = (): JSX.Element => {
     console.log("Delete: ", res.data)
   }
 
+  //riattiva l'utente
+  const activateUser = async (): Promise<void> => {
+
+    await putActiveApi(state.idToActivate)
+
+    setState({
+      ...state,
+      modalActiveIsOpen: false,
+      snackDeleteIsOpen: true,
+    });
+  }
+
+  //PutActiveApi
+  const putActiveApi = async (id: number): Promise<void> => {
+    let res = await fetchData(activateCollaboratorById, id)
+    console.log("Active: ", res)
+  }
+
   //Funzioni di modifica e aggiunta
   const updateUser = (row: object) => (): void => {
     navigate(PAGES.editorCollaborators, { state: { row } });
@@ -139,28 +183,38 @@ const Collaborators: FC = (): JSX.Element => {
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
-    if(params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)){
+    //tabella disattivi
+    if (params.row.disableDate !== '') {
       return (
-        <>
-          <ButtonIcon disable={true}>
-            <CreateIcon sx={{ fontSize: "18px", color: 'gray' }} />
-          </ButtonIcon>
-          <ButtonIcon disable={true}>
-            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px", color: 'gray' }} />
-          </ButtonIcon>
-        </>
+        <ButtonIcon callback={openActiveModal(params.row.id)}>
+          <CreateIcon sx={{ fontSize: "18px" }} />
+        </ButtonIcon>
       );
     } else {
-      return (
-        <>
-          <ButtonIcon callback={updateUser(params.row)}>
-            <CreateIcon sx={{ fontSize: "18px" }} />
-          </ButtonIcon>
-          <ButtonIcon callback={openDeleteModal(params.row.id)}>
-            <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
-          </ButtonIcon>
-        </>
-      );
+      //tabella attivi
+      if (params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)) {
+        return (
+          <>
+            <ButtonIcon disable={true}>
+              <CreateIcon sx={{ fontSize: "18px", color: 'gray' }} />
+            </ButtonIcon>
+            <ButtonIcon disable={true}>
+              <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px", color: 'gray' }} />
+            </ButtonIcon>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <ButtonIcon callback={updateUser(params.row)}>
+              <CreateIcon sx={{ fontSize: "18px" }} />
+            </ButtonIcon>
+            <ButtonIcon callback={openDeleteModal(params.row.id)}>
+              <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
+            </ButtonIcon>
+          </>
+        );
+      }
     }
   };
 
@@ -223,28 +277,35 @@ const Collaborators: FC = (): JSX.Element => {
               <CustomTable columns={columns} rows={state.collaborators} pageSize={5} />
             </LabelText>
 
+            <Box sx={{height: "20px"}}/>
+
             <LabelText>
               {/*titolo*/}
               <Box className={style.titleRow}>
                 <Title
-                  text={t("Collaborators.title")}
+                  text={t("Collaborators.titleDeactive")}
                   textInfo={
-                    t("Collaborators.info")
+                    t("Collaborators.infoDeactive")
                   }
                 />
-                <ButtonGeneric color={"green"} callback={addUser}>
-                  + {t("addButton")}
-                </ButtonGeneric>
               </Box>
 
               {/*tabella*/}
-              <CustomTable columns={columns} rows={state.collaborators} pageSize={5} />
+              <CustomTable columns={columns} rows={state.deactivated} pageSize={5} />
             </LabelText>
 
             <DeleteModal
               open={state.modalIsOpen}
               closeCallback={closeDeleteModal}
               deleteCallback={deleteUser}
+            />
+
+            <DeleteModal
+              open={state.modalActiveIsOpen}
+              closeCallback={closeActiveModal}
+              deleteCallback={activateUser}
+              modalText={"Collaborators.activeModalText"}
+              deleteBtnText={"Collaborators.activeModalBtn"}
             />
           </Box>
           {state.snackIsOpen && (

@@ -182,7 +182,9 @@
     "placeholderSurname": "Surname",
     "placeholderUser": "User",
     "placeholderTelephone": "Telephone",
-    "placeholderConfirmPassword": "Confirm password"
+    "placeholderConfirmPassword": "Confirm password",
+    "modalText": "Changes successful, you will be redirected to the login page",
+    "confirmButton": "Confirm"
   },
   "Home": {
     "Hero": {
@@ -299,13 +301,17 @@
   },
   "Collaborators": {
     "title": "Collaborators",
-    "info": "Registered collaborators, click on the edit button to manually update the user's data or click on the delete button to delete the user from the system",
+    "info": "Registered collaborators, click on the edit button to manually update the user's data or click on the delete button to deactivate the user",
+    "titleDeactive": "Deactivated users",
+    "infoDeactive": "Deactivated users, click on the edit button to reactivate the user",
     "table": {
       "name": "NAME",
       "surname": "SURNAME",
       "role": "ROLE",
       "blog": "PUBLISHED ARTICLES"
-    }
+    },
+    "activeModalText": "Are you sure you want to reactivate the following user?",
+    "activeModalBtn": "Confirm"
   },
   "CollaboratorsEditor": {
     "title": "User data",

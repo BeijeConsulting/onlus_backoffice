@@ -1,9 +1,14 @@
 import { getApi, putApi, postApi, deleteApi, getApiNoAuth } from "../../genericServices";
 import APIROUTES from "../apiRoutes";
 
-//get all
-export async function getCollaborators() {
-    return await getApi(APIROUTES.COLLABORATORS);
+//get active
+export async function getActiveCollaborators() {
+    return await getApi(APIROUTES.ACTIVECOLLABORATORS);
+}
+
+//get deactivated
+export async function getDeactivatedCollaborators() {
+    return await getApi(APIROUTES.DEACTIVATEDCOLLABORATORS);
 }
 
 //post
@@ -19,4 +24,9 @@ export async function putApiCollaboratorById(id, obj) {
 //delete by ID
 export async function deleteCollaboratorById(id) {
     return await deleteApi(`${APIROUTES.USER}/${id}`);
+}
+
+//activate by ID
+export async function activateCollaboratorById(id) {
+    return await putApi(`${APIROUTES.USER}/active/${id}`);
 }

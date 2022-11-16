@@ -1,14 +1,18 @@
 import { FC, useEffect, useState, BaseSyntheticEvent } from 'react'
 
 //Navigazione
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import PAGES from "../../router/pages";
 
 //Style
 import common from "../../assets/styles/common.module.scss";
 import style from "./personalArea.module.scss";
+import modal from "../../components/functional/deleteModal/deleteModal.module.scss";
 
 //MUI
 import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
 
 //Components
 import Title from "../../components/functional/title/Title";
@@ -24,11 +28,11 @@ import { getPersonalArea, putPersonalAreaById } from "../../services/api/persona
 
 //Redux
 import { useSelector } from 'react-redux/es/exports'
-import roles from '../../utils/roles'
 
 //Utils
 import { User } from '../../utils/mockup/types';
 import checkRole from '../../utils/checkRoles';
+import useLogout from "../../utils/logout";
 
 //Translation
 import { useTranslation } from "react-i18next";
@@ -57,6 +61,7 @@ const rolesPerAdmin: Array<Item> = [
 interface State {
   error: Array<boolean>;
   snackIsOpen: boolean;
+  modalIsOpen: boolean;
   ready: boolean;
   personalData: User;
 }
@@ -64,6 +69,7 @@ interface State {
 const initState: State = {
   error: [false, false, false, false, false, false, false, false],
   snackIsOpen: false,
+  modalIsOpen: false,
   ready: false,
   personalData: {
     email: '',
@@ -84,7 +90,9 @@ const PersonalArea: FC = (): JSX.Element => {
 
   const currentUser = useSelector((state: any) => state.userDuck.user)
 
+  const [handleLogout, isReady] = useLogout(1000);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const lang: Array<Item> = [
     {
@@ -128,6 +136,7 @@ const PersonalArea: FC = (): JSX.Element => {
 
     let tmp: Array<boolean> = [false, false, false, false, false, false, false, false]
     let open: boolean = false;
+    let showModal: boolean = false;
 
     //controllo che tutti i campi siano pieni
     let errors: boolean = false;
@@ -166,12 +175,13 @@ const PersonalArea: FC = (): JSX.Element => {
       //API
       await putApi(state.personalData.id, user)
       open = true;
+      showModal = true;
     }
 
     setState({
       ...state,
       error: tmp,
-      snackIsOpen: open,
+      modalIsOpen: showModal,
     });
   };
 
@@ -179,6 +189,14 @@ const PersonalArea: FC = (): JSX.Element => {
   const putApi = async (id: number, user: User): Promise<void> => {
     let res = await fetchData(putPersonalAreaById, id, user)
     console.log("Personal: ", res)
+  }
+
+  //esegue logout e porta al login dopo le modifiche
+  const toLogin = (): void => {
+    handleLogout()
+    if(isReady){
+      navigate(PAGES.login)
+    }
   }
 
   return (
@@ -287,7 +305,23 @@ const PersonalArea: FC = (): JSX.Element => {
                 </ButtonGeneric>
               </Box>
             </form>
+
+            <Modal
+              open={state.modalIsOpen}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box className={modal.modal}>
+                <Typography>{t("personalArea.modalText")}</Typography>
+                <Box className={modal.modalButtons}>
+                  <ButtonGeneric color={style.secondaryColor} callback={toLogin}>
+                    {t("personalArea.confirmButton")}
+                  </ButtonGeneric>
+                </Box>
+              </Box>
+            </Modal>
           </Box>
+
           {state.snackIsOpen && (
             <Box className={common.singleComponent}>
               <CustomSnackbar

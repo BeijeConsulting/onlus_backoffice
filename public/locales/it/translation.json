@@ -178,7 +178,9 @@
     "placeholderSurname": "Cognome",
     "placeholderUser": "User",
     "placeholderTelephone": "Telefono",
-    "placeholderConfirmPassword": "Conferma password"
+    "placeholderConfirmPassword": "Conferma password",
+    "modalText": "Modifiche avvenute con successo, verrai reinderizzato alla pagina di login",
+    "confirmButton": "Conferma"
   },
   "Home": {
     "Hero": {
@@ -294,13 +296,17 @@
   },
   "Collaborators": {
     "title": "Collaboratori",
-    "info": "Collaboratori registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per cancellare l'utente dal sistema",
+    "info": "Collaboratori registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per disattivare l'utente",
+    "titleDeactive": "Utenti disattivati",
+    "infoDeactive": "Utenti disattivati, clicca sul pulsante modifica per riattivare l'utente",
     "table": {
       "name": "NOME",
       "surname": "COGNOME",
       "role": "RUOLO",
       "blog": "ARTICOLI PUBBLICATI"
-    }
+    },
+    "activeModalText": "Sei sicuro di voler riattivare il seguente utente?",
+    "activeModalBtn": "Conferma"
   },
   "CollaboratorsEditor": {
     "title": "Dati dell'utente",
