@@ -1,10 +1,7 @@
 import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 
 //api
-import {
-  getApiAbout,
-  putApiAbout
-} from "../../../services/api/about/aboutApi";
+import { getApiAbout, putApiAbout } from "../../../services/api/about/aboutApi";
 
 //components
 import LabelText from "../../../components/functional/labelText/LabelText";
@@ -15,7 +12,7 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //data
-import { fetchData } from '../../../utils/fetchData'
+import { fetchData } from "../../../utils/fetchData";
 
 //mui
 import { Box, Link } from "@mui/material";
@@ -27,11 +24,11 @@ import style from "../../../assets/styles/common.module.scss";
 import { useTranslation } from "react-i18next";
 
 //types
-import { AboutType, AboutContent } from '../../../utils/mockup/types'
+import { AboutType, AboutContent } from "../../../utils/mockup/types";
 
 //interface
 interface State {
-  ready: boolean,
+  ready: boolean;
   addLeft: Array<JSX.Element>;
   addRight: Array<JSX.Element>;
   error: Array<boolean>;
@@ -56,12 +53,12 @@ const initialState: State = {
     hero: {
       image: "",
       subtitle: "",
-      text: ""
+      text: "",
     },
     title: {
       id: null,
-      title: ""
-    }
+      title: "",
+    },
   },
 };
 
@@ -86,41 +83,53 @@ const About: FC = (): JSX.Element => {
 
   //fetchAPI
   const getData = async (): Promise<void> => {
-    let addLeft: Array<JSX.Element> = []
-    let addRight: Array<JSX.Element> = []
-    let aboutContentError: Array<boolean> = []
+    let addLeft: Array<JSX.Element> = [];
+    let addRight: Array<JSX.Element> = [];
+    let aboutContentError: Array<boolean> = [];
 
     let about: AboutType = {
       content: [],
       hero: {
         image: "",
         subtitle: "",
-        text: ""
+        text: "",
       },
       title: {
         id: null,
-        title: ""
-      }
-    }
+        title: "",
+      },
+    };
 
     //se sto modificando
     let dataAbout = await fetchData(getApiAbout);
-    console.log("About", dataAbout.data)
+    console.log("About", dataAbout.data);
 
     about = {
       content: dataAbout.data.content,
       hero: dataAbout.data.hero,
-      title: dataAbout.data.title
-    }
+      title: dataAbout.data.title,
+    };
 
     for (let i = 0; i < about.content.length; i++)
-      aboutContentError.push(false)
+      aboutContentError.push(false);
 
     for (let i = 2; i < dataAbout.data.content.length; i++) {
       if (i % 2 !== 0)
-        addLeft.push(getContent(dataAbout.data.content[i], i, addLeft.length + addRight.length + 2))
+        addLeft.push(
+          getContent(
+            dataAbout.data.content[i],
+            i,
+            addLeft.length + addRight.length + 2
+          )
+        );
       else
-        addRight.push(getContent(dataAbout.data.content[i], i, addLeft.length + addRight.length + 2))
+        addRight.push(
+          getContent(
+            dataAbout.data.content[i],
+            i,
+            addLeft.length + addRight.length + 2
+          )
+        );
     }
 
     setState({
@@ -131,11 +140,15 @@ const About: FC = (): JSX.Element => {
       ready: true,
       addLeft: addLeft,
       addRight: addRight,
-    })
+    });
   };
 
   //ritorno l'elemento con il contenuto
-  const getContent = (content: AboutContent = null, key: number = null, index: number): JSX.Element => {
+  const getContent = (
+    content: AboutContent = null,
+    key: number = null,
+    index: number
+  ): JSX.Element => {
     return (
       <LabelText key={key}>
         <Title
@@ -150,26 +163,43 @@ const About: FC = (): JSX.Element => {
           placeholder={t("About.Content.placeHolderText")}
           defaultValue={content?.paragraph}
         />
-        <ButtonAddFile callback={log} error={state.aboutContentError[index]} image={content?.mediaContent} customKey={key}></ButtonAddFile>
+        <ButtonAddFile
+          callback={log}
+          error={state.aboutContentError[index]}
+          image={content?.mediaContent}
+          customKey={key}
+        ></ButtonAddFile>
       </LabelText>
     );
   };
 
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
-    let aboutContentError: Array<boolean> = state.aboutContentError
-    aboutContentError.push(true)
-    await setAboutContentError(aboutContentError)
+    let aboutContentError: Array<boolean> = state.aboutContentError;
+    aboutContentError.push(true);
+    await setAboutContentError(aboutContentError);
 
     let left: Array<JSX.Element> = state.addLeft;
     let right: Array<JSX.Element> = state.addRight;
     if (left.length === right.length) {
       //aggiungo a sinistra
-      left.push(getContent(null, state?.about?.content.length + left.length + right.length + 2, left.length + right.length + 2));
+      left.push(
+        getContent(
+          null,
+          state?.about?.content.length + left.length + right.length + 2,
+          left.length + right.length + 2
+        )
+      );
     }
     //aggiungo a destra
     else {
-      right.push(getContent(null, state?.about?.content.length + left.length + right.length + 2, left.length + right.length + 2));
+      right.push(
+        getContent(
+          null,
+          state?.about?.content.length + left.length + right.length + 2,
+          left.length + right.length + 2
+        )
+      );
     }
 
     setState({
@@ -181,92 +211,97 @@ const About: FC = (): JSX.Element => {
 
   //elimino l'ultimo slot
   const deleteSlot = (): void => {
-    let aboutContentError: Array<boolean> = state.aboutContentError
+    let aboutContentError: Array<boolean> = state.aboutContentError;
     let left: Array<JSX.Element> = state.addLeft;
     let right: Array<JSX.Element> = state.addRight;
 
     if (left.length === right.length) {
       //tolgo a destra
-      right.pop()
+      right.pop();
     }
     //tolgo a sinistra
     else {
-      left.pop()
+      left.pop();
     }
 
-    aboutContentError.pop()
+    aboutContentError.pop();
 
     setState({
       ...state,
       addLeft: left,
       addRight: right,
-      aboutContentError: aboutContentError
+      aboutContentError: aboutContentError,
     });
-  }
+  };
 
   //aggiorno lo stato che contiente gli errori relativi al contenuto dell'articolo
-  const setAboutContentError = async (aboutContentError: Array<boolean>): Promise<void> => {
+  const setAboutContentError = async (
+    aboutContentError: Array<boolean>
+  ): Promise<void> => {
     setState({
       ...state,
-      aboutContentError: aboutContentError
-    })
-  }
+      aboutContentError: aboutContentError,
+    });
+  };
 
   //salvo
   const onSave = (e: BaseSyntheticEvent): void => {
     let about: AboutType = {
-      content: [{
-        id: state.about.content[0].id,
-        mediaContent: e.target.form[9 + (state.addLeft.length * 4)].name,
-        mediaType: "image",
-        paragraph: e.target.form[6 + (state.addLeft.length * 4)].value
-      },
-      {
-        id: state.about.content[1].id,
-        mediaContent: e.target.form[9 + (state.addLeft.length * 4) + 4].name,
-        mediaType: "image",
-        paragraph: e.target.form[6 + (state.addLeft.length * 4) + 4].value
-      }
+      content: [
+        {
+          id: state.about.content[0].id,
+          mediaContent: e.target.form[9 + state.addLeft.length * 4].name,
+          mediaType: "image",
+          paragraph: e.target.form[6 + state.addLeft.length * 4].value,
+        },
+        {
+          id: state.about.content[1].id,
+          mediaContent: e.target.form[9 + state.addLeft.length * 4 + 4].name,
+          mediaType: "image",
+          paragraph: e.target.form[6 + state.addLeft.length * 4 + 4].value,
+        },
       ],
       hero: {
         image: e.target.form[0].name,
         subtitle: "",
-        text: e.target.form[1].value
+        text: e.target.form[1].value,
       },
       title: {
         id: state.about.title.id,
-        title: e.target.form[4].value
-      }
-    }
+        title: e.target.form[4].value,
+      },
+    };
 
     //aggiungo i contenuti dinamici
-    about.content = getDynamicAboutContents(about, e)
+    about.content = getDynamicAboutContents(about, e);
 
     //gestisco gli errori
-    let error: Array<boolean> = handleErrors(about)
-    let aboutContentError: Array<boolean> = handleContentErrors(about)
-    let errors: boolean = getErrors(error)
-    let aboutContentErrors: boolean = getErrors(aboutContentError)
+    let error: Array<boolean> = handleErrors(about);
+    let aboutContentError: Array<boolean> = handleContentErrors(about);
+    let errors: boolean = getErrors(error);
+    let aboutContentErrors: boolean = getErrors(aboutContentError);
 
     if (!errors && !aboutContentErrors) {
       //update
-      updateAbout(about, error, aboutContentError)
-    }
-    else {
+      updateAbout(about, error, aboutContentError);
+    } else {
       setState({
         ...state,
         snackErrorIsOpen: true,
         error: error,
-        aboutContentError: aboutContentError
-      })
+        aboutContentError: aboutContentError,
+      });
     }
   };
 
   //gestisco i contenuti dinamici
-  const getDynamicAboutContents = (about: AboutType, e: BaseSyntheticEvent): Array<AboutContent> => {
-    let contentLeft: Array<AboutContent> = []
-    let contentRight: Array<AboutContent> = []
-    let contentIndex: number = 2
+  const getDynamicAboutContents = (
+    about: AboutType,
+    e: BaseSyntheticEvent
+  ): Array<AboutContent> => {
+    let contentLeft: Array<AboutContent> = [];
+    let contentRight: Array<AboutContent> = [];
+    let contentIndex: number = 2;
 
     //sx
     for (let i = 0; i < state.addLeft.length; i++) {
@@ -274,91 +309,98 @@ const About: FC = (): JSX.Element => {
         id: state.about.content[contentIndex].id,
         mediaContent: e.target.form[9 + 4 * i].name,
         mediaType: "image",
-        paragraph: e.target.form[6 + 4 * i].value
-      })
-      contentIndex += 2
+        paragraph: e.target.form[6 + 4 * i].value,
+      });
+      contentIndex += 2;
     }
 
-    contentIndex = 3
+    contentIndex = 3;
     //dx
     for (let i = 0; i < state.addRight.length; i++) {
       contentRight.push({
         id: state.about.content[contentIndex].id,
-        mediaContent: e.target.form[9 + (state.addLeft.length * 4) + 4 * i + 8].name,
+        mediaContent:
+          e.target.form[9 + state.addLeft.length * 4 + 4 * i + 8].name,
         mediaType: "image",
-        paragraph: e.target.form[6 + (state.addLeft.length * 4) + 4 * i + 8].value
-      })
-      contentIndex += 2
+        paragraph:
+          e.target.form[6 + state.addLeft.length * 4 + 4 * i + 8].value,
+      });
+      contentIndex += 2;
     }
     //aggiungo sx e dx al content
     for (let i = 0; i < contentLeft.length; i++) {
-      about.content.push(contentLeft[i])
-      if (i < contentRight.length)
-        about.content.push(contentRight[i])
+      about.content.push(contentLeft[i]);
+      if (i < contentRight.length) about.content.push(contentRight[i]);
     }
-    return about.content
-  }
+    return about.content;
+  };
 
   //gestisco gli errori
   const handleErrors = (about: AboutType): Array<boolean> => {
-    let error: Array<boolean> = [false, false]
+    let error: Array<boolean> = [false, false];
 
     if (about.hero.image.length === 0 || about.hero.text.length === 0)
-      error[0] = true
-    if (about.title.title.length === 0)
-      error[1] = true
+      error[0] = true;
+    if (about.title.title.length === 0) error[1] = true;
 
-    return error
-  }
+    return error;
+  };
 
   //gestisco gli errori del content
   const handleContentErrors = (about: AboutType): Array<boolean> => {
-    let aboutContentError: Array<boolean> = []
+    let aboutContentError: Array<boolean> = [];
 
     for (let i = 0; i < about.content.length; i++) {
-      if (about.content[i].paragraph.length === 0 || about.content[i].mediaContent.length === 0)
-        aboutContentError[i] = true
-      else
-        aboutContentError[i] = false
+      if (
+        about.content[i].paragraph.length === 0 ||
+        about.content[i].mediaContent.length === 0
+      )
+        aboutContentError[i] = true;
+      else aboutContentError[i] = false;
     }
 
-    return aboutContentError
-  }
+    return aboutContentError;
+  };
 
   //ritorno true se l'array è composto da tutti true o viceversa
   const getErrors = (error: Array<boolean>): boolean => {
-    let errors: boolean = false
+    let errors: boolean = false;
     for (let i = 0; i < error.length; i++) {
       if (error[i]) {
-        errors = true
+        errors = true;
       }
     }
-    return errors
-  }
+    return errors;
+  };
 
   //modifico about
-  const updateAbout = async (about: AboutType, error: Array<boolean>, aboutContentError: Array<boolean>): Promise<void> => {
-    let response = await putApiAbout(about)
-    handleUpdateResponse(response.status, error, aboutContentError)
-  }
+  const updateAbout = async (
+    about: AboutType,
+    error: Array<boolean>,
+    aboutContentError: Array<boolean>
+  ): Promise<void> => {
+    let response = await putApiAbout(about);
+    handleUpdateResponse(response.status, error, aboutContentError);
+  };
 
   //gestisco la risposta all'eliminazione dell'articolo
-  const handleUpdateResponse = async (status: number, error: Array<boolean>, aboutContentError: Array<boolean>) => {
-    let snack: boolean = state.snackIsOpen
-    let snackWarning: boolean = state.snackWarningIsOpen
-    let snackError: boolean = state.snackErrorIsOpen
-    let response: any = {}
+  const handleUpdateResponse = async (
+    status: number,
+    error: Array<boolean>,
+    aboutContentError: Array<boolean>
+  ) => {
+    let snack: boolean = state.snackIsOpen;
+    let snackWarning: boolean = state.snackWarningIsOpen;
+    let snackError: boolean = state.snackErrorIsOpen;
+    let response: any = {};
 
-    console.log(status)
+    console.log(status);
     if (status === 200) {
       response = await fetchData(getApiAbout);
-      console.log("Articles", response.data)
-      snack = true
-    }
-    else if (status === 500 || status === undefined)
-      snackWarning = true
-    else
-      snackError = true
+      console.log("Articles", response.data);
+      snack = true;
+    } else if (status === 500 || status === undefined) snackWarning = true;
+    else snackError = true;
 
     setState({
       ...state,
@@ -367,8 +409,8 @@ const About: FC = (): JSX.Element => {
       snackErrorIsOpen: snackError,
       about: response.data,
       error: error,
-      aboutContentError: aboutContentError
-    })
+      aboutContentError: aboutContentError,
+    });
   };
 
   //stampo l'immagine caricata
@@ -390,13 +432,19 @@ const About: FC = (): JSX.Element => {
                       text={t("About.Hero.title")}
                       textInfo={t("About.Hero.info")}
                     />
-                    <ButtonAddFile callback={log} error={state.error[0]} image={state?.about?.hero?.image} customKey={999}></ButtonAddFile>
+                    <ButtonAddFile
+                      callback={log}
+                      error={state.error[0]}
+                      image={state?.about?.hero?.image}
+                      customKey={999}
+                    ></ButtonAddFile>
                     <CustomTextField
                       error={state.error[0]}
                       minrow={7}
                       maxrow={10}
                       multiline={true}
                       placeholder={t("About.Hero.placeHolderText")}
+                      defaultValue={state.about.hero.text}
                     />
                   </LabelText>
                   {/*titolo*/}
@@ -408,6 +456,7 @@ const About: FC = (): JSX.Element => {
                     <CustomTextField
                       error={state.error[1]}
                       placeholder={t("About.Title.placeHolderText")}
+                      defaultValue={state.about.title.title}
                     />
                   </LabelText>
                   {/*contenuto*/}
@@ -433,8 +482,7 @@ const About: FC = (): JSX.Element => {
                     {t("link")}
                   </Link>
                   {/*link*/}
-                  {
-                    state.addLeft.length > 0 &&
+                  {state.addLeft.length > 0 && (
                     <Link
                       color="#000000"
                       variant="body2"
@@ -443,38 +491,34 @@ const About: FC = (): JSX.Element => {
                     >
                       {t("deleteSlot")}
                     </Link>
-                  }
+                  )}
                   {/*salva modifiche*/}
                   <ButtonGeneric color={"rgb(25, 118, 210)"} callback={onSave}>
                     {t("saveButton")}
                   </ButtonGeneric>
                 </Box>
               </Box>
-              {
-                state?.snackIsOpen && (
-                  <CustomSnackbar
-                    message={t("changesSnack")}
-                    severity={"success"}
-                    callback={handleClose}
-                  />
-                )
-              }
-              {
-                state.snackErrorIsOpen &&
+              {state?.snackIsOpen && (
+                <CustomSnackbar
+                  message={t("changesSnack")}
+                  severity={"success"}
+                  callback={handleClose}
+                />
+              )}
+              {state.snackErrorIsOpen && (
                 <CustomSnackbar
                   message={t("responseErrorSnack")}
                   severity={"error"}
                   callback={handleClose}
                 />
-              }
-              {
-                state.snackWarningIsOpen &&
+              )}
+              {state.snackWarningIsOpen && (
                 <CustomSnackbar
                   message={t("responseWarningSnack")}
                   severity={"warning"}
                   callback={handleClose}
                 />
-              }
+              )}
             </Box>
           </form>
         </>
