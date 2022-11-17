@@ -159,8 +159,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
       };
 
       if (!!location?.state?.row?.id) {
-        await putApi(location?.state?.row?.id, user)
-        err = false;
+        err = await putApi(location?.state?.row?.id, user)
       } else {
         err = await postApi(user)
       }
@@ -198,9 +197,11 @@ const EditorCollaborators: FC = (): JSX.Element => {
   }
 
   //PutApi
-  const putApi = async (id: number, user: User): Promise<void> => {
+  const putApi = async (id: number, user: User): Promise<boolean> => {
     let res = await fetchData(putApiCollaboratorById, id, user)
     console.log("Collaborator: ", res)
+    let err = handleResponse(res.status)
+    return err;
   }
 
   //gestione risposta
@@ -215,7 +216,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
     console.log(status);
     if (status === 200) {
       snackError = false;
-    } else if (status === 503 || status === undefined) {
+    } else if (status === 503 || status === 400 || status === undefined) {
       snackError = true;
     } else {
       snackError = true;

@@ -3,7 +3,9 @@
     "selection": "Select file",
     "file": "No file selected"
   },
-
+  "loginButton": "LOGIN",
+  "forgotPassword": "Forgot password?",
+  "headerMenu": "Personal area",
   "saveButton": "Save changes",
   "addButton": "Add",
   "cancelButton": "Cancel changes",

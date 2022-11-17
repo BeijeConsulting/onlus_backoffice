@@ -3,6 +3,9 @@
     "selection": "Seleziona file",
     "file": "Nessun file selezionato"
   },
+  "loginButton": "ACCEDI",
+  "forgotPassword": "Password dimenticata?",
+  "headerMenu": "Area personale",
   "saveButton": "Salva modifiche",
   "addButton": "Aggiungi",
   "cancelButton": "Annulla modifiche",
