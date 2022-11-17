@@ -191,7 +191,6 @@ const EditorCollaborators: FC = (): JSX.Element => {
   //PostAPI
   const postApi = async (user: User): Promise<boolean> => {
     let res = await fetchData(postCollaborator, user)
-    console.log("Collaborator: ", res)
     let err = handleResponse(res.status)
     return err;
   }
@@ -199,7 +198,6 @@ const EditorCollaborators: FC = (): JSX.Element => {
   //PutApi
   const putApi = async (id: number, user: User): Promise<boolean> => {
     let res = await fetchData(putApiCollaboratorById, id, user)
-    console.log("Collaborator: ", res)
     let err = handleResponse(res.status)
     return err;
   }

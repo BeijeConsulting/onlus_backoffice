@@ -112,7 +112,6 @@ const PersonalArea: FC = (): JSX.Element => {
   //fetchAPI
   const getData = async (): Promise<void> => {
     let res = await fetchData(getPersonalArea, currentUser.id);
-    console.log("PersonalArea: ", res.data);
 
     setState({
       ...state,
@@ -188,7 +187,6 @@ const PersonalArea: FC = (): JSX.Element => {
   //PutApi
   const putApi = async (id: number, user: User): Promise<void> => {
     let res = await fetchData(putPersonalAreaById, id, user)
-    console.log("Personal: ", res)
   }
 
   //esegue logout e porta al login dopo le modifiche

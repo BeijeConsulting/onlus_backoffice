@@ -90,8 +90,6 @@ const Collaborators: FC = (): JSX.Element => {
   const getCollaboratorsData = async (): Promise<void> => {
     let res = await fetchData(getActiveCollaborators);
     let res2 = await fetchData(getDeactivatedCollaborators);
-    console.log("Collab: ", res.data);
-    console.log("Deactivated: ", res2.data);
 
     setState({
       ...state,
@@ -106,8 +104,6 @@ const Collaborators: FC = (): JSX.Element => {
   const getGuestsData = async (): Promise<void> => {
     let res = await fetchData(getActiveGuests);
     let res2 = await fetchData(getDeactivatedGuests);
-    console.log("Guests: ", res.data);
-    console.log("Deactivated: ", res2.data);
 
     setState({
       ...state,
