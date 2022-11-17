@@ -93,7 +93,7 @@ function App() {
                     />
                     <Route
                       path={PAGES.editorVolunteers}
-                      element={<EditVolunteers />}
+                      element={<EditorCollaborators />}
                     />
 
                     <Route path={PAGES.donations} element={<Donations />} />

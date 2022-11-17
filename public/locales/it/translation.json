@@ -317,6 +317,10 @@
     "activeModalText": "Sei sicuro di voler riattivare il seguente utente?",
     "activeModalBtn": "Conferma"
   },
+  "Volunteers": {
+    "title": "Volontari",
+    "info": "Utenti registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per disattivare l'utente"
+  },
   "CollaboratorsEditor": {
     "title": "Dati dell'utente",
     "info": "Clicca sul pulsante Salva modifiche per completare l'operazione di aggiornamento o clicca sul pulsante Annulla modifiche per cancellare l'operazione",

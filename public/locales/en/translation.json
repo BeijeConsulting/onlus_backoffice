@@ -322,6 +322,10 @@
     "activeModalText": "Are you sure you want to reactivate the following user?",
     "activeModalBtn": "Confirm"
   },
+  "Volunteers": {
+    "title": "Volunteers",
+    "info": "Registered users, click on the edit button to manually update the user's data or click on the delete button to deactivate the user"
+  },
   "CollaboratorsEditor": {
     "title": "User data",
     "info": "Click on the Save changes button to complete the update operation or click on the Cancel changes button to cancel the operation",

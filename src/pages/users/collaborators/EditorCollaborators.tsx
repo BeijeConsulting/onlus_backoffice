@@ -76,6 +76,13 @@ const rolesForAdmin: Array<Item> = [
   },
 ];
 
+const rolesForGuest: Array<Item> = [
+  {
+    name: "User",
+    value: "1",
+  },
+];
+
 interface State {
   error: Array<boolean>;
 }
@@ -147,17 +154,25 @@ const EditorCollaborators: FC = (): JSX.Element => {
         password: e.target.form[12].value,
       };
 
-      if(!!location?.state?.row?.id){
+      if (!!location?.state?.row?.id) {
         await putApi(location?.state?.row?.id, user)
       } else {
         await postApi(user)
       }
 
-      if(location?.state?.showAdd){
-        navigate(PAGES.usersCollaborators, { state: { openAdd: true } });
-      }else{
-        navigate(PAGES.usersCollaborators, { state: { open: true } });
-      } 
+      if (location?.state?.showAdd) {
+        if (window.location.href.includes('editorCollaborators')) {
+          navigate(PAGES.usersCollaborators, { state: { openAdd: true } });
+        } else {
+          navigate(PAGES.usersVolunteers, { state: { openAdd: true } });
+        }
+      } else {
+        if (window.location.href.includes('editorCollaborators')) {
+          navigate(PAGES.usersCollaborators, { state: { open: true } });
+        } else {
+          navigate(PAGES.usersVolunteers, { state: { open: true } });
+        }
+      }
     }
 
     setState({
@@ -180,7 +195,11 @@ const EditorCollaborators: FC = (): JSX.Element => {
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
-    navigate(PAGES.usersCollaborators);
+    if (window.location.href.includes('editorCollaborators')) {
+      navigate(PAGES.usersCollaborators);
+    } else {
+      navigate(PAGES.usersVolunteers);
+    }
   };
 
   const log = (): void => {
@@ -237,21 +256,37 @@ const EditorCollaborators: FC = (): JSX.Element => {
                   errorMessage="Inserisci una lingua"
                 />
 
-                <CustomSelect
-                  label={t("CollaboratorsEditor.placeholderRole")}
-                  items={
-                    currentUser.permission.includes(roles.owner)
-                    ? rolesForSuper
-                    : rolesForAdmin
-                  }
-                  defaultValue={
-                    !!location?.state?.row?.role
-                      ? checkRole(location?.state?.row.role)
-                      : ""
-                  }
-                  error={state.error[3]}
-                  errorMessage="Inserisci un ruolo"
-                />
+                {
+                  window.location.href.includes('editorCollaborators') ?
+                    <CustomSelect
+                      label={t("CollaboratorsEditor.placeholderRole")}
+                      items={
+                        currentUser.permission.includes(roles.owner)
+                          ? rolesForSuper
+                          : rolesForAdmin
+                      }
+                      defaultValue={
+                        !!location?.state?.row?.role
+                          ? checkRole(location?.state?.row.role)
+                          : ""
+                      }
+                      error={state.error[3]}
+                      errorMessage="Inserisci un ruolo"
+                    />
+                  :
+                    <CustomSelect
+                      disabled
+                      label={t("CollaboratorsEditor.placeholderRole")}
+                      items={rolesForGuest}
+                      defaultValue={
+                        !!location?.state?.row?.role
+                          ? checkRole(location?.state?.row.role)
+                          : "1"
+                      }
+                      error={state.error[3]}
+                      errorMessage="Inserisci un ruolo"
+                    />
+                }
               </Box>
 
               <Box className={style.row}>
@@ -324,19 +359,19 @@ const EditorCollaborators: FC = (): JSX.Element => {
               </>
             ) : (
               <>
-              <ButtonGeneric
-                color={common.saveButtonColor}
-                callback={onSave}
-              >
-                {t("saveButton")}
-              </ButtonGeneric>
-              <ButtonGeneric
-                color={common.secondaryColor}
-                callback={onCancel}
-              >
-                {t("cancelButton")}
-              </ButtonGeneric>
-            </>
+                <ButtonGeneric
+                  color={common.saveButtonColor}
+                  callback={onSave}
+                >
+                  {t("saveButton")}
+                </ButtonGeneric>
+                <ButtonGeneric
+                  color={common.secondaryColor}
+                  callback={onCancel}
+                >
+                  {t("cancelButton")}
+                </ButtonGeneric>
+              </>
             )}
           </Box>
         </form>
