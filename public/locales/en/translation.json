@@ -10,6 +10,8 @@
   "changesSnack": "Changes successful",
   "deleteSnack": "Deletion successful",
   "addSnack": "inclusion successful",
+  "responseErrorSnack": "Request error, retry",
+  "responseWarningSnack": "Internal server error, retry later",
   "deleteModal": {
     "text": "Are you sure you want to delete the following element?",
     "deleteButton": "Delete",
@@ -25,6 +27,7 @@
     "DiscardChangesButton": "Cancel"
   },
   "link": "Add another slot",
+  "deleteSlot": "Delete last slot",
   "general": {
     "nameSite": {
       "title": "Site Name",
@@ -74,18 +77,18 @@
       "placeholderCf": "Enter your tax code"
     }
   },
-  "supportUs": {
-    "hero": {
+  "Support": {
+    "Hero": {
       "title": "Hero",
       "info": "Hero of the page with an image, a title, a text",
       "placeholderText": "Insert text"
     },
-    "sectionTitle": {
+    "Title": {
       "title": "Title",
       "info": "Title of the section with the contents",
       "placeholderTitle": "Enter the title"
     },
-    "content": {
+    "Content": {
       "title": "Content",
       "info": "Text and media that make up the page content",
       "placeholderText": "Insert text"
@@ -146,7 +149,8 @@
       "categoriesSection": {
         "title": "Categories",
         "info": "Specify the categories to be assigned to the article"
-      }
+      },
+      "categoriesError": "Tou have to select one category"
     }
   },
   "volunteers": {

@@ -30,6 +30,19 @@ import DeleteModal from "../../components/functional/deleteModal/DeleteModal";
 //translation
 import { useTranslation } from "react-i18next";
 
+//api
+import { fetchData } from "../../utils/fetchData";
+import {
+  getAllEventsApi,
+  deleteEventByIdApi,
+} from "../../services/api/events/eventsApi";
+
+//date
+import dayjs from "dayjs";
+
+//types
+import { Event } from "../../utils/mockup/types";
+
 interface eventsProps {}
 
 interface State {
@@ -37,12 +50,20 @@ interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
+  eventsList: Array<Object>;
+  scheduledEvents: Array<Object>;
+  archiveEvents: Array<Object>;
+  currentEventId: Number | null;
 }
 const initialState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
+  eventsList: [],
+  scheduledEvents: [],
+  archiveEvents: [],
+  currentEventId: null,
 };
 
 const Events: FC = (): JSX.Element => {
@@ -53,11 +74,42 @@ const Events: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
 
   useEffect(() => {
-    setState({
-      ...state,
-      snackIsOpen: location?.state?.open,
-    });
+    getEvents();
   }, []);
+
+  async function getEvents(flag: boolean = null): Promise<void> {
+    const events = await fetchData(getAllEventsApi);
+    splitEvents(events.data,flag);
+  }
+
+  function splitEvents(events: Array<any>, flag: boolean = null): void {
+    const scheduledEvents = events.filter((el, index) => {
+      return dayjs().isBefore(el.eventDate);
+    });
+    const archiveEvents = events.filter((el, index) => {
+      return dayjs().isAfter(el.eventDate);
+    });
+
+    if (flag === null) {
+      setState({
+        ...state,
+        snackIsOpen: location?.state?.open,
+        eventsList: events,
+        scheduledEvents: scheduledEvents,
+        archiveEvents: archiveEvents,
+      });
+    }else{
+      setState({
+        ...state,
+        snackIsOpen: location?.state?.open,
+        eventsList: events,
+        scheduledEvents: scheduledEvents,
+        archiveEvents: archiveEvents,
+        modalIsOpen: false,
+        snackDeleteIsOpen: true,
+      });
+    }
+  }
 
   //Snackbar
   const handleClose = () => {
@@ -69,12 +121,15 @@ const Events: FC = (): JSX.Element => {
   };
 
   //Modal
-  const openDeleteModal = (): void => {
-    setState({
-      ...state,
-      modalIsOpen: !state.modalIsOpen,
-    });
-  };
+  const openDeleteModal =
+    (row: any): any =>
+    (): void => {
+      setState({
+        ...state,
+        modalIsOpen: !state.modalIsOpen,
+        currentEventId: row?.id,
+      });
+    };
 
   //chiudo il modale
   const closeDeleteModal = (): void => {
@@ -85,17 +140,21 @@ const Events: FC = (): JSX.Element => {
   };
 
   //elimino l'evento
-  const deleteEvent = (): void => {
-    setState({
-      ...state,
-      modalIsOpen: false,
-      snackDeleteIsOpen: true,
-    });
+  const deleteEvent = async (): Promise<void> => {
+    let resp = await deleteEventByIdApi(state?.currentEventId);
+    if (resp?.status === 200) {
+      // setState({
+      //   ...state,
+      //   modalIsOpen: false,
+      //   snackDeleteIsOpen: true,
+      // });
+      getEvents(true);
+    }
   };
 
   //modifica evento
   const updateEvent = (row: object) => (): void => {
-    navigate(PAGES.editorEvents, { state: { row } });
+    navigate(PAGES.editorEvents, { state: { row: row } });
   };
 
   const addEvent = (): void => {
@@ -112,10 +171,10 @@ const Events: FC = (): JSX.Element => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={updateEvent(params)}>
+          <ButtonIcon callback={updateEvent(params.row)}>
             <CreateIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
-          <ButtonIcon callback={openDeleteModal}>
+          <ButtonIcon callback={openDeleteModal(params.row)}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -152,7 +211,7 @@ const Events: FC = (): JSX.Element => {
       flex: 1,
     },
     {
-      field: "date",
+      field: "eventDate",
       headerName: t("Events.table.date"),
       type: "date",
       flex: 1,
@@ -179,7 +238,7 @@ const Events: FC = (): JSX.Element => {
       flex: 1,
     },
     {
-      field: "date",
+      field: "eventDate",
       headerName: t("Events.table.date"),
       type: "date",
       flex: 1,
@@ -209,22 +268,26 @@ const Events: FC = (): JSX.Element => {
           </Box>
 
           {/* sezione eventi in programma*/}
-          <CustomTable columns={columns_1} rows={events} pageSize={5} />
+          <CustomTable
+            columns={columns_1}
+            rows={state.scheduledEvents}
+            pageSize={5}
+          />
         </LabelText>
 
-        <Box sx={{height: "20px"}}>
-
-        </Box>
+        <Box sx={{ height: "20px" }}></Box>
 
         {/* sezione archivio eventi  */}
         <LabelText>
-        
-            <Title
-              text={t("Events.OldEvents.title")}
-              textInfo={t("Events.OldEvents.info")}
-            />
-            <CustomTable columns={columns_2} rows={events} pageSize={5} />
-        
+          <Title
+            text={t("Events.OldEvents.title")}
+            textInfo={t("Events.OldEvents.info")}
+          />
+          <CustomTable
+            columns={columns_2}
+            rows={state.archiveEvents}
+            pageSize={5}
+          />
         </LabelText>
       </Box>
 
@@ -232,9 +295,9 @@ const Events: FC = (): JSX.Element => {
       <DeleteModal
         open={state.modalIsOpen}
         closeCallback={closeDeleteModal}
-        deleteCallback={deleteEvent /*API delete*/}
+        deleteCallback={deleteEvent}
       />
-      {state.snackIsOpen && (
+      {location?.state?.openChange && (
         <CustomSnackbar
           message={t("changesSnack")}
           severity={"success"}
@@ -250,7 +313,7 @@ const Events: FC = (): JSX.Element => {
       )}
       {location?.state?.openAdd && (
         <CustomSnackbar
-          message={"Inserimento avvenuto con successo"}
+          message={t("addSnack")}
           severity={"success"}
           callback={handleClose}
         />

@@ -1,17 +1,17 @@
-import { BaseSyntheticEvent, FC, useState } from "react";
+import { BaseSyntheticEvent, FC, useEffect, useState } from "react";
 
 //style
 import style from "../../assets/styles/common.module.scss";
 
 //mui
-import Table from '@mui/material/Table';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import TablePagination from '@mui/material/TablePagination';
+import Table from "@mui/material/Table";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import TablePagination from "@mui/material/TablePagination";
 import { Box } from "@mui/material";
 
 //components
@@ -21,32 +21,58 @@ import { donations } from "../../utils/mockup/data";
 import TableDonations from "../../components/functional/tableDonations/TableDonations";
 //translation
 import { useTranslation } from "react-i18next";
+//Api
+import {
+  getApiDonation,
+  getApiDonationAmount,
+} from "../../services/api/donation/donationApi";
+//types
+import { Donation } from "../../utils/mockup/types";
 
 //state
 interface State {
   page: number;
   rowsPerPage: number;
+  donations: Array<Donation>;
+  totalAmount: number;
 }
+
 const initialState: State = {
   page: 0,
   rowsPerPage: 5,
+  donations: [
+    {
+      name: "",
+      surname: "",
+      userId: null,
+      amount: null,
+      donationDate: "",
+    },
+  ],
+  totalAmount: 0,
 };
 
-const Donations: FC = ()  : JSX.Element=> {
+const Donations: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
   const { t } = useTranslation();
 
-  //calcolo il totale delle donazioni (usare chiamata API)
-  const getTotal = (): string => {
-    let total: number = 0
-    donations.forEach((element) => {
-      total += element.amount
-    })
-    return total.toFixed(2).toString() + "€"
-  }
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    let donations: any = await getApiDonation();
+    let totalAmount: any = await getApiDonationAmount();
+
+    setState({
+      ...state,
+      donations: donations.data,
+      totalAmount: totalAmount.data,
+    });
+  };
 
   //cambia il numero di pagina
-  const handleChangePage = (event:BaseSyntheticEvent, newPage: number) => {
+  const handleChangePage = (event: BaseSyntheticEvent, newPage: number) => {
     setState({
       ...state,
       page: newPage,
@@ -78,7 +104,7 @@ const Donations: FC = ()  : JSX.Element=> {
             {t("Donation.amountDonation")}:
           </Typography>
           <Typography sx={{ marginBottom: "20px", marginLeft: "5px" }}>
-            {getTotal()}
+            {`${state.totalAmount} €`}
           </Typography>
         </Box>
         <LabelText>
@@ -90,9 +116,9 @@ const Donations: FC = ()  : JSX.Element=> {
             <Table aria-label="collapsible table">
               <TableHead sx={{ backgroundColor: style.ternaryColor }}>
                 <TableRow>
-                  <TableCell sx={{ fontWeight: "700" }}>
+                  {/* <TableCell sx={{ fontWeight: "700" }}>
                     {t("Donation.table.id")}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell sx={{ fontWeight: "700" }}>
                     {t("Donation.table.value")}
                   </TableCell>
@@ -104,7 +130,7 @@ const Donations: FC = ()  : JSX.Element=> {
               </TableHead>
               {
                 <TableDonations
-                  rows={donations}
+                  rows={state.donations}
                   rowsPerPage={state.rowsPerPage}
                   page={state.page}
                 />

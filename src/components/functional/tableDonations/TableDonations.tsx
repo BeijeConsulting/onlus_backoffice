@@ -33,7 +33,7 @@ const initialState: State = {
   open: [],
 };
 
-const TableDonations: FC<TableDonationsProps> = (props) :JSX.Element => {
+const TableDonations: FC<TableDonationsProps> = (props): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
   const { t } = useTranslation();
 
@@ -54,9 +54,7 @@ const TableDonations: FC<TableDonationsProps> = (props) :JSX.Element => {
 
   //converto la data per stamparla
   const getDate = (value: any): string => {
-    return (
-      value.getDate() + "/" + (value.getMonth() + 1) + "/" + value.getFullYear()
-    );
+    return value.replace("T", " ");
   };
 
   //setto lo stato goiusto epr il collapse
@@ -81,11 +79,11 @@ const TableDonations: FC<TableDonationsProps> = (props) :JSX.Element => {
           return (
             <Fragment key={key}>
               <TableRow sx={{ width: "100%" }}>
-                <TableCell sx={{ width: "25%" }}>{row.id}</TableCell>
-                <TableCell sx={{ width: "25%" }}>
-                  {row.amount.toFixed(2)} €
+                {/* <TableCell sx={{ width: "25%" }}>{row?.userId}</TableCell> */}
+                <TableCell sx={{ width: "25%" }}>{row?.amount} €</TableCell>
+                <TableCell sx={{ width: "45%" }}>
+                  {getDate(row?.donationDate)}
                 </TableCell>
-                <TableCell sx={{ width: "45%" }}>{getDate(row.date)}</TableCell>
                 <TableCell sx={{ width: "5%" }} align="right">
                   <ButtonIcon aria-label="expand row" callback={collapse(key)}>
                     <RemoveRedEyeOutlinedIcon />
@@ -112,7 +110,10 @@ const TableDonations: FC<TableDonationsProps> = (props) :JSX.Element => {
                               {t("Donation.subTable.id")}
                             </TableCell>
                             <TableCell sx={{ fontWeight: "700" }}>
-                              {t("Donation.subTable.email")}
+                              {t("Donation.subTable.name")}
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: "700" }}>
+                              {t("Donation.subTable.surname")}
                             </TableCell>
                             <TableCell sx={{ fontWeight: "700" }}>
                               {t("Donation.subTable.value")}
@@ -120,19 +121,20 @@ const TableDonations: FC<TableDonationsProps> = (props) :JSX.Element => {
                             <TableCell sx={{ fontWeight: "700" }}>
                               {t("Donation.subTable.date")}
                             </TableCell>
-                            <TableCell sx={{ fontWeight: "700" }}>
+                            {/* <TableCell sx={{ fontWeight: "700" }}>
                               {t("Donation.subTable.anonimus")}
-                            </TableCell>
+                            </TableCell> */}
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          <TableCell>{row.id}</TableCell>
-                          <TableCell>{row.email}</TableCell>
-                          <TableCell>{row.amount.toFixed(2)} €</TableCell>
-                          <TableCell>{getDate(row.date)}</TableCell>
-                          <TableCell>
-                            {row.anonyme.toString() === "true" ? "si" : "no"}
-                          </TableCell>
+                          <TableCell>{row?.userId}</TableCell>
+                          <TableCell>{row?.name}</TableCell>
+                          <TableCell>{row?.surname}</TableCell>
+                          <TableCell>{row?.amount} €</TableCell>
+                          <TableCell>{getDate(row?.donationDate)}</TableCell>
+                          {/* <TableCell>
+                            { {row.anonyme.toString() === "true" ? "si" : "no"} }
+                          </TableCell> */}
                         </TableBody>
                       </Table>
                     </Box>

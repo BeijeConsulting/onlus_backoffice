@@ -18,6 +18,7 @@ interface textFieldProps {
   defaultValue?: string;
   refCustom?: any;
   disabled?:any;
+  id?:string
 }
 
 const CustomTextField: FC<textFieldProps> = (props): JSX.Element => {
@@ -27,6 +28,7 @@ const CustomTextField: FC<textFieldProps> = (props): JSX.Element => {
       disabled={props.disabled ? props.disabled: false}
       inputRef={props.refCustom ? props.refCustom: null}
       type={props.type ? props.type : "default"}
+      id={props.id ? props.id : ""}
       minRows={props.multiline ? props.minrow : 1}
       maxRows={props.multiline ? props.maxrow : 1}
       multiline={props.multiline ? props.multiline : false}
