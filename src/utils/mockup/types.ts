@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs";
+
 export type Category = {
   id: number;
   name: string;
@@ -78,7 +80,7 @@ export type Donation = {
 export type Event = {
   cover?: string;
   description?: string;
-  eventDate?: string;
+  eventDate?: string | Dayjs;
   place?: string;
   requirements?: string;
   title?: string;
@@ -86,50 +88,49 @@ export type Event = {
 };
 
 export type AboutContent = {
-  id: number,
-  mediaContent: string,
-  mediaType: string,
-  paragraph: string
-}
+  id: number;
+  mediaContent: string;
+  mediaType: string;
+  paragraph: string;
+};
 
 export type AboutHero = {
-  image: string,
-  subtitle: string,
-  text: string
-}
+  image: string;
+  subtitle: string;
+  text: string;
+};
 
 export type AboutTitle = {
-  id: number,
-  title: string
-}
+  id: number;
+  title: string;
+};
 
 export type AboutType = {
-  content: Array<AboutContent>,
-  hero: AboutHero,
-  title: AboutTitle
-}
+  content: Array<AboutContent>;
+  hero: AboutHero;
+  title: AboutTitle;
+};
 
 export type SupportContent = {
-  id: number,
-  mediaContent: string,
-  mediaType: string,
-  paragraph: string
-}
+  id: number;
+  mediaContent: string;
+  mediaType: string;
+  paragraph: string;
+};
 
 export type SupportHero = {
-  image: string,
-  subtitle: string,
-  text: string
-}
+  image: string;
+  subtitle: string;
+  text: string;
+};
 
 export type SupportTitle = {
-  id: number,
-  title: string
-}
+  id: number;
+  title: string;
+};
 
 export type Support = {
-  content: Array<AboutContent>,
-  hero: AboutHero,
-  title: AboutTitle
-}
-
+  content: Array<AboutContent>;
+  hero: AboutHero;
+  title: AboutTitle;
+};
