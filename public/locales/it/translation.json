@@ -10,6 +10,7 @@
   "deleteSnack": "Eliminazione avvenuta con successo",
   "responseErrorSnack": "Errore nella richiesta, riprova",
   "responseWarningSnack": "Errore interno del server, riprova più tardi",
+  "userAlreadyExists": "Errore: l'utente esiste già",
   "addSnack": "Inserimento avvenuto con successo",
   "deleteModal": {
     "text": "Sei sicuro di voler eliminare il seguente elemento?",

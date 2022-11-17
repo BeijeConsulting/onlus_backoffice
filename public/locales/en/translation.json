@@ -12,6 +12,7 @@
   "addSnack": "inclusion successful",
   "responseErrorSnack": "Request error, retry",
   "responseWarningSnack": "Internal server error, retry later",
+  "userAlreadyExists": "Error: user already exists",
   "deleteModal": {
     "text": "Are you sure you want to delete the following element?",
     "deleteButton": "Delete",

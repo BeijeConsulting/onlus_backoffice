@@ -17,6 +17,7 @@ import LabelText from "../../../components/functional/labelText/LabelText";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import CustomSelect from "../../../components/functional/customSelect/CustomSelect";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //API
 import { fetchData } from "../../../utils/fetchData";
@@ -85,10 +86,12 @@ const rolesForGuest: Array<Item> = [
 
 interface State {
   error: Array<boolean>;
+  snackErrorIsOpen: boolean;
 }
 
 const initState: State = {
   error: [false, false, false, false, false, false, false, false],
+  snackErrorIsOpen: false,
 };
 
 const EditorCollaborators: FC = (): JSX.Element => {
@@ -119,6 +122,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
       false,
       false,
     ];
+    let err: boolean = false;
 
     //controllo che tutti i campi siano pieni
     let errors: boolean = false;
@@ -156,21 +160,24 @@ const EditorCollaborators: FC = (): JSX.Element => {
 
       if (!!location?.state?.row?.id) {
         await putApi(location?.state?.row?.id, user)
+        err = false;
       } else {
-        await postApi(user)
+        err = await postApi(user)
       }
 
-      if (location?.state?.showAdd) {
-        if (window.location.href.includes('editorCollaborators')) {
-          navigate(PAGES.usersCollaborators, { state: { openAdd: true } });
+      if (!err) {
+        if (location?.state?.showAdd) {
+          if (window.location.href.includes('editorCollaborators')) {
+            navigate(PAGES.usersCollaborators, { state: { openAdd: true } });
+          } else {
+            navigate(PAGES.usersVolunteers, { state: { openAdd: true } });
+          }
         } else {
-          navigate(PAGES.usersVolunteers, { state: { openAdd: true } });
-        }
-      } else {
-        if (window.location.href.includes('editorCollaborators')) {
-          navigate(PAGES.usersCollaborators, { state: { open: true } });
-        } else {
-          navigate(PAGES.usersVolunteers, { state: { open: true } });
+          if (window.location.href.includes('editorCollaborators')) {
+            navigate(PAGES.usersCollaborators, { state: { open: true } });
+          } else {
+            navigate(PAGES.usersVolunteers, { state: { open: true } });
+          }
         }
       }
     }
@@ -178,13 +185,16 @@ const EditorCollaborators: FC = (): JSX.Element => {
     setState({
       ...state,
       error: tmp,
+      snackErrorIsOpen: err,
     });
   };
 
   //PostAPI
-  const postApi = async (user: User): Promise<void> => {
+  const postApi = async (user: User): Promise<boolean> => {
     let res = await fetchData(postCollaborator, user)
     console.log("Collaborator: ", res)
+    let err = handleResponse(res.status)
+    return err;
   }
 
   //PutApi
@@ -192,6 +202,27 @@ const EditorCollaborators: FC = (): JSX.Element => {
     let res = await fetchData(putApiCollaboratorById, id, user)
     console.log("Collaborator: ", res)
   }
+
+  //gestione risposta
+  const handleResponse = async (
+    status: number,
+    //error: Array<boolean>,
+    //aboutContentError: Array<boolean>
+  ): Promise<boolean> => {
+    let snackError: boolean = state.snackErrorIsOpen;
+    let response: any = {};
+
+    console.log(status);
+    if (status === 200) {
+      snackError = false;
+    } else if (status === 503 || status === undefined) {
+      snackError = true;
+    } else {
+      snackError = true;
+    }
+
+    return snackError;
+  };
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
@@ -202,9 +233,13 @@ const EditorCollaborators: FC = (): JSX.Element => {
     }
   };
 
-  const log = (): void => {
-
-  }
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackErrorIsOpen: false,
+    });
+  };
 
   return (
     <Box className={common.component}>
@@ -273,7 +308,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
                       error={state.error[3]}
                       errorMessage="Inserisci un ruolo"
                     />
-                  :
+                    :
                     <CustomSelect
                       disabled
                       label={t("CollaboratorsEditor.placeholderRole")}
@@ -376,6 +411,13 @@ const EditorCollaborators: FC = (): JSX.Element => {
           </Box>
         </form>
       </Box>
+      {state.snackErrorIsOpen && (
+        <CustomSnackbar
+          message={t("userAlreadyExists")}
+          severity={"error"}
+          callback={handleClose}
+        />
+      )}
     </Box>
   );
 };
