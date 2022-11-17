@@ -24,6 +24,9 @@ import { useNavigate } from "react-router-dom";
 //Routes
 import PAGES from "../../../router/pages";
 
+//Utils
+import useLogout from "../../../utils/logout";
+
 //translation
 import { useTranslation } from 'react-i18next';
 
@@ -56,7 +59,7 @@ const Header: FC = (): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { t, i18n } = useTranslation();
 
-
+  const [handleLogout, isReady] = useLogout(1000);
   const navigate = useNavigate();
 
   const user: User = useSelector((state: any) => state.userDuck.user);
@@ -75,10 +78,6 @@ const Header: FC = (): JSX.Element => {
     handleClose();
   };
 
-  const logout = (): void => {
-    //esegue logout
-  };
-
   //Funzioni per cambiare la lingua
   const changeLangIta = (): void => {
     setLangIta(true);
@@ -89,6 +88,14 @@ const Header: FC = (): JSX.Element => {
     setLangIta(false);
     i18n.changeLanguage('en');
   };
+
+  //Funzione di logout
+  const logout = (): void => {
+    handleLogout()
+    if(isReady){
+      navigate(PAGES.login)
+    }
+  }
 
   return (
     <header>

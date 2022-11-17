@@ -16,8 +16,19 @@ import LabelText from "../../../components/functional/labelText/LabelText";
 import Title from "../../../components/functional/title/Title";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
-//translation
+
+//API
+import { fetchData } from "../../../utils/fetchData";
+import { putQnaBydId, postQna } from "../../../services/api/faq/faqApi";
+
+//Translation
 import { useTranslation } from "react-i18next";
+
+type QNA = {
+  question: string;
+  answer: string;
+}
+
 interface State {
   answerError: boolean;
   questionError: boolean;
@@ -38,30 +49,38 @@ const EditorFaq: FC = (): JSX.Element => {
   console.log(location);
 
   //Funzione per salvare domanda e risposta
-  const onSaveQna = (e: BaseSyntheticEvent): void => {
-    let answerErr = false;
+  const onSaveQna = async (e: BaseSyntheticEvent): Promise<void> => {
     let questionErr = false;
+    let answerErr = false;
 
     if (e.target.form[0].value === "") {
-      answerErr = true;
-    }
-
-    if (e.target.form[2].value === "") {
       questionErr = true;
     }
 
+    if (e.target.form[2].value === "") {
+      answerErr = true;
+    }
+
     setError({
-      answerError: answerErr,
       questionError: questionErr,
+      answerError: answerErr,
     });
 
-    if (!answerErr && !questionErr) {
-      let qna = {
-        answer: e.target.form[0].value,
-        question: e.target.form[2].value,
+    if (!questionErr && !answerErr) {
+      let qna: QNA = {
+        question: e.target.form[0].value,
+        answer: e.target.form[2].value,
       };
 
       console.log(qna);
+
+      //controlla se bisogna fare PUT o POST
+      if(!!location?.state?.row?.id){
+        await putApi(location?.state?.row?.id, qna)
+      } else {
+        await postApi(qna)
+      }
+
       if (location?.state?.showAdd) {
         navigate(PAGES.editFaq, { state: { openAdd: true } });
       } else {
@@ -69,6 +88,18 @@ const EditorFaq: FC = (): JSX.Element => {
       }
     }
   };
+
+  //PostAPI
+  const postApi = async (qna: QNA): Promise<void> => {
+    let res = await fetchData(postQna, qna)
+    console.log("QNA: ", res)
+  }
+
+  //PutAPI
+  const putApi = async (id: number, qna: QNA): Promise<void> => {
+    let res = await fetchData(putQnaBydId, id, qna)
+    console.log("QNA: ", res)
+  }
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {

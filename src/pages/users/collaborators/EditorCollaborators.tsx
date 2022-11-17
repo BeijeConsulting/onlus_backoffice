@@ -18,8 +18,20 @@ import CustomTextField from "../../../components/functional/textField/CustomText
 import CustomSelect from "../../../components/functional/customSelect/CustomSelect";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 
+//API
+import { fetchData } from "../../../utils/fetchData";
+import { postCollaborator, putApiCollaboratorById } from "../../../services/api/collaborators/collaborators";
+
 //i18n
 import { useTranslation } from 'react-i18next';
+
+//Redux
+import { useSelector } from 'react-redux/es/exports'
+import roles from '../../../utils/roles'
+
+//Utils
+import { User } from "../../../utils/mockup/types";
+import checkRole from '../../../utils/checkRoles';
 
 //Item del CustomSelect
 type Item = {
@@ -30,22 +42,37 @@ type Item = {
 const lang: Array<Item> = [
   {
     name: "Italiano",
-    value: "it",
+    value: "IT",
   },
   {
     name: "Inglese",
-    value: "en",
+    value: "EN",
   },
 ];
 
-const roles: Array<Item> = [
+const rolesForSuper: Array<Item> = [
+  {
+    name: "Superadmin",
+    value: "3",
+  },
   {
     name: "Admin",
-    value: "admin",
+    value: "2",
   },
   {
     name: "Blogger",
-    value: "blogger",
+    value: "4",
+  },
+];
+
+const rolesForAdmin: Array<Item> = [
+  {
+    name: "Admin",
+    value: "2",
+  },
+  {
+    name: "Blogger",
+    value: "4",
   },
 ];
 
@@ -61,6 +88,8 @@ const EditorCollaborators: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
   const { t } = useTranslation();
 
+  const currentUser = useSelector((state: any) => state.userDuck.user)
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -72,7 +101,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
   }, []);
 
   //Funzione per salvare i dati dell'admin
-  const onSaveAdmin = (e: BaseSyntheticEvent): void => {
+  const onSave = async (e: BaseSyntheticEvent): Promise<void> => {
     let tmp: Array<boolean> = [
       false,
       false,
@@ -107,16 +136,22 @@ const EditorCollaborators: FC = (): JSX.Element => {
     }
 
     if (!errors) {
-      /*let guest = {
+      let user: User = {
+        id: location?.state?.row?.id,
         name: e.target.form[0].value,
         surname: e.target.form[2].value,
-        lang: e.target.form[4].value,
-        role: e.target.form[6].value,
+        language: e.target.form[4].value,
+        role: parseInt(e.target.form[6].value),
         email: e.target.form[8].value,
         phone: e.target.form[10].value,
         password: e.target.form[12].value,
-        confirmPassword: e.target.form[14].value,
-      };*/
+      };
+
+      if(!!location?.state?.row?.id){
+        await putApi(location?.state?.row?.id, user)
+      } else {
+        await postApi(user)
+      }
 
       if(location?.state?.showAdd){
         navigate(PAGES.usersCollaborators, { state: { openAdd: true } });
@@ -131,10 +166,26 @@ const EditorCollaborators: FC = (): JSX.Element => {
     });
   };
 
+  //PostAPI
+  const postApi = async (user: User): Promise<void> => {
+    let res = await fetchData(postCollaborator, user)
+    console.log("Collaborator: ", res)
+  }
+
+  //PutApi
+  const putApi = async (id: number, user: User): Promise<void> => {
+    let res = await fetchData(putApiCollaboratorById, id, user)
+    console.log("Collaborator: ", res)
+  }
+
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
     navigate(PAGES.usersCollaborators);
   };
+
+  const log = (): void => {
+
+  }
 
   return (
     <Box className={common.component}>
@@ -188,10 +239,14 @@ const EditorCollaborators: FC = (): JSX.Element => {
 
                 <CustomSelect
                   label={t("CollaboratorsEditor.placeholderRole")}
-                  items={roles}
+                  items={
+                    currentUser.permission.includes(roles.owner)
+                    ? rolesForSuper
+                    : rolesForAdmin
+                  }
                   defaultValue={
                     !!location?.state?.row?.role
-                      ? location?.state?.row?.role
+                      ? checkRole(location?.state?.row.role)
                       : ""
                   }
                   error={state.error[3]}
@@ -256,7 +311,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
               <>
                 <ButtonGeneric
                   color={"green"}
-                  callback={onSaveAdmin}
+                  callback={onSave}
                 >
                   {t("addButton")}
                 </ButtonGeneric>
@@ -271,7 +326,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
               <>
               <ButtonGeneric
                 color={common.saveButtonColor}
-                callback={onSaveAdmin}
+                callback={onSave}
               >
                 {t("saveButton")}
               </ButtonGeneric>
