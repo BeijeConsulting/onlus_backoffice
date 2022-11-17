@@ -4,9 +4,6 @@ import { FC, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import PAGES from "../../../router/pages";
 
-//Data
-import { users } from "../../../utils/mockup/data";
-
 //Style
 import common from "../../../assets/styles/common.module.scss";
 import style from "./collaborators.module.scss";
@@ -25,36 +22,99 @@ import LabelText from "../../../components/functional/labelText/LabelText";
 import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 
+//API
+import { fetchData } from "../../../utils/fetchData";
+import { getActiveCollaborators, getDeactivatedCollaborators, deleteCollaboratorById, activateCollaboratorById, getActiveGuests, getDeactivatedGuests } from "../../../services/api/collaborators/collaborators";
+
 //i18n
 import { useTranslation } from "react-i18next";
 
+//Redux
+import { useSelector } from 'react-redux/es/exports'
+import roles from '../../../utils/roles'
+
+//Utils
+import { User } from "../../../utils/mockup/types";
+
 interface State {
   modalIsOpen: boolean;
+  modalActiveIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
+  ready: boolean;
+  collaborators: Array<User>;
+  deactivated: Array<User>;
+  idToDelete: number;
+  idToActivate: number;
 }
 
 const initialState: State = {
   modalIsOpen: false,
+  modalActiveIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
+  ready: false,
+  collaborators: [],
+  deactivated: [],
+  idToDelete: null,
+  idToActivate: null,
 };
 
 const Collaborators: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
   const { t, i18n } = useTranslation();
 
+  const currentUser = useSelector((state: any) => state.userDuck.user)
+
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
+    if(window.location.href.includes('collaborators')){
+      getCollaboratorsData()
+    } else {
+      getGuestsData()
+    }
+
     setState({
       ...state,
       snackIsOpen: location?.state?.open,
     });
-  }, []);
+  }, [window.location.href]);
+
+  //fetchAPI collaborators
+  const getCollaboratorsData = async (): Promise<void> => {
+    let res = await fetchData(getActiveCollaborators);
+    let res2 = await fetchData(getDeactivatedCollaborators);
+    console.log("Collab: ", res.data);
+    console.log("Deactivated: ", res2.data);
+
+    setState({
+      ...state,
+      collaborators: res.data,
+      deactivated: res2.data,
+      ready: true,
+      snackIsOpen: location?.state?.open
+    })
+  }
+
+  //fetchAPI guests
+  const getGuestsData = async (): Promise<void> => {
+    let res = await fetchData(getActiveGuests);
+    let res2 = await fetchData(getDeactivatedGuests);
+    console.log("Guests: ", res.data);
+    console.log("Deactivated: ", res2.data);
+
+    setState({
+      ...state,
+      collaborators: res.data,
+      deactivated: res2.data,
+      ready: true,
+      snackIsOpen: location?.state?.open
+    })
+  }
 
   //Snackbar
   const handleClose = () => {
@@ -66,14 +126,23 @@ const Collaborators: FC = (): JSX.Element => {
   };
 
   //Modal
-  const openDeleteModal = (): void => {
+  const openDeleteModal = (id: number) => (): void => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
+      idToDelete: id,
     });
   };
 
-  //chiudo il modale
+  const openActiveModal = (id: number) => (): void => {
+    setState({
+      ...state,
+      modalActiveIsOpen: !state.modalActiveIsOpen,
+      idToActivate: id,
+    });
+  };
+
+  //chiude il modale
   const closeDeleteModal = (): void => {
     setState({
       ...state,
@@ -81,16 +150,64 @@ const Collaborators: FC = (): JSX.Element => {
     });
   };
 
-  //elimino l'utente
-  const deleteUser = (): void => {
+  const closeActiveModal = (): void => {
+    setState({
+      ...state,
+      modalActiveIsOpen: !state.modalActiveIsOpen,
+    });
+  };
+
+  //elimina l'utente
+  const deleteUser = async (): Promise<void> => {
+
+    deleteApi(state.idToDelete)
+    let tmp = Object.assign([], state.deactivated)
+    let add = state.collaborators.find(obj => obj.id === state.idToDelete)
+    add.disableDate = new Date().toDateString()
+    tmp.push(add)
+
     setState({
       ...state,
       modalIsOpen: false,
       snackDeleteIsOpen: true,
+      collaborators: state.collaborators.filter((row) => row.id !== state.idToDelete),
+      deactivated: tmp,
+      idToDelete: null,
     });
   };
 
-  //Funzioni di modifica e cancella
+  //DeleteAPI
+  const deleteApi = async (id: number): Promise<void> => {
+    let res = await fetchData(deleteCollaboratorById, id)
+    console.log("Delete: ", res.data)
+  }
+
+  //riattiva l'utente
+  const activateUser = async (): Promise<void> => {
+
+    putActiveApi(state.idToActivate)
+    let tmp = Object.assign([], state.collaborators)
+    let add = state.deactivated.find(obj => obj.id === state.idToActivate)
+    add.disableDate = ''
+    tmp.push(add)
+
+    setState({
+      ...state,
+      modalActiveIsOpen: false,
+      snackDeleteIsOpen: true,
+      deactivated: state.deactivated.filter((row) => row.id !== state.idToActivate),
+      collaborators: tmp,
+      idToActivate: null,
+    });
+  }
+
+  //PutActiveApi
+  const putActiveApi = async (id: number): Promise<void> => {
+    let res = await fetchData(activateCollaboratorById, id)
+    console.log("Active: ", res)
+  }
+
+  //Funzioni di modifica e aggiunta
   const updateUser = (row: object) => (): void => {
     navigate(PAGES.editorCollaborators, { state: { row } });
   };
@@ -101,17 +218,59 @@ const Collaborators: FC = (): JSX.Element => {
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
-    return (
-      <>
-        <ButtonIcon callback={updateUser(params.row)}>
-          <CreateIcon sx={{ fontSize: "18px" }} />
-        </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal}>
-          <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
-        </ButtonIcon>
-      </>
-    );
+
+    //tabella disattivi
+    if (params.row.disableDate !== '') {
+      if (params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)) {
+
+        return (
+          <ButtonIcon disable={true}>
+            <CreateIcon sx={{ fontSize: "18px", color: 'gray' }} />
+          </ButtonIcon>
+        );
+
+      } else {
+
+        return (
+          <ButtonIcon callback={openActiveModal(params.row.id)}>
+            <CreateIcon sx={{ fontSize: "18px" }} />
+          </ButtonIcon>
+        );
+      }
+
+    } else {
+
+      //tabella attivi
+      if (params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)) {
+        return (
+          <>
+            <ButtonIcon disable={true}>
+              <CreateIcon sx={{ fontSize: "18px", color: 'gray' }} />
+            </ButtonIcon>
+            <ButtonIcon disable={true}>
+              <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px", color: 'gray' }} />
+            </ButtonIcon>
+          </>
+        );
+
+      } else {
+        return (
+          <>
+            <ButtonIcon callback={updateUser(params.row)}>
+              <CreateIcon sx={{ fontSize: "18px" }} />
+            </ButtonIcon>
+            <ButtonIcon callback={openDeleteModal(params.row.id)}>
+              <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
+            </ButtonIcon>
+          </>
+        );
+      }
+    }
   };
+
+  const renderValue = (params: any) => {
+    return params.row.role[0];
+  }
 
   const columns = [
     {
@@ -128,6 +287,7 @@ const Collaborators: FC = (): JSX.Element => {
       field: "role",
       headerName: t("Collaborators.table.role"),
       flex: 1,
+      valueGetter: renderValue,
     },
     {
       field: "publishedArticles",
@@ -146,51 +306,80 @@ const Collaborators: FC = (): JSX.Element => {
 
   return (
     <Box className={common.component}>
-      <Box className={common.singleComponent}>
-        <LabelText>
-          {/*titolo*/}
-          <Box className={style.titleRow}>
-            <Title
-              text={t("Collaborators.title")}
-              textInfo={
-                t("Collaborators.info")
-              }
+      {state.ready && (
+        <>
+          <Box className={common.singleComponent}>
+            <LabelText>
+              {/*titolo*/}
+              <Box className={style.titleRow}>
+                <Title
+                  text={t("Collaborators.title")}
+                  textInfo={
+                    t("Collaborators.info")
+                  }
+                />
+                <ButtonGeneric color={"green"} callback={addUser}>
+                  + {t("addButton")}
+                </ButtonGeneric>
+              </Box>
+
+              {/*tabella*/}
+              <CustomTable columns={columns} rows={state.collaborators} pageSize={5} />
+            </LabelText>
+
+            <Box sx={{ height: "20px" }} />
+
+            <LabelText>
+              {/*titolo*/}
+              <Box className={style.titleRow}>
+                <Title
+                  text={t("Collaborators.titleDeactive")}
+                  textInfo={
+                    t("Collaborators.infoDeactive")
+                  }
+                />
+              </Box>
+
+              {/*tabella*/}
+              <CustomTable columns={columns} rows={state.deactivated} pageSize={5} />
+            </LabelText>
+
+            <DeleteModal
+              open={state.modalIsOpen}
+              closeCallback={closeDeleteModal}
+              deleteCallback={deleteUser}
             />
-            <ButtonGeneric color={"green"} callback={addUser}>
-              + {t("addButton")}
-            </ButtonGeneric>
+
+            <DeleteModal
+              open={state.modalActiveIsOpen}
+              closeCallback={closeActiveModal}
+              deleteCallback={activateUser}
+              modalText={"Collaborators.activeModalText"}
+              deleteBtnText={"Collaborators.activeModalBtn"}
+            />
           </Box>
-
-          {/*tabella*/}
-          <CustomTable columns={columns} rows={users} pageSize={5} />
-        </LabelText>
-
-        <DeleteModal
-          open={state.modalIsOpen}
-          closeCallback={closeDeleteModal}
-          deleteCallback={deleteUser /*API delete*/}
-        />
-      </Box>
-      {state.snackIsOpen && (
-        <CustomSnackbar
-          message={t("changesSnack")}
-          severity={"success"}
-          callback={handleClose}
-        />
-      )}
-      {state.snackDeleteIsOpen && (
-        <CustomSnackbar
-          message={t("deleteSnack")}
-          severity={"info"}
-          callback={handleClose}
-        />
-      )}
-      {location?.state?.openAdd && (
-        <CustomSnackbar
-          message={t("addSnack")}
-          severity={"success"}
-          callback={handleClose}
-        />
+          {state.snackIsOpen && (
+            <CustomSnackbar
+              message={t("changesSnack")}
+              severity={"success"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackDeleteIsOpen && (
+            <CustomSnackbar
+              message={t("deleteSnack")}
+              severity={"info"}
+              callback={handleClose}
+            />
+          )}
+          {location?.state?.openAdd && (
+            <CustomSnackbar
+              message={t("addSnack")}
+              severity={"success"}
+              callback={handleClose}
+            />
+          )}
+        </>
       )}
     </Box>
   );

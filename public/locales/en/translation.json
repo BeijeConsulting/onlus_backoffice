@@ -27,6 +27,7 @@
     "DiscardChangesButton": "Cancel"
   },
   "link": "Add another slot",
+  "deleteSlot": "Delete last slot",
   "general": {
     "nameSite": {
       "title": "Site Name",
@@ -76,18 +77,18 @@
       "placeholderCf": "Enter your tax code"
     }
   },
-  "supportUs": {
-    "hero": {
+  "Support": {
+    "Hero": {
       "title": "Hero",
       "info": "Hero of the page with an image, a title, a text",
       "placeholderText": "Insert text"
     },
-    "sectionTitle": {
+    "Title": {
       "title": "Title",
       "info": "Title of the section with the contents",
       "placeholderTitle": "Enter the title"
     },
-    "content": {
+    "Content": {
       "title": "Content",
       "info": "Text and media that make up the page content",
       "placeholderText": "Insert text"
@@ -185,7 +186,9 @@
     "placeholderSurname": "Surname",
     "placeholderUser": "User",
     "placeholderTelephone": "Telephone",
-    "placeholderConfirmPassword": "Confirm password"
+    "placeholderConfirmPassword": "Confirm password",
+    "modalText": "Changes successful, you will be redirected to the login page",
+    "confirmButton": "Confirm"
   },
   "Home": {
     "Hero": {
@@ -307,13 +310,17 @@
   },
   "Collaborators": {
     "title": "Collaborators",
-    "info": "Registered collaborators, click on the edit button to manually update the user's data or click on the delete button to delete the user from the system",
+    "info": "Registered collaborators, click on the edit button to manually update the user's data or click on the delete button to deactivate the user",
+    "titleDeactive": "Deactivated users",
+    "infoDeactive": "Deactivated users, click on the edit button to reactivate the user",
     "table": {
       "name": "NAME",
       "surname": "SURNAME",
       "role": "ROLE",
       "blog": "PUBLISHED ARTICLES"
-    }
+    },
+    "activeModalText": "Are you sure you want to reactivate the following user?",
+    "activeModalBtn": "Confirm"
   },
   "CollaboratorsEditor": {
     "title": "User data",

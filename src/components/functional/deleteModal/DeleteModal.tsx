@@ -16,6 +16,9 @@ interface modalProps {
   open: boolean;
   closeCallback: Function;
   deleteCallback: Function;
+  modalText?: string;
+  deleteBtnText?: string;
+  discardBtnText?: string;
 }
 
 const DeleteModal: FC<modalProps> = (props): JSX.Element => {
@@ -36,18 +39,24 @@ const DeleteModal: FC<modalProps> = (props): JSX.Element => {
       aria-describedby="modal-modal-description"
     >
       <Box className={deleteStyle.modal}>
-        <Typography>{t("deleteModal.text")}</Typography>
+        <Typography>{t(props.modalText)}</Typography>
         <Box className={deleteStyle.modalButtons}>
           <ButtonGeneric color={style.secondaryColor} callback={deleteElement}>
-            {t("deleteModal.deleteButton")}
+            {t(props.deleteBtnText)}
           </ButtonGeneric>
           <ButtonGeneric color={style.saveButtonColor} callback={closeModal}>
-            {t("deleteModal.DiscardChangesButton")}
+            {t(props.discardBtnText)}
           </ButtonGeneric>
         </Box>
       </Box>
     </Modal>
   );
 };
+
+DeleteModal.defaultProps = {
+  modalText: "deleteModal.text",
+  deleteBtnText: "deleteModal.deleteButton",
+  discardBtnText: "deleteModal.DiscardChangesButton",
+}
 
 export default DeleteModal;

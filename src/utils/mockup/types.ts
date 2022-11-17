@@ -30,6 +30,19 @@ export type Article = {
   userId?: number;
 };
 
+export type User = {
+  disableDate?: string;
+  email: string;
+  id?: number;
+  language: string;
+  name: string;
+  surname: string;
+  password: string;
+  phone: string;
+  publishedArticles?: number;
+  role: Array<string> | number;
+};
+
 export type Banner = {
   btnText1: string;
   btnText2: string;
@@ -106,6 +119,39 @@ export type AboutTitle = {
 };
 
 export type AboutType = {
+  content: Array<AboutContent>;
+  hero: AboutHero;
+  title: AboutTitle;
+};
+
+export type SingleSocial = {
+  footerOn: boolean;
+  homepageOn: boolean;
+  icon: string;
+  id?: Number;
+  link: string;
+  name: string;
+};
+
+export type SupportContent = {
+  id: number;
+  mediaContent: string;
+  mediaType: string;
+  paragraph: string;
+};
+
+export type SupportHero = {
+  image: string;
+  subtitle: string;
+  text: string;
+};
+
+export type SupportTitle = {
+  id: number;
+  title: string;
+};
+
+export type Support = {
   content: Array<AboutContent>;
   hero: AboutHero;
   title: AboutTitle;

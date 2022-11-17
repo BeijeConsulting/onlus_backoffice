@@ -27,18 +27,31 @@ import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../../router/pages";
 //translation
 import { useTranslation } from "react-i18next";
+import {
+  deleteSocialById,
+  getAllSocialApi,
+} from "../../../services/api/social/socialApi";
+
+//types
+import { SingleSocial } from "../../../utils/mockup/types";
 
 interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
+  socialList: Array<SingleSocial>;
+  currentSocialId: Number | null;
+  getData: boolean;
 }
 const initialState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
+  socialList: [],
+  currentSocialId: null,
+  getData: false
 };
 
 const Social: FC = (): JSX.Element => {
@@ -48,13 +61,30 @@ const Social: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
-
+  
   useEffect(() => {
-    setState({
-      ...state,
-      snackIsOpen: location?.state?.open,
-    });
+    getSocial();
   }, []);
+
+  //recupero i social tramite api
+  async function getSocial(flag: boolean = null): Promise<void> {
+    let resp: any = await getAllSocialApi();
+    if (flag === null) {
+      setState({
+        ...state,
+        socialList: resp?.data?.social,
+        snackIsOpen: location?.state?.open,
+      });
+    } else {
+      setState({
+        ...state,
+        socialList: resp?.data?.social,
+        snackIsOpen: location?.state?.open,
+        modalIsOpen: false,
+        snackDeleteIsOpen: true,
+      });
+    }
+  }
 
   //Snackbar
   const handleClose = () => {
@@ -66,12 +96,15 @@ const Social: FC = (): JSX.Element => {
   };
 
   //Modal
-  const openDeleteModal = (): void => {
-    setState({
-      ...state,
-      modalIsOpen: !state.modalIsOpen,
-    });
-  };
+  const openDeleteModal =
+    (row: any): any =>
+    (): void => {
+      setState({
+        ...state,
+        modalIsOpen: !state.modalIsOpen,
+        currentSocialId: row.id,
+      });
+    };
 
   //chiudo il modale
   const closeDeleteModal = (): void => {
@@ -82,12 +115,11 @@ const Social: FC = (): JSX.Element => {
   };
 
   //elimino il social
-  const deleteSocial = (): void => {
-    setState({
-      ...state,
-      modalIsOpen: false,
-      snackDeleteIsOpen: true,
-    });
+  const deleteSocial = async (): Promise<void> => {
+    let resp: any = await deleteSocialById(state?.currentSocialId);
+    if (resp.status === 200) {
+      getSocial(true);
+    }
   };
 
   //Funzioni di modifica e cancella
@@ -106,7 +138,7 @@ const Social: FC = (): JSX.Element => {
         <ButtonIcon callback={updateSocial(params)}>
           <CreateIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
-        <ButtonIcon callback={openDeleteModal}>
+        <ButtonIcon callback={openDeleteModal(params.row)}>
           <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
         </ButtonIcon>
       </>
@@ -149,16 +181,16 @@ const Social: FC = (): JSX.Element => {
               +{t("addButton")}
             </ButtonGeneric>
           </Box>
-          <CustomTable columns={columns} rows={social} />
+          <CustomTable columns={columns} rows={state.socialList} />
         </LabelText>
       </Box>
       {/* delete modal */}
       <DeleteModal
         open={state.modalIsOpen}
         closeCallback={closeDeleteModal}
-        deleteCallback={deleteSocial /*API delete*/}
+        deleteCallback={deleteSocial}
       />
-      {state.snackIsOpen && (
+      {location?.state?.openChange && (
         <CustomSnackbar
           message={t("changesSnack")}
           severity={"success"}

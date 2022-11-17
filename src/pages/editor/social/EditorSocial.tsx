@@ -1,4 +1,4 @@
-import { FC, BaseSyntheticEvent } from "react";
+import { FC, BaseSyntheticEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 //mui
@@ -21,20 +21,69 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 //translation
 import { useTranslation } from "react-i18next";
 
-type social = {
-  id?: number;
-  name: string;
-  icon?: JSX.Element;
-  link: string;
-  footerOn: boolean;
-  homepageOn: boolean;
+//api
+import {
+  createNewSocialApi,
+  getSocialById,
+  updateSocialById,
+} from "../../../services/api/social/socialApi";
+
+//types
+import { SingleSocial } from "../../../utils/mockup/types";
+import checkEmptyText from "../../../utils/checkEmptyText";
+
+interface State {
+  currentSocial: SingleSocial;
+  isReady: boolean;
+  nameError: boolean;
+  linkError: boolean;
+  iconError: boolean;
+}
+
+const initialState: State = {
+  currentSocial: {
+    footerOn: false,
+    homepageOn: false,
+    icon: "",
+    id: null,
+    link: "",
+    name: "",
+  },
+  isReady: false,
+  nameError: false,
+  linkError: false,
+  iconError: false,
 };
 
 const EditorSocial: FC = (): JSX.Element => {
+  const [state, setState] = useState<State>(initialState);
   const navigate = useNavigate();
 
   const location = useLocation();
+  const idCurrentSocial = location?.state?.data?.id;
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (!location?.state?.showAdd) {
+      getCurrentSocial();
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(state.currentSocial);
+  }, [state.currentSocial]);
+
+  //recupero il social corrente
+  async function getCurrentSocial(): Promise<void> {
+    let resp: any = await getSocialById(idCurrentSocial);
+    if (resp?.status === 200) {
+      setState({
+        ...state,
+        currentSocial: resp?.data,
+        isReady: true,
+      });
+    }
+  }
 
   const handleClick = (): void => {};
 
@@ -44,107 +93,162 @@ const EditorSocial: FC = (): JSX.Element => {
   };
 
   const onSave = (e: BaseSyntheticEvent): void => {
-    /*let newSocial: social = {
-      id: location.state.data.id,
-      name: e.target.form[0].value,
-      icon: e.target.form[2].value,
-      link: e.target.form[3].value,
-      footerOn: e.target.form[5].checked,
-      homepageOn: e.target.form[6].checked,
-    };*/
-
-    if (location?.state?.showAdd) {
-      navigate(PAGES.editSocial, { state: { openAdd: true } });
-    } else {
-      navigate(PAGES.editSocial, { state: { open: true } });
-    }
+    validateForm(e);
   };
+
+  function validateForm(e: BaseSyntheticEvent) {
+    console.log('form valido');
+    let formIsValid = true;
+
+    const socialName = e.target.form[0].value;
+    const socialLink = e.target.form[3].value;
+    const footerOn = e.target.form[5].checked;
+    const homepageOn = e.target.form[6].checked;
+    const socialIcon = e.target.form[2].value;
+
+    let errorName: boolean = false;
+    let errorLink: boolean = false;
+    let errorIcon: boolean = false;
+
+    if (checkEmptyText(socialName)) {
+      formIsValid = false;
+      errorName = true;
+    }
+    if (checkEmptyText(socialLink)) {
+      formIsValid = false;
+      errorLink = true;
+    }
+    // if (checkEmptyText(socialIcon)) {
+    //   formIsValid = false;
+    //   errorIcon = true;
+    // }
+
+    if (formIsValid) {
+     
+      let newSocial: SingleSocial = {
+        name: socialName,
+        icon: "testicon",
+        link: socialLink,
+        homepageOn: homepageOn,
+        footerOn: footerOn,
+      };
+
+      if (location?.state?.showAdd) {
+        sendData(newSocial);
+      }else{
+        updateSocial(newSocial);
+        // navigate(PAGES.editSocial, { state: { open: true } });
+      }
+    } else {
+      setState({
+        ...state,
+        nameError: errorName,
+        linkError: errorLink,
+        iconError: errorIcon,
+      });
+    }
+  }
+
+  async function sendData(newSocial: SingleSocial): Promise<void> {
+    let resp = await createNewSocialApi(newSocial);
+    if(resp?.status === 200){
+      navigate(PAGES.editSocial, { state: { openAdd: true} });
+    }
+  }
+
+  async function updateSocial(newSocial: SingleSocial): Promise<void>{
+    let resp = await updateSocialById(state?.currentSocial?.id,newSocial);
+    if(resp?.status === 200){
+      navigate(PAGES.editSocial, { state: { openChange: true} });
+    }
+  }
 
   return (
     <form className={common.component}>
-      <Box className={`${common.singleComponent}`}>
-        <LabelText>
-          <Box className={common.row}>
-            <Box className={common.rowLeft}>
-              <Title
-                text={t("social.editorSocial.socialSection.title")}
-                textInfo={t("social.editorSocial.socialSection.info")}
-              />
-              <CustomTextField
-                defaultValue={
-                  !!location?.state?.data?.name ? location.state.data.name : ""
-                }
-                placeholder={t(
-                  "social.editorSocial.socialSection.placeholderSocial"
-                )}
-                error={false}
-              />
-              <Title
-                text={t("social.editorSocial.iconSection.title")}
-                textInfo={t("social.editorSocial.iconSection.info")}
-              />
-              <ButtonAddFile callback={handleClick} />
-            </Box>
-            <Box className={common.rowRight}>
-              <Title
-                text={t("social.editorSocial.linkSection.title")}
-                textInfo={t("social.editorSocial.linkSection.info")}
-              />
-              <CustomTextField
-                defaultValue={
-                  !!location?.state?.data?.link
-                    ? location?.state?.data?.link
-                    : ""
-                }
-                placeholder={t(
-                  "social.editorSocial.linkSection.placeholderLink"
-                )}
-                error={false}
-              />
-              <CustomSwitch
-                defaultChecked={
-                  !!location?.state?.data?.footerOn
-                    ? location?.state?.data?.footerOn
-                    : false
-                }
-                callback={handleClick}
-                label={t("social.editorSocial.toggleFooter")}
-              />
-              <CustomSwitch
-                defaultChecked={
-                  !!location?.state?.data?.homepageOn
-                    ? location?.state?.data?.homepageOn
-                    : false
-                }
-                callback={handleClick}
-                label={t("social.editorSocial.toggleHome")}
-              />
-            </Box>
+      {state?.isReady || location?.state?.showAdd ? (
+        <>
+          <Box className={`${common.singleComponent}`}>
+            <LabelText>
+              <Box className={common.row}>
+                <Box className={common.rowLeft}>
+                  <Title
+                    text={t("social.editorSocial.socialSection.title")}
+                    textInfo={t("social.editorSocial.socialSection.info")}
+                  />
+                  <CustomTextField
+                    defaultValue={state?.currentSocial?.name}
+                    placeholder={t(
+                      "social.editorSocial.socialSection.placeholderSocial"
+                    )}
+                    error={state?.nameError}
+                    errorMessage={"Inserisci il nome del social"}
+                  />
+                  <Title
+                    text={t("social.editorSocial.iconSection.title")}
+                    textInfo={t("social.editorSocial.iconSection.info")}
+                  />
+                  <ButtonAddFile
+                    callback={handleClick}
+                    image={state?.currentSocial?.icon}
+                  />
+                </Box>
+                <Box className={common.rowRight}>
+                  <Title
+                    text={t("social.editorSocial.linkSection.title")}
+                    textInfo={t("social.editorSocial.linkSection.info")}
+                  />
+                  <CustomTextField
+                    defaultValue={state?.currentSocial?.link}
+                    placeholder={t(
+                      "social.editorSocial.linkSection.placeholderLink"
+                    )}
+                    error={state?.linkError}
+                    errorMessage={"Inserisci il link del social"}
+                  />
+                  <CustomSwitch
+                    defaultChecked={state?.currentSocial?.footerOn}
+                    callback={handleClick}
+                    label={t("social.editorSocial.toggleFooter")}
+                  />
+                  <CustomSwitch
+                    defaultChecked={state?.currentSocial?.homepageOn}
+                    callback={handleClick}
+                    label={t("social.editorSocial.toggleHome")}
+                  />
+                </Box>
+              </Box>
+            </LabelText>
           </Box>
-        </LabelText>
-      </Box>
 
-      <Box className={style.buttonsContainer}>
-        {location?.state?.showAdd ? (
-          <>
-            <ButtonGeneric color={"green"} callback={onSave}>
-              Aggiungi
-            </ButtonGeneric>
-            <ButtonGeneric color={common.secondaryColor} callback={onCancel}>
-              Annulla
-            </ButtonGeneric>
-          </>
-        ) : (
-          <>
-            <ButtonGeneric color={common.saveButtonColor} callback={onSave}>
-              {t("saveButton")}
-            </ButtonGeneric>
-            <ButtonGeneric color={common.secondaryColor} callback={onCancel}>
-              {t("cancelButton")}
-            </ButtonGeneric>
-          </>
-        )}
-      </Box>
+          <Box className={style.buttonsContainer}>
+            {location?.state?.showAdd ? (
+              <>
+                <ButtonGeneric color={"green"} callback={onSave}>
+                  Aggiungi
+                </ButtonGeneric>
+                <ButtonGeneric
+                  color={common.secondaryColor}
+                  callback={onCancel}
+                >
+                  Annulla
+                </ButtonGeneric>
+              </>
+            ) : (
+              <>
+                <ButtonGeneric color={common.saveButtonColor} callback={onSave}>
+                  {t("saveButton")}
+                </ButtonGeneric>
+                <ButtonGeneric
+                  color={common.secondaryColor}
+                  callback={onCancel}
+                >
+                  {t("cancelButton")}
+                </ButtonGeneric>
+              </>
+            )}
+          </Box>
+        </>
+      ) : null}
     </form>
   );
 };
