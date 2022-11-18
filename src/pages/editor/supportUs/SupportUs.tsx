@@ -286,7 +286,6 @@ const SupportUs: FC = (): JSX.Element => {
     let errors: boolean = getErrors(error);
     let supportContentErrors: boolean = getErrors(supportContentError);
 
-    console.log(error, state.error);
     if (!errors && !supportContentErrors) {
       //update
       updateSupport(support, error, supportContentError);
