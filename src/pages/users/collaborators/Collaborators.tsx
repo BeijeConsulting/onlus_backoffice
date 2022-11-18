@@ -71,25 +71,25 @@ const Collaborators: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //prende i dati dei collaboratori o degli utenti in base alla pagina in cui si trova
   useEffect(() => {
-    if(window.location.href.includes('collaborators')){
+    setState({
+      ...state,
+      snackIsOpen: location?.state?.open,
+      ready: false,
+    });
+
+    if (window.location.href.includes('collaborators')) {
       getCollaboratorsData()
     } else {
       getGuestsData()
     }
-
-    setState({
-      ...state,
-      snackIsOpen: location?.state?.open,
-    });
   }, [window.location.href]);
 
   //fetchAPI collaborators
   const getCollaboratorsData = async (): Promise<void> => {
     let res = await fetchData(getActiveCollaborators);
     let res2 = await fetchData(getDeactivatedCollaborators);
-    console.log("Collab: ", res.data);
-    console.log("Deactivated: ", res2.data);
 
     setState({
       ...state,
@@ -104,8 +104,6 @@ const Collaborators: FC = (): JSX.Element => {
   const getGuestsData = async (): Promise<void> => {
     let res = await fetchData(getActiveGuests);
     let res2 = await fetchData(getDeactivatedGuests);
-    console.log("Guests: ", res.data);
-    console.log("Deactivated: ", res2.data);
 
     setState({
       ...state,
@@ -209,11 +207,19 @@ const Collaborators: FC = (): JSX.Element => {
 
   //Funzioni di modifica e aggiunta
   const updateUser = (row: object) => (): void => {
-    navigate(PAGES.editorCollaborators, { state: { row } });
+    if (window.location.href.includes('collaborators')) {
+      navigate(PAGES.editorCollaborators, { state: { row } });
+    } else {
+      navigate(PAGES.editorVolunteers, { state: { row } });
+    }
   };
 
   const addUser = (): void => {
-    navigate(PAGES.editorCollaborators, { state: { showAdd: true } });
+    if (window.location.href.includes('collaborators')) {
+      navigate(PAGES.editorCollaborators, { state: { showAdd: true } });
+    } else {
+      navigate(PAGES.editorVolunteers, { state: { showAdd: true } });
+    }
   };
 
   //Colonne del DataGrid
@@ -272,7 +278,7 @@ const Collaborators: FC = (): JSX.Element => {
     return params.row.role[0];
   }
 
-  const columns = [
+  const columnsCollaborators = [
     {
       field: "name",
       headerName: t("Collaborators.table.name"),
@@ -304,6 +310,32 @@ const Collaborators: FC = (): JSX.Element => {
     },
   ];
 
+  const columnsGuest = [
+    {
+      field: "name",
+      headerName: t("Collaborators.table.name"),
+      flex: 1,
+    },
+    {
+      field: "surname",
+      headerName: t("Collaborators.table.surname"),
+      flex: 1,
+    },
+    {
+      field: "email",
+      headerName: "EMAIL",
+      flex: 1,
+    },
+    {
+      field: "icone",
+      headerName: "",
+      type: "number",
+      sortable: false,
+      flex: 1,
+      renderCell: renderDetailsButton,
+    },
+  ];
+
   return (
     <Box className={common.component}>
       {state.ready && (
@@ -312,19 +344,38 @@ const Collaborators: FC = (): JSX.Element => {
             <LabelText>
               {/*titolo*/}
               <Box className={style.titleRow}>
-                <Title
-                  text={t("Collaborators.title")}
-                  textInfo={
-                    t("Collaborators.info")
-                  }
-                />
+                {
+                  window.location.href.includes('collaborators') ?
+                    <Title
+                      text={t("Collaborators.title")}
+                      textInfo={
+                        t("Collaborators.info")
+                      }
+                    />
+                    :
+                    <Title
+                      text={t("Volunteers.title")}
+                      textInfo={
+                        t("Volunteers.info")
+                      }
+                    />
+                }
                 <ButtonGeneric color={"green"} callback={addUser}>
                   + {t("addButton")}
                 </ButtonGeneric>
               </Box>
 
               {/*tabella*/}
-              <CustomTable columns={columns} rows={state.collaborators} pageSize={5} />
+              <CustomTable
+                columns={
+                  window.location.href.includes('collaborators') ?
+                    columnsCollaborators
+                  :
+                    columnsGuest
+                }
+                rows={state.collaborators}
+                pageSize={5}
+              />
             </LabelText>
 
             <Box sx={{ height: "20px" }} />
@@ -341,7 +392,16 @@ const Collaborators: FC = (): JSX.Element => {
               </Box>
 
               {/*tabella*/}
-              <CustomTable columns={columns} rows={state.deactivated} pageSize={5} />
+              <CustomTable
+                columns={
+                  window.location.href.includes('collaborators') ?
+                    columnsCollaborators
+                  :
+                    columnsGuest
+                }
+                rows={state.deactivated}
+                pageSize={5}
+              />
             </LabelText>
 
             <DeleteModal

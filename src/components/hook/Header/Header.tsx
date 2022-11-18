@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 //Style
@@ -19,13 +19,18 @@ import PersonIcon from "@mui/icons-material/Person";
 
 //Assets
 import logo from "../../../assets/media/logo.png";
-import { useNavigate } from "react-router-dom";
+
+//API
+import { fetchData } from "../../../utils/fetchData";
+import { getApiGeneral } from "../../../services/api/general/generalApi";
 
 //Routes
 import PAGES from "../../../router/pages";
+import { useNavigate } from "react-router-dom";
 
 //Utils
 import useLogout from "../../../utils/logout";
+import checkRole from "../../../utils/checkRoles";
 
 //translation
 import { useTranslation } from 'react-i18next';
@@ -33,7 +38,6 @@ import { useTranslation } from 'react-i18next';
 /*
 TO DO
 - i18n
-- logout
 - img backend
 - title backend
 - user backend
@@ -47,6 +51,16 @@ type User = {
   permission: Array<string>;
 }
 
+interface State {
+  logo: string;
+  siteName: string;
+}
+
+const initialState: State = {
+  logo: '',
+  siteName: '',
+}
+
 const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(() => ({
   "& .MuiPaper-root": {
     backgroundColor: common.primaryColor,
@@ -55,6 +69,8 @@ const StyledMenu = styled((props: MenuProps) => <Menu {...props} />)(() => ({
 }));
 
 const Header: FC = (): JSX.Element => {
+  const [state, setState] = useState(initialState)
+
   const [langIta, setLangIta] = useState(true);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { t, i18n } = useTranslation();
@@ -63,6 +79,21 @@ const Header: FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   const user: User = useSelector((state: any) => state.userDuck.user);
+
+  useEffect(() => {
+    getHeaderData()
+  }, [])
+
+  //fetchAPI
+  const getHeaderData = async (): Promise<void> => {
+    let res = await fetchData(getApiGeneral);
+    console.log(res.data)
+    setState({
+      ...state,
+      logo: res.data.logo,
+      siteName: res.data.websiteName
+    })
+  }
 
   //Funzioni per aprire e chiudere il menù
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -92,7 +123,7 @@ const Header: FC = (): JSX.Element => {
   //Funzione di logout
   const logout = (): void => {
     handleLogout()
-    if(isReady){
+    if (isReady) {
       navigate(PAGES.login)
     }
   }
@@ -100,17 +131,26 @@ const Header: FC = (): JSX.Element => {
   return (
     <header>
       <Toolbar className={css.toolbar}>
-        <img src={logo} alt={""} className={css.logo} />
+        <img src={state.logo} alt={""} className={css.logo} />
 
-        <p className={css.title}>Nome Onlus</p>
+        <p className={css.title}>{state.siteName}</p>
 
         <Box className={css.boxRight}>
           <div className={css.buttonDiv} onClick={handleMenu}>
             <span className={css.iconSpan}>
               <PersonIcon fontSize="large" />
-              <p>Nome Utente</p>
+              <p>{user?.email}</p>
             </span>
-            <span className={css.authSpan}>{!!user?.permission && user?.permission[0]}</span>
+            <span className={css.authSpan}>
+              {
+                !!user?.permission && checkRole(user?.permission) === "3" ?
+                  "SUPERADMIN"
+                : checkRole(user?.permission) === "2" ?
+                    "ADMIN"
+                  :
+                    "BLOGGER"
+              }
+            </span>
           </div>
 
           <StyledMenu
@@ -118,7 +158,7 @@ const Header: FC = (): JSX.Element => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={goToPersonalArea}>Area personale</MenuItem>
+            <MenuItem onClick={goToPersonalArea}>{t("headerMenu")}</MenuItem>
             <MenuItem onClick={logout}>Logout</MenuItem>
           </StyledMenu>
 

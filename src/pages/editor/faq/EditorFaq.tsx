@@ -46,7 +46,6 @@ const EditorFaq: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
 
   //Funzione per salvare domanda e risposta
   const onSaveQna = async (e: BaseSyntheticEvent): Promise<void> => {
@@ -71,8 +70,6 @@ const EditorFaq: FC = (): JSX.Element => {
         question: e.target.form[0].value,
         answer: e.target.form[2].value,
       };
-
-      console.log(qna);
 
       //controlla se bisogna fare PUT o POST
       if(!!location?.state?.row?.id){
