@@ -19,9 +19,6 @@ import DeleteModal from "../../../components/functional/deleteModal/DeleteModal"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CreateIcon from "@mui/icons-material/Create";
 
-//data
-import { social } from "../../../utils/mockup/data";
-
 //navigation
 import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../../router/pages";

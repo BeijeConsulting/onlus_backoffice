@@ -25,8 +25,6 @@ import EditorBlog from "./pages/articles/blog/EditorBlog";
 import Categories from "./pages/articles/categories/Categories";
 import Collaborators from "./pages/users/collaborators/Collaborators";
 import EditorCollaborators from "./pages/users/collaborators/EditorCollaborators";
-import Volunteers from "./pages/users/volunteers/Volunteers";
-import EditVolunteers from "./pages/users/volunteers/EditVolunteers";
 import Donations from "./pages/donations/Donations";
 import NotFound from "./pages/notFound/NotFound";
 

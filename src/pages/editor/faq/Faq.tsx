@@ -12,7 +12,6 @@ import style from "./faq.module.scss";
 import { Box } from "@mui/system";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { AlertColor } from "@mui/material";
 
 //Components
 import LabelText from "../../../components/functional/labelText/LabelText";

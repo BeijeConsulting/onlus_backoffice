@@ -4,10 +4,7 @@ import { FC, useState, useEffect } from "react";
 //api
 import {
   deleteApiArticleById,
-  getApiArticleById,
-  getApiArticles,
-  postApiArticle,
-  putApiArticleById
+  getApiArticles
 } from "../../../services/api/blog/blogApi";
 
 //navigation
