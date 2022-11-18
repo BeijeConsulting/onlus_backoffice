@@ -391,7 +391,7 @@ const About: FC = (): JSX.Element => {
   //modifico about
   const updateAbout = async (about: AboutType, error: Array<boolean>, aboutContentError: Array<boolean>): Promise<void> => {
     console.log("ABout prima di aggiornare", about)
-    let response = await putApiAbout(about);
+    let response = await postApiAbout(about);
     handleUpdateResponse(response.status, error, aboutContentError, about);
   };
 
