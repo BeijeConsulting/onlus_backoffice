@@ -75,7 +75,9 @@ export type SectionWork = {
 
 export type Customization = {
   websiteName: string;
-  logo: string;
+  mediaContent: string;
+  mediaTitle: string;
+  mediaType: string;
   banner: Banner;
   contacts: Contacts;
   palette: Array<Palette>;

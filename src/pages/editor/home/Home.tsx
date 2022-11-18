@@ -29,9 +29,9 @@ type home = {
     text: string;
   };
   result: {
-    mediaContent: any;
-    mediaTitle: any;
-    mediaType: any;
+    mediaContent: string;
+    mediaTitle: string;
+    mediaType: string;
     title: string;
     text: string;
   };

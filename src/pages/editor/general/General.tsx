@@ -61,7 +61,9 @@ const initState: State = {
   },
   customization: {
     websiteName: "",
-    logo: "",
+    mediaContent: "",
+    mediaTitle: "",
+    mediaType: "",
     banner: {
       btnText1: "",
       btnText2: "",
@@ -110,9 +112,11 @@ const General: FC = (): JSX.Element => {
     const form = e.target.form;
     console.log(e);
 
-    const newData : Customization = {
+    const newData: Customization = {
       websiteName: form[0].value,
-      logo: "https://st2.depositphotos.com/1035649/10943/v/600/depositphotos_109435792-stock-illustration-panda-bear-template.jpg",
+      mediaContent: form[2].name.split(" ")[0],
+      mediaTitle: form[2].name.split(" ")[1],
+      mediaType: form[2].name.split(" ")[2],
       palette: [
         {
           id: 1,
@@ -208,7 +212,12 @@ const General: FC = (): JSX.Element => {
               </LabelText>
               <LabelText>
                 <Title text="Logo" textInfo={t("general.logo.info")} />
-                <ButtonAddFile callback={handleImage} />
+                <ButtonAddFile
+                  callback={handleImage}
+                  mediaContent={state.customization.mediaContent}
+                  mediaTitle={state.customization.mediaTitle}
+                  mediaType={state.customization.mediaType}
+                />
               </LabelText>
               <LabelText>
                 <Title

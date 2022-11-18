@@ -3,7 +3,7 @@ import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 //api
 import {
   getApiSupport,
-  putApiSupport,
+  postApiSupport,
 } from "../../../services/api/supportUs/supportUsApi";
 
 //components
@@ -71,8 +71,8 @@ const SupportUs: FC = (): JSX.Element => {
   const [state, setState] = useState(initialState);
   const { t } = useTranslation();
 
-  let indSx: number = 0
-  let indDx: number = 1
+  let indSx: number = 0;
+  let indDx: number = 1;
 
   //Snackbar
   const handleClose = () => {
@@ -130,7 +130,7 @@ const SupportUs: FC = (): JSX.Element => {
           mediaContent: support.content[i].mediaContent,
           mediaTitle: support.content[i].mediaTitle,
           mediaType: support.content[i].mediaType,
-          paragraph: support.content[i].paragraph
+          paragraph: support.content[i].paragraph,
         });
       else
         addRight.push({
@@ -138,12 +138,12 @@ const SupportUs: FC = (): JSX.Element => {
           mediaContent: support.content[i].mediaContent,
           mediaTitle: support.content[i].mediaTitle,
           mediaType: support.content[i].mediaType,
-          paragraph: support.content[i].paragraph
+          paragraph: support.content[i].paragraph,
         });
     }
 
-    indSx = 0
-    indDx = 1
+    indSx = 0;
+    indDx = 1;
 
     setState({
       ...state,
@@ -157,7 +157,11 @@ const SupportUs: FC = (): JSX.Element => {
   };
 
   //ritorno l'elemento con il contenuto
-  const getContent = (content: SupportContent = null,key: number = null,index: number): JSX.Element => {
+  const getContent = (
+    content: SupportContent = null,
+    key: number = null,
+    index: number
+  ): JSX.Element => {
     return (
       <LabelText key={key}>
         <Title
@@ -199,7 +203,7 @@ const SupportUs: FC = (): JSX.Element => {
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
-        paragraph: ""
+        paragraph: "",
       });
     }
     //aggiungo a destra
@@ -209,7 +213,7 @@ const SupportUs: FC = (): JSX.Element => {
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
-        paragraph: ""
+        paragraph: "",
       });
     }
 
@@ -264,16 +268,22 @@ const SupportUs: FC = (): JSX.Element => {
       content: [
         {
           id: state?.support?.content[0]?.id,
-          mediaContent: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[0],
-          mediaTitle: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[1],
-          mediaType: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[2],
-          paragraph: e.target.form[8 + state.addLeft.length * 4].value
+          mediaContent:
+            e.target.form[11 + state.addLeft.length * 4].name.split(" ")[0],
+          mediaTitle:
+            e.target.form[11 + state.addLeft.length * 4].name.split(" ")[1],
+          mediaType:
+            e.target.form[11 + state.addLeft.length * 4].name.split(" ")[2],
+          paragraph: e.target.form[8 + state.addLeft.length * 4].value,
         },
         {
           id: state?.support?.content[1]?.id,
-          mediaContent: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[0],
-          mediaTitle: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[1],
-          mediaType: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[2],
+          mediaContent:
+            e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[0],
+          mediaTitle:
+            e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[1],
+          mediaType:
+            e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[2],
           paragraph: e.target.form[8 + state.addLeft.length * 4 + 4].value,
         },
       ],
@@ -304,8 +314,8 @@ const SupportUs: FC = (): JSX.Element => {
       //update
       updateSupport(support, error, supportContentError);
     } else {
-      indSx = 0
-      indDx = 1
+      indSx = 0;
+      indDx = 1;
       setState({
         ...state,
         snackErrorIsOpen: true,
@@ -316,7 +326,10 @@ const SupportUs: FC = (): JSX.Element => {
   };
 
   //gestisco i contenuti dinamici
-  const getDynamicSupportContents = (support: Support,e: BaseSyntheticEvent): Array<SupportContent> => {
+  const getDynamicSupportContents = (
+    support: Support,
+    e: BaseSyntheticEvent
+  ): Array<SupportContent> => {
     let contentLeft: Array<SupportContent> = [];
     let contentRight: Array<SupportContent> = [];
     let contentIndex: number = 2;
@@ -338,10 +351,20 @@ const SupportUs: FC = (): JSX.Element => {
     for (let i = 0; i < state.addRight.length; i++) {
       contentRight.push({
         id: state.support.content[contentIndex].id,
-        mediaContent: e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[0],
-        mediaTitle: e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[1],
-        mediaType: e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[2],
-        paragraph: e.target.form[8 + state.addLeft.length * 4 + 4 * i + 8].value,
+        mediaContent:
+          e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(
+            " "
+          )[0],
+        mediaTitle:
+          e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(
+            " "
+          )[1],
+        mediaType:
+          e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(
+            " "
+          )[2],
+        paragraph:
+          e.target.form[8 + state.addLeft.length * 4 + 4 * i + 8].value,
       });
       contentIndex += 2;
     }
@@ -393,14 +416,23 @@ const SupportUs: FC = (): JSX.Element => {
   };
 
   //modifico support
-  const updateSupport = async (support: Support,error: Array<boolean>,supportContentError: Array<boolean>): Promise<void> => {
-    console.log("Support prima di aggiornare",support)
-    let response = await putApiSupport(support);
+  const updateSupport = async (
+    support: Support,
+    error: Array<boolean>,
+    supportContentError: Array<boolean>
+  ): Promise<void> => {
+    console.log("Support prima di aggiornare", support);
+    let response = await postApiSupport(support);
     handleUpdateResponse(response.status, error, supportContentError, support);
   };
 
   //gestisco la risposta all'eliminazione dell'articolo
-  const handleUpdateResponse = async (status: number,error: Array<boolean>,supportContentError: Array<boolean>, support: Support) => {
+  const handleUpdateResponse = async (
+    status: number,
+    error: Array<boolean>,
+    supportContentError: Array<boolean>,
+    support: Support
+  ) => {
     let snack: boolean = state.snackIsOpen;
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
@@ -410,12 +442,10 @@ const SupportUs: FC = (): JSX.Element => {
     if (status === 200) {
       response = await fetchData(getApiSupport);
       console.log("Support", response.data);
-      support = response.data
+      support = response.data;
       snack = true;
-    } else if (status === 500 || status === undefined) 
-      snackWarning = true;
-    else 
-      snackError = true;
+    } else if (status === 500 || status === undefined) snackWarning = true;
+    else snackError = true;
 
     setState({
       ...state,
@@ -429,9 +459,11 @@ const SupportUs: FC = (): JSX.Element => {
   };
 
   //stampo l'immagine caricata
-  const log = (mediaContent: string, mediaTitle: string, mediaType: string): void => {
-
-  };
+  const log = (
+    mediaContent: string,
+    mediaTitle: string,
+    mediaType: string
+  ): void => {};
 
   return (
     <Box>
@@ -483,8 +515,8 @@ const SupportUs: FC = (): JSX.Element => {
                   </LabelText>
                   {/*contenuto*/}
                   {state?.addLeft.map((element: SupportContent) => {
-                    indSx += 2
-                    return getContent(element, element?.id, indSx)
+                    indSx += 2;
+                    return getContent(element, element?.id, indSx);
                   })}
                 </Box>
 
@@ -493,8 +525,8 @@ const SupportUs: FC = (): JSX.Element => {
                   {getContent(state?.support?.content[0], 0, 0)}
                   {getContent(state?.support?.content[1], 1, 1)}
                   {state?.addRight.map((element: SupportContent) => {
-                    indDx += 2
-                    return getContent(element, element?.id, indDx)
+                    indDx += 2;
+                    return getContent(element, element?.id, indDx);
                   })}
                   {/*link*/}
                   <Link
