@@ -11,6 +11,7 @@ import LabelText from "../../components/functional/labelText/LabelText";
 import Title from "../../components/functional/title/Title";
 import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGeneric";
 import ButtonAddFile from "../../components/functional/buttonAddFile/ButtonAddFile";
+import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 
 //util function
 import checkEmptyText from "../../utils/checkEmptyText";
@@ -47,7 +48,9 @@ interface state {
   placeError: boolean;
   currentEvent: Event;
   isReady: boolean;
-  dateToSent: string
+  dateToSent: string;
+  snackErrorIsOpen: boolean;
+  snackWarningIsOpen: boolean;
 }
 
 const initialState: state = {
@@ -67,6 +70,8 @@ const initialState: state = {
     id:null
   },
   isReady: false,
+  snackErrorIsOpen: false,
+  snackWarningIsOpen: false,
 };
 
 const EditorEvents: FC = () => {
@@ -212,19 +217,49 @@ const EditorEvents: FC = () => {
     }
   }
 
+  //PutAPI
   async function updateEvent(newEvent: Event){  
     let resp = await updateEventByIdApi(state?.currentEvent?.id,newEvent);
+    handleResponse(resp.status)
     if(resp?.status === 200){
       navigate(PAGES.events, { state: { openChange: true } });
     }
   }
 
+  //PostAPI
   async function sendData(newEvent: Event) {
     let resp = await createEventApi(newEvent);
+    handleResponse(resp.status)
     if(resp?.status === 200){
        navigate(PAGES.events, { state: { openAdd: true } });
     }
   }
+
+  //gestisce status snackbar
+  const handleResponse = async (status: number) => {
+    let snackWarning: boolean = state.snackWarningIsOpen;
+    let snackError: boolean = state.snackErrorIsOpen;
+
+    if (status === 200) {
+      
+    } else if (status === 500 || status === undefined) snackWarning = true;
+    else snackError = true;
+
+    setState({
+      ...state,
+      snackWarningIsOpen: snackWarning,
+      snackErrorIsOpen: snackError,
+    });
+  };
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackErrorIsOpen: false,
+      snackWarningIsOpen: false,
+    });
+  };
 
   return (
     <form>
@@ -359,6 +394,20 @@ const EditorEvents: FC = () => {
           </Box>
         </>
       ) : null}
+      {state.snackErrorIsOpen && (
+        <CustomSnackbar
+          message={t("responseErrorSnack")}
+          severity={"error"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackWarningIsOpen && (
+        <CustomSnackbar
+          message={t("responseWarningSnack")}
+          severity={"warning"}
+          callback={handleClose}
+        />
+      )}
     </form>
   );
 };

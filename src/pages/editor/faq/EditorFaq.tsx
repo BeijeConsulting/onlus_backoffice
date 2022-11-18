@@ -16,6 +16,7 @@ import LabelText from "../../../components/functional/labelText/LabelText";
 import Title from "../../../components/functional/title/Title";
 import CustomTextField from "../../../components/functional/textField/CustomTextField";
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //API
 import { fetchData } from "../../../utils/fetchData";
@@ -32,15 +33,19 @@ type QNA = {
 interface State {
   answerError: boolean;
   questionError: boolean;
+  snackErrorIsOpen: boolean;
+  snackWarningIsOpen: boolean;
 }
 
 const initState: State = {
   answerError: false,
   questionError: false,
+  snackErrorIsOpen: false,
+  snackWarningIsOpen: false,
 };
 
 const EditorFaq: FC = (): JSX.Element => {
-  const [error, setError] = useState<State>(initState);
+  const [state, setState] = useState<State>(initState);
 
   const { t } = useTranslation();
 
@@ -60,7 +65,8 @@ const EditorFaq: FC = (): JSX.Element => {
       answerErr = true;
     }
 
-    setError({
+    setState({
+      ...state,
       questionError: questionErr,
       answerError: answerErr,
     });
@@ -72,7 +78,7 @@ const EditorFaq: FC = (): JSX.Element => {
       };
 
       //controlla se bisogna fare PUT o POST
-      if(!!location?.state?.row?.id){
+      if (!!location?.state?.row?.id) {
         await putApi(location?.state?.row?.id, qna)
       } else {
         await postApi(qna)
@@ -90,17 +96,45 @@ const EditorFaq: FC = (): JSX.Element => {
   const postApi = async (qna: QNA): Promise<void> => {
     let res = await fetchData(postQna, qna)
     console.log("QNA: ", res)
+    handleResponse(res.status)
   }
 
   //PutAPI
   const putApi = async (id: number, qna: QNA): Promise<void> => {
     let res = await fetchData(putQnaBydId, id, qna)
     console.log("QNA: ", res)
+    handleResponse(res.status)
   }
+
+  //gestisce status snackbar
+  const handleResponse = async (status: number) => {
+    let snackWarning: boolean = state.snackWarningIsOpen;
+    let snackError: boolean = state.snackErrorIsOpen;
+
+    if (status === 200) {
+      
+    } else if (status === 500 || status === undefined) snackWarning = true;
+    else snackError = true;
+
+    setState({
+      ...state,
+      snackWarningIsOpen: snackWarning,
+      snackErrorIsOpen: snackError,
+    });
+  };
 
   //Funzione per cancellare l'operazione
   const onCancel = (): void => {
     navigate(PAGES.editFaq);
+  };
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackErrorIsOpen: false,
+      snackWarningIsOpen: false,
+    });
   };
 
   return (
@@ -118,7 +152,7 @@ const EditorFaq: FC = (): JSX.Element => {
                     : ""
                 }
                 errorMessage="Inserisci una domanda"
-                error={error.answerError}
+                error={state.answerError}
                 placeholder={t("FaqEditor.question")}
               />
 
@@ -129,7 +163,7 @@ const EditorFaq: FC = (): JSX.Element => {
                     : ""
                 }
                 errorMessage="Inserisci una risposta"
-                error={error.questionError}
+                error={state.questionError}
                 placeholder={t("FaqEditor.answer")}
                 minrow={12}
                 maxrow={20}
@@ -170,6 +204,20 @@ const EditorFaq: FC = (): JSX.Element => {
           </Box>
         </form>
       </Box>
+      {state.snackErrorIsOpen && (
+        <CustomSnackbar
+          message={t("responseErrorSnack")}
+          severity={"error"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackWarningIsOpen && (
+        <CustomSnackbar
+          message={t("responseWarningSnack")}
+          severity={"warning"}
+          callback={handleClose}
+        />
+      )}
     </Box>
   );
 };

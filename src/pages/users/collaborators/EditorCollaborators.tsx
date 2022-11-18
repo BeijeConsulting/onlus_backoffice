@@ -205,11 +205,8 @@ const EditorCollaborators: FC = (): JSX.Element => {
   //gestione risposta
   const handleResponse = async (
     status: number,
-    //error: Array<boolean>,
-    //aboutContentError: Array<boolean>
   ): Promise<boolean> => {
     let snackError: boolean = state.snackErrorIsOpen;
-    let response: any = {};
 
     console.log(status);
     if (status === 200) {

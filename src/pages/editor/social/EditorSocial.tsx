@@ -7,6 +7,11 @@ import { Box } from "@mui/material";
 //function component
 import LabelText from "../../../components/functional/labelText/LabelText";
 import Title from "../../../components/functional/title/Title";
+import CustomTextField from "../../../components/functional/textField/CustomTextField";
+import CustomSwitch from "../../../components/functional/customSwitch/CustomSwitch";
+import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
+import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+import CustomSnackbar from "../../../components/functional/customSnackbar/CustomSnackbar";
 
 //style
 import common from "../../../assets/styles/common.module.scss";
@@ -14,14 +19,12 @@ import style from "./editorSocial-Style.module.scss";
 
 //route
 import PAGES from "../../../router/pages";
-import CustomTextField from "../../../components/functional/textField/CustomTextField";
-import CustomSwitch from "../../../components/functional/customSwitch/CustomSwitch";
-import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAddFile";
-import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
+
 //translation
 import { useTranslation } from "react-i18next";
+
 //utils
-import {isValidURL} from "../../../utils/checkUrl";
+import { isValidURL } from "../../../utils/checkUrl";
 
 //api
 import {
@@ -40,6 +43,8 @@ interface State {
   nameError: boolean;
   linkError: boolean;
   iconError: boolean;
+  snackErrorIsOpen: boolean;
+  snackWarningIsOpen: boolean;
 }
 
 const initialState: State = {
@@ -55,6 +60,8 @@ const initialState: State = {
   nameError: false,
   linkError: false,
   iconError: false,
+  snackErrorIsOpen: false,
+  snackWarningIsOpen: false,
 };
 
 const EditorSocial: FC = (): JSX.Element => {
@@ -88,20 +95,20 @@ const EditorSocial: FC = (): JSX.Element => {
     }
   }
 
-  const getBase64FromUrl = async (url:any) => {
-    const data = await fetch(url);  
+  const getBase64FromUrl = async (url: any) => {
+    const data = await fetch(url);
     const blob = await data.blob();
     return new Promise((resolve) => {
       const reader = new FileReader();
-      reader.readAsDataURL(blob); 
+      reader.readAsDataURL(blob);
       reader.onloadend = () => {
-        const base64data = reader.result;   
+        const base64data = reader.result;
         resolve(base64data);
       }
     });
   }
 
-  const handleClick = (): void => {};
+  const handleClick = (): void => { };
 
   const onCancel = (): void => {
     navigate(PAGES.editSocial);
@@ -139,7 +146,7 @@ const EditorSocial: FC = (): JSX.Element => {
     // }
 
     if (formIsValid) { //i valori inseriti dall'utente sono corretti
-     
+
       let newSocial: SingleSocial = {
         name: socialName,
         icon: "testicon",
@@ -150,7 +157,7 @@ const EditorSocial: FC = (): JSX.Element => {
 
       if (location?.state?.showAdd) {
         sendData(newSocial);
-      }else{
+      } else {
         updateSocial(newSocial);
         // navigate(PAGES.editSocial, { state: { open: true } });
       }
@@ -167,18 +174,46 @@ const EditorSocial: FC = (): JSX.Element => {
   //creo un nuovo social
   async function sendData(newSocial: SingleSocial): Promise<void> {
     let resp = await createNewSocialApi(newSocial);
-    if(resp?.status === 200){
-      navigate(PAGES.editSocial, { state: { openAdd: true} });
+    handleResponse(resp.status)
+    if (resp?.status === 200) {
+      navigate(PAGES.editSocial, { state: { openAdd: true } });
     }
   }
 
   //aggiorno un social già esistente
-  async function updateSocial(newSocial: SingleSocial): Promise<void>{
-    let resp = await updateSocialById(state?.currentSocial?.id,newSocial);
-    if(resp?.status === 200){
-      navigate(PAGES.editSocial, { state: { openChange: true} });
+  async function updateSocial(newSocial: SingleSocial): Promise<void> {
+    let resp = await updateSocialById(state?.currentSocial?.id, newSocial);
+    handleResponse(resp.status)
+    if (resp?.status === 200) {
+      navigate(PAGES.editSocial, { state: { openChange: true } });
     }
   }
+
+  //gestisce status snackbar
+  const handleResponse = async (status: number) => {
+    let snackWarning: boolean = state.snackWarningIsOpen;
+    let snackError: boolean = state.snackErrorIsOpen;
+
+    if (status === 200) {
+      
+    } else if (status === 500 || status === undefined) snackWarning = true;
+    else snackError = true;
+
+    setState({
+      ...state,
+      snackWarningIsOpen: snackWarning,
+      snackErrorIsOpen: snackError,
+    });
+  };
+
+  //Snackbar
+  const handleClose = () => {
+    setState({
+      ...state,
+      snackErrorIsOpen: false,
+      snackWarningIsOpen: false,
+    });
+  };
 
   return (
     <form className={common.component}>
@@ -263,6 +298,20 @@ const EditorSocial: FC = (): JSX.Element => {
           </Box>
         </>
       ) : null}
+      {state.snackErrorIsOpen && (
+        <CustomSnackbar
+          message={t("responseErrorSnack")}
+          severity={"error"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackWarningIsOpen && (
+        <CustomSnackbar
+          message={t("responseWarningSnack")}
+          severity={"warning"}
+          callback={handleClose}
+        />
+      )}
     </form>
   );
 };

@@ -44,6 +44,8 @@ interface State {
   modalIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
+  snackErrorIsOpen: boolean;
+  snackWarningIsOpen: boolean;
   snackAdd: boolean;
   ready: boolean;
   qna: Array<any>;
@@ -57,6 +59,8 @@ const initState: State = {
   modalIsOpen: false,
   snackIsOpen: false,
   snackDeleteIsOpen: false,
+  snackErrorIsOpen: false,
+  snackWarningIsOpen: false,
   snackAdd: false,
   ready: false,
   qna: [],
@@ -77,8 +81,8 @@ const Faq: FC = (): JSX.Element => {
 
   useEffect(() => {
     getFaqData();
-    
-    return() => {
+
+    return () => {
       setState({
         ...state,
         ready: false,
@@ -89,7 +93,6 @@ const Faq: FC = (): JSX.Element => {
   //fetchAPI
   const getFaqData = async (): Promise<void> => {
     let res = await fetchData(getFaq);
-    console.log("Faq: ", res.data);
 
     setState({
       ...state,
@@ -145,7 +148,8 @@ const Faq: FC = (): JSX.Element => {
   //PutAPI
   const putInfo = async (info: Info): Promise<void> => {
     let res = await fetchData(putFaqInfo, 1, info)
-    console.log("Info: ", res.data)
+    console.log("Info: ", res)
+    handleResponse(res.status)
   }
 
   //Navigazione allo screen EditorFaq
@@ -176,9 +180,9 @@ const Faq: FC = (): JSX.Element => {
   };
 
   //elimina la faq
-  const deleteFaq = (): void => {
+  const deleteFaq = async (): Promise<void> => {
 
-    deleteApi(state.idToDelete)
+    await deleteApi(state.idToDelete)
 
     setState({
       ...state,
@@ -192,8 +196,28 @@ const Faq: FC = (): JSX.Element => {
   //DeleteAPI
   const deleteApi = async (id: number): Promise<void> => {
     let res = await fetchData(deleteQnaById, id)
-    console.log("Delete: ", res.data)
+    console.log("Delete: ", res)
+    handleResponse(res.status)
   }
+
+  //gestisce status snackbar
+  const handleResponse = async (status: number) => {
+    let snack: boolean = state.snackIsOpen;
+    let snackWarning: boolean = state.snackWarningIsOpen;
+    let snackError: boolean = state.snackErrorIsOpen;
+
+    if (status === 200) {
+      snack = true;
+    } else if (status === 500 || status === undefined) snackWarning = true;
+    else snackError = true;
+
+    setState({
+      ...state,
+      snackIsOpen: snack,
+      snackWarningIsOpen: snackWarning,
+      snackErrorIsOpen: snackError,
+    });
+  };
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -288,6 +312,20 @@ const Faq: FC = (): JSX.Element => {
             <CustomSnackbar
               message={t("deleteSnack")}
               severity={"info"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackErrorIsOpen && (
+            <CustomSnackbar
+              message={t("responseErrorSnack")}
+              severity={"error"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackWarningIsOpen && (
+            <CustomSnackbar
+              message={t("responseWarningSnack")}
+              severity={"warning"}
               callback={handleClose}
             />
           )}
