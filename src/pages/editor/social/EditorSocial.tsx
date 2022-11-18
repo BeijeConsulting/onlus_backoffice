@@ -73,9 +73,6 @@ const EditorSocial: FC = (): JSX.Element => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    getBase64FromUrl(
-      "https://lh3.googleusercontent.com/i7cTyGnCwLIJhT1t2YpLW-zHt8ZKalgQiqfrYnZQl975-ygD_0mOXaYZMzekfKW_ydHRutDbNzeqpWoLkFR4Yx2Z2bgNj2XskKJrfw8"
-    ).then(console.log);
     if (!location?.state?.showAdd) {
       getCurrentSocial();
     }
@@ -96,19 +93,6 @@ const EditorSocial: FC = (): JSX.Element => {
       });
     }
   }
-
-  const getBase64FromUrl = async (url: any) => {
-    const data = await fetch(url);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data);
-      };
-    });
-  };
 
   const handleClick = (): void => {};
 
@@ -193,12 +177,11 @@ const EditorSocial: FC = (): JSX.Element => {
   }
 
   //gestisce status snackbar
-  const handleResponse = async (status: number) => {
+  const handleResponse = async (status: number): Promise<void> => {
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
 
-    if (status === 200) {
-    } else if (status === 500 || status === undefined) snackWarning = true;
+    if (status === 500 || status === undefined) snackWarning = true;
     else snackError = true;
 
     setState({

@@ -98,7 +98,6 @@ const PersonalArea: FC = (): JSX.Element => {
   const currentUser = useSelector((state: any) => state.userDuck.user);
 
   const [handleLogout, isReady] = useLogout(1000);
-  const location = useLocation();
   const navigate = useNavigate();
 
   const lang: Array<Item> = [
