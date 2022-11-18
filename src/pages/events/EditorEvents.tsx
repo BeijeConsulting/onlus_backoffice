@@ -229,8 +229,7 @@ const EditorEvents: FC = () => {
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
 
-    if (status === 200) {
-    } else if (status === 500 || status === undefined) snackWarning = true;
+    if (status === 500 || status === undefined) snackWarning = true;
     else snackError = true;
 
     setState({

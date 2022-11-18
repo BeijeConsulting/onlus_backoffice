@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, BaseSyntheticEvent } from "react";
 
 //Navigazione
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PAGES from "../../router/pages";
 
 //Style
