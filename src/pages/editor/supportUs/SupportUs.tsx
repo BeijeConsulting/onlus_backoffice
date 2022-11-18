@@ -450,19 +450,19 @@ const SupportUs: FC = (): JSX.Element => {
                     />
                     <ButtonAddFile
                       callback={log}
-                      error={state.error[0]}
+                      error={state?.error[0]}
                       mediaContent={state?.support?.hero?.mediaContent}
                       mediaTitle={state?.support?.hero?.mediaTitle}
                       mediaType={state?.support?.hero?.mediaType}
                       customKey={999}
                     ></ButtonAddFile>
                     <CustomTextField
-                      error={state.error[1]}
+                      error={state?.error[1]}
                       placeholder={t("Support.Hero.placeholderText")}
                       defaultValue={state?.support?.hero?.subtitle}
                     />
                     <CustomTextField
-                      error={state.error[2]}
+                      error={state?.error[2]}
                       minrow={7}
                       maxrow={10}
                       multiline={true}
@@ -477,13 +477,13 @@ const SupportUs: FC = (): JSX.Element => {
                       textInfo={t("Support.Title.info")}
                     />
                     <CustomTextField
-                      error={state.error[3]}
+                      error={state?.error[3]}
                       placeholder={t("Support.Title.placeholderTitle")}
                       defaultValue={state?.support?.title?.title}
                     />
                   </LabelText>
                   {/*contenuto*/}
-                  {state?.addLeft.map((element: SupportContent) => {
+                  {state?.addLeft?.map((element: SupportContent) => {
                     indSx += 2
                     return getContent(element, element?.id, indSx)
                   })}
@@ -493,7 +493,7 @@ const SupportUs: FC = (): JSX.Element => {
                   {/*contenuto*/}
                   {getContent(state?.support?.content[0], 0, 0)}
                   {getContent(state?.support?.content[1], 1, 1)}
-                  {state?.addRight.map((element: SupportContent) => {
+                  {state?.addRight?.map((element: SupportContent) => {
                     indDx += 2
                     return getContent(element, element?.id, indDx)
                   })}
@@ -507,7 +507,7 @@ const SupportUs: FC = (): JSX.Element => {
                     {t("link")}
                   </Link>
                   {/*link*/}
-                  {state.addLeft.length > 0 && (
+                  {state?.addLeft?.length > 0 && (
                     <Link
                       color="#000000"
                       variant="body2"
@@ -530,14 +530,14 @@ const SupportUs: FC = (): JSX.Element => {
                   callback={handleClose}
                 />
               )}
-              {state.snackErrorIsOpen && (
+              {state?.snackErrorIsOpen && (
                 <CustomSnackbar
                   message={t("responseErrorSnack")}
                   severity={"error"}
                   callback={handleClose}
                 />
               )}
-              {state.snackWarningIsOpen && (
+              {state?.snackWarningIsOpen && (
                 <CustomSnackbar
                   message={t("responseWarningSnack")}
                   severity={"warning"}
