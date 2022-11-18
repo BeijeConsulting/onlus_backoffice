@@ -10,3 +10,8 @@ export async function getApiSupport() {
 export async function postApiSupport(obj) {
   return await postApi(`${APIROUTES.SUPPORTUSUPDATE}`, obj);
 }
+
+//post
+export async function postApiSupport(obj) {
+  return await putApi(`${APIROUTES.SUPPORTADD}`, obj);
+}

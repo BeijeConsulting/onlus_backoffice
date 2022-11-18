@@ -73,8 +73,8 @@ const EditorSocial: FC = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    console.log(state.currentSocial);
-  }, [state.currentSocial]);
+    console.log(state?.currentSocial);
+  }, [state?.currentSocial]);
 
   //recupero il social corrente
   async function getCurrentSocial(): Promise<void> {
@@ -119,7 +119,6 @@ const EditorSocial: FC = (): JSX.Element => {
     const socialLink = e.target.form[3].value;
     const footerOn = e.target.form[5].checked;
     const homepageOn = e.target.form[6].checked;
-    const socialIcon = e.target.form[2].value;
 
     let errorName: boolean = false;
     let errorLink: boolean = false;

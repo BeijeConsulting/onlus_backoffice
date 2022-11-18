@@ -1,6 +1,9 @@
+//funzione per la validazione di un URL
+
 export const isValidURL = (string: string): boolean => {
     try{
-        Boolean(new URL(string)); 
+        let result: boolean = Boolean(new URL(string)); 
+        return result
     }catch(e){
         return false
     }

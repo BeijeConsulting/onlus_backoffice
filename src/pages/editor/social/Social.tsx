@@ -19,9 +19,6 @@ import DeleteModal from "../../../components/functional/deleteModal/DeleteModal"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CreateIcon from "@mui/icons-material/Create";
 
-//data
-import { social } from "../../../utils/mockup/data";
-
 //navigation
 import { useNavigate, useLocation } from "react-router-dom";
 import PAGES from "../../../router/pages";
@@ -223,12 +220,12 @@ const Social: FC = (): JSX.Element => {
               +{t("addButton")}
             </ButtonGeneric>
           </Box>
-          <CustomTable columns={columns} rows={state.socialList} />
+          <CustomTable columns={columns} rows={state?.socialList} />
         </LabelText>
       </Box>
       {/* delete modal */}
       <DeleteModal
-        open={state.modalIsOpen}
+        open={state?.modalIsOpen}
         closeCallback={closeDeleteModal}
         deleteCallback={deleteSocial}
       />
@@ -239,7 +236,7 @@ const Social: FC = (): JSX.Element => {
           callback={handleClose}
         />
       )}
-      {state.snackDeleteIsOpen && (
+      {state?.snackDeleteIsOpen && (
         <CustomSnackbar
           message={t("deleteSnack")}
           severity={"info"}

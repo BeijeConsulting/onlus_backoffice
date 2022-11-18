@@ -17,9 +17,6 @@ import {
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 
-//Assets
-import logo from "../../../assets/media/logo.png";
-
 //API
 import { fetchData } from "../../../utils/fetchData";
 import { getApiGeneral } from "../../../services/api/general/generalApi";

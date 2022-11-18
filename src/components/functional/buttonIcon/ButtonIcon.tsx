@@ -2,7 +2,6 @@ import { FC, MouseEvent } from "react";
 
 //style
 import common from "./../../../assets/styles/common.module.scss";
-import buttonIconsStyle from './buttonIconsStyle.module.scss';
 
 //mui
 import { Box } from "@mui/material";

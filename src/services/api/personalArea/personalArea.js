@@ -1,4 +1,4 @@
-import { getApi, putApi, postApi, deleteApi, getApiNoAuth } from "../../genericServices";
+import { getApi, putApi } from "../../genericServices";
 import APIROUTES from "../apiRoutes";
 
 //get by ID

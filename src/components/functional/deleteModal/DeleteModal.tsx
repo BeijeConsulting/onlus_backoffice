@@ -22,7 +22,7 @@ interface modalProps {
 }
 
 const DeleteModal: FC<modalProps> = (props): JSX.Element => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   function closeModal(): void {
     props.closeCallback();

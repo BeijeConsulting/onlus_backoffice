@@ -95,20 +95,7 @@ const SupportUs: FC = (): JSX.Element => {
     let addRight: Array<SupportContent> = [];
     let supportContentError: Array<boolean> = [];
 
-    let support: Support = {
-      content: [],
-      hero: {
-        mediaContent: "",
-        mediaTitle: "",
-        mediaType: "",
-        subtitle: "",
-        text: "",
-      },
-      title: {
-        id: null,
-        title: "",
-      },
-    };
+    let support: Support = null;
 
     //se sto modificando
     let dataSupport = await fetchData(getApiSupport);
@@ -169,7 +156,7 @@ const SupportUs: FC = (): JSX.Element => {
           textInfo={t("Support.Content.info")}
         />
         <CustomTextField
-          error={state.supportContentError[index]}
+          error={state?.supportContentError[index]}
           minrow={3}
           maxrow={10}
           multiline={true}
@@ -178,7 +165,7 @@ const SupportUs: FC = (): JSX.Element => {
         />
         <ButtonAddFile
           callback={log}
-          error={state.supportContentError[index]}
+          error={state?.supportContentError[index]}
           mediaContent={state?.support?.content[index]?.mediaContent}
           mediaTitle={state?.support?.content[index]?.mediaTitle}
           mediaType={state?.support?.content[index]?.mediaType}
@@ -190,16 +177,16 @@ const SupportUs: FC = (): JSX.Element => {
 
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
-    let supportContentError: Array<boolean> = state.supportContentError;
-    supportContentError.push(true);
+    let supportContentError: Array<boolean> = state?.supportContentError;
+    supportContentError?.push(true);
     await setSupportContentError(supportContentError);
 
-    let left: Array<SupportContent> = state.addLeft;
-    let right: Array<SupportContent> = state.addRight;
-    if (left.length === right.length) {
+    let left: Array<SupportContent> = state?.addLeft;
+    let right: Array<SupportContent> = state?.addRight;
+    if (left?.length === right?.length) {
       //aggiungo a sinistra
       left.push({
-        id: state.support.content[state.supportContentError.length].id + 1,
+        id: state?.support?.content[state.supportContentError?.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -209,7 +196,7 @@ const SupportUs: FC = (): JSX.Element => {
     //aggiungo a destra
     else {
       right.push({
-        id: state.support.content[state.supportContentError.length].id + 1,
+        id: state?.support?.content[state.supportContentError?.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -269,22 +256,28 @@ const SupportUs: FC = (): JSX.Element => {
         {
           id: state?.support?.content[0]?.id,
           mediaContent:
-            e.target.form[11 + state.addLeft.length * 4].name.split(" ")[0],
+            e.target.form[11 + state?.addLeft.length * 4].name.split(" ")[0],
           mediaTitle:
-            e.target.form[11 + state.addLeft.length * 4].name.split(" ")[1],
+            e.target.form[11 + state?.addLeft.length * 4].name.split(" ")[1],
           mediaType:
-            e.target.form[11 + state.addLeft.length * 4].name.split(" ")[2],
-          paragraph: e.target.form[8 + state.addLeft.length * 4].value,
+            e.target.form[11 + state?.addLeft.length * 4].name.split(" ")[2],
+          paragraph: e.target.form[8 + state?.addLeft.length * 4].value,
         },
         {
           id: state?.support?.content[1]?.id,
           mediaContent:
-            e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[0],
+            e.target.form[11 + state?.addLeft.length * 4 + 4].name.split(
+              " "
+            )[0],
           mediaTitle:
-            e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[1],
+            e.target.form[11 + state?.addLeft.length * 4 + 4].name.split(
+              " "
+            )[1],
           mediaType:
-            e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[2],
-          paragraph: e.target.form[8 + state.addLeft.length * 4 + 4].value,
+            e.target.form[11 + state?.addLeft.length * 4 + 4].name.split(
+              " "
+            )[2],
+          paragraph: e.target.form[8 + state?.addLeft.length * 4 + 4].value,
         },
       ],
       hero: {
@@ -295,7 +288,7 @@ const SupportUs: FC = (): JSX.Element => {
         text: e.target.form[3].value,
       },
       title: {
-        id: state.support.title.id,
+        id: state?.support?.title?.id,
         title: e.target.form[6].value,
       },
     };
@@ -309,7 +302,6 @@ const SupportUs: FC = (): JSX.Element => {
     let errors: boolean = getErrors(error);
     let supportContentErrors: boolean = getErrors(supportContentError);
 
-    console.log(error, state.error);
     if (!errors && !supportContentErrors) {
       //update
       updateSupport(support, error, supportContentError);
@@ -467,7 +459,7 @@ const SupportUs: FC = (): JSX.Element => {
 
   return (
     <Box>
-      {state.ready && (
+      {state?.ready && (
         <>
           <form onSubmit={onSave}>
             <Box className={style.component}>
@@ -481,19 +473,19 @@ const SupportUs: FC = (): JSX.Element => {
                     />
                     <ButtonAddFile
                       callback={log}
-                      error={state.error[0]}
+                      error={state?.error[0]}
                       mediaContent={state?.support?.hero?.mediaContent}
                       mediaTitle={state?.support?.hero?.mediaTitle}
                       mediaType={state?.support?.hero?.mediaType}
                       customKey={999}
                     ></ButtonAddFile>
                     <CustomTextField
-                      error={state.error[1]}
+                      error={state?.error[1]}
                       placeholder={t("Support.Hero.placeholderText")}
                       defaultValue={state?.support?.hero?.subtitle}
                     />
                     <CustomTextField
-                      error={state.error[2]}
+                      error={state?.error[2]}
                       minrow={7}
                       maxrow={10}
                       multiline={true}
@@ -508,13 +500,13 @@ const SupportUs: FC = (): JSX.Element => {
                       textInfo={t("Support.Title.info")}
                     />
                     <CustomTextField
-                      error={state.error[3]}
+                      error={state?.error[3]}
                       placeholder={t("Support.Title.placeholderTitle")}
                       defaultValue={state?.support?.title?.title}
                     />
                   </LabelText>
                   {/*contenuto*/}
-                  {state?.addLeft.map((element: SupportContent) => {
+                  {state?.addLeft?.map((element: SupportContent) => {
                     indSx += 2;
                     return getContent(element, element?.id, indSx);
                   })}
@@ -524,7 +516,7 @@ const SupportUs: FC = (): JSX.Element => {
                   {/*contenuto*/}
                   {getContent(state?.support?.content[0], 0, 0)}
                   {getContent(state?.support?.content[1], 1, 1)}
-                  {state?.addRight.map((element: SupportContent) => {
+                  {state?.addRight?.map((element: SupportContent) => {
                     indDx += 2;
                     return getContent(element, element?.id, indDx);
                   })}
@@ -538,7 +530,7 @@ const SupportUs: FC = (): JSX.Element => {
                     {t("link")}
                   </Link>
                   {/*link*/}
-                  {state.addLeft.length > 0 && (
+                  {state?.addLeft?.length > 0 && (
                     <Link
                       color="#000000"
                       variant="body2"
@@ -561,14 +553,14 @@ const SupportUs: FC = (): JSX.Element => {
                   callback={handleClose}
                 />
               )}
-              {state.snackErrorIsOpen && (
+              {state?.snackErrorIsOpen && (
                 <CustomSnackbar
                   message={t("responseErrorSnack")}
                   severity={"error"}
                   callback={handleClose}
                 />
               )}
-              {state.snackWarningIsOpen && (
+              {state?.snackWarningIsOpen && (
                 <CustomSnackbar
                   message={t("responseWarningSnack")}
                   severity={"warning"}

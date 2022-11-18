@@ -34,7 +34,6 @@ import {
   getEventByIdApi,
   updateEventByIdApi
 } from "../../services/api/events/eventsApi";
-import { fetchData } from "../../utils/fetchData";
 
 //types
 import { Event } from "../../utils/mockup/types";
@@ -143,20 +142,12 @@ const EditorEvents: FC = () => {
   function validateForm(e: BaseSyntheticEvent): void {
 
     let formIsValid = true;
-    let newEvent: Event = {
-      cover: "",
-      description: "",
-      eventDate: "",
-      place: "",
-      requirements: "",
-      title: "",
-    };
+    let newEvent: Event = null
 
     const inputTitle = e.target.form[0];
     const inputDescription = e.target.form[5];
     const inputPlace = e.target.form[9];
-    const inputRequirements = e.target.form[11];
-    const inputCover = e.target.form[8].name;    
+    const inputRequirements = e.target.form[11];  
 
     let errorTitle = false;
     let errorDescription = false;
@@ -228,7 +219,7 @@ const EditorEvents: FC = () => {
 
   return (
     <form>
-      {(state.isReady && !location?.state?.showAdd) ||
+      {(state?.isReady && !location?.state?.showAdd) ||
       location?.state?.showAdd ? (
         <>
           <Box className={common.component}>
@@ -241,7 +232,7 @@ const EditorEvents: FC = () => {
                   />
                   <CustomTextField
                     placeholder={t("EventsEditor.Title.placeHolderText")}
-                    error={state.titleError}
+                    error={state?.titleError}
                     errorMessage={t("EventsEditor.Title.error")}
                     id={"title"}
                     defaultValue={state?.currentEvent?.title}
@@ -259,7 +250,7 @@ const EditorEvents: FC = () => {
                         <TextField size="small" {...props} />
                       )}
                       label={t("EventsEditor.Date.date")}
-                      value={!location?.state?.showAdd ? state.currentEvent?.eventDate : state?.selectedDate}
+                      value={!location?.state?.showAdd ? state?.currentEvent?.eventDate : state?.selectedDate}
                       minDateTime={dayjs()}
                       onChange={(newValue) => {
                         setDate(newValue);
@@ -275,7 +266,7 @@ const EditorEvents: FC = () => {
                   />
                   <CustomTextField
                     placeholder={t("EventsEditor.Description.placeHolderText")}
-                    error={state.descriptionError}
+                    error={state?.descriptionError}
                     multiline={true}
                     minrow={6}
                     defaultValue={state?.currentEvent?.description}
@@ -303,7 +294,7 @@ const EditorEvents: FC = () => {
                   />
                   <CustomTextField
                     placeholder={t("EventsEditor.Place.placeHolderText")}
-                    error={state.placeError}
+                    error={state?.placeError}
                     defaultValue={state?.currentEvent?.place}
                     errorMessage={t("EventsEditor.Place.error")}
                   />
@@ -316,7 +307,7 @@ const EditorEvents: FC = () => {
                   />
                   <CustomTextField
                     placeholder={t("EventsEditor.Requirements.placeHolderText")}
-                    error={state.requirementsError}
+                    error={state?.requirementsError}
                     multiline={true}
                     minrow={6}
                     defaultValue={state?.currentEvent?.requirements}
