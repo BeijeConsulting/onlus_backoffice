@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 
 //api
-import { getApiAbout, putApiAbout } from "../../../services/api/about/aboutApi";
+import { getApiAbout, putApiAbout, postApiAbout} from "../../../services/api/about/aboutApi";
 
 //components
 import LabelText from "../../../components/functional/labelText/LabelText";
@@ -191,7 +191,7 @@ const About: FC = (): JSX.Element => {
     if (left.length === right.length) {
       //aggiungo a sinistra
       left.push({
-        id: state.about.content[state.aboutContentError.length].id + 1,
+        id: state?.about?.content[state.aboutContentError.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -201,7 +201,7 @@ const About: FC = (): JSX.Element => {
     //aggiungo a destra
     else {
       right.push({
-        id: state.about.content[state.aboutContentError.length].id + 1,
+        id: state?.about?.content[state.aboutContentError.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -259,14 +259,14 @@ const About: FC = (): JSX.Element => {
     let about: AboutType = {
       content: [
         {
-          id: state?.about?.content[0]?.id,
+          id: 0,
           mediaContent: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[0],
           mediaTitle: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[1],
           mediaType: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[2],
           paragraph: e.target.form[6 + state.addLeft.length * 4].value,
         },
         {
-          id: state?.about?.content[1]?.id,
+          id: 1,
           mediaContent: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[0],
           mediaTitle: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[1],
           mediaType: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[2],

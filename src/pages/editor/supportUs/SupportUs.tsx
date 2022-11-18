@@ -195,7 +195,7 @@ const SupportUs: FC = (): JSX.Element => {
     if (left.length === right.length) {
       //aggiungo a sinistra
       left.push({
-        id: state.support.content[state.supportContentError.length].id + 1,
+        id: state?.support?.content[state.supportContentError.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -205,7 +205,7 @@ const SupportUs: FC = (): JSX.Element => {
     //aggiungo a destra
     else {
       right.push({
-        id: state.support.content[state.supportContentError.length].id + 1,
+        id: state?.support?.content[state.supportContentError.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
