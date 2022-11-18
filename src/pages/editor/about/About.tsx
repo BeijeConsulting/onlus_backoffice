@@ -183,7 +183,7 @@ const About: FC = (): JSX.Element => {
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
     let aboutContentError: Array<boolean> = state?.aboutContentError;
-    aboutContentError.push(true);
+    aboutContentError?.push(true);
     await setAboutContentError(aboutContentError);
 
     let left: Array<AboutContent> = state?.addLeft;
