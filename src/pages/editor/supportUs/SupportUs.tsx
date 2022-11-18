@@ -436,7 +436,7 @@ const SupportUs: FC = (): JSX.Element => {
 
   return (
     <Box>
-      {state.ready && (
+      {state?.ready && (
         <>
           <form onSubmit={onSave}>
             <Box className={style.component}>
