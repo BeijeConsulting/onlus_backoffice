@@ -86,12 +86,16 @@ const rolesForGuest: Array<Item> = [
 
 interface State {
   error: Array<boolean>;
+  snackAlreadyExistsIsOpen: boolean;
   snackErrorIsOpen: boolean;
+  snackWarningIsOpen: boolean;
 }
 
 const initState: State = {
   error: [false, false, false, false, false, false, false, false],
+  snackAlreadyExistsIsOpen: false,
   snackErrorIsOpen: false,
+  snackWarningIsOpen: false,
 };
 
 const EditorCollaborators: FC = (): JSX.Element => {
@@ -203,21 +207,31 @@ const EditorCollaborators: FC = (): JSX.Element => {
   }
 
   //gestione risposta
-  const handleResponse = async (
-    status: number,
-  ): Promise<boolean> => {
+  const handleResponse = async (status: number): Promise<boolean> => {
+    let snackExists: boolean = state.snackAlreadyExistsIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
+    let snackWarning: boolean = state.snackWarningIsOpen;
 
-    console.log(status);
     if (status === 200) {
+      snackExists = false;
       snackError = false;
-    } else if (status === 503 || status === 400 || status === undefined) {
-      snackError = true;
+      snackWarning = false;
+    } else if (status === 503 || status === 400) {
+      snackExists = true;
+    } else if (status === 500 || status === undefined){
+      snackWarning = true;
     } else {
       snackError = true;
     }
 
-    return snackError;
+    setState({
+      ...state,
+      snackAlreadyExistsIsOpen: snackExists,
+      snackWarningIsOpen: snackWarning,
+      snackErrorIsOpen: snackError,
+    });
+
+    return snackExists
   };
 
   //Funzione per cancellare l'operazione
@@ -407,10 +421,24 @@ const EditorCollaborators: FC = (): JSX.Element => {
           </Box>
         </form>
       </Box>
+      {state.snackAlreadyExistsIsOpen && (
+        <CustomSnackbar
+          message={t("userAlreadyExists")}
+          severity={"error"}
+          callback={handleClose}
+        />
+      )}
       {state.snackErrorIsOpen && (
         <CustomSnackbar
           message={t("userAlreadyExists")}
           severity={"error"}
+          callback={handleClose}
+        />
+      )}
+      {state.snackWarningIsOpen && (
+        <CustomSnackbar
+          message={t("responseWarningSnack")}
+          severity={"warning"}
           callback={handleClose}
         />
       )}
