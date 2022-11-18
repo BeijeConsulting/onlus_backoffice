@@ -99,11 +99,11 @@ const Events: FC = (): JSX.Element => {
   }
 
   function splitEvents(events: Array<any>, flag: boolean = null): void {
-    const scheduledEvents = events.filter((el, index) => {
+    const scheduledEvents = events?.filter((el, index) => {
       el.eventDate = el.eventDate.substring(0, el.eventDate.length - 9);
       return dayjs().isBefore(el.eventDate);
     });
-    const archiveEvents = events.filter((el, index) => {
+    const archiveEvents = events?.filter((el, index) => {
       return dayjs().isAfter(el.eventDate);
     });
 

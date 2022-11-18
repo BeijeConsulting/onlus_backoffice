@@ -54,7 +54,7 @@ const TableDonations: FC<TableDonationsProps> = (props): JSX.Element => {
 
   //converto la data per stamparla
   const getDate = (value: any): string => {
-    return value.replace("T", " ");
+    return value?.replace("T", " ");
   };
 
   //setto lo stato goiusto epr il collapse
