@@ -188,12 +188,12 @@ const SupportUs: FC = (): JSX.Element => {
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
     let supportContentError: Array<boolean> = state?.supportContentError;
-    supportContentError.push(true);
+    supportContentError?.push(true);
     await setSupportContentError(supportContentError);
 
     let left: Array<SupportContent> = state?.addLeft;
     let right: Array<SupportContent> = state?.addRight;
-    if (left.length === right.length) {
+    if (left?.length === right?.length) {
       //aggiungo a sinistra
       left.push({
         id: state?.support?.content[state?.supportContentError?.length]?.id + 1,
