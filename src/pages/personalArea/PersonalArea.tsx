@@ -35,7 +35,7 @@ import { useSelector } from "react-redux/es/exports";
 //Utils
 import { User } from "../../utils/mockup/types";
 import checkRole from "../../utils/checkRoles";
-import useLogout from "../../utils/useLogout";
+import useLogout from "../../customHooks/useLogout";
 
 //Translation
 import { useTranslation } from "react-i18next";
