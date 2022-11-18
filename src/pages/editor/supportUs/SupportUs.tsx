@@ -166,7 +166,7 @@ const SupportUs: FC = (): JSX.Element => {
           textInfo={t("Support.Content.info")}
         />
         <CustomTextField
-          error={state.supportContentError[index]}
+          error={state?.supportContentError[index]}
           minrow={3}
           maxrow={10}
           multiline={true}
@@ -175,7 +175,7 @@ const SupportUs: FC = (): JSX.Element => {
         />
         <ButtonAddFile
           callback={log}
-          error={state.supportContentError[index]}
+          error={state?.supportContentError[index]}
           mediaContent={state?.support?.content[index]?.mediaContent}
           mediaTitle={state?.support?.content[index]?.mediaTitle}
           mediaType={state?.support?.content[index]?.mediaType}
@@ -196,7 +196,7 @@ const SupportUs: FC = (): JSX.Element => {
     if (left?.length === right?.length) {
       //aggiungo a sinistra
       left.push({
-        id: state?.support?.content[state?.supportContentError?.length]?.id + 1,
+        id: state?.support?.content[state.supportContentError?.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -206,7 +206,7 @@ const SupportUs: FC = (): JSX.Element => {
     //aggiungo a destra
     else {
       right.push({
-        id: state?.support?.content[state?.supportContentError?.length]?.id + 1,
+        id: state?.support?.content[state.supportContentError?.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
