@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 
 //api
-import { getApiAbout, putApiAbout, postApiAbout} from "../../../services/api/about/aboutApi";
+import { getApiAbout, postApiAbout} from "../../../services/api/about/aboutApi";
 
 //components
 import LabelText from "../../../components/functional/labelText/LabelText";

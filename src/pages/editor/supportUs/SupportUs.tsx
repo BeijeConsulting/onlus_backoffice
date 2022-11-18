@@ -3,7 +3,6 @@ import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 //api
 import {
   getApiSupport,
-  putApiSupport,
   postApiSupport
 } from "../../../services/api/supportUs/supportUsApi";
 
@@ -96,20 +95,7 @@ const SupportUs: FC = (): JSX.Element => {
     let addRight: Array<SupportContent> = [];
     let supportContentError: Array<boolean> = [];
 
-    let support: Support = {
-      content: [],
-      hero: {
-        mediaContent: "",
-        mediaTitle: "",
-        mediaType: "",
-        subtitle: "",
-        text: "",
-      },
-      title: {
-        id: null,
-        title: "",
-      },
-    };
+    let support: Support = null
 
     //se sto modificando
     let dataSupport = await fetchData(getApiSupport);
@@ -265,17 +251,17 @@ const SupportUs: FC = (): JSX.Element => {
       content: [
         {
           id: state?.support?.content[0]?.id,
-          mediaContent: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[0],
-          mediaTitle: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[1],
-          mediaType: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[2],
-          paragraph: e.target.form[8 + state.addLeft.length * 4].value
+          mediaContent: e.target.form[11 + state?.addLeft.length * 4].name.split(" ")[0],
+          mediaTitle: e.target.form[11 + state?.addLeft.length * 4].name.split(" ")[1],
+          mediaType: e.target.form[11 + state?.addLeft.length * 4].name.split(" ")[2],
+          paragraph: e.target.form[8 + state?.addLeft.length * 4].value
         },
         {
           id: state?.support?.content[1]?.id,
-          mediaContent: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[0],
-          mediaTitle: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[1],
-          mediaType: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[2],
-          paragraph: e.target.form[8 + state.addLeft.length * 4 + 4].value,
+          mediaContent: e.target.form[11 + state?.addLeft.length * 4 + 4].name.split(" ")[0],
+          mediaTitle: e.target.form[11 + state?.addLeft.length * 4 + 4].name.split(" ")[1],
+          mediaType: e.target.form[11 + state?.addLeft.length * 4 + 4].name.split(" ")[2],
+          paragraph: e.target.form[8 + state?.addLeft.length * 4 + 4].value,
         },
       ],
       hero: {
@@ -286,7 +272,7 @@ const SupportUs: FC = (): JSX.Element => {
         text: e.target.form[3].value,
       },
       title: {
-        id: state.support.title.id,
+        id: state?.support?.title?.id,
         title: e.target.form[6].value,
       },
     };
