@@ -73,7 +73,9 @@ const EditorSocial: FC = (): JSX.Element => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    getBase64FromUrl('https://lh3.googleusercontent.com/i7cTyGnCwLIJhT1t2YpLW-zHt8ZKalgQiqfrYnZQl975-ygD_0mOXaYZMzekfKW_ydHRutDbNzeqpWoLkFR4Yx2Z2bgNj2XskKJrfw8').then(console.log)
+    getBase64FromUrl(
+      "https://lh3.googleusercontent.com/i7cTyGnCwLIJhT1t2YpLW-zHt8ZKalgQiqfrYnZQl975-ygD_0mOXaYZMzekfKW_ydHRutDbNzeqpWoLkFR4Yx2Z2bgNj2XskKJrfw8"
+    ).then(console.log);
     if (!location?.state?.showAdd) {
       getCurrentSocial();
     }
@@ -104,11 +106,11 @@ const EditorSocial: FC = (): JSX.Element => {
       reader.onloadend = () => {
         const base64data = reader.result;
         resolve(base64data);
-      }
+      };
     });
-  }
+  };
 
-  const handleClick = (): void => { };
+  const handleClick = (): void => {};
 
   const onCancel = (): void => {
     navigate(PAGES.editSocial);
@@ -135,7 +137,7 @@ const EditorSocial: FC = (): JSX.Element => {
       formIsValid = false;
       errorName = true;
     }
-    if ((checkEmptyText(socialLink)) || !isValidURL(socialLink)) {
+    if (checkEmptyText(socialLink) || !isValidURL(socialLink)) {
       formIsValid = false;
       errorLink = true;
     }
@@ -144,7 +146,8 @@ const EditorSocial: FC = (): JSX.Element => {
     //   errorIcon = true;
     // }
 
-    if (formIsValid) { //i valori inseriti dall'utente sono corretti
+    if (formIsValid) {
+      //i valori inseriti dall'utente sono corretti
 
       let newSocial: SingleSocial = {
         name: socialName,
@@ -160,7 +163,8 @@ const EditorSocial: FC = (): JSX.Element => {
         updateSocial(newSocial);
         // navigate(PAGES.editSocial, { state: { open: true } });
       }
-    } else { //i valori inseriti dall'utente sono sbagliati
+    } else {
+      //i valori inseriti dall'utente sono sbagliati
       setState({
         ...state,
         nameError: errorName,
@@ -173,7 +177,7 @@ const EditorSocial: FC = (): JSX.Element => {
   //creo un nuovo social
   async function sendData(newSocial: SingleSocial): Promise<void> {
     let resp = await createNewSocialApi(newSocial);
-    handleResponse(resp.status)
+    handleResponse(resp.status);
     if (resp?.status === 200) {
       navigate(PAGES.editSocial, { state: { openAdd: true } });
     }
@@ -182,7 +186,7 @@ const EditorSocial: FC = (): JSX.Element => {
   //aggiorno un social già esistente
   async function updateSocial(newSocial: SingleSocial): Promise<void> {
     let resp = await updateSocialById(state?.currentSocial?.id, newSocial);
-    handleResponse(resp.status)
+    handleResponse(resp.status);
     if (resp?.status === 200) {
       navigate(PAGES.editSocial, { state: { openChange: true } });
     }
@@ -194,7 +198,6 @@ const EditorSocial: FC = (): JSX.Element => {
     let snackError: boolean = state.snackErrorIsOpen;
 
     if (status === 200) {
-      
     } else if (status === 500 || status === undefined) snackWarning = true;
     else snackError = true;
 
@@ -238,9 +241,7 @@ const EditorSocial: FC = (): JSX.Element => {
                     text={t("social.editorSocial.iconSection.title")}
                     textInfo={t("social.editorSocial.iconSection.info")}
                   />
-                  <ButtonAddFile
-                    callback={handleClick}
-                  />
+                  <ButtonAddFile callback={handleClick} />
                 </Box>
                 <Box className={common.rowRight}>
                   <Title
@@ -297,14 +298,14 @@ const EditorSocial: FC = (): JSX.Element => {
           </Box>
         </>
       ) : null}
-      {state.snackErrorIsOpen && (
+      {state?.snackErrorIsOpen && (
         <CustomSnackbar
           message={t("responseErrorSnack")}
           severity={"error"}
           callback={handleClose}
         />
       )}
-      {state.snackWarningIsOpen && (
+      {state?.snackWarningIsOpen && (
         <CustomSnackbar
           message={t("responseWarningSnack")}
           severity={"warning"}

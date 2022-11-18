@@ -33,7 +33,7 @@ import { useTranslation } from "react-i18next";
 import {
   createEventApi,
   getEventByIdApi,
-  updateEventByIdApi
+  updateEventByIdApi,
 } from "../../services/api/events/eventsApi";
 
 //types
@@ -66,7 +66,7 @@ const initialState: state = {
     place: "",
     requirements: "",
     title: "",
-    id:null
+    id: null,
   },
   isReady: false,
   snackErrorIsOpen: false,
@@ -78,7 +78,7 @@ const EditorEvents: FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
   console.log(location);
-  
+
   const idCurrentEvent = location?.state?.row?.id;
   const navigate = useNavigate();
 
@@ -91,13 +91,13 @@ const EditorEvents: FC = () => {
   async function getCurrentEvent() {
     const resp: any = await getEventByIdApi(idCurrentEvent);
     console.log(resp);
-    
+
     if (resp.status === 200) {
       const event: any = resp.data;
-    
+
       //change data format
-      event.eventDate = event.eventDate.concat(".000Z");    
-      
+      event.eventDate = event.eventDate.concat(".000Z");
+
       setState({
         ...state,
         currentEvent: event,
@@ -113,15 +113,14 @@ const EditorEvents: FC = () => {
 
   //vado a settare la data in formato ISO e la salvo nello stato
   function setDate(date: Dayjs) {
-    
     let correctFormatDate = date.toISOString();
-   console.log(correctFormatDate);
-    
+    console.log(correctFormatDate);
+
     correctFormatDate = correctFormatDate.substring(
       0,
       correctFormatDate.length - 5
     );
-   
+
     if (!location?.state?.showAdd) {
       setState({
         ...state,
@@ -141,18 +140,17 @@ const EditorEvents: FC = () => {
 
   //salvo le modifiche
   const onSave = (e: BaseSyntheticEvent): void => {
-      validateForm(e);
+    validateForm(e);
   };
 
   function validateForm(e: BaseSyntheticEvent): void {
-
     let formIsValid = true;
-    let newEvent: Event = null
+    let newEvent: Event = null;
 
     const inputTitle = e.target.form[0];
     const inputDescription = e.target.form[5];
     const inputPlace = e.target.form[9];
-    const inputRequirements = e.target.form[11];  
+    const inputRequirements = e.target.form[11];
 
     let errorTitle = false;
     let errorDescription = false;
@@ -199,20 +197,21 @@ const EditorEvents: FC = () => {
         eventDate: state.dateToSent,
       };
 
-      if(location?.state?.showAdd){ //creazione di un nuovo evento
+      if (location?.state?.showAdd) {
+        //creazione di un nuovo evento
         sendData(newEvent);
-      }else{ //aggiornamento di un evento già esistente
-        updateEvent(newEvent)
+      } else {
+        //aggiornamento di un evento già esistente
+        updateEvent(newEvent);
       }
-      
     }
   }
 
   //PutAPI
-  async function updateEvent(newEvent: Event){  
-    let resp = await updateEventByIdApi(state?.currentEvent?.id,newEvent);
-    handleResponse(resp.status)
-    if(resp?.status === 200){
+  async function updateEvent(newEvent: Event) {
+    let resp = await updateEventByIdApi(state?.currentEvent?.id, newEvent);
+    handleResponse(resp.status);
+    if (resp?.status === 200) {
       navigate(PAGES.events, { state: { openChange: true } });
     }
   }
@@ -220,9 +219,9 @@ const EditorEvents: FC = () => {
   //PostAPI
   async function sendData(newEvent: Event) {
     let resp = await createEventApi(newEvent);
-    handleResponse(resp.status)
-    if(resp?.status === 200){
-       navigate(PAGES.events, { state: { openAdd: true } });
+    handleResponse(resp.status);
+    if (resp?.status === 200) {
+      navigate(PAGES.events, { state: { openAdd: true } });
     }
   }
 
@@ -232,7 +231,6 @@ const EditorEvents: FC = () => {
     let snackError: boolean = state.snackErrorIsOpen;
 
     if (status === 200) {
-      
     } else if (status === 500 || status === undefined) snackWarning = true;
     else snackError = true;
 
@@ -285,7 +283,11 @@ const EditorEvents: FC = () => {
                         <TextField size="small" {...props} />
                       )}
                       label={t("EventsEditor.Date.date")}
-                      value={!location?.state?.showAdd ? state?.currentEvent?.eventDate : state?.selectedDate}
+                      value={
+                        !location?.state?.showAdd
+                          ? state?.currentEvent?.eventDate
+                          : state?.selectedDate
+                      }
                       minDateTime={dayjs()}
                       onChange={(newValue) => {
                         setDate(newValue);
@@ -385,14 +387,14 @@ const EditorEvents: FC = () => {
           </Box>
         </>
       ) : null}
-      {state.snackErrorIsOpen && (
+      {state?.snackErrorIsOpen && (
         <CustomSnackbar
           message={t("responseErrorSnack")}
           severity={"error"}
           callback={handleClose}
         />
       )}
-      {state.snackWarningIsOpen && (
+      {state?.snackWarningIsOpen && (
         <CustomSnackbar
           message={t("responseWarningSnack")}
           severity={"warning"}

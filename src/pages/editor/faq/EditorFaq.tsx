@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 type QNA = {
   question: string;
   answer: string;
-}
+};
 
 interface State {
   answerError: boolean;
@@ -79,9 +79,9 @@ const EditorFaq: FC = (): JSX.Element => {
 
       //controlla se bisogna fare PUT o POST
       if (!!location?.state?.row?.id) {
-        await putApi(location?.state?.row?.id, qna)
+        await putApi(location?.state?.row?.id, qna);
       } else {
-        await postApi(qna)
+        await postApi(qna);
       }
 
       if (location?.state?.showAdd) {
@@ -94,17 +94,17 @@ const EditorFaq: FC = (): JSX.Element => {
 
   //PostAPI
   const postApi = async (qna: QNA): Promise<void> => {
-    let res = await fetchData(postQna, qna)
-    console.log("QNA: ", res)
-    handleResponse(res.status)
-  }
+    let res = await fetchData(postQna, qna);
+    console.log("QNA: ", res);
+    handleResponse(res.status);
+  };
 
   //PutAPI
   const putApi = async (id: number, qna: QNA): Promise<void> => {
-    let res = await fetchData(putQnaBydId, id, qna)
-    console.log("QNA: ", res)
-    handleResponse(res.status)
-  }
+    let res = await fetchData(putQnaBydId, id, qna);
+    console.log("QNA: ", res);
+    handleResponse(res.status);
+  };
 
   //gestisce status snackbar
   const handleResponse = async (status: number) => {
@@ -112,7 +112,8 @@ const EditorFaq: FC = (): JSX.Element => {
     let snackError: boolean = state.snackErrorIsOpen;
 
     if (status === 200) {
-      
+      snackError = false;
+      snackWarning = false;
     } else if (status === 500 || status === undefined) snackWarning = true;
     else snackError = true;
 
