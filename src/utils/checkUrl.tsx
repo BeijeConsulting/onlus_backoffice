@@ -2,8 +2,8 @@
 
 export const isValidURL = (string: string): boolean => {
     try{
-        Boolean(new URL(string)); 
-        return true
+        let result: boolean = Boolean(new URL(string)); 
+        return result
     }catch(e){
         return false
     }
