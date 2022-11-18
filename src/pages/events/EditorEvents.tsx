@@ -34,7 +34,6 @@ import {
   getEventByIdApi,
   updateEventByIdApi
 } from "../../services/api/events/eventsApi";
-import { fetchData } from "../../utils/fetchData";
 
 //types
 import { Event } from "../../utils/mockup/types";
@@ -143,20 +142,12 @@ const EditorEvents: FC = () => {
   function validateForm(e: BaseSyntheticEvent): void {
 
     let formIsValid = true;
-    let newEvent: Event = {
-      cover: "",
-      description: "",
-      eventDate: "",
-      place: "",
-      requirements: "",
-      title: "",
-    };
+    let newEvent: Event = null
 
     const inputTitle = e.target.form[0];
     const inputDescription = e.target.form[5];
     const inputPlace = e.target.form[9];
-    const inputRequirements = e.target.form[11];
-    const inputCover = e.target.form[8].name;    
+    const inputRequirements = e.target.form[11];  
 
     let errorTitle = false;
     let errorDescription = false;

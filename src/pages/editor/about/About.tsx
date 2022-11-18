@@ -92,20 +92,7 @@ const About: FC = (): JSX.Element => {
     let addRight: Array<AboutContent> = [];
     let aboutContentError: Array<boolean> = [];
 
-    let about: AboutType = {
-      content: [],
-      hero: {
-        mediaContent: "",
-        mediaTitle: "",
-        mediaType: "",
-        subtitle: "",
-        text: "",
-      },
-      title: {
-        id: null,
-        title: "",
-      },
-    };
+    let about: AboutType = null
 
     let dataAbout = await fetchData(getApiAbout);
     console.log("About", dataAbout.data);

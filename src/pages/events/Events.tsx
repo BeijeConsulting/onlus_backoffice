@@ -19,9 +19,6 @@ import LabelText from "../../components/functional/labelText/LabelText";
 import ButtonIcon from "../../components/functional/buttonIcon/ButtonIcon";
 import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 
-//data
-import { events } from "../../utils/mockup/data";
-
 //icons
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import CreateIcon from "@mui/icons-material/Create";
@@ -40,11 +37,6 @@ import {
 
 //date
 import dayjs from "dayjs";
-
-//types
-import { Event } from "../../utils/mockup/types";
-
-interface eventsProps {}
 
 interface State {
   modalIsOpen: boolean;
