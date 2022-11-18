@@ -182,13 +182,13 @@ const About: FC = (): JSX.Element => {
 
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
-    let aboutContentError: Array<boolean> = state.aboutContentError;
+    let aboutContentError: Array<boolean> = state?.aboutContentError;
     aboutContentError.push(true);
     await setAboutContentError(aboutContentError);
 
-    let left: Array<AboutContent> = state.addLeft;
-    let right: Array<AboutContent> = state.addRight;
-    if (left.length === right.length) {
+    let left: Array<AboutContent> = state?.addLeft;
+    let right: Array<AboutContent> = state?.addRight;
+    if (left?.length === right?.length) {
       //aggiungo a sinistra
       left.push({
         id: state?.about?.content[state.aboutContentError.length]?.id + 1,
