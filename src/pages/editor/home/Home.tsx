@@ -22,17 +22,23 @@ import { useTranslation } from "react-i18next";
 //interface
 type home = {
   hero: {
-    image: any;
+    mediaContent: any;
+    mediaTitle: any;
+    mediaType: any;
     subtitle: string;
     text: string;
   };
   result: {
-    image: any;
+    mediaContent: any;
+    mediaTitle: any;
+    mediaType: any;
     title: string;
     text: string;
   };
   story: {
-    image: any;
+    mediaContent: any;
+    mediaTitle: any;
+    mediaType: any;
     text: string;
   };
 };
@@ -47,17 +53,23 @@ const initState: State = {
   snackIsOpen: false,
   home: {
     hero: {
-      image: null,
+      mediaContent: null,
+      mediaTitle: null,
+      mediaType: null,
       subtitle: "",
       text: "",
     },
     result: {
-      image: null,
+      mediaContent: null,
+      mediaTitle: null,
+      mediaType: null,
       title: "",
       text: "",
     },
     story: {
-      image: null,
+      mediaContent: null,
+      mediaTitle: null,
+      mediaType: null,
       text: "",
     },
   },
@@ -79,17 +91,23 @@ const Home: FC = (): JSX.Element => {
       ready: true,
       home: {
         hero: {
-          image: homeData.data.hero.image,
+          mediaContent: homeData.data.hero.mediaContent,
+          mediaTitle: homeData.data.hero.mediaTitle,
+          mediaType: homeData.data.hero.mediaType,
           subtitle: homeData.data.hero.subtitle,
           text: homeData.data.hero.text,
         },
         result: {
-          image: homeData.data.result.image,
+          mediaContent: homeData.data.result.mediaContent,
+          mediaTitle: homeData.data.result.mediaTitle,
+          mediaType: homeData.data.result.mediaType,
           title: homeData.data.result.title,
           text: homeData.data.result.text,
         },
         story: {
-          image: homeData.data.story.image,
+          mediaContent: homeData.data.story.mediaContent,
+          mediaTitle: homeData.data.story.mediaTitle,
+          mediaType: homeData.data.story.mediaType,
           text: homeData.data.story.text,
         },
       },
@@ -99,24 +117,28 @@ const Home: FC = (): JSX.Element => {
   async function editHome(e: BaseSyntheticEvent): Promise<void> {
     let home: home = {
       hero: {
-        image: e.target.form[0].name,
+        mediaContent: e.target.form[0].name.split(" ")[0],
+        mediaTitle: e.target.form[0].name.split(" ")[1],
+        mediaType: e.target.form[0].name.split(" ")[2],
         subtitle: e.target.form[1].value,
         text: e.target.form[3].value,
       },
       result: {
-        image: e.target.form[12].name,
+        mediaContent: e.target.form[12].name.split(" ")[0],
+        mediaTitle: e.target.form[12].name.split(" ")[1],
+        mediaType: e.target.form[12].name.split(" ")[2],
         title: e.target.form[10].value,
         text: e.target.form[13].value,
       },
       story: {
-        image: e.target.form[6].name,
+        mediaContent: e.target.form[6].name.split(" ")[0],
+        mediaTitle: e.target.form[6].name.split(" ")[1],
+        mediaType: e.target.form[6].name.split(" ")[2],
         text: e.target.form[7].value,
       },
     };
-    console.log(home);
 
     const editHome: any = await postApiHome(home);
-    console.log(editHome);
 
     if (editHome.status === 200) {
       setState({
@@ -151,6 +173,9 @@ const Home: FC = (): JSX.Element => {
                 />
                 <ButtonAddFile
                   callback={log}
+                  mediaContent={state?.home?.hero?.mediaContent}
+                  mediaTitle={state?.home?.hero?.mediaTitle}
+                  mediaType={state?.home?.hero?.mediaType}
                 />
                 <CustomTextField
                   defaultValue={state?.home?.hero?.subtitle}
@@ -173,6 +198,9 @@ const Home: FC = (): JSX.Element => {
                 />
                 <ButtonAddFile
                   callback={log}
+                  mediaContent={state?.home?.story?.mediaContent}
+                  mediaTitle={state?.home?.story?.mediaTitle}
+                  mediaType={state?.home?.story?.mediaType}
                 />
 
                 <CustomTextField
@@ -198,6 +226,9 @@ const Home: FC = (): JSX.Element => {
                 />
                 <ButtonAddFile
                   callback={log}
+                  mediaContent={state?.home?.result?.mediaContent}
+                  mediaTitle={state?.home?.result?.mediaTitle}
+                  mediaType={state?.home?.result?.mediaType}
                 />
                 <CustomTextField
                   placeholder={t("Home.Results.placeHolderSubTitle")}
