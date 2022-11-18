@@ -220,28 +220,28 @@ const EditorBlog: FC = (): JSX.Element => {
 
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
-    let articleContentError: Array<boolean> = state.articleContentError;
-    articleContentError.push(true);
+    let articleContentError: Array<boolean> = state?.articleContentError;
+    articleContentError?.push(true);
     await setArticleContentError(articleContentError);
 
-    let left: Array<JSX.Element> = state.addLeft;
-    let right: Array<JSX.Element> = state.addRight;
-    if (left.length === right.length) {
+    let left: Array<JSX.Element> = state?.addLeft;
+    let right: Array<JSX.Element> = state?.addRight;
+    if (left?.length === right?.length) {
       //aggiungo a sinistra
-      left.push(
+      left?.push(
         getContent(
           null,
-          state?.article?.content.length + left.length + right.length + 1,
+          state?.article?.content?.length + left.length + right.length + 1,
           left.length + right.length + 1
         )
       );
     }
     //aggiungo a destra
     else {
-      right.push(
+      right?.push(
         getContent(
           null,
-          state?.article?.content.length + left.length + right.length + 1,
+          state?.article?.content?.length + left.length + right.length + 1,
           left.length + right.length + 1
         )
       );
@@ -256,20 +256,20 @@ const EditorBlog: FC = (): JSX.Element => {
 
   //elimino l'ultimo slot
   const deleteSlot = (): void => {
-    let articleContentError: Array<boolean> = state.articleContentError;
-    let left: Array<JSX.Element> = state.addLeft;
-    let right: Array<JSX.Element> = state.addRight;
+    let articleContentError: Array<boolean> = state?.articleContentError;
+    let left: Array<JSX.Element> = state?.addLeft;
+    let right: Array<JSX.Element> = state?.addRight;
 
-    if (left.length === right.length) {
+    if (left?.length === right?.length) {
       //tolgo a destra
-      right.pop();
+      right?.pop();
     }
     //tolgo a sinistra
     else {
-      left.pop();
+      left?.pop();
     }
 
-    articleContentError.pop();
+    articleContentError?.pop();
 
     setState({
       ...state,
@@ -500,7 +500,7 @@ const EditorBlog: FC = (): JSX.Element => {
 
   return (
     <Box>
-      {state.ready && (
+      {state?.ready && (
         <>
           <form onSubmit={onSave}>
             <Box className={common.component}>
@@ -515,9 +515,9 @@ const EditorBlog: FC = (): JSX.Element => {
                       placeholder={t(
                         "articles.editorBlog.titleSection.placeholderTitle"
                       )}
-                      error={state.error[0]}
+                      error={state?.error[0]}
                       defaultValue={
-                        location?.state?.showAdd ? "" : state.article.title
+                        location?.state?.showAdd ? "" : state?.article?.title
                       }
                     />
                   </LabelText>
@@ -535,7 +535,7 @@ const EditorBlog: FC = (): JSX.Element => {
                     />
                     <ButtonAddFile
                       callback={log}
-                      error={state.error[1]}
+                      error={state?.error[1]}
                       customKey={999}
                     />
                   </LabelText>
@@ -558,7 +558,7 @@ const EditorBlog: FC = (): JSX.Element => {
                         },
                       }}
                     >
-                      {state.categories.map((element) => {
+                      {state?.categories?.map((element) => {
                         const labelId = `checkbox-list-secondary-label-${element}`;
                         return (
                           <ListItem
@@ -568,7 +568,7 @@ const EditorBlog: FC = (): JSX.Element => {
                                 edge="end"
                                 onChange={handleToggle(element.id)}
                                 checked={
-                                  state.checked.indexOf(element.id) !== -1
+                                  state?.checked?.indexOf(element.id) !== -1
                                 }
                                 inputProps={{ "aria-labelledby": labelId }}
                               />
@@ -585,7 +585,7 @@ const EditorBlog: FC = (): JSX.Element => {
                         );
                       })}
                       <ListItemText sx={{ color: "red", paddingLeft: "16px" }}>
-                        {state.error[2]
+                        {state?.error[2]
                           ? t("articles.editorBlog.categoriesError")
                           : ""}
                       </ListItemText>
@@ -605,7 +605,7 @@ const EditorBlog: FC = (): JSX.Element => {
                     {t("link")}
                   </Link>
                   {/*link*/}
-                  {state.addLeft.length > 0 && (
+                  {state?.addLeft?.length > 0 && (
                     <Link
                       color="#000000"
                       variant="body2"
@@ -645,14 +645,14 @@ const EditorBlog: FC = (): JSX.Element => {
                         </ButtonGeneric>
                       </>
                     )}
-                    {state.snackErrorIsOpen && (
+                    {state?.snackErrorIsOpen && (
                       <CustomSnackbar
                         message={t("responseErrorSnack")}
                         severity={"error"}
                         callback={handleClose}
                       />
                     )}
-                    {state.snackWarningIsOpen && (
+                    {state?.snackWarningIsOpen && (
                       <CustomSnackbar
                         message={t("responseWarningSnack")}
                         severity={"warning"}

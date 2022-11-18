@@ -13,7 +13,6 @@ import CustomTextField from "../../components/functional/textField/CustomTextFie
 import style from "./login.module.scss";
 
 //img stock
-import logo from "../../assets/media/logo.png";
 import { Link } from "react-router-dom";
 import { BaseSyntheticEvent } from "react";
 
@@ -115,7 +114,7 @@ const Login: FC = (): JSX.Element => {
         localStorage.setItem("onlusRefreshToken", tempUser?.data?.refreshToken);
 
         //set sessionStorage
-        sessionStorage.setItem("user", JSON.stringify(tempUser.data));
+        sessionStorage.setItem("user", JSON.stringify(tempUser?.data));
         sessionStorage.setItem("userLogedIn", JSON.stringify(true));
         dispatch(setLogin({ loginToken: true }));
 

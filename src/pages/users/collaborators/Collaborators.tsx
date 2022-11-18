@@ -12,6 +12,7 @@ import style from "./collaborators.module.scss";
 import Box from "@mui/material/Box";
 import CreateIcon from "@mui/icons-material/Create";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import CircularProgress from "@mui/material/CircularProgress";
 
 //Components
 import Title from "../../../components/functional/title/Title";
@@ -24,14 +25,21 @@ import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGe
 
 //API
 import { fetchData } from "../../../utils/fetchData";
-import { getActiveCollaborators, getDeactivatedCollaborators, deleteCollaboratorById, activateCollaboratorById, getActiveGuests, getDeactivatedGuests } from "../../../services/api/collaborators/collaborators";
+import {
+  getActiveCollaborators,
+  getDeactivatedCollaborators,
+  deleteCollaboratorById,
+  activateCollaboratorById,
+  getActiveGuests,
+  getDeactivatedGuests,
+} from "../../../services/api/collaborators/collaborators";
 
 //i18n
 import { useTranslation } from "react-i18next";
 
 //Redux
-import { useSelector } from 'react-redux/es/exports'
-import roles from '../../../utils/roles'
+import { useSelector } from "react-redux/es/exports";
+import roles from "../../../utils/roles";
 
 //Utils
 import { User } from "../../../utils/mockup/types";
@@ -64,9 +72,9 @@ const initialState: State = {
 
 const Collaborators: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
-  const currentUser = useSelector((state: any) => state.userDuck.user)
+  const currentUser = useSelector((state: any) => state.userDuck.user);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -79,10 +87,10 @@ const Collaborators: FC = (): JSX.Element => {
       ready: false,
     });
 
-    if (window.location.href.includes('collaborators')) {
-      getCollaboratorsData()
+    if (window.location.href.includes("collaborators")) {
+      getCollaboratorsData();
     } else {
-      getGuestsData()
+      getGuestsData();
     }
   }, [window.location.href]);
 
@@ -96,9 +104,9 @@ const Collaborators: FC = (): JSX.Element => {
       collaborators: res.data,
       deactivated: res2.data,
       ready: true,
-      snackIsOpen: location?.state?.open
-    })
-  }
+      snackIsOpen: location?.state?.open,
+    });
+  };
 
   //fetchAPI guests
   const getGuestsData = async (): Promise<void> => {
@@ -110,9 +118,9 @@ const Collaborators: FC = (): JSX.Element => {
       collaborators: res.data,
       deactivated: res2.data,
       ready: true,
-      snackIsOpen: location?.state?.open
-    })
-  }
+      snackIsOpen: location?.state?.open,
+    });
+  };
 
   //Snackbar
   const handleClose = () => {
@@ -157,18 +165,19 @@ const Collaborators: FC = (): JSX.Element => {
 
   //elimina l'utente
   const deleteUser = async (): Promise<void> => {
-
-    deleteApi(state.idToDelete)
-    let tmp = Object.assign([], state.deactivated)
-    let add = state.collaborators.find(obj => obj.id === state.idToDelete)
-    add.disableDate = new Date().toDateString()
-    tmp.push(add)
+    deleteApi(state.idToDelete);
+    let tmp = Object.assign([], state.deactivated);
+    let add = state.collaborators.find((obj) => obj.id === state.idToDelete);
+    add.disableDate = new Date().toDateString();
+    tmp.push(add);
 
     setState({
       ...state,
       modalIsOpen: false,
       snackDeleteIsOpen: true,
-      collaborators: state.collaborators.filter((row) => row.id !== state.idToDelete),
+      collaborators: state.collaborators.filter(
+        (row) => row.id !== state.idToDelete
+      ),
       deactivated: tmp,
       idToDelete: null,
     });
@@ -176,38 +185,39 @@ const Collaborators: FC = (): JSX.Element => {
 
   //DeleteAPI
   const deleteApi = async (id: number): Promise<void> => {
-    let res = await fetchData(deleteCollaboratorById, id)
-    console.log("Delete: ", res.data)
-  }
+    let res = await fetchData(deleteCollaboratorById, id);
+    console.log("Delete: ", res.data);
+  };
 
   //riattiva l'utente
   const activateUser = async (): Promise<void> => {
-
-    putActiveApi(state.idToActivate)
-    let tmp = Object.assign([], state.collaborators)
-    let add = state.deactivated.find(obj => obj.id === state.idToActivate)
-    add.disableDate = ''
-    tmp.push(add)
+    putActiveApi(state.idToActivate);
+    let tmp = Object.assign([], state.collaborators);
+    let add = state.deactivated.find((obj) => obj.id === state.idToActivate);
+    add.disableDate = "";
+    tmp.push(add);
 
     setState({
       ...state,
       modalActiveIsOpen: false,
       snackDeleteIsOpen: true,
-      deactivated: state.deactivated.filter((row) => row.id !== state.idToActivate),
+      deactivated: state.deactivated.filter(
+        (row) => row.id !== state.idToActivate
+      ),
       collaborators: tmp,
       idToActivate: null,
     });
-  }
+  };
 
   //PutActiveApi
   const putActiveApi = async (id: number): Promise<void> => {
-    let res = await fetchData(activateCollaboratorById, id)
-    console.log("Active: ", res)
-  }
+    let res = await fetchData(activateCollaboratorById, id);
+    console.log("Active: ", res);
+  };
 
   //Funzioni di modifica e aggiunta
   const updateUser = (row: object) => (): void => {
-    if (window.location.href.includes('collaborators')) {
+    if (window.location.href.includes("collaborators")) {
       navigate(PAGES.editorCollaborators, { state: { row } });
     } else {
       navigate(PAGES.editorVolunteers, { state: { row } });
@@ -215,7 +225,7 @@ const Collaborators: FC = (): JSX.Element => {
   };
 
   const addUser = (): void => {
-    if (window.location.href.includes('collaborators')) {
+    if (window.location.href.includes("collaborators")) {
       navigate(PAGES.editorCollaborators, { state: { showAdd: true } });
     } else {
       navigate(PAGES.editorVolunteers, { state: { showAdd: true } });
@@ -224,41 +234,42 @@ const Collaborators: FC = (): JSX.Element => {
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
-
     //tabella disattivi
-    if (params.row.disableDate !== '') {
-      if (params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)) {
-
+    if (params.row.disableDate !== "") {
+      if (
+        params.row.role.includes(roles.owner) &&
+        !currentUser?.permission.includes(roles.owner)
+      ) {
         return (
           <ButtonIcon disable={true}>
-            <CreateIcon sx={{ fontSize: "18px", color: 'gray' }} />
+            <CreateIcon sx={{ fontSize: "18px", color: "gray" }} />
           </ButtonIcon>
         );
-
       } else {
-
         return (
           <ButtonIcon callback={openActiveModal(params.row.id)}>
             <CreateIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         );
       }
-
     } else {
-
       //tabella attivi
-      if (params.row.role.includes(roles.owner) && !currentUser?.permission.includes(roles.owner)) {
+      if (
+        params.row.role.includes(roles.owner) &&
+        !currentUser?.permission.includes(roles.owner)
+      ) {
         return (
           <>
             <ButtonIcon disable={true}>
-              <CreateIcon sx={{ fontSize: "18px", color: 'gray' }} />
+              <CreateIcon sx={{ fontSize: "18px", color: "gray" }} />
             </ButtonIcon>
             <ButtonIcon disable={true}>
-              <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px", color: 'gray' }} />
+              <DeleteOutlineOutlinedIcon
+                sx={{ fontSize: "18px", color: "gray" }}
+              />
             </ButtonIcon>
           </>
         );
-
       } else {
         return (
           <>
@@ -276,7 +287,7 @@ const Collaborators: FC = (): JSX.Element => {
 
   const renderValue = (params: any) => {
     return params.row.role[0];
-  }
+  };
 
   const columnsCollaborators = [
     {
@@ -337,29 +348,24 @@ const Collaborators: FC = (): JSX.Element => {
   ];
 
   return (
-    <Box className={common.component}>
-      {state.ready && (
-        <>
+    <>
+      {state.ready ? (
+        <Box className={common.component}>
           <Box className={common.singleComponent}>
             <LabelText>
               {/*titolo*/}
               <Box className={style.titleRow}>
-                {
-                  window.location.href.includes('collaborators') ?
-                    <Title
-                      text={t("Collaborators.title")}
-                      textInfo={
-                        t("Collaborators.info")
-                      }
-                    />
-                    :
-                    <Title
-                      text={t("Volunteers.title")}
-                      textInfo={
-                        t("Volunteers.info")
-                      }
-                    />
-                }
+                {window.location.href.includes("collaborators") ? (
+                  <Title
+                    text={t("Collaborators.title")}
+                    textInfo={t("Collaborators.info")}
+                  />
+                ) : (
+                  <Title
+                    text={t("Volunteers.title")}
+                    textInfo={t("Volunteers.info")}
+                  />
+                )}
                 <ButtonGeneric color={"green"} callback={addUser}>
                   + {t("addButton")}
                 </ButtonGeneric>
@@ -368,10 +374,9 @@ const Collaborators: FC = (): JSX.Element => {
               {/*tabella*/}
               <CustomTable
                 columns={
-                  window.location.href.includes('collaborators') ?
-                    columnsCollaborators
-                  :
-                    columnsGuest
+                  window.location.href.includes("collaborators")
+                    ? columnsCollaborators
+                    : columnsGuest
                 }
                 rows={state.collaborators}
                 pageSize={5}
@@ -385,19 +390,16 @@ const Collaborators: FC = (): JSX.Element => {
               <Box className={style.titleRow}>
                 <Title
                   text={t("Collaborators.titleDeactive")}
-                  textInfo={
-                    t("Collaborators.infoDeactive")
-                  }
+                  textInfo={t("Collaborators.infoDeactive")}
                 />
               </Box>
 
               {/*tabella*/}
               <CustomTable
                 columns={
-                  window.location.href.includes('collaborators') ?
-                    columnsCollaborators
-                  :
-                    columnsGuest
+                  window.location.href.includes("collaborators")
+                    ? columnsCollaborators
+                    : columnsGuest
                 }
                 rows={state.deactivated}
                 pageSize={5}
@@ -439,9 +441,14 @@ const Collaborators: FC = (): JSX.Element => {
               callback={handleClose}
             />
           )}
-        </>
+        </Box>
+      ) : (
+        <Box className={common.loaderBox}>
+          <CircularProgress />
+        </Box>
       )}
-    </Box>
+      )
+    </>
   );
 };
 

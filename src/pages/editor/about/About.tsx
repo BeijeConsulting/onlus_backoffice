@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 
 //api
-import { getApiAbout, putApiAbout } from "../../../services/api/about/aboutApi";
+import { getApiAbout, postApiAbout} from "../../../services/api/about/aboutApi";
 
 //components
 import LabelText from "../../../components/functional/labelText/LabelText";
@@ -92,20 +92,7 @@ const About: FC = (): JSX.Element => {
     let addRight: Array<AboutContent> = [];
     let aboutContentError: Array<boolean> = [];
 
-    let about: AboutType = {
-      content: [],
-      hero: {
-        mediaContent: "",
-        mediaTitle: "",
-        mediaType: "",
-        subtitle: "",
-        text: "",
-      },
-      title: {
-        id: null,
-        title: "",
-      },
-    };
+    let about: AboutType = null
 
     let dataAbout = await fetchData(getApiAbout);
     console.log("About", dataAbout.data);
@@ -182,16 +169,16 @@ const About: FC = (): JSX.Element => {
 
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
-    let aboutContentError: Array<boolean> = state.aboutContentError;
-    aboutContentError.push(true);
+    let aboutContentError: Array<boolean> = state?.aboutContentError;
+    aboutContentError?.push(true);
     await setAboutContentError(aboutContentError);
 
-    let left: Array<AboutContent> = state.addLeft;
-    let right: Array<AboutContent> = state.addRight;
-    if (left.length === right.length) {
+    let left: Array<AboutContent> = state?.addLeft;
+    let right: Array<AboutContent> = state?.addRight;
+    if (left?.length === right?.length) {
       //aggiungo a sinistra
       left.push({
-        id: state.about.content[state.aboutContentError.length].id + 1,
+        id: state?.about?.content[state.aboutContentError.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -201,7 +188,7 @@ const About: FC = (): JSX.Element => {
     //aggiungo a destra
     else {
       right.push({
-        id: state.about.content[state.aboutContentError.length].id + 1,
+        id: state?.about?.content[state.aboutContentError.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -259,14 +246,14 @@ const About: FC = (): JSX.Element => {
     let about: AboutType = {
       content: [
         {
-          id: state?.about?.content[0]?.id,
+          id: 0,
           mediaContent: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[0],
           mediaTitle: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[1],
           mediaType: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[2],
           paragraph: e.target.form[6 + state.addLeft.length * 4].value,
         },
         {
-          id: state?.about?.content[1]?.id,
+          id: 1,
           mediaContent: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[0],
           mediaTitle: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[1],
           mediaType: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[2],
@@ -391,7 +378,7 @@ const About: FC = (): JSX.Element => {
   //modifico about
   const updateAbout = async (about: AboutType, error: Array<boolean>, aboutContentError: Array<boolean>): Promise<void> => {
     console.log("ABout prima di aggiornare", about)
-    let response = await putApiAbout(about);
+    let response = await postApiAbout(about);
     handleUpdateResponse(response.status, error, aboutContentError, about);
   };
 
@@ -429,7 +416,7 @@ const About: FC = (): JSX.Element => {
 
   return (
     <Box>
-      {state.ready && (
+      {state?.ready && (
         <>
           <form onSubmit={onSave}>
             <Box className={style.component}>
@@ -443,14 +430,14 @@ const About: FC = (): JSX.Element => {
                     />
                     <ButtonAddFile
                       callback={log}
-                      error={state.error[0]}
+                      error={state?.error[0]}
                       mediaContent={state?.about?.hero?.mediaContent}
                       mediaTitle={state?.about?.hero?.mediaTitle}
                       mediaType={state?.about?.hero?.mediaType}
                       customKey={999}
                     ></ButtonAddFile>
                     <CustomTextField
-                      error={state.error[1]}
+                      error={state?.error[1]}
                       minrow={7}
                       maxrow={10}
                       multiline={true}
@@ -465,13 +452,13 @@ const About: FC = (): JSX.Element => {
                       textInfo={t("About.Title.info")}
                     />
                     <CustomTextField
-                      error={state.error[2]}
+                      error={state?.error[2]}
                       placeholder={t("About.Title.placeHolderText")}
                       defaultValue={state?.about?.title?.title}
                     />
                   </LabelText>
                   {/*contenuto*/}
-                  {state?.addLeft.map((element: AboutContent) => {
+                  {state?.addLeft?.map((element: AboutContent) => {
                     indSx += 2
                     return getContent(element, element?.id, indSx)
                   })}
@@ -481,7 +468,7 @@ const About: FC = (): JSX.Element => {
                   {/*contenuto*/}
                   {getContent(state?.about?.content[0], 0, 0)}
                   {getContent(state?.about?.content[1], 1, 1)}
-                  {state?.addRight.map((element: AboutContent) => {
+                  {state?.addRight?.map((element: AboutContent) => {
                     indDx += 2
                     return getContent(element, element?.id, indDx)
                   })}
@@ -495,7 +482,7 @@ const About: FC = (): JSX.Element => {
                     {t("link")}
                   </Link>
                   {/*link*/}
-                  {state.addLeft.length > 0 && (
+                  {state?.addLeft?.length > 0 && (
                     <Link
                       color="#000000"
                       variant="body2"
@@ -518,14 +505,14 @@ const About: FC = (): JSX.Element => {
                   callback={handleClose}
                 />
               )}
-              {state.snackErrorIsOpen && (
+              {state?.snackErrorIsOpen && (
                 <CustomSnackbar
                   message={t("responseErrorSnack")}
                   severity={"error"}
                   callback={handleClose}
                 />
               )}
-              {state.snackWarningIsOpen && (
+              {state?.snackWarningIsOpen && (
                 <CustomSnackbar
                   message={t("responseWarningSnack")}
                   severity={"warning"}
