@@ -221,17 +221,17 @@ const EditorBlog: FC = (): JSX.Element => {
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
     let articleContentError: Array<boolean> = state?.articleContentError;
-    articleContentError.push(true);
+    articleContentError?.push(true);
     await setArticleContentError(articleContentError);
 
-    let left: Array<JSX.Element> = state.addLeft;
-    let right: Array<JSX.Element> = state.addRight;
+    let left: Array<JSX.Element> = state?.addLeft;
+    let right: Array<JSX.Element> = state?.addRight;
     if (left.length === right.length) {
       //aggiungo a sinistra
       left.push(
         getContent(
           null,
-          state?.article?.content.length + left.length + right.length + 1,
+          state?.article?.content?.length + left.length + right.length + 1,
           left.length + right.length + 1
         )
       );
@@ -241,7 +241,7 @@ const EditorBlog: FC = (): JSX.Element => {
       right.push(
         getContent(
           null,
-          state?.article?.content.length + left.length + right.length + 1,
+          state?.article?.content?.length + left.length + right.length + 1,
           left.length + right.length + 1
         )
       );
@@ -257,8 +257,8 @@ const EditorBlog: FC = (): JSX.Element => {
   //elimino l'ultimo slot
   const deleteSlot = (): void => {
     let articleContentError: Array<boolean> = state.articleContentError;
-    let left: Array<JSX.Element> = state.addLeft;
-    let right: Array<JSX.Element> = state.addRight;
+    let left: Array<JSX.Element> = state?.addLeft;
+    let right: Array<JSX.Element> = state?.addRight;
 
     if (left.length === right.length) {
       //tolgo a destra
