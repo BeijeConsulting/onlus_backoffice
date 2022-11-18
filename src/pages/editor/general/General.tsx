@@ -225,6 +225,8 @@ const General: FC = (): JSX.Element => {
     setState({
       ...state,
       open: false,
+      snackWarningIsOpen: false,
+      snackErrorIsOpen: false,
     });
   };
 
