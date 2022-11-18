@@ -371,7 +371,7 @@ const Categories: FC = (): JSX.Element => {
                     <CustomTextField
                       placeholder={t("Categories.placeholder")}
                       error={state?.inputError}
-                      errorMessage={state?.textError}
+                      errorMessage={t("Categories.errorEmpty")}
                       refCustom={ref}
                     />
                     <ButtonGeneric color={"green"} callback={showModalCategory}>
@@ -444,7 +444,7 @@ const Categories: FC = (): JSX.Element => {
                 <CustomTextField
                   defaultValue={state?.updateName}
                   placeholder={t("Categories.placeholder")}
-                  errorMessage={state?.updateErrorMesssage}
+                  errorMessage={t("Categories.errorEmpty")}
                   error={state?.updateError}
                 />
                 <Box className={categoriesStyle.modalButtons}>

@@ -210,7 +210,7 @@ const EditorEvents: FC = () => {
   //PutAPI
   async function updateEvent(newEvent: Event) {
     let resp = await updateEventByIdApi(state?.currentEvent?.id, newEvent);
-    handleResponse(resp.status);
+    handleResponse(resp?.status);
     if (resp?.status === 200) {
       navigate(PAGES.events, { state: { openChange: true } });
     }
@@ -219,7 +219,7 @@ const EditorEvents: FC = () => {
   //PostAPI
   async function sendData(newEvent: Event) {
     let resp = await createEventApi(newEvent);
-    handleResponse(resp.status);
+    handleResponse(resp?.status);
     if (resp?.status === 200) {
       navigate(PAGES.events, { state: { openAdd: true } });
     }
