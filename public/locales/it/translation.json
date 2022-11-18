@@ -3,6 +3,9 @@
     "selection": "Seleziona file",
     "file": "Nessun file selezionato"
   },
+  "loginButton": "ACCEDI",
+  "forgotPassword": "Password dimenticata?",
+  "headerMenu": "Area personale",
   "saveButton": "Salva modifiche",
   "addButton": "Aggiungi",
   "cancelButton": "Annulla modifiche",
@@ -10,6 +13,7 @@
   "deleteSnack": "Eliminazione avvenuta con successo",
   "responseErrorSnack": "Errore nella richiesta, riprova",
   "responseWarningSnack": "Errore interno del server, riprova più tardi",
+  "userAlreadyExists": "Errore: l'utente esiste già",
   "addSnack": "Inserimento avvenuto con successo",
   "deleteModal": {
     "text": "Sei sicuro di voler eliminare il seguente elemento?",
@@ -322,6 +326,10 @@
     },
     "activeModalText": "Sei sicuro di voler riattivare il seguente utente?",
     "activeModalBtn": "Conferma"
+  },
+  "Volunteers": {
+    "title": "Volontari",
+    "info": "Utenti registrati, clicca sul pulsante modifica per aggiornare manualmente i dati dell'utente o clicca sul pulsante elimina per disattivare l'utente"
   },
   "CollaboratorsEditor": {
     "title": "Dati dell'utente",

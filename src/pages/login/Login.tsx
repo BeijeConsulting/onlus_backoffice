@@ -1,6 +1,5 @@
-import { FC, useState,useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import PAGES from "../../router/pages";
 
 //Componenti MUI
@@ -17,10 +16,15 @@ import style from "./login.module.scss";
 import logo from "../../assets/media/logo.png";
 import { Link } from "react-router-dom";
 import { BaseSyntheticEvent } from "react";
+
 //api
 import { signinApi } from "../../services/api/login/loginApi";
-import {fetchData} from "../../utils/fetchData";
-import {getApiNoAuthGeneral} from "../../services/api/general/generalApi";
+import { fetchData } from "../../utils/fetchData";
+import { getApiNoAuthGeneral } from "../../services/api/general/generalApi";
+
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { setLogin } from "../../redux/ducks/loginDuck";
 
 /*
 TO DO
@@ -34,7 +38,7 @@ TO DO
 interface State {
   emailError: boolean;
   passwordError: boolean;
-  logo: string
+  logo: string;
 }
 
 type User = {
@@ -46,26 +50,33 @@ type User = {
 const initState: State = {
   emailError: false,
   passwordError: false,
-  logo: ""
+  logo: "",
 };
 
 const Login: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
 
-  const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const dispatch: any = useDispatch();
+  const navigate: any = useNavigate();
+  const user: any = useSelector((state: any) => state.userDuck.user);
 
   useEffect(() => {
-    getLoginData()
-  },[])
+    if (user.logedIn === true) {
+      navigate(PAGES.personalArea);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    getLoginData();
+  }, []);
 
   const getLoginData = async (): Promise<void> => {
     let resp = await fetchData(getApiNoAuthGeneral);
     setState({
       ...state,
-      logo: resp?.data?.logo
-    })
-  }
+      logo: resp?.data?.logo,
+    });
+  };
 
   async function onLogin(e: BaseSyntheticEvent): Promise<void> {
     let eError = false;
@@ -103,8 +114,10 @@ const Login: FC = (): JSX.Element => {
         localStorage.setItem("onlusToken", tempUser?.data?.token);
         localStorage.setItem("onlusRefreshToken", tempUser?.data?.refreshToken);
 
-        //setcookie
-        setCookie("user", tempUser);
+        //set sessionStorage
+        sessionStorage.setItem("user", JSON.stringify(tempUser.data));
+        sessionStorage.setItem("userLogedIn", JSON.stringify(true));
+        dispatch(setLogin({ loginToken: true }));
 
         //navigation
         navigate(PAGES.personalArea);

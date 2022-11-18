@@ -25,7 +25,6 @@ const CustomSelect: FC<selectProps> = (props): JSX.Element => {
   const [value, setValue] = useState(!!props.defaultValue ? props.defaultValue : '');
 
   const handleChange = (event: SelectChangeEvent) => {
-    console.log(event.target.value)
     setValue(event.target.value as string);
   };
 

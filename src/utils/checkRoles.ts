@@ -3,8 +3,10 @@ const checkRole = (params: any): string => {
         return '3'
     } else if (params.includes('ADMIN')) {
         return '2'
-    } else {
+    } else if (params.includes('BLOGGER')){
         return '4'
+    } else {
+        return '1'
     }
 }
 
