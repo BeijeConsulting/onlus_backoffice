@@ -1,6 +1,5 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 import PAGES from "../../router/pages";
 
 //Componenti MUI
@@ -17,8 +16,13 @@ import style from "./login.module.scss";
 import logo from "../../assets/media/logo.png";
 import { Link } from "react-router-dom";
 import { BaseSyntheticEvent } from "react";
+
 //api
 import { signinApi } from "../../services/api/login/loginApi";
+
+//redux
+import { useDispatch, useSelector } from "react-redux";
+import { setLogin } from "../../redux/ducks/loginDuck";
 
 /*
 TO DO
@@ -47,8 +51,15 @@ const initState: State = {
 const Login: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
 
-  const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
+  const dispatch: any = useDispatch();
+  const navigate: any = useNavigate();
+  const user: any = useSelector((state: any) => state.userDuck.user);
+
+  useEffect(() => {
+    if (user.logedIn === true) {
+      navigate(PAGES.personalArea);
+    }
+  }, [user]);
 
   async function onLogin(e: BaseSyntheticEvent): Promise<void> {
     let eError = false;
@@ -82,8 +93,10 @@ const Login: FC = (): JSX.Element => {
     localStorage.setItem("onlusToken", tempUser?.data?.token);
     localStorage.setItem("onlusRefreshToken", tempUser?.data?.refreshToken);
 
-    //setcookie
-    setCookie("user", tempUser);
+    //set sessionStorage
+    sessionStorage.setItem("user", JSON.stringify(tempUser.data));
+    sessionStorage.setItem("userLogedIn", JSON.stringify(true));
+    dispatch(setLogin({ loginToken: true }));
 
     //navigation
     navigate(PAGES.personalArea);
