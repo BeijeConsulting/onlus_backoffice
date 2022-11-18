@@ -77,7 +77,6 @@ const EditorEvents: FC = () => {
   const [state, setState] = useState(initialState);
   const { t } = useTranslation();
   const location = useLocation();
-  console.log(location);
 
   const idCurrentEvent = location?.state?.row?.id;
   const navigate = useNavigate();
