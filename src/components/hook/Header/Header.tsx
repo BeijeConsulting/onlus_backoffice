@@ -26,7 +26,7 @@ import PAGES from "../../../router/pages";
 import { useNavigate } from "react-router-dom";
 
 //Utils
-import useLogout from "../../../utils/logout";
+import useLogout from "../../../utils/useLogout";
 import checkRole from "../../../utils/checkRoles";
 
 //translation
