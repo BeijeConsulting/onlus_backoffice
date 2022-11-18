@@ -226,9 +226,9 @@ const EditorBlog: FC = (): JSX.Element => {
 
     let left: Array<JSX.Element> = state?.addLeft;
     let right: Array<JSX.Element> = state?.addRight;
-    if (left.length === right.length) {
+    if (left?.length === right?.length) {
       //aggiungo a sinistra
-      left.push(
+      left?.push(
         getContent(
           null,
           state?.article?.content?.length + left.length + right.length + 1,
@@ -238,7 +238,7 @@ const EditorBlog: FC = (): JSX.Element => {
     }
     //aggiungo a destra
     else {
-      right.push(
+      right?.push(
         getContent(
           null,
           state?.article?.content?.length + left.length + right.length + 1,
@@ -260,13 +260,13 @@ const EditorBlog: FC = (): JSX.Element => {
     let left: Array<JSX.Element> = state?.addLeft;
     let right: Array<JSX.Element> = state?.addRight;
 
-    if (left.length === right.length) {
+    if (left?.length === right?.length) {
       //tolgo a destra
-      right.pop();
+      right?.pop();
     }
     //tolgo a sinistra
     else {
-      left.pop();
+      left?.pop();
     }
 
     articleContentError.pop();
