@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, BaseSyntheticEvent } from 'react'
+import { FC, useEffect, useState, BaseSyntheticEvent } from "react";
 
 //Navigazione
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,15 +23,18 @@ import ButtonGeneric from "../../components/functional/buttonGeneric/ButtonGener
 import CustomSnackbar from "../../components/functional/customSnackbar/CustomSnackbar";
 
 //API
-import { fetchData } from '../../utils/fetchData';
-import { getPersonalArea, putPersonalAreaById } from "../../services/api/personalArea/personalArea";
+import { fetchData } from "../../utils/fetchData";
+import {
+  getPersonalArea,
+  putPersonalAreaById,
+} from "../../services/api/personalArea/personalArea";
 
 //Redux
-import { useSelector } from 'react-redux/es/exports'
+import { useSelector } from "react-redux/es/exports";
 
 //Utils
-import { User } from '../../utils/mockup/types';
-import checkRole from '../../utils/checkRoles';
+import { User } from "../../utils/mockup/types";
+import checkRole from "../../utils/checkRoles";
 import useLogout from "../../utils/logout";
 
 //Translation
@@ -60,35 +63,39 @@ const rolesPerAdmin: Array<Item> = [
 
 interface State {
   error: Array<boolean>;
-  snackIsOpen: boolean;
   modalIsOpen: boolean;
   ready: boolean;
   personalData: User;
+  snackError: boolean;
+  snackWarning: boolean;
+  snackExists: boolean;
 }
 
 const initState: State = {
   error: [false, false, false, false, false, false, false, false],
-  snackIsOpen: false,
   modalIsOpen: false,
   ready: false,
   personalData: {
-    email: '',
+    email: "",
     id: 0,
-    language: '',
-    name: '',
-    surname: '',
-    password: '',
-    phone: '',
+    language: "",
+    name: "",
+    surname: "",
+    password: "",
+    phone: "",
     publishedArticles: 0,
     role: [],
   },
+  snackError: false,
+  snackWarning: false,
+  snackExists: false,
 };
 
 const PersonalArea: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
   const { t } = useTranslation();
 
-  const currentUser = useSelector((state: any) => state.userDuck.user)
+  const currentUser = useSelector((state: any) => state.userDuck.user);
 
   const [handleLogout, isReady] = useLogout(1000);
   const location = useLocation();
@@ -106,7 +113,7 @@ const PersonalArea: FC = (): JSX.Element => {
   ];
 
   useEffect(() => {
-    getData()
+    getData();
   }, []);
 
   //fetchAPI
@@ -118,24 +125,35 @@ const PersonalArea: FC = (): JSX.Element => {
       error: [false, false, false, false, false, false, false, false],
       personalData: res.data,
       ready: true,
-      snackIsOpen: location?.state?.open
-    })
-  }
+    });
+  };
 
   //Snackbar
   const handleClose = () => {
     setState({
       ...state,
-      snackIsOpen: false,
+      snackError: false,
+      snackWarning: false,
+      snackExists: false,
     });
   };
 
   //Funzione per salvare i dati
   const onSave = async (e: BaseSyntheticEvent): Promise<void> => {
-
-    let tmp: Array<boolean> = [false, false, false, false, false, false, false, false]
-    let open: boolean = false;
+    let tmp: Array<boolean> = [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ];
     let showModal: boolean = false;
+    let snackError: boolean = false;
+    let snackWarning: boolean = false;
+    let snackExists: boolean = false;
 
     //controllo che tutti i campi siano pieni
     let errors: boolean = false;
@@ -172,30 +190,40 @@ const PersonalArea: FC = (): JSX.Element => {
       };
 
       //API
-      await putApi(state.personalData.id, user)
-      open = true;
-      showModal = true;
+      let response: any = await fetchData(
+        putPersonalAreaById,
+        state.personalData.id,
+        user
+      );
+
+      if (response?.status === 200) {
+        showModal = true;
+      } else if (response?.status === 500 || response?.status === undefined) {
+        snackWarning = true;
+      } else if (response?.status === 503) {
+        snackExists = true;
+      } else snackError = true;
+    } else {
+      snackError = true;
     }
 
     setState({
       ...state,
       error: tmp,
+      snackWarning: snackWarning,
+      snackError: snackError,
       modalIsOpen: showModal,
+      snackExists: snackExists,
     });
   };
 
-  //PutApi
-  const putApi = async (id: number, user: User): Promise<void> => {
-    let res = await fetchData(putPersonalAreaById, id, user)
-  }
-
   //esegue logout e porta al login dopo le modifiche
   const toLogin = (): void => {
-    handleLogout()
-    if(isReady){
-      navigate(PAGES.login)
+    handleLogout();
+    if (isReady) {
+      navigate(PAGES.login);
     }
-  }
+  };
 
   return (
     <Box className={common.component}>
@@ -212,18 +240,14 @@ const PersonalArea: FC = (): JSX.Element => {
                 <Box className={style.textFields}>
                   <Box className={style.row}>
                     <CustomTextField
-                      defaultValue={
-                        state.personalData.name
-                      }
+                      defaultValue={state.personalData.name}
                       errorMessage="Inserisci un nome"
                       error={state.error[0]}
                       placeholder={t("personalArea.placeholderName")}
                     />
 
                     <CustomTextField
-                      defaultValue={
-                        state.personalData.surname
-                      }
+                      defaultValue={state.personalData.surname}
                       errorMessage="Inserisci un cognome"
                       error={state.error[1]}
                       placeholder={t("personalArea.placeholderSurname")}
@@ -234,9 +258,7 @@ const PersonalArea: FC = (): JSX.Element => {
                     <CustomSelect
                       label={t("personalArea.placeholderLanguage")}
                       items={lang}
-                      defaultValue={
-                        state.personalData.language
-                      }
+                      defaultValue={state.personalData.language}
                       error={state.error[2]}
                       errorMessage="Inserisci una lingua"
                     />
@@ -245,9 +267,7 @@ const PersonalArea: FC = (): JSX.Element => {
                       label={t("personalArea.placeholderRole")}
                       items={rolesPerAdmin}
                       disabled={true}
-                      defaultValue={
-                        checkRole(state.personalData.role)
-                      }
+                      defaultValue={checkRole(state.personalData.role)}
                       error={state.error[3]}
                       errorMessage="Inserisci un ruolo"
                     />
@@ -255,18 +275,14 @@ const PersonalArea: FC = (): JSX.Element => {
 
                   <Box className={style.row}>
                     <CustomTextField
-                      defaultValue={
-                        state.personalData.email
-                      }
+                      defaultValue={state.personalData.email}
                       errorMessage="Inserisci una email"
                       error={state.error[4]}
                       placeholder={t("personalArea.placeholderEmail")}
                     />
 
                     <CustomTextField
-                      defaultValue={
-                        state.personalData.phone
-                      }
+                      defaultValue={state.personalData.phone}
                       errorMessage="Inserisci un numero di telefono"
                       error={state.error[5]}
                       placeholder={t("personalArea.placeholderTelephone")}
@@ -275,9 +291,7 @@ const PersonalArea: FC = (): JSX.Element => {
 
                   <Box className={style.row}>
                     <CustomTextField
-                      defaultValue={
-                        state.personalData.password
-                      }
+                      defaultValue={state.personalData.password}
                       errorMessage="Inserisci una password"
                       error={state.error[6]}
                       placeholder={t("personalArea.placeholderPassword")}
@@ -285,9 +299,7 @@ const PersonalArea: FC = (): JSX.Element => {
                     />
 
                     <CustomTextField
-                      defaultValue={
-                        state.personalData.password
-                      }
+                      defaultValue={state.personalData.password}
                       errorMessage="Inserisci una password uguale"
                       error={state.error[7]}
                       placeholder={t("personalArea.placeholderConfirmPassword")}
@@ -312,22 +324,36 @@ const PersonalArea: FC = (): JSX.Element => {
               <Box className={modal.modal}>
                 <Typography>{t("personalArea.modalText")}</Typography>
                 <Box className={modal.modalButtons}>
-                  <ButtonGeneric color={style.secondaryColor} callback={toLogin}>
+                  <ButtonGeneric
+                    color={style.secondaryColor}
+                    callback={toLogin}
+                  >
                     {t("personalArea.confirmButton")}
                   </ButtonGeneric>
                 </Box>
               </Box>
             </Modal>
           </Box>
-
-          {state.snackIsOpen && (
-            <Box className={common.singleComponent}>
-              <CustomSnackbar
-                message={t("changesSnack")}
-                severity={"success"}
-                callback={handleClose}
-              />
-            </Box>
+          {state.snackExists && (
+            <CustomSnackbar
+              message={t("userAlreadyExists")}
+              severity={"error"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackError && (
+            <CustomSnackbar
+              message={t("responseErrorSnack")}
+              severity={"error"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackWarning && (
+            <CustomSnackbar
+              message={t("responseWarningSnack")}
+              severity={"warning"}
+              callback={handleClose}
+            />
           )}
         </>
       )}
