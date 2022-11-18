@@ -103,13 +103,16 @@ export type Event = {
 export type AboutContent = {
   id: number;
   mediaContent: string;
+  mediaTitle: string;
   mediaType: string;
   paragraph: string;
 };
 
 export type AboutHero = {
-  image: string;
-  subtitle: string;
+  mediaContent: string;
+  mediaTitle: string;
+  mediaType: string;
+  subtitle?: string;
   text: string;
 };
 
@@ -136,12 +139,15 @@ export type SingleSocial = {
 export type SupportContent = {
   id: number;
   mediaContent: string;
+  mediaTitle: string;
   mediaType: string;
   paragraph: string;
 };
 
 export type SupportHero = {
-  image: string;
+  mediaContent: string;
+  mediaTitle: string;
+  mediaType: string;
   subtitle: string;
   text: string;
 };
@@ -152,7 +158,7 @@ export type SupportTitle = {
 };
 
 export type Support = {
-  content: Array<AboutContent>;
-  hero: AboutHero;
-  title: AboutTitle;
+  content: Array<SupportContent>;
+  hero: SupportHero;
+  title: SupportTitle;
 };

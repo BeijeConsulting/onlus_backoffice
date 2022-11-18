@@ -206,7 +206,6 @@ const EditorSocial: FC = (): JSX.Element => {
                   />
                   <ButtonAddFile
                     callback={handleClick}
-                    image={state?.currentSocial?.icon}
                   />
                 </Box>
                 <Box className={common.rowRight}>

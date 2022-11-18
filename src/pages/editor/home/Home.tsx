@@ -151,7 +151,6 @@ const Home: FC = (): JSX.Element => {
                 />
                 <ButtonAddFile
                   callback={log}
-                  image={state?.home?.hero?.image}
                 />
                 <CustomTextField
                   defaultValue={state?.home?.hero?.subtitle}
@@ -174,7 +173,6 @@ const Home: FC = (): JSX.Element => {
                 />
                 <ButtonAddFile
                   callback={log}
-                  image={state?.home?.story?.image}
                 />
 
                 <CustomTextField
@@ -200,7 +198,6 @@ const Home: FC = (): JSX.Element => {
                 />
                 <ButtonAddFile
                   callback={log}
-                  image={state?.home?.result?.image}
                 />
                 <CustomTextField
                   placeholder={t("Home.Results.placeHolderSubTitle")}

@@ -293,7 +293,6 @@ const EditorEvents: FC = () => {
                     callback={() => {
                       console.log("ciao");
                     }}
-                    image={state?.currentEvent?.cover}
                   />
                 </LabelText>
 

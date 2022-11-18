@@ -212,7 +212,6 @@ const EditorBlog: FC = (): JSX.Element => {
         <ButtonAddFile
           callback={log}
           error={state.articleContentError[index]}
-          image={content?.media[0]?.content}
           customKey={key}
         />
       </LabelText>
@@ -537,7 +536,6 @@ const EditorBlog: FC = (): JSX.Element => {
                     <ButtonAddFile
                       callback={log}
                       error={state.error[1]}
-                      image={state?.article?.cover}
                       customKey={999}
                     />
                   </LabelText>
