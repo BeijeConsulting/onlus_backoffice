@@ -17,18 +17,22 @@ import { useTranslation } from "react-i18next";
 interface buttonAddFileProps {
   children?: any;
   callback: any;
-  image?: string;
+  mediaContent?: string;
+  mediaTitle?: string;
+  mediaType?: string;
   customKey?: number;
   error?: boolean;
 }
 //state
 interface State {
-  selectedImage: string | null;
-  file: string;
+  mediaTitle: string | null;
+  mediaContent: string;
+  mediaType: string
 }
 const initialState: State = {
-  selectedImage: "",
-  file: ""
+  mediaTitle: "",
+  mediaContent: "",
+  mediaType: ""
 };
 const ButtonAddFile: FC<buttonAddFileProps> = (props): JSX.Element => {
   const [state, setState] = useState<State>(initialState);
@@ -37,22 +41,29 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props): JSX.Element => {
   useEffect(() => {
     setState({
       ...state,
-      selectedImage: !!props.image ? props.image : "",
-      file: !!props.image ? props.image : ""
+      mediaTitle: !!props.mediaTitle ? props.mediaTitle : "",
+      mediaContent: !!props.mediaContent ? props.mediaContent : "",
+      mediaType: !!props.mediaType ? props.mediaType : ""
     })
 
   }, [])
 
   const onChangeInput = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
-    let file = await fromBlobToBase64(e.target.files[0])
+    let file: string = await fromBlobToBase64(e.target.files[0])
+    file = file.split(',')[1]
+    let title: string = e.target.files[0]!.name
+    title = title.split(".")[0]
+    let type: string = e.target.files[0]!.type
+    type = "." + type.split("/")[1]
+
     setState({
       ...state,
-      selectedImage: e.target.files[0]!.name,
-      file: file,
+      mediaContent: file,
+      mediaTitle: title,
+      mediaType: type
     });
 
-    console.log(e.target.files[0])
-    props.callback(file);
+    props.callback(file, title, type);
   };
 
   return (
@@ -60,7 +71,7 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props): JSX.Element => {
       <input
         accept="image/*"
         type="file"
-        name={state.file}
+        name={state.mediaContent + " " + state.mediaTitle + " " + state.mediaType}
         id={`selectImage${!!props.customKey ? props.customKey : ""}`}
         style={{ display: "none" }}
         onChange={onChangeInput}
@@ -78,12 +89,12 @@ const ButtonAddFile: FC<buttonAddFileProps> = (props): JSX.Element => {
           {t("buttonAddFile.selection")}
         </Button>
       </label>
-      {state.selectedImage !== "" && (
+      {state.mediaTitle !== "" && (
         <Typography className={style.inputFileName} sx={props.error ? { color: 'red' } : {}}>
-          {state.selectedImage}
+          {state.mediaTitle}
         </Typography>
       )}
-      {state.selectedImage === "" && (
+      {state.mediaTitle === "" && (
         <Typography className={style.inputFileName}>
           {t("buttonAddFile.file")}
         </Typography>

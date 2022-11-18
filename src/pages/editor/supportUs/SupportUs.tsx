@@ -32,8 +32,8 @@ import { Support, SupportContent } from "../../../utils/mockup/types";
 //interface
 interface State {
   ready: boolean;
-  addLeft: Array<JSX.Element>;
-  addRight: Array<JSX.Element>;
+  addLeft: Array<SupportContent>;
+  addRight: Array<SupportContent>;
   error: Array<boolean>;
   supportContentError: Array<boolean>;
   snackIsOpen: boolean;
@@ -54,7 +54,9 @@ const initialState: State = {
   support: {
     content: [],
     hero: {
-      image: "",
+      mediaContent: "",
+      mediaTitle: "",
+      mediaType: "",
       subtitle: "",
       text: "",
     },
@@ -68,6 +70,9 @@ const initialState: State = {
 const SupportUs: FC = (): JSX.Element => {
   const [state, setState] = useState(initialState);
   const { t } = useTranslation();
+
+  let indSx: number = 0
+  let indDx: number = 1
 
   //Snackbar
   const handleClose = () => {
@@ -86,14 +91,16 @@ const SupportUs: FC = (): JSX.Element => {
 
   //fetchAPI
   const getData = async (): Promise<void> => {
-    let addLeft: Array<JSX.Element> = [];
-    let addRight: Array<JSX.Element> = [];
+    let addLeft: Array<SupportContent> = [];
+    let addRight: Array<SupportContent> = [];
     let supportContentError: Array<boolean> = [];
 
     let support: Support = {
       content: [],
       hero: {
-        image: "",
+        mediaContent: "",
+        mediaTitle: "",
+        mediaType: "",
         subtitle: "",
         text: "",
       },
@@ -118,22 +125,25 @@ const SupportUs: FC = (): JSX.Element => {
 
     for (let i = 2; i < dataSupport.data.content.length; i++) {
       if (i % 2 !== 0)
-        addLeft.push(
-          getContent(
-            dataSupport.data.content[i],
-            i,
-            addLeft.length + addRight.length + 2
-          )
-        );
+        addLeft.push({
+          id: support.content[i].id,
+          mediaContent: support.content[i].mediaContent,
+          mediaTitle: support.content[i].mediaTitle,
+          mediaType: support.content[i].mediaType,
+          paragraph: support.content[i].paragraph
+        });
       else
-        addRight.push(
-          getContent(
-            dataSupport.data.content[i],
-            i,
-            addLeft.length + addRight.length + 2
-          )
-        );
+        addRight.push({
+          id: support.content[i].id,
+          mediaContent: support.content[i].mediaContent,
+          mediaTitle: support.content[i].mediaTitle,
+          mediaType: support.content[i].mediaType,
+          paragraph: support.content[i].paragraph
+        });
     }
+
+    indSx = 0
+    indDx = 1
 
     setState({
       ...state,
@@ -147,11 +157,7 @@ const SupportUs: FC = (): JSX.Element => {
   };
 
   //ritorno l'elemento con il contenuto
-  const getContent = (
-    content: SupportContent = null,
-    key: number = null,
-    index: number
-  ): JSX.Element => {
+  const getContent = (content: SupportContent = null,key: number = null,index: number): JSX.Element => {
     return (
       <LabelText key={key}>
         <Title
@@ -169,7 +175,9 @@ const SupportUs: FC = (): JSX.Element => {
         <ButtonAddFile
           callback={log}
           error={state.supportContentError[index]}
-          image={content?.mediaContent}
+          mediaContent={state?.support?.content[index]?.mediaContent}
+          mediaTitle={state?.support?.content[index]?.mediaTitle}
+          mediaType={state?.support?.content[index]?.mediaType}
           customKey={key}
         ></ButtonAddFile>
       </LabelText>
@@ -182,27 +190,27 @@ const SupportUs: FC = (): JSX.Element => {
     supportContentError.push(true);
     await setSupportContentError(supportContentError);
 
-    let left: Array<JSX.Element> = state.addLeft;
-    let right: Array<JSX.Element> = state.addRight;
+    let left: Array<SupportContent> = state.addLeft;
+    let right: Array<SupportContent> = state.addRight;
     if (left.length === right.length) {
       //aggiungo a sinistra
-      left.push(
-        getContent(
-          null,
-          state?.support?.content.length + left.length + right.length + 2,
-          left.length + right.length + 2
-        )
-      );
+      left.push({
+        id: state.support.content[state.supportContentError.length].id + 1,
+        mediaContent: "",
+        mediaType: "",
+        mediaTitle: "",
+        paragraph: ""
+      });
     }
     //aggiungo a destra
     else {
-      right.push(
-        getContent(
-          null,
-          state?.support?.content.length + left.length + right.length + 2,
-          left.length + right.length + 2
-        )
-      );
+      right.push({
+        id: state.support.content[state.supportContentError.length].id + 1,
+        mediaContent: "",
+        mediaType: "",
+        mediaTitle: "",
+        paragraph: ""
+      });
     }
 
     setState({
@@ -215,8 +223,9 @@ const SupportUs: FC = (): JSX.Element => {
   //elimino l'ultimo slot
   const deleteSlot = (): void => {
     let supportContentError: Array<boolean> = state.supportContentError;
-    let left: Array<JSX.Element> = state.addLeft;
-    let right: Array<JSX.Element> = state.addRight;
+    let left: Array<SupportContent> = state.addLeft;
+    let right: Array<SupportContent> = state.addRight;
+    let support: Support = state.support;
 
     if (left.length === right.length) {
       //tolgo a destra
@@ -227,10 +236,12 @@ const SupportUs: FC = (): JSX.Element => {
       left.pop();
     }
 
+    support.content.pop();
     supportContentError.pop();
 
     setState({
       ...state,
+      support: support,
       addLeft: left,
       addRight: right,
       supportContentError: supportContentError,
@@ -252,20 +263,24 @@ const SupportUs: FC = (): JSX.Element => {
     let support: Support = {
       content: [
         {
-          id: state.support.content[0].id,
-          mediaContent: e.target.form[11 + state.addLeft.length * 4].name,
-          mediaType: "image",
-          paragraph: e.target.form[8 + state.addLeft.length * 4].value,
+          id: state?.support?.content[0]?.id,
+          mediaContent: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[0],
+          mediaTitle: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[1],
+          mediaType: e.target.form[11 + state.addLeft.length * 4].name.split(" ")[2],
+          paragraph: e.target.form[8 + state.addLeft.length * 4].value
         },
         {
-          id: state.support.content[1].id,
-          mediaContent: e.target.form[11 + state.addLeft.length * 4 + 4].name,
-          mediaType: "image",
+          id: state?.support?.content[1]?.id,
+          mediaContent: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[0],
+          mediaTitle: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[1],
+          mediaType: e.target.form[11 + state.addLeft.length * 4 + 4].name.split(" ")[2],
           paragraph: e.target.form[8 + state.addLeft.length * 4 + 4].value,
         },
       ],
       hero: {
-        image: e.target.form[0].name,
+        mediaContent: e.target.form[0].name.split(" ")[0],
+        mediaTitle: e.target.form[0].name.split(" ")[1],
+        mediaType: e.target.form[0].name.split(" ")[2],
         subtitle: e.target.form[1].value,
         text: e.target.form[3].value,
       },
@@ -289,6 +304,8 @@ const SupportUs: FC = (): JSX.Element => {
       //update
       updateSupport(support, error, supportContentError);
     } else {
+      indSx = 0
+      indDx = 1
       setState({
         ...state,
         snackErrorIsOpen: true,
@@ -299,10 +316,7 @@ const SupportUs: FC = (): JSX.Element => {
   };
 
   //gestisco i contenuti dinamici
-  const getDynamicSupportContents = (
-    support: Support,
-    e: BaseSyntheticEvent
-  ): Array<SupportContent> => {
+  const getDynamicSupportContents = (support: Support,e: BaseSyntheticEvent): Array<SupportContent> => {
     let contentLeft: Array<SupportContent> = [];
     let contentRight: Array<SupportContent> = [];
     let contentIndex: number = 2;
@@ -311,8 +325,9 @@ const SupportUs: FC = (): JSX.Element => {
     for (let i = 0; i < state.addLeft.length; i++) {
       contentLeft.push({
         id: state.support.content[contentIndex].id,
-        mediaContent: e.target.form[11 + 4 * i].name,
-        mediaType: "image",
+        mediaContent: e.target.form[11 + 4 * i].name.split(" ")[0],
+        mediaTitle: e.target.form[11 + 4 * i].name.split(" ")[1],
+        mediaType: e.target.form[11 + 4 * i].name.split(" ")[2],
         paragraph: e.target.form[8 + 4 * i].value,
       });
       contentIndex += 2;
@@ -323,11 +338,10 @@ const SupportUs: FC = (): JSX.Element => {
     for (let i = 0; i < state.addRight.length; i++) {
       contentRight.push({
         id: state.support.content[contentIndex].id,
-        mediaContent:
-          e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name,
-        mediaType: "image",
-        paragraph:
-          e.target.form[8 + state.addLeft.length * 4 + 4 * i + 8].value,
+        mediaContent: e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[0],
+        mediaTitle: e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[1],
+        mediaType: e.target.form[11 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[2],
+        paragraph: e.target.form[8 + state.addLeft.length * 4 + 4 * i + 8].value,
       });
       contentIndex += 2;
     }
@@ -343,7 +357,7 @@ const SupportUs: FC = (): JSX.Element => {
   const handleErrors = (support: Support): Array<boolean> => {
     let error: Array<boolean> = [false, false];
 
-    if (support.hero.image.length === 0) error[0] = true;
+    if (support.hero.mediaContent.length === 0) error[0] = true;
     if (support.hero.subtitle.length === 0) error[1] = true;
     if (support.hero.text.length === 0) error[2] = true;
     if (support.title.title.length === 0) error[3] = true;
@@ -379,21 +393,14 @@ const SupportUs: FC = (): JSX.Element => {
   };
 
   //modifico support
-  const updateSupport = async (
-    support: Support,
-    error: Array<boolean>,
-    supportContentError: Array<boolean>
-  ): Promise<void> => {
+  const updateSupport = async (support: Support,error: Array<boolean>,supportContentError: Array<boolean>): Promise<void> => {
+    console.log("Support prima di aggiornare",support)
     let response = await putApiSupport(support);
-    handleUpdateResponse(response.status, error, supportContentError);
+    handleUpdateResponse(response.status, error, supportContentError, support);
   };
 
   //gestisco la risposta all'eliminazione dell'articolo
-  const handleUpdateResponse = async (
-    status: number,
-    error: Array<boolean>,
-    supportContentError: Array<boolean>
-  ) => {
+  const handleUpdateResponse = async (status: number,error: Array<boolean>,supportContentError: Array<boolean>, support: Support) => {
     let snack: boolean = state.snackIsOpen;
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
@@ -402,25 +409,28 @@ const SupportUs: FC = (): JSX.Element => {
     console.log(status);
     if (status === 200) {
       response = await fetchData(getApiSupport);
-      console.log("Articles", response.data);
+      console.log("Support", response.data);
+      support = response.data
       snack = true;
-    } else if (status === 500 || status === undefined) snackWarning = true;
-    else snackError = true;
+    } else if (status === 500 || status === undefined) 
+      snackWarning = true;
+    else 
+      snackError = true;
 
     setState({
       ...state,
       snackIsOpen: snack,
       snackWarningIsOpen: snackWarning,
       snackErrorIsOpen: snackError,
-      support: response.data,
+      support: support,
       error: error,
       supportContentError: supportContentError,
     });
   };
 
   //stampo l'immagine caricata
-  const log = (s: string): void => {
-    console.log(s);
+  const log = (mediaContent: string, mediaTitle: string, mediaType: string): void => {
+
   };
 
   return (
@@ -440,13 +450,15 @@ const SupportUs: FC = (): JSX.Element => {
                     <ButtonAddFile
                       callback={log}
                       error={state.error[0]}
-                      image={state?.support?.hero?.image}
+                      mediaContent={state?.support?.hero?.mediaContent}
+                      mediaTitle={state?.support?.hero?.mediaTitle}
+                      mediaType={state?.support?.hero?.mediaType}
                       customKey={999}
                     ></ButtonAddFile>
                     <CustomTextField
                       error={state.error[1]}
                       placeholder={t("Support.Hero.placeholderText")}
-                      defaultValue={state.support.hero.subtitle}
+                      defaultValue={state?.support?.hero?.subtitle}
                     />
                     <CustomTextField
                       error={state.error[2]}
@@ -454,7 +466,7 @@ const SupportUs: FC = (): JSX.Element => {
                       maxrow={10}
                       multiline={true}
                       placeholder={t("Support.Hero.placeholderText")}
-                      defaultValue={state.support.hero.text}
+                      defaultValue={state?.support?.hero?.text}
                     />
                   </LabelText>
                   {/*titolo*/}
@@ -466,12 +478,13 @@ const SupportUs: FC = (): JSX.Element => {
                     <CustomTextField
                       error={state.error[3]}
                       placeholder={t("Support.Title.placeholderTitle")}
-                      defaultValue={state.support.title.title}
+                      defaultValue={state?.support?.title?.title}
                     />
                   </LabelText>
                   {/*contenuto*/}
-                  {state?.addLeft.map((element: JSX.Element) => {
-                    return element;
+                  {state?.addLeft.map((element: SupportContent) => {
+                    indSx += 2
+                    return getContent(element, element?.id, indSx)
                   })}
                 </Box>
 
@@ -479,8 +492,9 @@ const SupportUs: FC = (): JSX.Element => {
                   {/*contenuto*/}
                   {getContent(state?.support?.content[0], 0, 0)}
                   {getContent(state?.support?.content[1], 1, 1)}
-                  {state?.addRight.map((element: JSX.Element) => {
-                    return element;
+                  {state?.addRight.map((element: SupportContent) => {
+                    indDx += 2
+                    return getContent(element, element?.id, indDx)
                   })}
                   {/*link*/}
                   <Link

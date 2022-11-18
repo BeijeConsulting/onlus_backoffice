@@ -29,8 +29,8 @@ import { AboutType, AboutContent } from "../../../utils/mockup/types";
 //interface
 interface State {
   ready: boolean;
-  addLeft: Array<JSX.Element>;
-  addRight: Array<JSX.Element>;
+  addLeft: Array<AboutContent>;
+  addRight: Array<AboutContent>;
   error: Array<boolean>;
   aboutContentError: Array<boolean>;
   snackIsOpen: boolean;
@@ -51,7 +51,9 @@ const initialState: State = {
   about: {
     content: [],
     hero: {
-      image: "",
+      mediaContent: "",
+      mediaTitle: "",
+      mediaType: "",
       subtitle: "",
       text: "",
     },
@@ -59,12 +61,15 @@ const initialState: State = {
       id: null,
       title: "",
     },
-  },
+  }
 };
 
 const About: FC = (): JSX.Element => {
   const [state, setState] = useState(initialState);
   const { t } = useTranslation();
+
+  let indSx: number = 0
+  let indDx: number = 1
 
   //Snackbar
   const handleClose = () => {
@@ -83,14 +88,16 @@ const About: FC = (): JSX.Element => {
 
   //fetchAPI
   const getData = async (): Promise<void> => {
-    let addLeft: Array<JSX.Element> = [];
-    let addRight: Array<JSX.Element> = [];
+    let addLeft: Array<AboutContent> = [];
+    let addRight: Array<AboutContent> = [];
     let aboutContentError: Array<boolean> = [];
 
     let about: AboutType = {
       content: [],
       hero: {
-        image: "",
+        mediaContent: "",
+        mediaTitle: "",
+        mediaType: "",
         subtitle: "",
         text: "",
       },
@@ -100,7 +107,6 @@ const About: FC = (): JSX.Element => {
       },
     };
 
-    //se sto modificando
     let dataAbout = await fetchData(getApiAbout);
     console.log("About", dataAbout.data);
 
@@ -114,29 +120,32 @@ const About: FC = (): JSX.Element => {
       aboutContentError.push(false);
 
     for (let i = 2; i < dataAbout.data.content.length; i++) {
-      if (i % 2 !== 0)
-        addLeft.push(
-          getContent(
-            dataAbout.data.content[i],
-            i,
-            addLeft.length + addRight.length + 2
-          )
-        );
+      if (i % 2 === 0)
+        addLeft.push({
+          id: about.content[i].id,
+          mediaContent: about.content[i].mediaContent,
+          mediaTitle: about.content[i].mediaTitle,
+          mediaType: about.content[i].mediaType,
+          paragraph: about.content[i].paragraph
+        })
       else
-        addRight.push(
-          getContent(
-            dataAbout.data.content[i],
-            i,
-            addLeft.length + addRight.length + 2
-          )
-        );
+        addRight.push({
+          id: about.content[i].id,
+          mediaContent: about.content[i].mediaContent,
+          mediaTitle: about.content[i].mediaTitle,
+          mediaType: about.content[i].mediaType,
+          paragraph: about.content[i].paragraph
+        });
     }
+
+    indSx = 0
+    indDx = 1
 
     setState({
       ...state,
       about: about,
       aboutContentError: aboutContentError,
-      error: [false, false],
+      error: [false, false, false],
       ready: true,
       addLeft: addLeft,
       addRight: addRight,
@@ -144,11 +153,7 @@ const About: FC = (): JSX.Element => {
   };
 
   //ritorno l'elemento con il contenuto
-  const getContent = (
-    content: AboutContent = null,
-    key: number = null,
-    index: number
-  ): JSX.Element => {
+  const getContent = (content: AboutContent = null, key: number = null, index: number): JSX.Element => {
     return (
       <LabelText key={key}>
         <Title
@@ -156,7 +161,7 @@ const About: FC = (): JSX.Element => {
           textInfo={t("About.Content.info")}
         />
         <CustomTextField
-          error={state.aboutContentError[index]}
+          error={state?.aboutContentError[index]}
           minrow={3}
           maxrow={10}
           multiline={true}
@@ -165,8 +170,10 @@ const About: FC = (): JSX.Element => {
         />
         <ButtonAddFile
           callback={log}
-          error={state.aboutContentError[index]}
-          image={content?.mediaContent}
+          error={state?.aboutContentError[index]}
+          mediaContent={state?.about?.content[index]?.mediaContent}
+          mediaTitle={state?.about?.content[index]?.mediaTitle}
+          mediaType={state?.about?.content[index]?.mediaType}
           customKey={key}
         ></ButtonAddFile>
       </LabelText>
@@ -179,27 +186,27 @@ const About: FC = (): JSX.Element => {
     aboutContentError.push(true);
     await setAboutContentError(aboutContentError);
 
-    let left: Array<JSX.Element> = state.addLeft;
-    let right: Array<JSX.Element> = state.addRight;
+    let left: Array<AboutContent> = state.addLeft;
+    let right: Array<AboutContent> = state.addRight;
     if (left.length === right.length) {
       //aggiungo a sinistra
-      left.push(
-        getContent(
-          null,
-          state?.about?.content.length + left.length + right.length + 2,
-          left.length + right.length + 2
-        )
-      );
+      left.push({
+        id: state.about.content[state.aboutContentError.length].id + 1,
+        mediaContent: "",
+        mediaType: "",
+        mediaTitle: "",
+        paragraph: ""
+      });
     }
     //aggiungo a destra
     else {
-      right.push(
-        getContent(
-          null,
-          state?.about?.content.length + left.length + right.length + 2,
-          left.length + right.length + 2
-        )
-      );
+      right.push({
+        id: state.about.content[state.aboutContentError.length].id + 1,
+        mediaContent: "",
+        mediaType: "",
+        mediaTitle: "",
+        paragraph: ""
+      });
     }
 
     setState({
@@ -212,8 +219,9 @@ const About: FC = (): JSX.Element => {
   //elimino l'ultimo slot
   const deleteSlot = (): void => {
     let aboutContentError: Array<boolean> = state.aboutContentError;
-    let left: Array<JSX.Element> = state.addLeft;
-    let right: Array<JSX.Element> = state.addRight;
+    let left: Array<AboutContent> = state.addLeft;
+    let right: Array<AboutContent> = state.addRight;
+    let about: AboutType = state.about;
 
     if (left.length === right.length) {
       //tolgo a destra
@@ -224,10 +232,12 @@ const About: FC = (): JSX.Element => {
       left.pop();
     }
 
+    about.content.pop()
     aboutContentError.pop();
 
     setState({
       ...state,
+      about: about,
       addLeft: left,
       addRight: right,
       aboutContentError: aboutContentError,
@@ -245,26 +255,29 @@ const About: FC = (): JSX.Element => {
   };
 
   //salvo
-  const onSave = (e: BaseSyntheticEvent): void => {
+  const onSave = async (e: BaseSyntheticEvent): Promise<void> => {
     let about: AboutType = {
       content: [
         {
-          id: state.about.content[0].id,
-          mediaContent: e.target.form[9 + state.addLeft.length * 4].name,
-          mediaType: "image",
+          id: state?.about?.content[0]?.id,
+          mediaContent: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[0],
+          mediaTitle: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[1],
+          mediaType: e.target.form[9 + state.addLeft.length * 4].name.split(" ")[2],
           paragraph: e.target.form[6 + state.addLeft.length * 4].value,
         },
         {
-          id: state.about.content[1].id,
-          mediaContent: e.target.form[9 + state.addLeft.length * 4 + 4].name,
-          mediaType: "image",
+          id: state?.about?.content[1]?.id,
+          mediaContent: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[0],
+          mediaTitle: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[1],
+          mediaType: e.target.form[9 + state.addLeft.length * 4 + 4].name.split(" ")[2],
           paragraph: e.target.form[6 + state.addLeft.length * 4 + 4].value,
         },
       ],
       hero: {
-        image: e.target.form[0].name,
-        subtitle: "",
-        text: e.target.form[1].value,
+        mediaContent: e.target.form[0].name.split(" ")[0],
+        mediaTitle: e.target.form[0].name.split(" ")[1],
+        mediaType: e.target.form[0].name.split(" ")[2],
+        text: e.target.form[1].value
       },
       title: {
         id: state.about.title.id,
@@ -285,6 +298,8 @@ const About: FC = (): JSX.Element => {
       //update
       updateAbout(about, error, aboutContentError);
     } else {
+      indSx = 0
+      indDx = 1
       setState({
         ...state,
         snackErrorIsOpen: true,
@@ -295,10 +310,7 @@ const About: FC = (): JSX.Element => {
   };
 
   //gestisco i contenuti dinamici
-  const getDynamicAboutContents = (
-    about: AboutType,
-    e: BaseSyntheticEvent
-  ): Array<AboutContent> => {
+  const getDynamicAboutContents = (about: AboutType, e: BaseSyntheticEvent): Array<AboutContent> => {
     let contentLeft: Array<AboutContent> = [];
     let contentRight: Array<AboutContent> = [];
     let contentIndex: number = 2;
@@ -307,8 +319,9 @@ const About: FC = (): JSX.Element => {
     for (let i = 0; i < state.addLeft.length; i++) {
       contentLeft.push({
         id: state.about.content[contentIndex].id,
-        mediaContent: e.target.form[9 + 4 * i].name,
-        mediaType: "image",
+        mediaContent: e.target.form[9 + 4 * i].name.split(" ")[0],
+        mediaTitle: e.target.form[9 + 4 * i].name.split(" ")[1],
+        mediaType: e.target.form[9 + 4 * i].name.split(" ")[2],
         paragraph: e.target.form[6 + 4 * i].value,
       });
       contentIndex += 2;
@@ -319,11 +332,10 @@ const About: FC = (): JSX.Element => {
     for (let i = 0; i < state.addRight.length; i++) {
       contentRight.push({
         id: state.about.content[contentIndex].id,
-        mediaContent:
-          e.target.form[9 + state.addLeft.length * 4 + 4 * i + 8].name,
-        mediaType: "image",
-        paragraph:
-          e.target.form[6 + state.addLeft.length * 4 + 4 * i + 8].value,
+        mediaContent: e.target.form[9 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[0],
+        mediaTitle: e.target.form[9 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[1],
+        mediaType: e.target.form[9 + state.addLeft.length * 4 + 4 * i + 8].name.split(" ")[2],
+        paragraph: e.target.form[6 + state.addLeft.length * 4 + 4 * i + 8].value
       });
       contentIndex += 2;
     }
@@ -337,11 +349,14 @@ const About: FC = (): JSX.Element => {
 
   //gestisco gli errori
   const handleErrors = (about: AboutType): Array<boolean> => {
-    let error: Array<boolean> = [false, false];
+    let error: Array<boolean> = [false, false, false];
 
-    if (about.hero.image.length === 0 || about.hero.text.length === 0)
+    if (about.hero.mediaContent.length === 0)
       error[0] = true;
-    if (about.title.title.length === 0) error[1] = true;
+    if (about.hero.text.length === 0)
+      error[1] = true
+    if (about.title.title.length === 0)
+      error[2] = true;
 
     return error;
   };
@@ -374,30 +389,24 @@ const About: FC = (): JSX.Element => {
   };
 
   //modifico about
-  const updateAbout = async (
-    about: AboutType,
-    error: Array<boolean>,
-    aboutContentError: Array<boolean>
-  ): Promise<void> => {
+  const updateAbout = async (about: AboutType, error: Array<boolean>, aboutContentError: Array<boolean>): Promise<void> => {
+    console.log("ABout prima di aggiornare", about)
     let response = await putApiAbout(about);
-    handleUpdateResponse(response.status, error, aboutContentError);
+    handleUpdateResponse(response.status, error, aboutContentError, about);
   };
 
   //gestisco la risposta all'eliminazione dell'articolo
-  const handleUpdateResponse = async (
-    status: number,
-    error: Array<boolean>,
-    aboutContentError: Array<boolean>
-  ) => {
+  const handleUpdateResponse = async (status: number, error: Array<boolean>, aboutContentError: Array<boolean>, about: AboutType) => {
     let snack: boolean = state.snackIsOpen;
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
-    let response: any = {};
+    let response: any = {}
 
     console.log(status);
     if (status === 200) {
       response = await fetchData(getApiAbout);
-      console.log("Articles", response.data);
+      console.log("About", response.data);
+      about = response.data
       snack = true;
     } else if (status === 500 || status === undefined) snackWarning = true;
     else snackError = true;
@@ -407,15 +416,15 @@ const About: FC = (): JSX.Element => {
       snackIsOpen: snack,
       snackWarningIsOpen: snackWarning,
       snackErrorIsOpen: snackError,
-      about: response.data,
+      about: about,
       error: error,
       aboutContentError: aboutContentError,
     });
   };
 
   //stampo l'immagine caricata
-  const log = (s: string): void => {
-    console.log(s);
+  const log = (mediaContent: string, mediaTitle: string, mediaType: string): void => {
+
   };
 
   return (
@@ -435,16 +444,18 @@ const About: FC = (): JSX.Element => {
                     <ButtonAddFile
                       callback={log}
                       error={state.error[0]}
-                      image={state?.about?.hero?.image}
+                      mediaContent={state?.about?.hero?.mediaContent}
+                      mediaTitle={state?.about?.hero?.mediaTitle}
+                      mediaType={state?.about?.hero?.mediaType}
                       customKey={999}
                     ></ButtonAddFile>
                     <CustomTextField
-                      error={state.error[0]}
+                      error={state.error[1]}
                       minrow={7}
                       maxrow={10}
                       multiline={true}
                       placeholder={t("About.Hero.placeHolderText")}
-                      defaultValue={state.about.hero.text}
+                      defaultValue={state?.about?.hero?.text}
                     />
                   </LabelText>
                   {/*titolo*/}
@@ -454,14 +465,15 @@ const About: FC = (): JSX.Element => {
                       textInfo={t("About.Title.info")}
                     />
                     <CustomTextField
-                      error={state.error[1]}
+                      error={state.error[2]}
                       placeholder={t("About.Title.placeHolderText")}
-                      defaultValue={state.about.title.title}
+                      defaultValue={state?.about?.title?.title}
                     />
                   </LabelText>
                   {/*contenuto*/}
-                  {state?.addLeft.map((element: JSX.Element) => {
-                    return element;
+                  {state?.addLeft.map((element: AboutContent) => {
+                    indSx += 2
+                    return getContent(element, element?.id, indSx)
                   })}
                 </Box>
 
@@ -469,8 +481,9 @@ const About: FC = (): JSX.Element => {
                   {/*contenuto*/}
                   {getContent(state?.about?.content[0], 0, 0)}
                   {getContent(state?.about?.content[1], 1, 1)}
-                  {state?.addRight.map((element: JSX.Element) => {
-                    return element;
+                  {state?.addRight.map((element: AboutContent) => {
+                    indDx += 2
+                    return getContent(element, element?.id, indDx)
                   })}
                   {/*link*/}
                   <Link

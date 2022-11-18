@@ -193,7 +193,7 @@ const EditorBlog: FC = (): JSX.Element => {
           maxrow={25}
           defaultValue={content?.paragraph}
         />
-        <ButtonAddFile callback={log} error={state.articleContentError[index]} image={content?.media[0]?.content} customKey={key} />
+        <ButtonAddFile callback={log} error={state.articleContentError[index]} customKey={key} />
       </LabelText>
     );
   };
@@ -472,7 +472,7 @@ const EditorBlog: FC = (): JSX.Element => {
                       text={t("articles.editorBlog.coverSection.title")}
                       textInfo={t("articles.editorBlog.coverSection.info")}
                     />
-                    <ButtonAddFile callback={log} error={state.error[1]} image={state?.article?.cover} customKey={999} />
+                    <ButtonAddFile callback={log} error={state.error[1]} customKey={999} />
                   </LabelText>
 
                   <LabelText>
