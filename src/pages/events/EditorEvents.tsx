@@ -228,7 +228,7 @@ const EditorEvents: FC = () => {
 
   return (
     <form>
-      {(state.isReady && !location?.state?.showAdd) ||
+      {(state?.isReady && !location?.state?.showAdd) ||
       location?.state?.showAdd ? (
         <>
           <Box className={common.component}>
@@ -241,7 +241,7 @@ const EditorEvents: FC = () => {
                   />
                   <CustomTextField
                     placeholder={t("EventsEditor.Title.placeHolderText")}
-                    error={state.titleError}
+                    error={state?.titleError}
                     errorMessage={t("EventsEditor.Title.error")}
                     id={"title"}
                     defaultValue={state?.currentEvent?.title}
@@ -259,7 +259,7 @@ const EditorEvents: FC = () => {
                         <TextField size="small" {...props} />
                       )}
                       label={t("EventsEditor.Date.date")}
-                      value={!location?.state?.showAdd ? state.currentEvent?.eventDate : state?.selectedDate}
+                      value={!location?.state?.showAdd ? state?.currentEvent?.eventDate : state?.selectedDate}
                       minDateTime={dayjs()}
                       onChange={(newValue) => {
                         setDate(newValue);
@@ -275,7 +275,7 @@ const EditorEvents: FC = () => {
                   />
                   <CustomTextField
                     placeholder={t("EventsEditor.Description.placeHolderText")}
-                    error={state.descriptionError}
+                    error={state?.descriptionError}
                     multiline={true}
                     minrow={6}
                     defaultValue={state?.currentEvent?.description}
@@ -303,7 +303,7 @@ const EditorEvents: FC = () => {
                   />
                   <CustomTextField
                     placeholder={t("EventsEditor.Place.placeHolderText")}
-                    error={state.placeError}
+                    error={state?.placeError}
                     defaultValue={state?.currentEvent?.place}
                     errorMessage={t("EventsEditor.Place.error")}
                   />
@@ -316,7 +316,7 @@ const EditorEvents: FC = () => {
                   />
                   <CustomTextField
                     placeholder={t("EventsEditor.Requirements.placeHolderText")}
-                    error={state.requirementsError}
+                    error={state?.requirementsError}
                     multiline={true}
                     minrow={6}
                     defaultValue={state?.currentEvent?.requirements}

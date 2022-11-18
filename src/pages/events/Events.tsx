@@ -312,7 +312,7 @@ const Events: FC = (): JSX.Element => {
               {/* sezione eventi in programma*/}
               <CustomTable
                 columns={columns_1}
-                rows={state.scheduledEvents}
+                rows={state?.scheduledEvents}
                 pageSize={5}
               />
             </LabelText>
@@ -327,7 +327,7 @@ const Events: FC = (): JSX.Element => {
               />
               <CustomTable
                 columns={columns_2}
-                rows={state.archiveEvents}
+                rows={state?.archiveEvents}
                 pageSize={5}
               />
             </LabelText>
@@ -335,7 +335,7 @@ const Events: FC = (): JSX.Element => {
 
           {/* delete modal */}
           <DeleteModal
-            open={state.modalIsOpen}
+            open={state?.modalIsOpen}
             closeCallback={closeDeleteModal}
             deleteCallback={deleteEvent}
           />
@@ -346,7 +346,7 @@ const Events: FC = (): JSX.Element => {
               callback={handleClose}
             />
           )}
-          {state.snackDeleteIsOpen && (
+          {state?.snackDeleteIsOpen && (
             <CustomSnackbar
               message={t("deleteSnack")}
               severity={"info"}

@@ -356,7 +356,7 @@ const Categories: FC = (): JSX.Element => {
 
   return (
     <Box className={style.component}>
-      {state.ready && (
+      {state?.ready && (
         <>
           <Box className={style.singleComponent}>
             <LabelText>
@@ -424,7 +424,7 @@ const Categories: FC = (): JSX.Element => {
                   </Modal>
                 </form>
               </Box>
-              <CustomTable columns={columns} rows={state.category} />
+              <CustomTable columns={columns} rows={state?.category} />
             </LabelText>
           </Box>
           {/* modale per la conferma eliminazione */}
@@ -482,14 +482,14 @@ const Categories: FC = (): JSX.Element => {
               callback={handleClose}
             />
           )}
-          {state.snackErrorIsOpen && (
+          {state?.snackErrorIsOpen && (
             <CustomSnackbar
               message={t("responseErrorSnack")}
               severity={"error"}
               callback={handleClose}
             />
           )}
-          {state.snackWarningIsOpen && (
+          {state?.snackWarningIsOpen && (
             <CustomSnackbar
               message={t("responseWarningSnack")}
               severity={"warning"}

@@ -162,7 +162,7 @@ const Home: FC = (): JSX.Element => {
 
   return (
     <form className={common.component}>
-      {state.ready && (
+      {state?.ready && (
         <>
           <Box className={common.doubleComponent}>
             <Box className={common.left}>
@@ -246,7 +246,7 @@ const Home: FC = (): JSX.Element => {
           </ButtonGeneric>
 
           {/* snackbar */}
-          {state.snackIsOpen && (
+          {state?.snackIsOpen && (
             <CustomSnackbar
               message={t("changesSnack")}
               severity={"success"}

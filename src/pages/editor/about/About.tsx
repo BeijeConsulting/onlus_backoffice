@@ -429,7 +429,7 @@ const About: FC = (): JSX.Element => {
 
   return (
     <Box>
-      {state.ready && (
+      {state?.ready && (
         <>
           <form onSubmit={onSave}>
             <Box className={style.component}>
@@ -443,14 +443,14 @@ const About: FC = (): JSX.Element => {
                     />
                     <ButtonAddFile
                       callback={log}
-                      error={state.error[0]}
+                      error={state?.error[0]}
                       mediaContent={state?.about?.hero?.mediaContent}
                       mediaTitle={state?.about?.hero?.mediaTitle}
                       mediaType={state?.about?.hero?.mediaType}
                       customKey={999}
                     ></ButtonAddFile>
                     <CustomTextField
-                      error={state.error[1]}
+                      error={state?.error[1]}
                       minrow={7}
                       maxrow={10}
                       multiline={true}
@@ -465,13 +465,13 @@ const About: FC = (): JSX.Element => {
                       textInfo={t("About.Title.info")}
                     />
                     <CustomTextField
-                      error={state.error[2]}
+                      error={state?.error[2]}
                       placeholder={t("About.Title.placeHolderText")}
                       defaultValue={state?.about?.title?.title}
                     />
                   </LabelText>
                   {/*contenuto*/}
-                  {state?.addLeft.map((element: AboutContent) => {
+                  {state?.addLeft?.map((element: AboutContent) => {
                     indSx += 2
                     return getContent(element, element?.id, indSx)
                   })}
@@ -481,7 +481,7 @@ const About: FC = (): JSX.Element => {
                   {/*contenuto*/}
                   {getContent(state?.about?.content[0], 0, 0)}
                   {getContent(state?.about?.content[1], 1, 1)}
-                  {state?.addRight.map((element: AboutContent) => {
+                  {state?.addRight?.map((element: AboutContent) => {
                     indDx += 2
                     return getContent(element, element?.id, indDx)
                   })}
@@ -495,7 +495,7 @@ const About: FC = (): JSX.Element => {
                     {t("link")}
                   </Link>
                   {/*link*/}
-                  {state.addLeft.length > 0 && (
+                  {state?.addLeft?.length > 0 && (
                     <Link
                       color="#000000"
                       variant="body2"
@@ -518,14 +518,14 @@ const About: FC = (): JSX.Element => {
                   callback={handleClose}
                 />
               )}
-              {state.snackErrorIsOpen && (
+              {state?.snackErrorIsOpen && (
                 <CustomSnackbar
                   message={t("responseErrorSnack")}
                   severity={"error"}
                   callback={handleClose}
                 />
               )}
-              {state.snackWarningIsOpen && (
+              {state?.snackWarningIsOpen && (
                 <CustomSnackbar
                   message={t("responseWarningSnack")}
                   severity={"warning"}

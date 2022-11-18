@@ -187,16 +187,16 @@ const SupportUs: FC = (): JSX.Element => {
 
   //aggiungo un altro slot contenuto
   const addSlot = async (): Promise<void> => {
-    let supportContentError: Array<boolean> = state.supportContentError;
+    let supportContentError: Array<boolean> = state?.supportContentError;
     supportContentError.push(true);
     await setSupportContentError(supportContentError);
 
-    let left: Array<SupportContent> = state.addLeft;
-    let right: Array<SupportContent> = state.addRight;
+    let left: Array<SupportContent> = state?.addLeft;
+    let right: Array<SupportContent> = state?.addRight;
     if (left.length === right.length) {
       //aggiungo a sinistra
       left.push({
-        id: state?.support?.content[state.supportContentError.length]?.id + 1,
+        id: state?.support?.content[state?.supportContentError?.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -206,7 +206,7 @@ const SupportUs: FC = (): JSX.Element => {
     //aggiungo a destra
     else {
       right.push({
-        id: state?.support?.content[state.supportContentError.length]?.id + 1,
+        id: state?.support?.content[state?.supportContentError?.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",

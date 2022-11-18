@@ -223,12 +223,12 @@ const Social: FC = (): JSX.Element => {
               +{t("addButton")}
             </ButtonGeneric>
           </Box>
-          <CustomTable columns={columns} rows={state.socialList} />
+          <CustomTable columns={columns} rows={state?.socialList} />
         </LabelText>
       </Box>
       {/* delete modal */}
       <DeleteModal
-        open={state.modalIsOpen}
+        open={state?.modalIsOpen}
         closeCallback={closeDeleteModal}
         deleteCallback={deleteSocial}
       />
@@ -239,7 +239,7 @@ const Social: FC = (): JSX.Element => {
           callback={handleClose}
         />
       )}
-      {state.snackDeleteIsOpen && (
+      {state?.snackDeleteIsOpen && (
         <CustomSnackbar
           message={t("deleteSnack")}
           severity={"info"}
