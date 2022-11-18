@@ -4,6 +4,7 @@ import { FC, useState, useEffect, BaseSyntheticEvent } from "react";
 import {
   getApiSupport,
   putApiSupport,
+  postApiSupport
 } from "../../../services/api/supportUs/supportUsApi";
 
 //components
@@ -195,7 +196,7 @@ const SupportUs: FC = (): JSX.Element => {
     if (left.length === right.length) {
       //aggiungo a sinistra
       left.push({
-        id: state.support.content[state.supportContentError.length].id + 1,
+        id: state?.support?.content[state.supportContentError.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -205,7 +206,7 @@ const SupportUs: FC = (): JSX.Element => {
     //aggiungo a destra
     else {
       right.push({
-        id: state.support.content[state.supportContentError.length].id + 1,
+        id: state?.support?.content[state.supportContentError.length]?.id + 1,
         mediaContent: "",
         mediaType: "",
         mediaTitle: "",
@@ -395,7 +396,7 @@ const SupportUs: FC = (): JSX.Element => {
   //modifico support
   const updateSupport = async (support: Support,error: Array<boolean>,supportContentError: Array<boolean>): Promise<void> => {
     console.log("Support prima di aggiornare",support)
-    let response = await putApiSupport(support);
+    let response = await postApiSupport(support);
     handleUpdateResponse(response.status, error, supportContentError, support);
   };
 
