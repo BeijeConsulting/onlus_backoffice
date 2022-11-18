@@ -50,6 +50,8 @@ interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
+  snackServerError: boolean;
+  snackRequestError: boolean;
   eventsList: Array<Object>;
   scheduledEvents: Array<Object>;
   archiveEvents: Array<Object>;
@@ -60,6 +62,8 @@ const initialState: State = {
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
+  snackServerError: false,
+  snackRequestError: false,
   eventsList: [],
   scheduledEvents: [],
   archiveEvents: [],
@@ -69,6 +73,11 @@ const initialState: State = {
 const Events: FC = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
+  if(location?.state !== null){
+    setTimeout(resetLocationState,3000);
+  }
+  
+  
   const { t } = useTranslation();
 
   const [state, setState] = useState<State>(initialState);
@@ -78,17 +87,25 @@ const Events: FC = (): JSX.Element => {
   }, []);
 
   async function getEvents(flag: boolean = null): Promise<void> {
-    const events = await fetchData(getAllEventsApi);
-    splitEvents(events.data,flag);
+    const resp = await fetchData(getAllEventsApi);
+    const status = resp?.status;
+    if(status !== 200){
+      handleResponseStatus(status);
+    }else{
+      splitEvents(resp?.data,flag);
+    }   
   }
 
   function splitEvents(events: Array<any>, flag: boolean = null): void {
     const scheduledEvents = events.filter((el, index) => {
+      el.eventDate = el.eventDate.substring(0,el.eventDate.length - 9)
       return dayjs().isBefore(el.eventDate);
     });
     const archiveEvents = events.filter((el, index) => {
       return dayjs().isAfter(el.eventDate);
     });
+
+
 
     if (flag === null) {
       setState({
@@ -117,6 +134,8 @@ const Events: FC = (): JSX.Element => {
       ...state,
       snackIsOpen: false,
       snackDeleteIsOpen: false,
+      snackServerError: false,
+      snackRequestError: false
     });
   };
 
@@ -142,9 +161,11 @@ const Events: FC = (): JSX.Element => {
   //elimino l'evento
   const deleteEvent = async (): Promise<void> => {
     let resp = await deleteEventByIdApi(state?.currentEventId);
-    if (resp?.status === 200) {
+    const status = resp?.status;
+    handleResponseStatus(status)
+     if (status === 200) {
       getEvents(true);
-    }
+    }  
   };
 
   //modifica evento
@@ -155,6 +176,28 @@ const Events: FC = (): JSX.Element => {
   const addEvent = (): void => {
     navigate(PAGES.editorEvents, { state: { showAdd: true } });
   };
+
+  function handleResponseStatus(status: Number): void{
+    switch(status){
+      case 400:
+        setState({
+          ...state,
+          snackRequestError: true
+        })
+        break;
+      case 500:
+        setState({
+          ...state,
+          snackServerError: true
+        })
+    }
+  }
+
+  function resetLocationState(): void{
+    navigate("#",{
+      state: null
+    })
+  }
 
   //Colonne del DataGrid
   const renderDetailsButton_1 = (params: any) => {
@@ -186,7 +229,7 @@ const Events: FC = (): JSX.Element => {
             gap: "5px",
           }}
         >
-          <ButtonIcon callback={openDeleteModal}>
+          <ButtonIcon callback={openDeleteModal(params.row)}>
             <DeleteOutlineOutlinedIcon sx={{ fontSize: "18px" }} />
           </ButtonIcon>
         </Box>
@@ -313,6 +356,24 @@ const Events: FC = (): JSX.Element => {
           callback={handleClose}
         />
       )}
+      {
+        state?.snackRequestError && (
+          <CustomSnackbar
+            message={t("responseErrorSnack")}
+            severity={"warning"}
+            callback={handleClose}
+          />
+        )
+      }
+      {
+        state?.snackServerError && (
+          <CustomSnackbar
+            message={t("responseErrorSnack")}
+            severity={"error"}
+            callback={handleClose}
+          />
+        )
+      }
     </Box>
   );
 };

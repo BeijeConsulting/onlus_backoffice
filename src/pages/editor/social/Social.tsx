@@ -40,6 +40,8 @@ interface State {
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
   snackAdd: boolean;
+  snackServerError: boolean;
+  snackRequestError: boolean;
   socialList: Array<SingleSocial>;
   currentSocialId: Number | null;
   getData: boolean;
@@ -49,6 +51,8 @@ const initialState: State = {
   snackIsOpen: false,
   snackDeleteIsOpen: false,
   snackAdd: false,
+  snackServerError: false,
+  snackRequestError: false,
   socialList: [],
   currentSocialId: null,
   getData: false
@@ -61,29 +65,38 @@ const Social: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  if(location?.state !== null){
+    setTimeout(resetLocationState,3000);
+  }
   
   useEffect(() => {
-    getSocial();
+    getSocial(); 
   }, []);
 
   //recupero i social tramite api
   async function getSocial(flag: boolean = null): Promise<void> {
     let resp: any = await getAllSocialApi();
-    if (flag === null) {
-      setState({
-        ...state,
-        socialList: resp?.data?.social,
-        snackIsOpen: location?.state?.open,
-      });
-    } else {
-      setState({
-        ...state,
-        socialList: resp?.data?.social,
-        snackIsOpen: location?.state?.open,
-        modalIsOpen: false,
-        snackDeleteIsOpen: true,
-      });
+    const status: number = resp?.status;
+    if(status !== 200){
+      handleResponseStatus(status)
+    }else{
+      if (flag === null) {
+        setState({
+          ...state,
+          socialList: resp?.data?.social,
+          snackIsOpen: location?.state?.open,
+        });
+      } else {
+        setState({
+          ...state,
+          socialList: resp?.data?.social,
+          snackIsOpen: location?.state?.open,
+          modalIsOpen: false,
+          snackDeleteIsOpen: true,
+        });
+      }
     }
+    
   }
 
   //Snackbar
@@ -92,6 +105,8 @@ const Social: FC = (): JSX.Element => {
       ...state,
       snackIsOpen: false,
       snackDeleteIsOpen: false,
+      snackRequestError: false,
+      snackServerError: false
     });
   };
 
@@ -117,8 +132,11 @@ const Social: FC = (): JSX.Element => {
   //elimino il social
   const deleteSocial = async (): Promise<void> => {
     let resp: any = await deleteSocialById(state?.currentSocialId);
-    if (resp.status === 200) {
+    const status = resp?.status;
+    if (status === 200) {
       getSocial(true);
+    }else{
+      handleResponseStatus(status)
     }
   };
 
@@ -130,6 +148,30 @@ const Social: FC = (): JSX.Element => {
   const addSocial = (): void => {
     navigate(PAGES.editorSocial, { state: { showAdd: true } });
   };
+
+  //resetta lo stato della location
+  function resetLocationState(): void{
+    navigate("#",{
+      state: null
+    })
+  }
+
+  //funzione per gestire errori nelle chiamate api
+  function handleResponseStatus(status: Number): void{
+    switch(status){
+      case 400:
+        setState({
+          ...state,
+          snackRequestError: true
+        })
+        break;
+      case 500:
+        setState({
+          ...state,
+          snackServerError: true
+        })
+    }
+  }
 
   //Colonne del DataGrid
   const renderDetailsButton = (params: any) => {
@@ -211,6 +253,24 @@ const Social: FC = (): JSX.Element => {
           callback={handleClose}
         />
       )}
+       {
+        state?.snackRequestError && (
+          <CustomSnackbar
+            message={t("responseErrorSnack")}
+            severity={"warning"}
+            callback={handleClose}
+          />
+        )
+      }
+      {
+        state?.snackServerError && (
+          <CustomSnackbar
+            message={t("responseErrorSnack")}
+            severity={"error"}
+            callback={handleClose}
+          />
+        )
+      }
     </Box>
   );
 };

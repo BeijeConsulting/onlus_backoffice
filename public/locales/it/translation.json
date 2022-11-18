@@ -102,7 +102,8 @@
       "socialSection": {
         "title": "Social",
         "info": "Inserisci il nome del social",
-        "placeholderSocial": "Nome social"
+        "placeholderSocial": "Nome social",
+        "error": "Inserisci il nome del social"
       },
       "iconSection": {
         "title": "Icona",
@@ -111,7 +112,8 @@
       "linkSection": {
         "title": "Link",
         "info": "Inserisci il link al social",
-        "placeholderLink": "link"
+        "placeholderLink": "link",
+        "error": "Inserisci il link del social"
       },
       "toggleFooter": "Pubblica nel footer",
       "toggleHome": "Pubblica nella home"
@@ -261,7 +263,8 @@
     "Title": {
       "title": "Titolo",
       "info": "Inserisci il titolo dell'evento",
-      "placeHolderText": "inserisci Titolo"
+      "placeHolderText": "inserisci Titolo",
+      "error" : "Inserisci il titolo"
     },
     "cover": {
       "title": "Copertina",
@@ -275,17 +278,20 @@
     "Place": {
       "title": "Luogo",
       "info": "Inserisci il luogo in cui si svolgerà l'evento",
-      "placeHolderText": "inserisci Indirizzo"
+      "placeHolderText": "inserisci Indirizzo",
+      "error" : "Inserisci il luogo dove si svolgerà l'evento"
     },
     "Description": {
       "title": "Descrizione",
       "info": "Inserisci una descrizione esplicativa dell'evento",
-      "placeHolderText": "inserisci Testo"
+      "placeHolderText": "Inserisci Testo",
+      "error" : "Inserisci la descrizione dell'evento"
     },
     "Requirements": {
       "title": "Requisiti",
       "info": "Specifica i requisiti per partecipare all'evento",
-      "placeHolderText": "inserisci Testo"
+      "placeHolderText": "inserisci Testo",
+      "error" : "Inserisci i requsiti per partecipare all'evento"
     }
   },
   "Categories": {

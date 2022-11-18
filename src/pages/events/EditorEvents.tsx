@@ -73,6 +73,8 @@ const EditorEvents: FC = () => {
   const [state, setState] = useState(initialState);
   const { t } = useTranslation();
   const location = useLocation();
+  console.log(location);
+  
   const idCurrentEvent = location?.state?.row?.id;
   const navigate = useNavigate();
 
@@ -84,9 +86,14 @@ const EditorEvents: FC = () => {
 
   async function getCurrentEvent() {
     const resp: any = await getEventByIdApi(idCurrentEvent);
-
+    console.log(resp);
+    
     if (resp.status === 200) {
       const event: any = resp.data;
+    
+      //change data format
+      event.eventDate = event.eventDate.concat(".000Z");    
+      
       setState({
         ...state,
         currentEvent: event,
@@ -102,12 +109,15 @@ const EditorEvents: FC = () => {
 
   //vado a settare la data in formato ISO e la salvo nello stato
   function setDate(date: Dayjs) {
+    
     let correctFormatDate = date.toISOString();
+   console.log(correctFormatDate);
+    
     correctFormatDate = correctFormatDate.substring(
       0,
       correctFormatDate.length - 5
     );
-
+   
     if (!location?.state?.showAdd) {
       setState({
         ...state,
@@ -146,9 +156,7 @@ const EditorEvents: FC = () => {
     const inputDescription = e.target.form[5];
     const inputPlace = e.target.form[9];
     const inputRequirements = e.target.form[11];
-    const inputCover = e.target.form[8].name;
-    console.log(inputCover);
-    
+    const inputCover = e.target.form[8].name;    
 
     let errorTitle = false;
     let errorDescription = false;
@@ -194,25 +202,27 @@ const EditorEvents: FC = () => {
         title: inputTitle.value,
         eventDate: state.dateToSent,
       };
-      if(location?.state?.showAdd){
+
+      if(location?.state?.showAdd){ //creazione di un nuovo evento
         sendData(newEvent);
-       
-      }else{
+      }else{ //aggiornamento di un evento già esistente
         updateEvent(newEvent)
-        navigate(PAGES.events, { state: { openChange: true } });
       }
       
     }
   }
 
   async function updateEvent(newEvent: Event){  
-    await updateEventByIdApi(state?.currentEvent?.id,newEvent)
+    let resp = await updateEventByIdApi(state?.currentEvent?.id,newEvent);
+    if(resp?.status === 200){
+      navigate(PAGES.events, { state: { openChange: true } });
+    }
   }
 
   async function sendData(newEvent: Event) {
     let resp = await createEventApi(newEvent);
     if(resp?.status === 200){
-      navigate(PAGES.events, { state: { openAdd: true } });
+       navigate(PAGES.events, { state: { openAdd: true } });
     }
   }
 
@@ -232,7 +242,7 @@ const EditorEvents: FC = () => {
                   <CustomTextField
                     placeholder={t("EventsEditor.Title.placeHolderText")}
                     error={state.titleError}
-                    errorMessage={"Inserisci il titolo"}
+                    errorMessage={t("EventsEditor.Title.error")}
                     id={"title"}
                     defaultValue={state?.currentEvent?.title}
                   />
@@ -269,7 +279,7 @@ const EditorEvents: FC = () => {
                     multiline={true}
                     minrow={6}
                     defaultValue={state?.currentEvent?.description}
-                    errorMessage={"Inserisci una descrizione dell'evento"}
+                    errorMessage={t("EventsEditor.Description.error")}
                   />
                 </LabelText>
               </Box>
@@ -296,7 +306,7 @@ const EditorEvents: FC = () => {
                     placeholder={t("EventsEditor.Place.placeHolderText")}
                     error={state.placeError}
                     defaultValue={state?.currentEvent?.place}
-                    errorMessage={"Inserisci il luogo dove si svolgerà l'evento"}
+                    errorMessage={t("EventsEditor.Place.error")}
                   />
                 </LabelText>
 
@@ -311,7 +321,7 @@ const EditorEvents: FC = () => {
                     multiline={true}
                     minrow={6}
                     defaultValue={state?.currentEvent?.requirements}
-                    errorMessage={"Inserisci i requisiti per partecipare all'evento"}
+                    errorMessage={t("EventsEditor.Requirements.error")}
                   />
                 </LabelText>
 

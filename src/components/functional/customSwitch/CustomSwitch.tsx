@@ -4,7 +4,7 @@ import { Switch, FormControlLabel } from "@mui/material";
 
 interface SwitchProps {
   label: string;
-  callback: Function;
+  callback?: Function;
   defaultChecked?: boolean;
 }
 

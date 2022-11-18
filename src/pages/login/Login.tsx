@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import PAGES from "../../router/pages";
@@ -19,6 +19,8 @@ import { Link } from "react-router-dom";
 import { BaseSyntheticEvent } from "react";
 //api
 import { signinApi } from "../../services/api/login/loginApi";
+import {fetchData} from "../../utils/fetchData";
+import {getApiNoAuthGeneral} from "../../services/api/general/generalApi";
 
 /*
 TO DO
@@ -32,6 +34,7 @@ TO DO
 interface State {
   emailError: boolean;
   passwordError: boolean;
+  logo: string
 }
 
 type User = {
@@ -43,50 +46,76 @@ type User = {
 const initState: State = {
   emailError: false,
   passwordError: false,
+  logo: ""
 };
+
 const Login: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
 
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
 
+  useEffect(() => {
+    getLoginData()
+  },[])
+
+  const getLoginData = async (): Promise<void> => {
+    let resp = await fetchData(getApiNoAuthGeneral);
+    setState({
+      ...state,
+      logo: resp?.data?.logo
+    })
+  }
+
   async function onLogin(e: BaseSyntheticEvent): Promise<void> {
     let eError = false;
     let pError = false;
+    let formIsValid = true;
     if (
       e.target.form[0].value === "" ||
       /^[a-zA-Z0-9]+@[a-zA-Z0-9]+.[A-Za-z]+$/.test(e.target.form[0].value) ===
         false
     ) {
       eError = true;
+      formIsValid = false;
     }
     if (e.target.form[2].value === "") {
       pError = true;
+      formIsValid = false;
     }
+
+    if (formIsValid) {
+      let user: User = {
+        email: e.target.form[0].value,
+        password: e.target.form[2].value,
+      };
+
+      //get
+      let tempUser: any = await signinApi(user);
+      if (tempUser?.status === 401) {
+        pError = true;
+        eError = true;
+      } else {
+        console.log("token", tempUser?.data?.token);
+        console.log("refreshToken", tempUser?.data?.refreshToken);
+
+        //localStorage for Token
+        localStorage.setItem("onlusToken", tempUser?.data?.token);
+        localStorage.setItem("onlusRefreshToken", tempUser?.data?.refreshToken);
+
+        //setcookie
+        setCookie("user", tempUser);
+
+        //navigation
+        navigate(PAGES.personalArea);
+      }
+    }
+
     setState({
       ...state,
       emailError: eError,
       passwordError: pError,
     });
-    let user: User = {
-      email: e.target.form[0].value,
-      password: e.target.form[2].value,
-    };
-
-    //get
-    let tempUser: any = await signinApi(user);
-    console.log("token", tempUser?.data?.token);
-    console.log("refreshToken", tempUser?.data?.refreshToken);
-
-    //localStorage for Token
-    localStorage.setItem("onlusToken", tempUser?.data?.token);
-    localStorage.setItem("onlusRefreshToken", tempUser?.data?.refreshToken);
-
-    //setcookie
-    setCookie("user", tempUser);
-
-    //navigation
-    navigate(PAGES.personalArea);
   }
 
   return (
@@ -94,7 +123,7 @@ const Login: FC = (): JSX.Element => {
       <Box className={style.boxLogin}>
         <form className={style.form}>
           <LabelText>
-            <img className={style.img} src={logo} alt="" />
+            <img className={style.img} src={state.logo} alt="logo sito" />
             <CustomTextField
               errorMessage="email non valida"
               type="email"

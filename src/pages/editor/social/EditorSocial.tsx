@@ -20,6 +20,8 @@ import ButtonAddFile from "../../../components/functional/buttonAddFile/ButtonAd
 import ButtonGeneric from "../../../components/functional/buttonGeneric/ButtonGeneric";
 //translation
 import { useTranslation } from "react-i18next";
+//utils
+import {isValidURL} from "../../../utils/checkUrl";
 
 //api
 import {
@@ -64,6 +66,7 @@ const EditorSocial: FC = (): JSX.Element => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    getBase64FromUrl('https://lh3.googleusercontent.com/i7cTyGnCwLIJhT1t2YpLW-zHt8ZKalgQiqfrYnZQl975-ygD_0mOXaYZMzekfKW_ydHRutDbNzeqpWoLkFR4Yx2Z2bgNj2XskKJrfw8').then(console.log)
     if (!location?.state?.showAdd) {
       getCurrentSocial();
     }
@@ -85,10 +88,22 @@ const EditorSocial: FC = (): JSX.Element => {
     }
   }
 
+  const getBase64FromUrl = async (url:any) => {
+    const data = await fetch(url);  
+    const blob = await data.blob();
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob); 
+      reader.onloadend = () => {
+        const base64data = reader.result;   
+        resolve(base64data);
+      }
+    });
+  }
+
   const handleClick = (): void => {};
 
   const onCancel = (): void => {
-    console.log("delete");
     navigate(PAGES.editSocial);
   };
 
@@ -97,9 +112,9 @@ const EditorSocial: FC = (): JSX.Element => {
   };
 
   function validateForm(e: BaseSyntheticEvent) {
-    console.log('form valido');
     let formIsValid = true;
 
+    //prendo i valori dal form
     const socialName = e.target.form[0].value;
     const socialLink = e.target.form[3].value;
     const footerOn = e.target.form[5].checked;
@@ -114,7 +129,7 @@ const EditorSocial: FC = (): JSX.Element => {
       formIsValid = false;
       errorName = true;
     }
-    if (checkEmptyText(socialLink)) {
+    if ((checkEmptyText(socialLink)) || !isValidURL(socialLink)) {
       formIsValid = false;
       errorLink = true;
     }
@@ -123,7 +138,7 @@ const EditorSocial: FC = (): JSX.Element => {
     //   errorIcon = true;
     // }
 
-    if (formIsValid) {
+    if (formIsValid) { //i valori inseriti dall'utente sono corretti
      
       let newSocial: SingleSocial = {
         name: socialName,
@@ -139,7 +154,7 @@ const EditorSocial: FC = (): JSX.Element => {
         updateSocial(newSocial);
         // navigate(PAGES.editSocial, { state: { open: true } });
       }
-    } else {
+    } else { //i valori inseriti dall'utente sono sbagliati
       setState({
         ...state,
         nameError: errorName,
@@ -149,6 +164,7 @@ const EditorSocial: FC = (): JSX.Element => {
     }
   }
 
+  //creo un nuovo social
   async function sendData(newSocial: SingleSocial): Promise<void> {
     let resp = await createNewSocialApi(newSocial);
     if(resp?.status === 200){
@@ -156,6 +172,7 @@ const EditorSocial: FC = (): JSX.Element => {
     }
   }
 
+  //aggiorno un social già esistente
   async function updateSocial(newSocial: SingleSocial): Promise<void>{
     let resp = await updateSocialById(state?.currentSocial?.id,newSocial);
     if(resp?.status === 200){
@@ -181,7 +198,7 @@ const EditorSocial: FC = (): JSX.Element => {
                       "social.editorSocial.socialSection.placeholderSocial"
                     )}
                     error={state?.nameError}
-                    errorMessage={"Inserisci il nome del social"}
+                    errorMessage={t("social.editorSocial.socialSection.error")}
                   />
                   <Title
                     text={t("social.editorSocial.iconSection.title")}
@@ -203,16 +220,14 @@ const EditorSocial: FC = (): JSX.Element => {
                       "social.editorSocial.linkSection.placeholderLink"
                     )}
                     error={state?.linkError}
-                    errorMessage={"Inserisci il link del social"}
+                    errorMessage={t("social.editorSocial.linkSection.error")}
                   />
                   <CustomSwitch
                     defaultChecked={state?.currentSocial?.footerOn}
-                    callback={handleClick}
                     label={t("social.editorSocial.toggleFooter")}
                   />
                   <CustomSwitch
                     defaultChecked={state?.currentSocial?.homepageOn}
-                    callback={handleClick}
                     label={t("social.editorSocial.toggleHome")}
                   />
                 </Box>
@@ -224,13 +239,13 @@ const EditorSocial: FC = (): JSX.Element => {
             {location?.state?.showAdd ? (
               <>
                 <ButtonGeneric color={"green"} callback={onSave}>
-                  Aggiungi
+                  {t("addButton")}
                 </ButtonGeneric>
                 <ButtonGeneric
                   color={common.secondaryColor}
                   callback={onCancel}
                 >
-                  Annulla
+                  {t("deleteModal.DiscardChangesButton")}
                 </ButtonGeneric>
               </>
             ) : (

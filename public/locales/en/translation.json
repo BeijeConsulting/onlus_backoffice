@@ -106,7 +106,8 @@
       "socialSection": {
         "title": "Social",
         "info": "Enter the name of the social network",
-        "placeholderSocial": "Social name"
+        "placeholderSocial": "Social name",
+        "error": "Enter social name"
       },
       "iconSection": {
         "title": "Icon",
@@ -115,7 +116,8 @@
       "linkSection": {
         "title": "Link",
         "info": "Insert the link to the social network",
-        "placeholderLink": "link"
+        "placeholderLink": "link",
+        "error": "Enter social link"
       },
       "toggleFooter": "Publish to footer",
       "toggleHome": "Publish to home"
@@ -266,7 +268,8 @@
     "Title": {
       "title": "Title",
       "info": "Enter the title of the event",
-      "placeHolderText": "insert Title"
+      "placeHolderText": "insert Title",
+      "error" : "Enter the title"
     },
     "cover": {
       "title": "Cover",
@@ -280,17 +283,20 @@
     "Place": {
       "title": "Place",
       "info": "Enter the place where the event will take place",
-      "placeHolderText": "enter Address"
+      "placeHolderText": "enter Address",
+      "error" : "enter the place where the event will take place"
     },
     "Description": {
       "title": "Description",
       "info": "Insert an explanatory description of the event",
-      "placeHolderText": "insert Text"
+      "placeHolderText": "insert Text",
+      "error": "Enter the description of the event"
     },
     "Requirements": {
       "title": "Requirements",
       "info": "Specify the requirements to participate in the event",
-      "placeHolderText": "insert Text"
+      "placeHolderText": "insert Text",
+      "error": "enter the requirements to participate in the event"
     }
   },
   "Categories": {
