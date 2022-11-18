@@ -87,8 +87,8 @@ const Header: FC = (): JSX.Element => {
     console.log(res.data)
     setState({
       ...state,
-      logo: res.data.logo,
-      siteName: res.data.websiteName
+      logo: res?.data?.logoContent,
+      siteName: res?.data?.websiteName
     })
   }
 

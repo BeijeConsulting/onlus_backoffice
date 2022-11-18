@@ -74,10 +74,11 @@ export type SectionWork = {
 };
 
 export type Customization = {
+  id?: number;
   websiteName: string;
-  mediaContent: string;
-  mediaTitle: string;
-  mediaType: string;
+  logoContent: string;
+  logoTitle: string;
+  logoType: string;
   banner: Banner;
   contacts: Contacts;
   palette: Array<Palette>;

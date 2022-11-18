@@ -28,42 +28,23 @@ import {
 } from "../../../services/api/general/generalApi";
 import { fetchData } from "../../../utils/fetchData";
 
-//interface
-type error = {
-  nameSite: boolean;
-  workText: boolean;
-  workEmail: boolean;
-  contactPhone: boolean;
-  contactEmail: boolean;
-  contactAdress: boolean;
-  contactVat: boolean;
-  contactCF: boolean;
-};
-
 interface State {
   ready: boolean;
-  error: error;
+  error: Array<boolean>;
   customization: Customization;
   open: boolean;
+  snackErrorIsOpen: boolean;
+  snackWarningIsOpen: boolean;
 }
 
 const initState: State = {
   ready: false,
-  error: {
-    nameSite: false,
-    workText: false,
-    workEmail: false,
-    contactPhone: false,
-    contactEmail: false,
-    contactAdress: false,
-    contactVat: false,
-    contactCF: false,
-  },
+  error: [false, false, false, false, false, false, false, false, false, false, false, false, false, false],
   customization: {
     websiteName: "",
-    mediaContent: "",
-    mediaTitle: "",
-    mediaType: "",
+    logoContent: "",
+    logoTitle: "",
+    logoType: "",
     banner: {
       btnText1: "",
       btnText2: "",
@@ -85,17 +66,19 @@ const initState: State = {
     },
   },
   open: false,
+  snackErrorIsOpen: false,
+  snackWarningIsOpen: false,
 };
 
 const General: FC = (): JSX.Element => {
   const [state, setState] = useState<State>(initState);
   const { t } = useTranslation();
 
-  //
+  //fetchAPI
   const componentReady = async (): Promise<any> => {
     const res = await fetchData(getApiGeneral);
     const data = res.data;
-    console.log(data);
+
     setState({
       ...state,
       customization: data,
@@ -106,39 +89,37 @@ const General: FC = (): JSX.Element => {
   useEffect(() => {
     componentReady();
   }, []);
-  const handleImage = (): void => {};
+  const handleImage = (): void => { };
 
+  //putAPI
   async function updateData(e: BaseSyntheticEvent): Promise<void> {
     const form = e.target.form;
-    console.log(e);
+    console.log(e)
 
     const newData: Customization = {
+      id: 1,
       websiteName: form[0].value,
-      mediaContent: form[2].name.split(" ")[0],
-      mediaTitle: form[2].name.split(" ")[1],
-      mediaType: form[2].name.split(" ")[2],
+      logoContent: form[2].name.split(" ")[0],
+      logoTitle: form[2].name.split(" ")[1],
+      logoType: form[2].name.split(" ")[2],
       palette: [
         {
-          id: 1,
           name: "primary",
           bgColor: state.customization.palette[0].bgColor,
           textColor: state.customization.palette[0].textColor,
         },
         {
-          id: 2,
           name: "secondary",
           bgColor: state.customization.palette[1].bgColor,
           textColor: state.customization.palette[1].textColor,
         },
         {
-          id: 3,
           name: "tertiary",
           bgColor: state.customization.palette[2].bgColor,
           textColor: state.customization.palette[2].textColor,
         },
       ],
       contacts: {
-        id: 4,
         site: form[7].value,
         email: form[9].value,
         address: form[11].value,
@@ -150,7 +131,6 @@ const General: FC = (): JSX.Element => {
         email: form[5].value,
       },
       banner: {
-        id: 1,
         title: form[17].value,
         subtitle: form[19].value,
         btnText1: form[22].value,
@@ -159,20 +139,88 @@ const General: FC = (): JSX.Element => {
       },
     };
 
-    console.log(newData);
-
     const putRes = await putApiGeneral(1, newData);
-    console.log(putRes);
+    handleResponse(putRes.status)
   }
 
   const onSaveGeneral = (e: BaseSyntheticEvent) => {
-    updateData(e);
+    let errors: Array<boolean> = [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ];
+    let isError: boolean = false;
+    let errorSnack: boolean = false;
+
+    //controlla che tutti i campi siano pieni
+    let count: number = 0;
+    for (let i = 0; i <= 26; i++) {
+      if (i !== 2) {
+        if (e.target.form[i].value?.length === 0) {
+          errors[count] = true;
+          if (!isError) isError = true;
+        }
+      }
+
+      if (!!e.target.form[i].value || e.target.form[i].value?.length === 0) count++;
+    }
+
+    if (e.target.form[22].value?.length === 0) {
+      errors[11] = true;
+      isError = true;
+    }
+
+    if (!isError) {
+      updateData(e);
+    } else {
+      errorSnack = true
+    }
+
     setState({
       ...state,
-      open: true,
+      snackErrorIsOpen: errorSnack,
+      error: errors,
     });
   };
 
+  //gestione risposta
+  const handleResponse = async (status: number): Promise<void> => {
+    let snackError: boolean = state.snackErrorIsOpen;
+    let snackWarning: boolean = state.snackWarningIsOpen;
+    let snackSuccess: boolean = state.snackWarningIsOpen;
+
+    if (status === 200) {
+      snackError = false;
+      snackWarning = false;
+      snackSuccess = true;
+    } else if (status === 500 || status === undefined) {
+      snackWarning = true;
+      snackSuccess = false;
+    } else {
+      snackError = true;
+      snackSuccess = false;
+    }
+
+    setState({
+      ...state,
+      open: snackSuccess,
+      snackWarningIsOpen: snackWarning,
+      snackErrorIsOpen: snackError,
+    });
+  };
+
+  //Snackbar
   const handleClose = () => {
     setState({
       ...state,
@@ -180,7 +228,7 @@ const General: FC = (): JSX.Element => {
     });
   };
 
-  //funzione per colo handling
+  //funzione per color handling
   const setColorBg = (index: number) => (params: any) => {
     const newState = { ...state };
     newState.customization.palette[index].bgColor = params;
@@ -205,7 +253,8 @@ const General: FC = (): JSX.Element => {
                   textInfo={t("general.nameSite.info")}
                 />
                 <CustomTextField
-                  error={state.error.nameSite}
+                  error={state.error[0]}
+                  errorMessage={t("general.nameSite.error")}
                   placeholder={t("general.nameSite.placeholder")}
                   defaultValue={state.customization.websiteName}
                 />
@@ -214,9 +263,9 @@ const General: FC = (): JSX.Element => {
                 <Title text="Logo" textInfo={t("general.logo.info")} />
                 <ButtonAddFile
                   callback={handleImage}
-                  mediaContent={state.customization.mediaContent}
-                  mediaTitle={state.customization.mediaTitle}
-                  mediaType={state.customization.mediaType}
+                  mediaContent={state.customization.logoContent}
+                  mediaTitle={state.customization.logoTitle}
+                  mediaType={state.customization.logoType}
                 />
               </LabelText>
               <LabelText>
@@ -227,24 +276,24 @@ const General: FC = (): JSX.Element => {
                 <ColorPicker
                   callbackBg={setColorBg(0)}
                   callbackTxt={setColorTxt(0)}
-                  bg={state.customization.palette[0].bgColor}
-                  txt={state.customization.palette[0].textColor}
+                  bg={state?.customization?.palette[0].bgColor}
+                  txt={state?.customization?.palette[0].textColor}
                   background={t("general.palettes.primary.background")}
                   text={t("general.palettes.primary.text")}
                 />
                 <ColorPicker
                   callbackBg={setColorBg(1)}
                   callbackTxt={setColorTxt(1)}
-                  bg={state.customization.palette[1].bgColor}
-                  txt={state.customization.palette[1].textColor}
+                  bg={state?.customization?.palette[1].bgColor}
+                  txt={state?.customization?.palette[1].textColor}
                   background={t("general.palettes.secondary.background")}
                   text={t("general.palettes.secondary.text")}
                 />
                 <ColorPicker
                   callbackBg={setColorBg(2)}
                   callbackTxt={setColorTxt(2)}
-                  bg={state.customization.palette[2].bgColor}
-                  txt={state.customization.palette[2].textColor}
+                  bg={state?.customization?.palette[2].bgColor}
+                  txt={state?.customization?.palette[2].textColor}
                   background={t("general.palettes.ternary.background")}
                   text={t("general.palettes.ternary.text")}
                 />
@@ -257,12 +306,14 @@ const General: FC = (): JSX.Element => {
                   textInfo={t("general.workSection.info")}
                 />
                 <CustomTextField
-                  error={state.error.workText}
+                  error={state.error[2]}
+                  errorMessage={t("general.workSection.errorText")}
                   placeholder={t("general.workSection.placeholderText")}
                   defaultValue={state.customization.sectionWork.text}
                 />
                 <CustomTextField
-                  error={state.error.workEmail}
+                  error={state.error[3]}
+                  errorMessage={t("general.workSection.errorEmail")}
                   placeholder={t("general.workSection.placeholderEmail")}
                   defaultValue={state.customization.sectionWork.email}
                 />
@@ -273,27 +324,32 @@ const General: FC = (): JSX.Element => {
                   textInfo={t("general.contacts.info")}
                 />
                 <CustomTextField
-                  error={state.error.contactPhone}
+                  error={state.error[4]}
+                  errorMessage={t("general.contacts.errorTelephone")}
                   placeholder={t("general.contacts.placeholderTelephone")}
                   defaultValue={state.customization.contacts.site}
                 />
                 <CustomTextField
-                  error={state.error.contactEmail}
+                  error={state.error[5]}
+                  errorMessage={t("general.contacts.errorEmail")}
                   placeholder={t("general.contacts.placeholderEmail")}
                   defaultValue={state.customization.contacts.email}
                 />
                 <CustomTextField
-                  error={state.error.contactAdress}
+                  error={state.error[6]}
+                  errorMessage={t("general.contacts.errorAddress")}
                   placeholder={t("general.contacts.placeholderAddress")}
                   defaultValue={state.customization.contacts.address}
                 />
                 <CustomTextField
-                  error={state.error.contactVat}
+                  error={state.error[7]}
+                  errorMessage={t("general.contacts.errorCf")}
                   placeholder={t("general.contacts.placeholderCf")}
                   defaultValue={state.customization.contacts.fiscalCode}
                 />
                 <CustomTextField
-                  error={state.error.contactCF}
+                  error={state.error[8]}
+                  errorMessage={t("general.contacts.errorIva")}
                   placeholder={t("general.contacts.placeholderIva")}
                   defaultValue={state.customization.contacts.vatNumber}
                 />
@@ -309,12 +365,14 @@ const General: FC = (): JSX.Element => {
               <Box className={common.row}>
                 <Box className={common.rowLeft}>
                   <CustomTextField
-                    error={state.error.workText}
+                    error={state.error[9]}
+                    errorMessage={t("general.banner.errorTitle")}
                     placeholder={t("general.banner.placeholderTitle")}
                     defaultValue={state.customization.banner.title}
                   />
                   <CustomTextField
-                    error={state.error.workText}
+                    error={state.error[10]}
+                    errorMessage={t("general.banner.errorSubtitle")}
                     minrow={5}
                     maxrow={5}
                     multiline={true}
@@ -329,7 +387,8 @@ const General: FC = (): JSX.Element => {
                   >
                     <Box style={{ width: "47%" }}>
                       <CustomTextField
-                        error={state.error.workText}
+                        error={state.error[11]}
+                        errorMessage={t("general.banner.errorCallToAction")}
                         placeholder={t(
                           "general.banner.placeholderCallToAction"
                         )}
@@ -338,7 +397,8 @@ const General: FC = (): JSX.Element => {
                     </Box>
                     <Box style={{ width: "47%" }}>
                       <CustomTextField
-                        error={state.error.workText}
+                        error={state.error[13]}
+                        errorMessage={t("general.banner.errorCallToAction")}
                         placeholder={t(
                           "general.banner.placeholderCallToAction"
                         )}
@@ -347,7 +407,8 @@ const General: FC = (): JSX.Element => {
                     </Box>
                   </Box>
                   <CustomTextField
-                    error={state.error.workText}
+                    error={state.error[14]}
+                    errorMessage={t("general.banner.errorLink")}
                     placeholder={t("general.banner.placeholderLink")}
                     defaultValue={state.customization.banner.link}
                   />
@@ -365,6 +426,20 @@ const General: FC = (): JSX.Element => {
             <CustomSnackbar
               message={t("changesSnack")}
               severity={"success"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackErrorIsOpen && (
+            <CustomSnackbar
+              message={t("responseErrorSnack")}
+              severity={"error"}
+              callback={handleClose}
+            />
+          )}
+          {state.snackWarningIsOpen && (
+            <CustomSnackbar
+              message={t("responseWarningSnack")}
+              severity={"warning"}
               callback={handleClose}
             />
           )}

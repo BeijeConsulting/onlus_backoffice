@@ -31,7 +31,8 @@
     "nameSite": {
       "title": "Nome Sito",
       "info": "Qua va inserito il nome del tuo sito, che sarà visibile a tutti i visitatori del sito",
-      "placeholder": "inserisci il nome per il tuo sito"
+      "placeholder": "Inserisci il nome per il tuo sito",
+      "error": "Inserisci un nome"
     },
     "logo": {
       "title": "Logo",
@@ -55,17 +56,23 @@
     },
     "banner": {
       "title": "Banner in evidenza",
-      "info": "Qua va personalizzato il banner in evidenza delle call to action, i color vngono presi dalla palette che si può trovare più in alto della pagina",
+      "info": "Qua va personalizzato il banner in evidenza delle call to action, i colori vengono presi dalla palette che si può trovare più in alto della pagina",
       "placeholderTitle": "Inserisci il titolo",
       "placeholderSubtitle": "Inserisci il sottotitolo",
       "placeholderCallToAction": "Inserisci call to action bottone",
-      "placeholderLink": "Insert page link"
+      "placeholderLink": "Inserisci link",
+      "errorTitle": "Inserisci un titolo",
+      "errorSubtitle": "Inserisci un sottotitolo",
+      "errorCallToAction": "Inserisci del testo",
+      "errorLink": "Inserisci un link"
     },
     "workSection": {
       "title": "Sezione di contatti per lavoro",
-      "info": "Qua vanno inseriti i contatti che veranno mostrati a tutti i visitatori del sito a fondo pagina che doovrebbero essere usati per scopi di lavoro",
+      "info": "Qua vanno inseriti i contatti che verranno mostrati a tutti i visitatori del sito a fondo pagina che dovrebbero essere usati per scopi di lavoro",
       "placeholderText": "Inserisci il testo",
-      "placeholderEmail": "Inserisci la tua mail lavorativa"
+      "placeholderEmail": "Inserisci la tua mail lavorativa",
+      "errorText": "Inserisci del testo",
+      "errorEmail": "Inserisci una email"
     },
     "contacts": {
       "title": "Contatti",
@@ -74,7 +81,12 @@
       "placeholderEmail": "Inserisci la tua mail",
       "placeholderAddress": "Inserisci il tuo indirizzo",
       "placeholderIva": "Inserisci la tua partita IVA",
-      "placeholderCf": "Inserisci il tuo codice fiscale"
+      "placeholderCf": "Inserisci il tuo codice fiscale",
+      "errorTelephone": "Inserisci un numero di telefono",
+      "errorEmail": "Inserisci una email",
+      "errorAddress": "Insersci un indirizzo",
+      "errorIva": "Inserisci una partita IVA",
+      "errorCf": "Inserisci un codice fiscale"
     }
   },
   "Support": {
