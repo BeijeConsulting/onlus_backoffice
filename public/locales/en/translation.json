@@ -3,7 +3,9 @@
     "selection": "Select file",
     "file": "No file selected"
   },
-
+  "loginButton": "LOGIN",
+  "forgotPassword": "Forgot password?",
+  "headerMenu": "Personal area",
   "saveButton": "Save changes",
   "addButton": "Add",
   "cancelButton": "Cancel changes",
@@ -12,6 +14,7 @@
   "addSnack": "inclusion successful",
   "responseErrorSnack": "Request error, retry",
   "responseWarningSnack": "Internal server error, retry later",
+  "userAlreadyExists": "Error: user already exists",
   "deleteModal": {
     "text": "Are you sure you want to delete the following element?",
     "deleteButton": "Delete",
@@ -321,6 +324,10 @@
     },
     "activeModalText": "Are you sure you want to reactivate the following user?",
     "activeModalBtn": "Confirm"
+  },
+  "Volunteers": {
+    "title": "Volunteers",
+    "info": "Registered users, click on the edit button to manually update the user's data or click on the delete button to deactivate the user"
   },
   "CollaboratorsEditor": {
     "title": "User data",

@@ -29,7 +29,6 @@ import Volunteers from "./pages/users/volunteers/Volunteers";
 import EditVolunteers from "./pages/users/volunteers/EditVolunteers";
 import Donations from "./pages/donations/Donations";
 import NotFound from "./pages/notFound/NotFound";
-import { useCookies } from "react-cookie";
 
 //Mui
 import { StyledEngineProvider } from "@mui/material";
@@ -41,16 +40,21 @@ import { StyledEngineProvider } from "@mui/material";
 function App() {
   //redux and auth
   //const dispatch: Dispatch<AnyAction> = useDispatch(); ==> non funziona ):
-  const [cookies, setCookie, removeCookie] = useCookies(["user"]);
-
   const dispatch: any = useDispatch();
-  const sendUser = cookies?.user?.data;
+  let loginToken = useSelector((state: any) => state.loginDuck.loginToken);
+  let user = useSelector((state: any) => state.userDuck.user);
 
   useEffect(() => {
-    dispatch(setUser({ user: sendUser }));
-  }, [sendUser]);
+    getUser();
+  }, [loginToken]);
 
-  let user = useSelector((state: any) => state.userDuck.user);
+  const getUser = () => {
+    const sendUser = JSON.parse(sessionStorage.getItem("user"));
+    let reduxUser = { ...sendUser };
+    reduxUser.logedIn = JSON.parse(sessionStorage.getItem("userLogedIn"));
+
+    dispatch(setUser({ user: reduxUser }));
+  };
 
   return (
     <StyledEngineProvider injectFirst>
@@ -93,7 +97,7 @@ function App() {
                     />
                     <Route
                       path={PAGES.editorVolunteers}
-                      element={<EditVolunteers />}
+                      element={<EditorCollaborators />}
                     />
 
                     <Route path={PAGES.donations} element={<Donations />} />

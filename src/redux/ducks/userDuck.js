@@ -27,7 +27,8 @@ const userDuck = createSlice({
       id: undefined,
       permission: undefined,
       refreshToken: undefined,
-      token: undefined
+      token: undefined,
+      logedIn: undefined,
     },
   },
   reducers: {
@@ -37,8 +38,9 @@ const userDuck = createSlice({
         id: undefined,
         permission: undefined,
         refreshToken: undefined,
-        token: undefined
-      }
+        token: undefined,
+        logedIn: undefined,
+      };
     },
     setUserAction: (state, action) => {
       state.user = action.payload.user;

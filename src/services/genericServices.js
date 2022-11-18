@@ -69,7 +69,7 @@ export async function responseApi(response) {
 export async function responseError(error) {
   return {
     message: error?.message,
-    status: error?.status,
+    status: error?.response?.status,
   };
 }
 

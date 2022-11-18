@@ -8,11 +8,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 
 import userDuck from "./ducks/userDuck";
+import loginDuck from "./ducks/loginDuck";
 
 const reducer = combineReducers({
   // here we will be adding reducers
 
   userDuck,
+  loginDuck,
 });
 
 const store = configureStore({
