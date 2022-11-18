@@ -443,7 +443,7 @@ const Collaborators: FC = (): JSX.Element => {
           )}
         </Box>
       ) : (
-        <Box className={style.loaderBox}>
+        <Box className={common.loaderBox}>
           <CircularProgress />
         </Box>
       )}

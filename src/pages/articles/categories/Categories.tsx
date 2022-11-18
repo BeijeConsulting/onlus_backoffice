@@ -120,10 +120,17 @@ const Categories: FC = (): JSX.Element => {
   const showDeleteModal = (row: any) => (): void => {
     setState({
       ...state,
-      modalIsOpen: !state.modalIsOpen,
+      modalIsOpen: true,
       idCategoryApi: row.id,
     });
   };
+
+  const hideDeleteModal = (): void => {
+    setState({
+      ...state,
+      modalIsOpen: false
+    })
+  }
 
   //mostro/nascondo modal di modifica di una categoria
   const showUpdateModal = (row: any) => (): void => {
@@ -423,7 +430,7 @@ const Categories: FC = (): JSX.Element => {
           {/* modale per la conferma eliminazione */}
           <DeleteModal
             open={state?.modalIsOpen}
-            closeCallback={showDeleteModal}
+            closeCallback={hideDeleteModal}
             deleteCallback={deleteCategory}
           />
           {/* modale per la modifica della categoria */}
