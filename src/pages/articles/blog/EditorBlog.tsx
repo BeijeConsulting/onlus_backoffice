@@ -256,7 +256,7 @@ const EditorBlog: FC = (): JSX.Element => {
 
   //elimino l'ultimo slot
   const deleteSlot = (): void => {
-    let articleContentError: Array<boolean> = state.articleContentError;
+    let articleContentError: Array<boolean> = state?.articleContentError;
     let left: Array<JSX.Element> = state?.addLeft;
     let right: Array<JSX.Element> = state?.addRight;
 
@@ -269,7 +269,7 @@ const EditorBlog: FC = (): JSX.Element => {
       left?.pop();
     }
 
-    articleContentError.pop();
+    articleContentError?.pop();
 
     setState({
       ...state,
