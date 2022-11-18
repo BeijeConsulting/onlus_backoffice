@@ -232,9 +232,7 @@ const About: FC = (): JSX.Element => {
   };
 
   //aggiorno lo stato che contiente gli errori relativi al contenuto dell'articolo
-  const setAboutContentError = async (
-    aboutContentError: Array<boolean>
-  ): Promise<void> => {
+  const setAboutContentError = async (aboutContentError: Array<boolean>): Promise<void> => {
     setState({
       ...state,
       aboutContentError: aboutContentError,
@@ -382,7 +380,7 @@ const About: FC = (): JSX.Element => {
     handleUpdateResponse(response.status, error, aboutContentError, about);
   };
 
-  //gestisco la risposta all'eliminazione dell'articolo
+  //gestisco la risposta all'eliminazione
   const handleUpdateResponse = async (status: number, error: Array<boolean>, aboutContentError: Array<boolean>, about: AboutType) => {
     let snack: boolean = state.snackIsOpen;
     let snackWarning: boolean = state.snackWarningIsOpen;

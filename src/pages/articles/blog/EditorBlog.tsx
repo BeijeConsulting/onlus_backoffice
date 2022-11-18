@@ -51,8 +51,8 @@ interface State {
   checked: Array<number>;
   categories: Array<Category>;
   article: Article;
-  addLeft: Array<JSX.Element>;
-  addRight: Array<JSX.Element>;
+  addLeft: Array<ArticleContent>;
+  addRight: Array<ArticleContent>;
   error: Array<boolean>;
   articleContentError: Array<boolean>;
   snackErrorIsOpen: boolean;
@@ -65,10 +65,11 @@ const initialState: State = {
   article: {
     category: [],
     content: [],
-    cover: "",
-    date: "",
-    status: "",
+    coverContent: "",
+    coverTitle: "",
+    coverType: "",
     title: "",
+    id: null
   },
   addLeft: [],
   addRight: [],
@@ -83,6 +84,9 @@ const EditorBlog: FC = (): JSX.Element => {
   const location = useLocation();
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  let indSx: number = 0
+  let indDx: number = 1
 
   //Snackbar
   const handleClose = () => {
@@ -101,27 +105,24 @@ const EditorBlog: FC = (): JSX.Element => {
   //fetchAPI
   const getData = async (): Promise<void> => {
     let checked: Array<number> = [];
-    let addLeft: Array<JSX.Element> = [];
-    let addRight: Array<JSX.Element> = [];
+    let addLeft: Array<ArticleContent> = [];
+    let addRight: Array<ArticleContent> = [];
     let articleContentError: Array<boolean> = [];
 
-    let article: Article = {
-      category: [],
-      content: [],
-      cover: "",
-      title: "",
-    };
+    let article: Article = null
 
     //se sto modificando
     if (!location?.state?.showAdd) {
       let dataArticle = await fetchData(getApiArticleById, location?.state?.id);
-      console.log(dataArticle);
-
       console.log("Article", dataArticle.data);
+
       article = {
+        id: location?.state?.id,
         category: dataArticle.data.category,
         content: dataArticle.data.content,
-        cover: dataArticle.data.cover,
+        coverContent: dataArticle.data.coverContent,
+        coverTitle: dataArticle.data.coverTitle,
+        coverType: dataArticle.data.coverType,
         title: dataArticle.data.title,
       };
 
@@ -135,27 +136,30 @@ const EditorBlog: FC = (): JSX.Element => {
       });
 
       for (let i = 1; i < dataArticle.data.content.length; i++) {
-        if (i % 2 !== 0)
-          addLeft.push(
-            getContent(
-              dataArticle.data.content[i],
-              i,
-              addLeft.length + addRight.length + 1
-            )
-          );
-        else
-          addRight.push(
-            getContent(
-              dataArticle.data.content[i],
-              i,
-              addLeft.length + addRight.length + 1
-            )
-          );
+        if (i % 2 !== 0) {
+          addLeft.push({
+            articleId: location?.state?.id,
+            id: article.content[i].id,
+            media: article.content[i].media,
+            paragraph: article.content[i].paragraph
+          })
+        }
+        else {
+          addRight.push({
+            articleId: location?.state?.id,
+            id: article.content[i].id,
+            media: article.content[i].media,
+            paragraph: article.content[i].paragraph
+          })
+        }
       }
     }
 
     let categories = await fetchData(getApiCategories);
     console.log("Categories", categories.data);
+
+    indSx = 0
+    indDx = 1
 
     setState({
       ...state,
@@ -188,30 +192,30 @@ const EditorBlog: FC = (): JSX.Element => {
   };
 
   //ritorno l'elemento con il contenuto
-  const getContent = (
-    content: ArticleContent = null,
-    key: number = null,
-    index: number
-  ): JSX.Element => {
+  const getContent = (content: ArticleContent = null, key: number = null, index: number): JSX.Element => {
     return (
       <LabelText key={key}>
         <Title
           text={t("articles.editorBlog.contentSection.title")}
           textInfo={t("articles.editorBlog.contentSection.info")}
         />
+
         <CustomTextField
+          error={state?.articleContentError[index]}
+          minrow={10}
+          maxrow={25}
+          multiline={true}
           placeholder={t(
             "articles.editorBlog.contentSection.placeholderContent"
           )}
-          error={state.articleContentError[index]}
-          multiline={true}
-          minrow={10}
-          maxrow={25}
           defaultValue={content?.paragraph}
         />
         <ButtonAddFile
           callback={log}
-          error={state.articleContentError[index]}
+          error={state?.articleContentError[index]}
+          mediaContent={state?.article?.content[index]?.media[0]?.content}
+          mediaTitle={state?.article?.content[index]?.media[0]?.title}
+          mediaType={state?.article?.content[index]?.media[0]?.type}
           customKey={key}
         />
       </LabelText>
@@ -224,27 +228,37 @@ const EditorBlog: FC = (): JSX.Element => {
     articleContentError?.push(true);
     await setArticleContentError(articleContentError);
 
-    let left: Array<JSX.Element> = state?.addLeft;
-    let right: Array<JSX.Element> = state?.addRight;
+    let left: Array<ArticleContent> = state?.addLeft;
+    let right: Array<ArticleContent> = state?.addRight;
     if (left?.length === right?.length) {
       //aggiungo a sinistra
-      left?.push(
-        getContent(
-          null,
-          state?.article?.content?.length + left.length + right.length + 1,
-          left.length + right.length + 1
-        )
-      );
+      left?.push({
+        id: left[left.length-1].id+1,
+        articleId: location?.state?.id,
+        media: [{
+          id: state?.article?.content[state.articleContentError.length]?.media[state.articleContentError.length].id + 1,
+          contentId: state?.article?.content[state?.article?.content?.length-1]?.id + 1,
+          content: "",
+          title: "",
+          type: ""
+        }],
+        paragraph: ""
+      });
     }
     //aggiungo a destra
     else {
-      right?.push(
-        getContent(
-          null,
-          state?.article?.content?.length + left.length + right.length + 1,
-          left.length + right.length + 1
-        )
-      );
+      right?.push({
+        id: state?.article?.content[state.articleContentError.length]?.id + 1,
+        articleId: location?.state?.id,
+        media: [{
+          id: state?.article?.content[state.articleContentError.length]?.media[state.articleContentError.length].id + 1,
+          contentId: state?.article?.content[state.articleContentError.length]?.id + 1,
+          content: "",
+          title: "",
+          type: ""
+        }],
+        paragraph: ""
+      });
     }
 
     setState({
@@ -257,8 +271,9 @@ const EditorBlog: FC = (): JSX.Element => {
   //elimino l'ultimo slot
   const deleteSlot = (): void => {
     let articleContentError: Array<boolean> = state?.articleContentError;
-    let left: Array<JSX.Element> = state?.addLeft;
-    let right: Array<JSX.Element> = state?.addRight;
+    let left: Array<ArticleContent> = state?.addLeft;
+    let right: Array<ArticleContent> = state?.addRight;
+    let article: Article = state?.article;
 
     if (left?.length === right?.length) {
       //tolgo a destra
@@ -269,10 +284,12 @@ const EditorBlog: FC = (): JSX.Element => {
       left?.pop();
     }
 
+    article?.content?.pop()
     articleContentError?.pop();
 
     setState({
       ...state,
+      article: article,
       addLeft: left,
       addRight: right,
       articleContentError: articleContentError,
@@ -280,9 +297,7 @@ const EditorBlog: FC = (): JSX.Element => {
   };
 
   //aggiorno l ostato che contiente gli errori relativi al contenuto dell'articolo
-  const setArticleContentError = async (
-    articleContentError: Array<boolean>
-  ): Promise<void> => {
+  const setArticleContentError = async (articleContentError: Array<boolean>): Promise<void> => {
     setState({
       ...state,
       articleContentError: articleContentError,
@@ -292,21 +307,28 @@ const EditorBlog: FC = (): JSX.Element => {
   //salvo
   const onSave = (e: BaseSyntheticEvent): void => {
     let article: Article = {
+      id: location?.state?.id,
       category: [],
       content: [
         {
-          articleId: 0,
+          articleId: location?.state?.id,
+          id: state?.article?.content[0]?.id,
           media: [
             {
-              content: e.target.form[5].name,
-              type: "image",
+              id: state?.article?.content[0]?.media[0].id+1,
+              contentId: state?.article?.content[0]?.id,
+              content: e.target.form[5].name.split(" ")[0],
+              title: e.target.form[5].name.split(" ")[1],
+              type: e.target.form[5].name.split(" ")[2]
             },
           ],
           paragraph: e.target.form[2].value,
         },
       ],
-      cover: e.target.form[6 + state.addLeft.length * 4].name,
-      title: e.target.form[0].value,
+      coverContent: e.target.form[6 + state.addLeft.length * 4].name.split(" ")[0],
+      coverTitle: e.target.form[6 + state.addLeft.length * 4].name.split(" ")[1],
+      coverType: e.target.form[6 + state.addLeft.length * 4].name.split(" ")[2],
+      title: e.target.form[0].value
     };
 
     //inserisco solo categorie selezionate
@@ -325,6 +347,10 @@ const EditorBlog: FC = (): JSX.Element => {
     let errors: boolean = getErrors(error);
     let articleContentErrors: boolean = getErrors(articleContentError);
 
+    console.log(article.content) 
+    console.log(state.addLeft) 
+    console.log(state.addRight) 
+    
     if (!errors && !articleContentErrors) {
       if (location?.state?.showAdd) {
         //add
@@ -334,6 +360,8 @@ const EditorBlog: FC = (): JSX.Element => {
         updateArticle(article, error, articleContentError);
       }
     } else {
+      indSx = 0
+      indDx = 1
       setState({
         ...state,
         snackErrorIsOpen: true,
@@ -344,21 +372,22 @@ const EditorBlog: FC = (): JSX.Element => {
   };
 
   //gestisco i contenuti dinamici
-  const getDynamicArticleContents = (
-    article: Article,
-    e: BaseSyntheticEvent
-  ): Array<ArticleContent> => {
+  const getDynamicArticleContents = (article: Article, e: BaseSyntheticEvent): Array<ArticleContent> => {
     let contentLeft: Array<ArticleContent> = [];
     let contentRight: Array<ArticleContent> = [];
     let contentIndex: number = 1;
     //sx
     for (let i = 0; i < state.addLeft.length; i++) {
       contentLeft.push({
-        articleId: contentIndex,
+        id: article?.content[contentIndex]?.id,
+        articleId: location?.state?.id,
         media: [
           {
-            content: e.target.form[9 + 4 * i].name,
-            type: "image",
+            id: article?.content[contentIndex]?.media[0]?.id,
+            contentId: article?.content[contentIndex]?.id,
+            content: e.target.form[9 + 4 * i].name.split(" ")[0],
+            title: e.target.form[9 + 4 * i].name.split(" ")[1],
+            type: e.target.form[9 + 4 * i].name.split(" ")[2]
           },
         ],
         paragraph: e.target.form[6 + 4 * i].value,
@@ -370,24 +399,18 @@ const EditorBlog: FC = (): JSX.Element => {
     //dx
     for (let i = 0; i < state.addRight.length; i++) {
       contentRight.push({
-        articleId: contentIndex,
+        id: article?.content[contentIndex]?.id,
+        articleId: location?.state?.id,
         media: [
           {
-            content:
-              e.target.form[
-                9 +
-                  state.addLeft.length * 4 +
-                  state.categories.length +
-                  1 +
-                  4 * i
-              ].name,
-            type: "image",
+            id: article?.content[contentIndex]?.media[0]?.id,
+            contentId: article?.content[contentIndex]?.id,
+            content: e.target.form[9 + 4 * i].name.split(" ")[0],
+            title: e.target.form[9 + 4 * i].name.split(" ")[1],
+            type: e.target.form[9 + 4 * i].name.split(" ")[2]
           },
         ],
-        paragraph:
-          e.target.form[
-            6 + state.addLeft.length * 4 + state.categories.length + 1 + 4 * i
-          ].value,
+        paragraph: e.target.form[6 + 4 * i].value,
       });
       contentIndex += 2;
     }
@@ -406,7 +429,7 @@ const EditorBlog: FC = (): JSX.Element => {
     let error: Array<boolean> = [false, false, false];
 
     if (article.title.length === 0) error[0] = true;
-    if (article.cover.length === 0) error[1] = true;
+    if (article.coverContent.length === 0) error[1] = true;
     if (article.category.length === 0) error[2] = true;
 
     return error;
@@ -418,8 +441,7 @@ const EditorBlog: FC = (): JSX.Element => {
 
     for (let i = 0; i < article.content.length; i++) {
       if (
-        article.content[i].paragraph.length === 0 ||
-        article.content[i].media[0].content.length === 0
+        article.content[i].paragraph.length === 0 ||article.content[i].media[0].content.length === 0
       )
         articleContentError[i] = true;
       else articleContentError[i] = false;
@@ -440,47 +462,40 @@ const EditorBlog: FC = (): JSX.Element => {
   };
 
   //modifico l'articolo
-  const updateArticle = async (
-    article: Article,
-    error: Array<boolean>,
-    articleContentError: Array<boolean>
-  ): Promise<void> => {
-    article.id = location?.state?.id;
-    console.log(article);
+  const updateArticle = async (article: Article, error: Array<boolean>, articleContentError: Array<boolean>): Promise<void> => {
+    console.log("Article prima di aggiornare", article)
     let response = await putApiArticleById(article.id, article);
-
-    if (response.status === 200)
-      navigate(PAGES.articlesBlog, { state: { open: true } });
-    else handleAddUpdateResponse(response.status, error, articleContentError);
+    handleAddUpdateResponse(response.status, error, articleContentError, article);
   };
 
   //aggiungo l'articolo
-  const addArticle = async (
-    article: Article,
-    error: Array<boolean>,
-    articleContentError: Array<boolean>
-  ): Promise<void> => {
+  const addArticle = async (article: Article, error: Array<boolean>, articleContentError: Array<boolean>): Promise<void> => {
+    console.log("Article prima di aggiungere", article)
     let response = await postApiArticle(article);
-
-    if (response.status === 200)
-      navigate(PAGES.articlesBlog, { state: { openAdd: true } });
-    else handleAddUpdateResponse(response.status, error, articleContentError);
+    handleAddUpdateResponse(response.status, error, articleContentError, article);
   };
 
   //gestisco la risposta all'eliminazione dell'articolo
-  const handleAddUpdateResponse = async (
-    status: number,
-    error: Array<boolean>,
-    articleContentError: Array<boolean>
-  ) => {
+  const handleAddUpdateResponse = async (status: number, error: Array<boolean>, articleContentError: Array<boolean>, article: Article) => {
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
+    
 
-    if (status === 500 || status === undefined) snackWarning = true;
-    else snackError = true;
+    console.log(status);
+    if (status === 200) {
+      if (location?.state?.showAdd)
+        navigate(PAGES.articlesBlog, { state: { openAdd: true } })
+      else
+        navigate(PAGES.articlesBlog, { state: { open: true } })
+    }
+    else if (status === 500 || status === undefined)
+      snackWarning = true;
+    else
+      snackError = true;
 
     setState({
       ...state,
+      article: article,
       snackWarningIsOpen: snackWarning,
       snackErrorIsOpen: snackError,
       error: error,
@@ -489,8 +504,8 @@ const EditorBlog: FC = (): JSX.Element => {
   };
 
   //stampo l'immagine caricata
-  const log = (s: string): void => {
-    console.log(s);
+  const log = (mediaContent: string, mediaTitle: string, mediaType: string): void => {
+  
   };
 
   //torno alla pagina articoli
@@ -523,8 +538,9 @@ const EditorBlog: FC = (): JSX.Element => {
                   </LabelText>
 
                   {getContent(state?.article?.content[0], 0, 0)}
-                  {state?.addLeft?.map((element: JSX.Element) => {
-                    return element;
+                  {state?.addLeft?.map((element: ArticleContent) => {
+                    indSx += 2
+                    return getContent(element, element?.id, indSx)
                   })}
                 </Box>
                 <Box className={common.right}>
@@ -536,6 +552,9 @@ const EditorBlog: FC = (): JSX.Element => {
                     <ButtonAddFile
                       callback={log}
                       error={state?.error[1]}
+                      mediaContent={state?.article?.coverContent}
+                      mediaTitle={state?.article?.coverTitle}
+                      mediaType={state?.article?.coverType}
                       customKey={999}
                     />
                   </LabelText>
@@ -592,8 +611,9 @@ const EditorBlog: FC = (): JSX.Element => {
                     </List>
                   </LabelText>
 
-                  {state?.addRight?.map((element: JSX.Element) => {
-                    return element;
+                  {state?.addRight?.map((element: ArticleContent) => {
+                    indDx += 2
+                    return getContent(element, element?.id, indDx)
                   })}
                   {/*link*/}
                   <Link

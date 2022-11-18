@@ -6,28 +6,34 @@ export type Category = {
 };
 
 export type Media = {
+  id?: number;
   content: string;
   type: string;
+  contentId?: number;
+  title: string
 };
 
 export type ArticleContent = {
-  articleId: number;
-  media: Array<Media>;
+  id?: number;
+  articleId?: number;
   paragraph: string;
+  media: Array<Media>
 };
 
 export type Article = {
-  category: Array<Category>;
-  content: Array<ArticleContent>;
-  cover: string;
-  date?: string;
-  email?: string;
   id?: number;
-  name?: string;
-  status?: string;
-  surname?: string;
-  title: string;
   userId?: number;
+  name?: string;
+  surname?: string;
+  email?: string;
+  title: string;
+  status?: string;
+  coverContent: string;
+  coverTitle: string;
+  coverType: string;
+  category: Array<Category>;
+  date?: string;
+  content: Array<ArticleContent>;
 };
 
 export type User = {
