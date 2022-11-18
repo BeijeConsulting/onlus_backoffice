@@ -77,6 +77,10 @@ const Faq: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  if (location?.state !== null) {
+    setTimeout(resetLocationState, 3000);
+  }
+
 
   useEffect(() => {
     getFaqData();
@@ -88,6 +92,13 @@ const Faq: FC = (): JSX.Element => {
       })
     }
   }, [])
+
+  //resetta lo stato della rotta corrente
+  function resetLocationState(): void {
+    navigate("#", {
+      state: null,
+    });
+  }
 
   //fetchAPI
   const getFaqData = async (): Promise<void> => {

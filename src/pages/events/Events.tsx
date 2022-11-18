@@ -187,6 +187,7 @@ const Events: FC = (): JSX.Element => {
     }
   }
 
+  //resetta lo stato della rotta corrente
   function resetLocationState(): void {
     navigate("#", {
       state: null,
