@@ -165,7 +165,8 @@
       },
       "categoriesSection": {
         "title": "Categories",
-        "info": "Specify the categories to be assigned to the article"
+        "info": "Specify the categories to be assigned to the article",
+        "categorieErr" : "Enter a category"
       },
       "categoriesError": "Tou have to select one category"
     }

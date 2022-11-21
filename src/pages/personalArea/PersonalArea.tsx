@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, BaseSyntheticEvent } from "react";
 
 //Navigazione
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PAGES from "../../router/pages";
 
 //Style
@@ -35,7 +35,7 @@ import { useSelector } from "react-redux/es/exports";
 //Utils
 import { User } from "../../utils/mockup/types";
 import checkRole from "../../utils/checkRoles";
-import useLogout from "../../utils/logout";
+import useLogout from "../../customHooks/useLogout";
 
 //Translation
 import { useTranslation } from "react-i18next";
@@ -98,7 +98,6 @@ const PersonalArea: FC = (): JSX.Element => {
   const currentUser = useSelector((state: any) => state.userDuck.user);
 
   const [handleLogout, isReady] = useLogout(1000);
-  const location = useLocation();
   const navigate = useNavigate();
 
   const lang: Array<Item> = [

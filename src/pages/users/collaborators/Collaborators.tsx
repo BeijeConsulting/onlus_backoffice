@@ -78,6 +78,9 @@ const Collaborators: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  if (location?.state !== null) {
+    setTimeout(resetLocationState, 3000);
+  }
 
   //prende i dati dei collaboratori o degli utenti in base alla pagina in cui si trova
   useEffect(() => {
@@ -93,6 +96,13 @@ const Collaborators: FC = (): JSX.Element => {
       getGuestsData();
     }
   }, [window.location.href]);
+
+    //resetta lo stato della rotta corrente
+    function resetLocationState(): void {
+      navigate("#", {
+        state: null,
+      });
+    }
 
   //fetchAPI collaborators
   const getCollaboratorsData = async (): Promise<void> => {
