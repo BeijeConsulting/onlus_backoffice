@@ -97,12 +97,12 @@ const Collaborators: FC = (): JSX.Element => {
     }
   }, [window.location.href]);
 
-    //resetta lo stato della rotta corrente
-    function resetLocationState(): void {
-      navigate("#", {
-        state: null,
-      });
-    }
+  //resetta lo stato della rotta corrente
+  function resetLocationState(): void {
+    navigate("#", {
+      state: null,
+    });
+  }
 
   //fetchAPI collaborators
   const getCollaboratorsData = async (): Promise<void> => {
@@ -457,7 +457,6 @@ const Collaborators: FC = (): JSX.Element => {
           <CircularProgress />
         </Box>
       )}
-      )
     </>
   );
 };

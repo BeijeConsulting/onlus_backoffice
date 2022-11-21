@@ -52,7 +52,7 @@ const initialState: State = {
   snackRequestError: false,
   socialList: [],
   currentSocialId: null,
-  getData: false
+  getData: false,
 };
 
 const Social: FC = (): JSX.Element => {
@@ -62,21 +62,21 @@ const Social: FC = (): JSX.Element => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  if(location?.state !== null){
-    setTimeout(resetLocationState,3000);
+  if (location?.state !== null) {
+    setTimeout(resetLocationState, 3000);
   }
-  
+
   useEffect(() => {
-    getSocial(); 
+    getSocial();
   }, []);
 
   //recupero i social tramite api
   async function getSocial(flag: boolean = null): Promise<void> {
     let resp: any = await getAllSocialApi();
     const status: number = resp?.status;
-    if(status !== 200){
-      handleResponseStatus(status)
-    }else{
+    if (status !== 200) {
+      handleResponseStatus(status);
+    } else {
       if (flag === null) {
         setState({
           ...state,
@@ -93,7 +93,6 @@ const Social: FC = (): JSX.Element => {
         });
       }
     }
-    
   }
 
   //Snackbar
@@ -103,7 +102,7 @@ const Social: FC = (): JSX.Element => {
       snackIsOpen: false,
       snackDeleteIsOpen: false,
       snackRequestError: false,
-      snackServerError: false
+      snackServerError: false,
     });
   };
 
@@ -132,8 +131,8 @@ const Social: FC = (): JSX.Element => {
     const status = resp?.status;
     if (status === 200) {
       getSocial(true);
-    }else{
-      handleResponseStatus(status)
+    } else {
+      handleResponseStatus(status);
     }
   };
 
@@ -147,26 +146,26 @@ const Social: FC = (): JSX.Element => {
   };
 
   //resetta lo stato della location
-  function resetLocationState(): void{
-    navigate("#",{
-      state: null
-    })
+  function resetLocationState(): void {
+    navigate("#", {
+      state: null,
+    });
   }
 
   //funzione per gestire errori nelle chiamate api
-  function handleResponseStatus(status: Number): void{
-    switch(status){
+  function handleResponseStatus(status: Number): void {
+    switch (status) {
       case 400:
         setState({
           ...state,
-          snackRequestError: true
-        })
+          snackRequestError: true,
+        });
         break;
       case 500:
         setState({
           ...state,
-          snackServerError: true
-        })
+          snackServerError: true,
+        });
     }
   }
 
@@ -183,6 +182,13 @@ const Social: FC = (): JSX.Element => {
       </>
     );
   };
+  const renderDetailsIcon = (params: any) => {
+    console.log(params);
+
+    return (
+      <img src={params?.row?.iconContent} alt={params?.row?.iconTitle}></img>
+    );
+  };
   const columns = [
     {
       field: "name",
@@ -190,13 +196,15 @@ const Social: FC = (): JSX.Element => {
       flex: 1,
     },
     {
-      field: "icon",
+      field: "iconTitle",
       headerName: t("social.table.headerTable2"),
       flex: 1,
+      renderCell: renderDetailsIcon,
     },
     {
       field: "link",
       headerName: t("social.table.headerTable3"),
+
       type: "date",
       flex: 1,
     },
@@ -250,24 +258,20 @@ const Social: FC = (): JSX.Element => {
           callback={handleClose}
         />
       )}
-       {
-        state?.snackRequestError && (
-          <CustomSnackbar
-            message={t("responseErrorSnack")}
-            severity={"warning"}
-            callback={handleClose}
-          />
-        )
-      }
-      {
-        state?.snackServerError && (
-          <CustomSnackbar
-            message={t("responseErrorSnack")}
-            severity={"error"}
-            callback={handleClose}
-          />
-        )
-      }
+      {state?.snackRequestError && (
+        <CustomSnackbar
+          message={t("responseErrorSnack")}
+          severity={"warning"}
+          callback={handleClose}
+        />
+      )}
+      {state?.snackServerError && (
+        <CustomSnackbar
+          message={t("responseErrorSnack")}
+          severity={"error"}
+          callback={handleClose}
+        />
+      )}
     </Box>
   );
 };

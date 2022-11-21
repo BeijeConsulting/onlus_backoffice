@@ -172,6 +172,7 @@ const Home: FC = (): JSX.Element => {
                   textInfo={t("Home.Hero.info")}
                 />
                 <ButtonAddFile
+                  customKey={1}
                   callback={log}
                   mediaContent={state?.home?.hero?.mediaContent}
                   mediaTitle={state?.home?.hero?.mediaTitle}
@@ -197,6 +198,7 @@ const Home: FC = (): JSX.Element => {
                   textInfo={t("Home.Story.info")}
                 />
                 <ButtonAddFile
+                  customKey={2}
                   callback={log}
                   mediaContent={state?.home?.story?.mediaContent}
                   mediaTitle={state?.home?.story?.mediaTitle}
@@ -225,6 +227,7 @@ const Home: FC = (): JSX.Element => {
                   defaultValue={state?.home?.result?.title}
                 />
                 <ButtonAddFile
+                  customKey={3}
                   callback={log}
                   mediaContent={state?.home?.result?.mediaContent}
                   mediaTitle={state?.home?.result?.mediaTitle}
