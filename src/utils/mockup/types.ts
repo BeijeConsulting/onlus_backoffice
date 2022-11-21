@@ -93,7 +93,9 @@ export type Donation = {
 };
 
 export type Event = {
-  cover?: string;
+  coverContent: string;
+  coverTitle: string;
+  coverType: string;
   description?: string;
   eventDate?: string | Dayjs;
   place?: string;
@@ -132,7 +134,9 @@ export type AboutType = {
 export type SingleSocial = {
   footerOn: boolean;
   homepageOn: boolean;
-  icon: string;
+  iconContent: string;
+  iconTitle: string;
+  iconType: string;
   id?: Number;
   link: string;
   name: string;

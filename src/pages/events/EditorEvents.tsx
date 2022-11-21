@@ -60,7 +60,9 @@ const initialState: state = {
   requirementsError: false,
   placeError: false,
   currentEvent: {
-    cover: "",
+    coverContent: "",
+    coverTitle: "",
+    coverType: "",
     description: "",
     eventDate: "",
     place: "",
@@ -90,8 +92,6 @@ const EditorEvents: FC = () => {
 
   async function getCurrentEvent() {
     const resp: any = await getEventByIdApi(idCurrentEvent);
-    console.log(resp);
-
     if (resp.status === 200) {
       const event: any = resp.data;
 
@@ -126,6 +126,7 @@ const EditorEvents: FC = () => {
         ...state,
         dateToSent: correctFormatDate,
         currentEvent: {
+          ...state.currentEvent,
           eventDate: date,
         },
       });
@@ -149,6 +150,9 @@ const EditorEvents: FC = () => {
 
     const inputTitle = e.target.form[0];
     const inputDescription = e.target.form[5];
+    const coverContent = e.target.form[8].name.split(" ")[0];
+    const coverTitle = e.target.form[8].name.split(" ")[1];
+    const coverType = e.target.form[8].name.split(" ")[2];
     const inputPlace = e.target.form[9];
     const inputRequirements = e.target.form[11];
 
@@ -189,13 +193,16 @@ const EditorEvents: FC = () => {
     } else {
       //oggetto che viene inviato al server
       newEvent = {
-        cover: "test",
+        coverContent: coverContent,
+        coverTitle: coverTitle,
+        coverType: coverType,
         description: inputDescription.value,
         place: inputPlace.value,
         requirements: inputRequirements.value,
         title: inputTitle.value,
         eventDate: state.dateToSent,
       };
+      console.log(newEvent);
 
       if (location?.state?.showAdd) {
         //creazione di un nuovo evento
@@ -318,9 +325,10 @@ const EditorEvents: FC = () => {
                     textInfo={t("EventsEditor.cover.info")}
                   />
                   <ButtonAddFile
-                    callback={() => {
-                      console.log("ciao");
-                    }}
+                    callback={() => {}}
+                    mediaContent={state?.currentEvent.coverContent}
+                    mediaTitle={state?.currentEvent.coverTitle}
+                    mediaType={state?.currentEvent.coverType}
                   />
                 </LabelText>
 

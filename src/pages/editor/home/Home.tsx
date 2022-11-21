@@ -22,9 +22,9 @@ import { useTranslation } from "react-i18next";
 //interface
 type home = {
   hero: {
-    mediaContent: any;
-    mediaTitle: any;
-    mediaType: any;
+    mediaContent: string;
+    mediaTitle: string;
+    mediaType: string;
     subtitle: string;
     text: string;
   };
@@ -36,9 +36,9 @@ type home = {
     text: string;
   };
   story: {
-    mediaContent: any;
-    mediaTitle: any;
-    mediaType: any;
+    mediaContent: string;
+    mediaTitle: string;
+    mediaType: string;
     text: string;
   };
 };

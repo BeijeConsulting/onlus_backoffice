@@ -51,7 +51,9 @@ const initialState: State = {
   currentSocial: {
     footerOn: false,
     homepageOn: false,
-    icon: "",
+    iconContent: "",
+    iconTitle: "",
+    iconType: "",
     id: null,
     link: "",
     name: "",
@@ -73,9 +75,6 @@ const EditorSocial: FC = (): JSX.Element => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    getBase64FromUrl(
-      "https://lh3.googleusercontent.com/i7cTyGnCwLIJhT1t2YpLW-zHt8ZKalgQiqfrYnZQl975-ygD_0mOXaYZMzekfKW_ydHRutDbNzeqpWoLkFR4Yx2Z2bgNj2XskKJrfw8"
-    ).then(console.log);
     if (!location?.state?.showAdd) {
       getCurrentSocial();
     }
@@ -97,19 +96,6 @@ const EditorSocial: FC = (): JSX.Element => {
     }
   }
 
-  const getBase64FromUrl = async (url: any) => {
-    const data = await fetch(url);
-    const blob = await data.blob();
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(blob);
-      reader.onloadend = () => {
-        const base64data = reader.result;
-        resolve(base64data);
-      };
-    });
-  };
-
   const handleClick = (): void => {};
 
   const onCancel = (): void => {
@@ -123,8 +109,13 @@ const EditorSocial: FC = (): JSX.Element => {
   function validateForm(e: BaseSyntheticEvent) {
     let formIsValid = true;
 
+    console.log(e);
+
     //prendo i valori dal form
     const socialName = e.target.form[0].value;
+    const iconContent = e.target.form[2].name.split(" ")[0];
+    const iconTitle = e.target.form[2].name.split(" ")[1];
+    const iconType = e.target.form[2].name.split(" ")[2];
     const socialLink = e.target.form[3].value;
     const footerOn = e.target.form[5].checked;
     const homepageOn = e.target.form[6].checked;
@@ -151,17 +142,20 @@ const EditorSocial: FC = (): JSX.Element => {
 
       let newSocial: SingleSocial = {
         name: socialName,
-        icon: "testicon",
+        iconContent: iconContent,
+        iconTitle: iconTitle,
+        iconType: iconType,
         link: socialLink,
         homepageOn: homepageOn,
         footerOn: footerOn,
       };
+      console.log(newSocial);
 
       if (location?.state?.showAdd) {
         sendData(newSocial);
       } else {
         updateSocial(newSocial);
-        // navigate(PAGES.editSocial, { state: { open: true } });
+        navigate(PAGES.editSocial, { state: { open: true } });
       }
     } else {
       //i valori inseriti dall'utente sono sbagliati
@@ -179,6 +173,7 @@ const EditorSocial: FC = (): JSX.Element => {
     let resp = await createNewSocialApi(newSocial);
     handleResponse(resp.status);
     if (resp?.status === 200) {
+      let response = await getCurrentSocial();
       navigate(PAGES.editSocial, { state: { openAdd: true } });
     }
   }
@@ -241,7 +236,12 @@ const EditorSocial: FC = (): JSX.Element => {
                     text={t("social.editorSocial.iconSection.title")}
                     textInfo={t("social.editorSocial.iconSection.info")}
                   />
-                  <ButtonAddFile callback={handleClick} />
+                  <ButtonAddFile
+                    callback={handleClick}
+                    mediaContent={state?.currentSocial?.iconContent}
+                    mediaTitle={state?.currentSocial?.iconTitle}
+                    mediaType={state?.currentSocial?.iconType}
+                  />
                 </Box>
                 <Box className={common.rowRight}>
                   <Title
