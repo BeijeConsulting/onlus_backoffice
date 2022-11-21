@@ -150,7 +150,8 @@
       },
       "categoriesSection": {
         "title": "Categorie",
-        "info": "Specificare le categorie da attribuire all'articolo"
+        "info": "Specificare le categorie da attribuire all'articolo",
+        "categorieErr" : "Inserisci una categoria"
       },
       "categoriesError": "Selezionare almeno una categoria"
     }
