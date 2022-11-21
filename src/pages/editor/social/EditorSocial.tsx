@@ -171,7 +171,7 @@ const EditorSocial: FC = (): JSX.Element => {
   //creo un nuovo social
   async function sendData(newSocial: SingleSocial): Promise<void> {
     let resp = await createNewSocialApi(newSocial);
-    handleResponse(resp.status);
+    handleResponse(resp?.status);
     if (resp?.status === 200) {
       let response = await getCurrentSocial();
       navigate(PAGES.editSocial, { state: { openAdd: true } });
@@ -181,19 +181,18 @@ const EditorSocial: FC = (): JSX.Element => {
   //aggiorno un social già esistente
   async function updateSocial(newSocial: SingleSocial): Promise<void> {
     let resp = await updateSocialById(state?.currentSocial?.id, newSocial);
-    handleResponse(resp.status);
+    handleResponse(resp?.status);
     if (resp?.status === 200) {
       navigate(PAGES.editSocial, { state: { openChange: true } });
     }
   }
 
   //gestisce status snackbar
-  const handleResponse = async (status: number) => {
+  const handleResponse = async (status: number): Promise<void> => {
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
 
-    if (status === 200) {
-    } else if (status === 500 || status === undefined) snackWarning = true;
+    if (status === 500 || status === undefined) snackWarning = true;
     else snackError = true;
 
     setState({

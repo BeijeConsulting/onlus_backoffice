@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, BaseSyntheticEvent } from "react";
 
 //Navigazione
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import PAGES from "../../router/pages";
 
 //Style
@@ -35,7 +35,7 @@ import { useSelector } from "react-redux/es/exports";
 //Utils
 import { User } from "../../utils/mockup/types";
 import checkRole from "../../utils/checkRoles";
-import useLogout from "../../utils/logout";
+import useLogout from "../../customHooks/useLogout";
 
 //Translation
 import { useTranslation } from "react-i18next";
@@ -98,7 +98,6 @@ const PersonalArea: FC = (): JSX.Element => {
   const currentUser = useSelector((state: any) => state.userDuck.user);
 
   const [handleLogout, isReady] = useLogout(1000);
-  const location = useLocation();
   const navigate = useNavigate();
 
   const lang: Array<Item> = [
@@ -227,7 +226,7 @@ const PersonalArea: FC = (): JSX.Element => {
 
   return (
     <Box className={common.component}>
-      {state.ready && (
+      {state?.ready && (
         <>
           <Box className={common.singleComponent}>
             <form>
@@ -240,16 +239,16 @@ const PersonalArea: FC = (): JSX.Element => {
                 <Box className={style.textFields}>
                   <Box className={style.row}>
                     <CustomTextField
-                      defaultValue={state.personalData.name}
+                      defaultValue={state?.personalData?.name}
                       errorMessage="Inserisci un nome"
-                      error={state.error[0]}
+                      error={state?.error[0]}
                       placeholder={t("personalArea.placeholderName")}
                     />
 
                     <CustomTextField
-                      defaultValue={state.personalData.surname}
+                      defaultValue={state?.personalData?.surname}
                       errorMessage="Inserisci un cognome"
-                      error={state.error[1]}
+                      error={state?.error[1]}
                       placeholder={t("personalArea.placeholderSurname")}
                     />
                   </Box>
@@ -258,8 +257,8 @@ const PersonalArea: FC = (): JSX.Element => {
                     <CustomSelect
                       label={t("personalArea.placeholderLanguage")}
                       items={lang}
-                      defaultValue={state.personalData.language}
-                      error={state.error[2]}
+                      defaultValue={state?.personalData?.language}
+                      error={state?.error[2]}
                       errorMessage="Inserisci una lingua"
                     />
 
@@ -267,41 +266,41 @@ const PersonalArea: FC = (): JSX.Element => {
                       label={t("personalArea.placeholderRole")}
                       items={rolesPerAdmin}
                       disabled={true}
-                      defaultValue={checkRole(state.personalData.role)}
-                      error={state.error[3]}
+                      defaultValue={checkRole(state?.personalData?.role)}
+                      error={state?.error[3]}
                       errorMessage="Inserisci un ruolo"
                     />
                   </Box>
 
                   <Box className={style.row}>
                     <CustomTextField
-                      defaultValue={state.personalData.email}
+                      defaultValue={state?.personalData?.email}
                       errorMessage="Inserisci una email"
                       error={state.error[4]}
                       placeholder={t("personalArea.placeholderEmail")}
                     />
 
                     <CustomTextField
-                      defaultValue={state.personalData.phone}
+                      defaultValue={state?.personalData?.phone}
                       errorMessage="Inserisci un numero di telefono"
-                      error={state.error[5]}
+                      error={state?.error[5]}
                       placeholder={t("personalArea.placeholderTelephone")}
                     />
                   </Box>
 
                   <Box className={style.row}>
                     <CustomTextField
-                      defaultValue={state.personalData.password}
+                      defaultValue={state?.personalData?.password}
                       errorMessage="Inserisci una password"
-                      error={state.error[6]}
+                      error={state?.error[6]}
                       placeholder={t("personalArea.placeholderPassword")}
                       type={"password"}
                     />
 
                     <CustomTextField
-                      defaultValue={state.personalData.password}
+                      defaultValue={state?.personalData?.password}
                       errorMessage="Inserisci una password uguale"
-                      error={state.error[7]}
+                      error={state?.error[7]}
                       placeholder={t("personalArea.placeholderConfirmPassword")}
                       type={"password"}
                     />
@@ -317,7 +316,7 @@ const PersonalArea: FC = (): JSX.Element => {
             </form>
 
             <Modal
-              open={state.modalIsOpen}
+              open={state?.modalIsOpen}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
@@ -334,21 +333,21 @@ const PersonalArea: FC = (): JSX.Element => {
               </Box>
             </Modal>
           </Box>
-          {state.snackExists && (
+          {state?.snackExists && (
             <CustomSnackbar
               message={t("userAlreadyExists")}
               severity={"error"}
               callback={handleClose}
             />
           )}
-          {state.snackError && (
+          {state?.snackError && (
             <CustomSnackbar
               message={t("responseErrorSnack")}
               severity={"error"}
               callback={handleClose}
             />
           )}
-          {state.snackWarning && (
+          {state?.snackWarning && (
             <CustomSnackbar
               message={t("responseWarningSnack")}
               severity={"warning"}

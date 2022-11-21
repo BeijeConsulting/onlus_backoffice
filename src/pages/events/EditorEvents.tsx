@@ -79,7 +79,6 @@ const EditorEvents: FC = () => {
   const [state, setState] = useState(initialState);
   const { t } = useTranslation();
   const location = useLocation();
-  console.log(location);
 
   const idCurrentEvent = location?.state?.row?.id;
   const navigate = useNavigate();
@@ -217,7 +216,7 @@ const EditorEvents: FC = () => {
   //PutAPI
   async function updateEvent(newEvent: Event) {
     let resp = await updateEventByIdApi(state?.currentEvent?.id, newEvent);
-    handleResponse(resp.status);
+    handleResponse(resp?.status);
     if (resp?.status === 200) {
       navigate(PAGES.events, { state: { openChange: true } });
     }
@@ -226,7 +225,7 @@ const EditorEvents: FC = () => {
   //PostAPI
   async function sendData(newEvent: Event) {
     let resp = await createEventApi(newEvent);
-    handleResponse(resp.status);
+    handleResponse(resp?.status);
     if (resp?.status === 200) {
       navigate(PAGES.events, { state: { openAdd: true } });
     }
@@ -237,8 +236,7 @@ const EditorEvents: FC = () => {
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
 
-    if (status === 200) {
-    } else if (status === 500 || status === undefined) snackWarning = true;
+    if (status === 500 || status === undefined) snackWarning = true;
     else snackError = true;
 
     setState({

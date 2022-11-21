@@ -26,7 +26,7 @@ import PAGES from "../../../router/pages";
 import { useNavigate } from "react-router-dom";
 
 //Utils
-import useLogout from "../../../utils/logout";
+import useLogout from "../../../customHooks/useLogout";
 import checkRole from "../../../utils/checkRoles";
 
 //translation
@@ -87,8 +87,8 @@ const Header: FC = (): JSX.Element => {
     console.log(res.data)
     setState({
       ...state,
-      logo: res.data.logo,
-      siteName: res.data.websiteName
+      logo: res?.data?.logoContent,
+      siteName: res?.data?.websiteName
     })
   }
 
