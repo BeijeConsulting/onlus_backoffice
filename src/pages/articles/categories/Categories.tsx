@@ -444,7 +444,7 @@ const Categories: FC = (): JSX.Element => {
                 <CustomTextField
                   defaultValue={state?.updateName}
                   placeholder={t("Categories.placeholder")}
-                  errorMessage={t("Categories.errorEmpty")}
+                  errorMessage={t("Categories.errorExist")}
                   error={state?.updateError}
                 />
                 <Box className={categoriesStyle.modalButtons}>
