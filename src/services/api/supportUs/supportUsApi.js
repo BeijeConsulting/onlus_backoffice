@@ -8,5 +8,5 @@ export async function getApiSupport() {
 
 //post
 export async function postApiSupport(obj) {
-  return await postApi(`${APIROUTES.SUPPORTUSUPDATE}`, obj);
+  return await postApi(`support/save-support`, obj);
 }
