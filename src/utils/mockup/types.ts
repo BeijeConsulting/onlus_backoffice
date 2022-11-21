@@ -27,7 +27,7 @@ export type Article = {
   surname?: string;
   email?: string;
   title: string;
-  status?: string;
+  status: string;
   coverContent: string;
   coverTitle: string;
   coverType: string;

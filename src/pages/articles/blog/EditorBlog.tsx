@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 //api
 import { getApiCategories } from "../../../services/api/categories/categoriesApi";
+import {
+  getPersonalArea
+} from "../../../services/api/personalArea/personalArea";
 
 import {
   getApiArticleById,
@@ -45,6 +48,8 @@ import { useTranslation } from "react-i18next";
 //types
 import { Article, Category, ArticleContent } from "../../../utils/mockup/types";
 
+import { useSelector } from "react-redux";
+
 //interface
 interface State {
   ready: boolean;
@@ -66,9 +71,13 @@ const initialState: State = {
     category: [],
     content: [],
     coverContent: "",
+    email: "",
     coverTitle: "",
     coverType: "",
     title: "",
+    status: "",
+    name: "",
+    surname: "",
     id: null
   },
   addLeft: [],
@@ -76,14 +85,17 @@ const initialState: State = {
   error: [],
   articleContentError: [],
   snackErrorIsOpen: false,
-  snackWarningIsOpen: false,
+  snackWarningIsOpen: false
 };
 
+let name:string =""
+let surname:string =""
 const EditorBlog: FC = (): JSX.Element => {
   const [state, setState] = useState(initialState);
   const location = useLocation();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const user: any = useSelector((state: any) => state.userDuck.user);
 
   let indSx: number = 0
   let indDx: number = 1
@@ -104,6 +116,10 @@ const EditorBlog: FC = (): JSX.Element => {
 
   //fetchAPI
   const getData = async (): Promise<void> => {
+    let res = await fetchData(getPersonalArea, user.id);
+    name = res.data.name
+    surname = res.data.surname
+    console.log(name,surname)
     let checked: Array<number> = [];
     let addLeft: Array<ArticleContent> = [];
     let addRight: Array<ArticleContent> = [];
@@ -123,7 +139,11 @@ const EditorBlog: FC = (): JSX.Element => {
         coverContent: dataArticle.data.coverContent,
         coverTitle: dataArticle.data.coverTitle,
         coverType: dataArticle.data.coverType,
+        email: dataArticle.data.email,
+        name: name,
+        surname: surname,
         title: dataArticle.data.title,
+        status: dataArticle.data.status
       };
 
       for (let i = 0; i < article.content.length; i++) {
@@ -149,10 +169,24 @@ const EditorBlog: FC = (): JSX.Element => {
             articleId: location?.state?.id,
             id: article.content[i].id,
             media: article.content[i].media,
-            paragraph: article.content[i].paragraph
+            paragraph: article.content[i].paragraph,
           })
         }
       }
+    }
+    else {
+      article = {
+        category: [],
+        content: [],
+        coverContent: "",
+        coverTitle: "",
+        coverType: "",
+        email: user.email,
+        name: name,
+        surname: surname,
+        status: "published",
+        title: ""
+      };
     }
 
     let categories = await fetchData(getApiCategories);
@@ -160,6 +194,8 @@ const EditorBlog: FC = (): JSX.Element => {
 
     indSx = 0
     indDx = 1
+
+    console.log(name, surname)
 
     setState({
       ...state,
@@ -233,11 +269,11 @@ const EditorBlog: FC = (): JSX.Element => {
     if (left?.length === right?.length) {
       //aggiungo a sinistra
       left?.push({
-        id: left[left.length-1].id+1,
+        id: left[left.length - 1].id + 1,
         articleId: location?.state?.id,
         media: [{
           id: state?.article?.content[state.articleContentError.length]?.media[state.articleContentError.length].id + 1,
-          contentId: state?.article?.content[state?.article?.content?.length-1]?.id + 1,
+          contentId: state?.article?.content[state?.article?.content?.length - 1]?.id + 1,
           content: "",
           title: "",
           type: ""
@@ -306,6 +342,7 @@ const EditorBlog: FC = (): JSX.Element => {
 
   //salvo
   const onSave = (e: BaseSyntheticEvent): void => {
+    console.log(state.article)
     let article: Article = {
       id: location?.state?.id,
       category: [],
@@ -315,7 +352,7 @@ const EditorBlog: FC = (): JSX.Element => {
           id: state?.article?.content[0]?.id,
           media: [
             {
-              id: state?.article?.content[0]?.media[0].id+1,
+              id: state?.article?.content[0]?.media[0].id + 1,
               contentId: state?.article?.content[0]?.id,
               content: e.target.form[5].name.split(" ")[0],
               title: e.target.form[5].name.split(" ")[1],
@@ -328,6 +365,10 @@ const EditorBlog: FC = (): JSX.Element => {
       coverContent: e.target.form[6 + state.addLeft.length * 4].name.split(" ")[0],
       coverTitle: e.target.form[6 + state.addLeft.length * 4].name.split(" ")[1],
       coverType: e.target.form[6 + state.addLeft.length * 4].name.split(" ")[2],
+      email: state?.article?.email,
+      name: name,
+      surname: surname,
+      status: state?.article?.status,
       title: e.target.form[0].value
     };
 
@@ -347,10 +388,10 @@ const EditorBlog: FC = (): JSX.Element => {
     let errors: boolean = getErrors(error);
     let articleContentErrors: boolean = getErrors(articleContentError);
 
-    console.log(article.content) 
-    console.log(state.addLeft) 
-    console.log(state.addRight) 
-    
+    console.log(article.content)
+    console.log(state.addLeft)
+    console.log(state.addRight)
+
     if (!errors && !articleContentErrors) {
       if (location?.state?.showAdd) {
         //add
@@ -441,7 +482,7 @@ const EditorBlog: FC = (): JSX.Element => {
 
     for (let i = 0; i < article.content.length; i++) {
       if (
-        article.content[i].paragraph.length === 0 ||article.content[i].media[0].content.length === 0
+        article.content[i].paragraph.length === 0 || article.content[i].media[0].content.length === 0
       )
         articleContentError[i] = true;
       else articleContentError[i] = false;
@@ -470,6 +511,10 @@ const EditorBlog: FC = (): JSX.Element => {
 
   //aggiungo l'articolo
   const addArticle = async (article: Article, error: Array<boolean>, articleContentError: Array<boolean>): Promise<void> => {
+    delete article.id
+    article.content.forEach((element) => {
+      delete element.articleId
+    })
     console.log("Article prima di aggiungere", article)
     let response = await postApiArticle(article);
     handleAddUpdateResponse(response.status, error, articleContentError, article);
@@ -479,7 +524,7 @@ const EditorBlog: FC = (): JSX.Element => {
   const handleAddUpdateResponse = async (status: number, error: Array<boolean>, articleContentError: Array<boolean>, article: Article) => {
     let snackWarning: boolean = state.snackWarningIsOpen;
     let snackError: boolean = state.snackErrorIsOpen;
-    
+
 
     console.log(status);
     if (status === 200) {
@@ -505,7 +550,7 @@ const EditorBlog: FC = (): JSX.Element => {
 
   //stampo l'immagine caricata
   const log = (mediaContent: string, mediaTitle: string, mediaType: string): void => {
-  
+
   };
 
   //torno alla pagina articoli
