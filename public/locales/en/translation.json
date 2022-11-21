@@ -35,7 +35,8 @@
     "nameSite": {
       "title": "Site Name",
       "info": "Here you enter the name of your site, which will be visible to all visitors to the site",
-      "placeholder": "Enter the name for your site"
+      "placeholder": "Enter the name for your site",
+      "error": "Insert a name"
     },
     "logo": {
       "title": "Logo",
@@ -62,13 +63,19 @@
       "info": "Here the banner in evidence of the call to action must be customized, the colors are taken from the palette that can be found at the top of the page",
       "placeholderTitle": "Enter the title",
       "placeholderSubtitle": "Insert subtitle",
-      "placeholderCallToAction": "Insert call to action button"
+      "placeholderCallToAction": "Insert call to action button",
+      "errorTitle": "Insert a title",
+      "errorSubtitle": "Insert a subtitle",
+      "errorCallToAction": "Insert some text",
+      "errorLink": "Insert a link"
     },
     "workSection": {
       "title": "Section of contacts for work",
       "info": "Here you enter the contacts that will be shown to all visitors to the site at the bottom of the page that should be used for business purposes",
       "placeholderText": "Insert text",
-      "placeholderEmail": "Enter your business email"
+      "placeholderEmail": "Enter your business email",
+      "errorText": "Insert some text",
+      "errorEmail": "Insert an email"
     },
     "contacts": {
       "title": "Contacts",
@@ -77,7 +84,12 @@
       "placeholderEmail": "Enter your email",
       "placeholderAddress": "Enter your address",
       "placeholderIva": "Enter your VAT number",
-      "placeholderCf": "Enter your tax code"
+      "placeholderCf": "Enter your tax code",
+      "errorTelephone": "Insert a phone number",
+      "errorEmail": "Insert an email",
+      "errorAddress": "Insert an address",
+      "errorIva": "Insert a VAT number",
+      "errorCf": "Insert a tax code"
     }
   },
   "Support": {

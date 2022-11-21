@@ -73,7 +73,7 @@ const Login: FC = (): JSX.Element => {
     let resp = await fetchData(getApiNoAuthGeneral);
     setState({
       ...state,
-      logo: resp?.data?.logo,
+      logo: resp?.data?.logoContent,
     });
   };
 
