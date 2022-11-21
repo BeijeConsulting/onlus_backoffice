@@ -193,7 +193,7 @@ const EditorCollaborators: FC = (): JSX.Element => {
     setState({
       ...state,
       error: tmp,
-      snackErrorIsOpen: err,
+      snackAlreadyExistsIsOpen: err,
     });
   };
 

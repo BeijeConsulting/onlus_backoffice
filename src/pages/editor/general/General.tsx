@@ -1,7 +1,7 @@
 import { BaseSyntheticEvent, FC, useEffect, useState } from "react";
 
 //Mui
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
 //styles
 import common from "../../../assets/styles/common.module.scss";
@@ -39,7 +39,22 @@ interface State {
 
 const initState: State = {
   ready: false,
-  error: [false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  error: [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ],
   customization: {
     websiteName: "",
     logoContent: "",
@@ -89,12 +104,12 @@ const General: FC = (): JSX.Element => {
   useEffect(() => {
     componentReady();
   }, []);
-  const handleImage = (): void => { };
+  const handleImage = (): void => {};
 
   //putAPI
   async function updateData(e: BaseSyntheticEvent): Promise<void> {
     const form = e.target.form;
-    console.log(e)
+    console.log(e);
 
     const newData: Customization = {
       id: 1,
@@ -140,7 +155,7 @@ const General: FC = (): JSX.Element => {
     };
 
     const putRes = await putApiGeneral(1, newData);
-    handleResponse(putRes.status)
+    handleResponse(putRes.status);
   }
 
   const onSaveGeneral = (e: BaseSyntheticEvent) => {
@@ -173,7 +188,8 @@ const General: FC = (): JSX.Element => {
         }
       }
 
-      if (!!e.target.form[i].value || e.target.form[i].value?.length === 0) count++;
+      if (!!e.target.form[i].value || e.target.form[i].value?.length === 0)
+        count++;
     }
 
     if (e.target.form[22].value?.length === 0) {
@@ -184,7 +200,7 @@ const General: FC = (): JSX.Element => {
     if (!isError) {
       updateData(e);
     } else {
-      errorSnack = true
+      errorSnack = true;
     }
 
     setState({
@@ -245,7 +261,7 @@ const General: FC = (): JSX.Element => {
 
   return (
     <form>
-      {state.ready && (
+      {state.ready ? (
         <Box className={common.component}>
           <Box className={common.doubleComponent}>
             <Box className={common.left}>
@@ -445,6 +461,10 @@ const General: FC = (): JSX.Element => {
               callback={handleClose}
             />
           )}
+        </Box>
+      ) : (
+        <Box className={common.loaderBox}>
+          <CircularProgress />
         </Box>
       )}
     </form>

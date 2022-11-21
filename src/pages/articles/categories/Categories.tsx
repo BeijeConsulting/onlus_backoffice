@@ -1,4 +1,4 @@
-import { Box, Typography, Modal } from "@mui/material";
+import { Box, Typography, Modal, CircularProgress } from "@mui/material";
 import { FC, useState, useRef, BaseSyntheticEvent, useEffect } from "react";
 
 //style
@@ -128,9 +128,9 @@ const Categories: FC = (): JSX.Element => {
   const hideDeleteModal = (): void => {
     setState({
       ...state,
-      modalIsOpen: false
-    })
-  }
+      modalIsOpen: false,
+    });
+  };
 
   //mostro/nascondo modal di modifica di una categoria
   const showUpdateModal = (row: any) => (): void => {
@@ -356,7 +356,7 @@ const Categories: FC = (): JSX.Element => {
 
   return (
     <Box className={style.component}>
-      {state?.ready && (
+      {state?.ready ? (
         <>
           <Box className={style.singleComponent}>
             <LabelText>
@@ -497,6 +497,10 @@ const Categories: FC = (): JSX.Element => {
             />
           )}
         </>
+      ) : (
+        <Box className={style.loaderBox}>
+          <CircularProgress />
+        </Box>
       )}
     </Box>
   );

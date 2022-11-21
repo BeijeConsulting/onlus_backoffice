@@ -1,10 +1,10 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { FC, useState, useEffect } from "react";
 
 //api
 import {
   deleteApiArticleById,
-  getApiArticles
+  getApiArticles,
 } from "../../../services/api/blog/blogApi";
 
 //navigation
@@ -20,7 +20,7 @@ import CustomSnackbar from "../../../components/functional/customSnackbar/Custom
 import LabelText from "../../../components/functional/labelText/LabelText";
 
 //data
-import { fetchData } from '../../../utils/fetchData'
+import { fetchData } from "../../../utils/fetchData";
 
 //icons
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -37,7 +37,7 @@ import { useTranslation } from "react-i18next";
 
 //interface
 interface State {
-  ready: boolean,
+  ready: boolean;
   modalIsOpen: boolean;
   snackIsOpen: boolean;
   snackDeleteIsOpen: boolean;
@@ -56,7 +56,7 @@ const initialState: State = {
   articles: [],
   idToDelete: null,
   snackErrorIsOpen: false,
-  snackWarningIsOpen: false
+  snackWarningIsOpen: false,
 };
 
 const Blog: FC = (): JSX.Element => {
@@ -74,13 +74,13 @@ const Blog: FC = (): JSX.Element => {
   //fetchAPI
   const getArticles = async (): Promise<void> => {
     let res = await fetchData(getApiArticles);
-    console.log("Articles", res.data)
+    console.log("Articles", res.data);
     setState({
       ...state,
       articles: res.data,
       ready: true,
-      snackIsOpen: location?.state?.open
-    })
+      snackIsOpen: location?.state?.open,
+    });
   };
 
   //Snackbar
@@ -90,7 +90,7 @@ const Blog: FC = (): JSX.Element => {
       snackIsOpen: false,
       snackDeleteIsOpen: false,
       snackErrorIsOpen: false,
-      snackWarningIsOpen: false
+      snackWarningIsOpen: false,
     });
   };
 
@@ -99,40 +99,37 @@ const Blog: FC = (): JSX.Element => {
     setState({
       ...state,
       modalIsOpen: !state.modalIsOpen,
-      idToDelete: id
+      idToDelete: id,
     });
   };
 
   //elimina articolo
   const deleteArticle = async (): Promise<void> => {
-    let response = await deleteApiArticleById(state.idToDelete)
-    handleErrorResponse(response.status)
+    let response = await deleteApiArticleById(state.idToDelete);
+    handleErrorResponse(response.status);
   };
 
   //gestisco la risposta all'eliminazione dell'articolo
-  const handleErrorResponse = async (status:number) => {
-    let snack: boolean = state.snackDeleteIsOpen
-    let snackWarning: boolean = state.snackWarningIsOpen
-    let snackError: boolean = state.snackErrorIsOpen
-    let response: any = {}
-    if (status === 200){
+  const handleErrorResponse = async (status: number) => {
+    let snack: boolean = state.snackDeleteIsOpen;
+    let snackWarning: boolean = state.snackWarningIsOpen;
+    let snackError: boolean = state.snackErrorIsOpen;
+    let response: any = {};
+    if (status === 200) {
       response = await fetchData(getApiArticles);
-      console.log("Articles", response.data)
-      snack = true
-    }  
-    else if (status === 500 || undefined) 
-      snackWarning = true
-    else 
-      snackError = true
+      console.log("Articles", response.data);
+      snack = true;
+    } else if (status === 500 || undefined) snackWarning = true;
+    else snackError = true;
 
     setState({
       ...state,
-      snackDeleteIsOpen:snack,
+      snackDeleteIsOpen: snack,
       snackWarningIsOpen: snackWarning,
       snackErrorIsOpen: snackError,
       modalIsOpen: false,
-      articles: response.data
-    })
+      articles: response.data,
+    });
   };
 
   //modifica articolo
@@ -200,12 +197,15 @@ const Blog: FC = (): JSX.Element => {
 
   return (
     <Box className={common.component}>
-      {state.ready && (
+      {state.ready ? (
         <>
           <Box className={common.singleComponent}>
             <LabelText>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Title text={t("articles.title")} textInfo={t("articles.info")} />
+                <Title
+                  text={t("articles.title")}
+                  textInfo={t("articles.info")}
+                />
                 <ButtonGeneric color={"green"} callback={addArticle}>
                   + {t("addButton")}
                 </ButtonGeneric>
@@ -245,24 +245,25 @@ const Blog: FC = (): JSX.Element => {
               callback={handleClose}
             />
           )}
-          {
-            state.snackErrorIsOpen &&
+          {state.snackErrorIsOpen && (
             <CustomSnackbar
               message={t("responseErrorSnack")}
               severity={"error"}
               callback={handleClose}
             />
-          }
-          {
-            state.snackWarningIsOpen &&
+          )}
+          {state.snackWarningIsOpen && (
             <CustomSnackbar
               message={t("responseWarningSnack")}
               severity={"warning"}
               callback={handleClose}
             />
-          }
-
+          )}
         </>
+      ) : (
+        <Box className={common.loaderBox}>
+          <CircularProgress />
+        </Box>
       )}
     </Box>
   );
